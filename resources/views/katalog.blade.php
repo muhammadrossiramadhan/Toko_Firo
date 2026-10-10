@@ -3,8 +3,8 @@
 
 @section('content')
     {{-- KATALOG HEADER --}}
-    <section class="bg-surface py-8 lg:pb-6 lg:pt-8">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
+    <section class="bg-surface py-8 md:pb-6 lg:pb-6 md:pt-8 lg:pt-8">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
             <h1 class="font-heading font-bold text-[32px] leading-[40px] text-ink">Katalog Barang</h1>
             <p class="text-sm text-text-muted mt-2">Katalog untuk cek ketersediaan. Pembelian langsung di toko.</p>
             @if($lastUpdate)
@@ -17,7 +17,7 @@
 
     {{-- TOOLBAR --}}
     <section class="bg-surface border-y border-border">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px] py-4">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px] py-4">
             <div class="flex flex-wrap items-center gap-3">
                 {{-- Search --}}
                 <form action="{{ route('katalog') }}" method="GET" class="relative w-full sm:w-[320px]">
@@ -42,13 +42,13 @@
 
     {{-- CONTENT: PRODUCT GRID --}}
     <section class="bg-bg">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px] py-8">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px] py-8">
             @if($items->isEmpty())
                 <div class="text-center py-16">
                     <p class="text-text-muted">Belum ada barang di katalog.</p>
                 </div>
             @else
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
                     @foreach($items as $item)
                         @php
                             $stok = $item->stok;
@@ -93,7 +93,7 @@
     {{-- PAGINATION --}}
     @if($items->hasPages())
         <section class="bg-bg pb-8">
-            <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
+            <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
                 <div class="flex justify-center items-center gap-2">
                     {{-- Previous --}}
                     @if($items->onFirstPage())

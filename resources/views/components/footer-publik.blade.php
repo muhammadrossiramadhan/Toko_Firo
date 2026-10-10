@@ -1,8 +1,8 @@
 <footer class="bg-green-900 text-white">
-    <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px] py-10 lg:py-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+    <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px] py-10 lg:py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-6">
             <!-- Col 1: Brand & Desc (takes more space via col-span on lg) -->
-            <div class="sm:col-span-2 lg:col-span-1">
+            <div class="sm:col-span-2 md:col-span-1">
                 <div class="flex items-center mb-3">
                     <img src="/logo.png" alt="Toko Firo" class="h-[36px] w-auto object-contain">
                 </div>

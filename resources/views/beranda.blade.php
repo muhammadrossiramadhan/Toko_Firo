@@ -4,12 +4,12 @@
 
 @section('content')
     {{-- HERO SECTION --}}
-    <section id="beranda" class="bg-bg py-16 lg:py-24">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section id="beranda" class="bg-bg py-16 md:py-20 lg:py-24">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-8 lg:gap-12 items-center">
                 {{-- Left Column --}}
                 <div>
-                    <h1 class="font-heading font-extrabold text-4xl lg:text-[40px] lg:leading-[48px] text-ink">
+                    <h1 class="font-heading font-extrabold text-4xl md:text-[36px] md:leading-[44px] lg:text-[40px] lg:leading-[48px] text-ink">
                         Butuh ATK atau fotocopy? Cek stok langsung di sini.
                     </h1>
                     <p class="text-lg text-text-muted mt-6 max-w-[480px] leading-7">
@@ -27,7 +27,7 @@
 
                 {{-- Right Column --}}
                 <div class="hidden sm:flex items-center justify-center">
-                    <div class="w-full max-w-[440px] h-[340px] lg:h-[400px] rounded-2xl overflow-hidden">
+                    <div class="w-full max-w-[440px] h-[300px] md:h-[340px] lg:h-[400px] rounded-2xl overflow-hidden">
                         <img src="/foto1.jpeg" alt="Toko Firo" class="w-full h-full object-cover">
                     </div>
                 </div>
@@ -36,12 +36,12 @@
     </section>
 
     {{-- TENTANG SECTION --}}
-    <section id="tentang" class="bg-surface py-16 lg:py-20">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <section id="tentang" class="bg-surface py-16 md:py-18 lg:py-20">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-10 lg:gap-16 items-center">
                 {{-- Left Column (Image Placeholder) --}}
-                <div class="flex justify-center lg:justify-start">
-                    <div class="w-full max-w-[400px] h-[260px] lg:h-[320px] rounded-xl overflow-hidden">
+                <div class="flex justify-center md:justify-start">
+                    <div class="w-full max-w-[400px] h-[260px] md:h-[280px] lg:h-[320px] rounded-xl overflow-hidden">
                         <img src="/foto2.jpeg" alt="Foto Toko Firo" class="w-full h-full object-cover">
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                     <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] block">
                         TENTANG TOKO FIRO
                     </span>
-                    <h2 class="font-heading font-bold text-3xl lg:text-[32px] lg:leading-[40px] text-ink mt-3">
+                    <h2 class="font-heading font-bold text-3xl md:text-[28px] md:leading-[36px] lg:text-[32px] lg:leading-[40px] text-ink mt-3">
                         Toko ATK & fotocopy langganan warga Kraksaan
                     </h2>
                     <p class="text-text-muted leading-relaxed mt-4 max-w-[440px]">
@@ -77,8 +77,8 @@
     </section>
 
     {{-- LAYANAN SECTION --}}
-    <section id="layanan" class="bg-bg py-16 lg:py-20">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
+    <section id="layanan" class="bg-bg py-16 md:py-18 lg:py-20">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
             <div class="text-center max-w-[640px] mx-auto">
                 <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] text-center block">
                     LAYANAN
@@ -160,8 +160,8 @@
     </section>
 
     {{-- KENAPA TOKO FIRO SECTION --}}
-    <section class="bg-surface py-16 lg:py-20">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
+    <section class="bg-surface py-16 md:py-18 lg:py-20">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
             <div class="text-center max-w-[640px] mx-auto">
                 <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] block">
                     KENAPA TOKO FIRO
@@ -170,7 +170,7 @@
                     Kenapa belanja di sini?
                 </h2>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-12 max-w-[1200px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-12 max-w-[1200px] mx-auto">
                 {{-- Feature 1 --}}
                 <div class="bg-surface border border-border rounded-xl p-6 flex items-start gap-4">
                     <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
@@ -244,8 +244,8 @@
     </section>
 
     {{-- REVIEW SECTION --}}
-    <section class="bg-bg py-16 lg:py-20 overflow-hidden">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
+    <section class="bg-bg py-16 md:py-18 lg:py-20 overflow-hidden">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
             <div class="text-center max-w-[640px] mx-auto">
                 <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] block">ULASAN PELANGGAN</span>
                 <h2 class="font-heading font-bold text-3xl lg:text-[32px] text-ink mt-3">Kata mereka tentang Toko Firo</h2>
@@ -257,11 +257,11 @@
             </div>
             <div class="mt-10 relative" id="review-carousel">
                 <!-- Left arrow - desktop only -->
-                <button type="button" id="review-prev" class="hidden lg:flex items-center justify-center absolute -left-6 top-1/2 -translate-y-1/2 w-8 h-8 text-text-muted hover:text-ink transition text-xl select-none cursor-pointer z-10" aria-label="Sebelumnya">&#8249;</button>
+                <button type="button" id="review-prev" class="hidden md:flex items-center justify-center absolute -left-6 top-1/2 -translate-y-1/2 w-8 h-8 text-text-muted hover:text-ink transition text-xl select-none cursor-pointer z-10" aria-label="Sebelumnya">&#8249;</button>
                 <div class="overflow-hidden">
                     <div id="review-track" class="flex transition-transform duration-500 ease-in-out">
 
-                        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3">
+                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
                             <div class="bg-surface rounded-xl p-5 h-full border border-border">
                                 <p class="text-sm text-ink leading-relaxed">Pelayanannya oke, dan lengkap. Toko ATK yang sangat lengkap dengan pelayanan yang memuaskan. Tersedia layanan fotokopi dan print dengan hasil rapi. Prosesnya cepat, harga terjangkau, pelayanannya ramah.</p>
                                 <div class="mt-4 pt-3 border-t border-border">
@@ -271,7 +271,7 @@
                             </div>
                         </div>
 
-                        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3">
+                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
                             <div class="bg-surface rounded-xl p-5 h-full border border-border">
                                 <p class="text-sm text-ink leading-relaxed">Pelayanannya oke banget, sabar banget. Pulpen dicoba-coba pun gapapa.</p>
                                 <div class="mt-4 pt-3 border-t border-border">
@@ -281,7 +281,7 @@
                             </div>
                         </div>
 
-                        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3">
+                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
                             <div class="bg-surface rounded-xl p-5 h-full border border-border">
                                 <p class="text-sm text-ink leading-relaxed">Terlengkap di daerah Kalibuntu Kraksaan. Mulai dari pengetikan sampai pasang parabola dan CCTV wifi.</p>
                                 <div class="mt-4 pt-3 border-t border-border">
@@ -291,7 +291,7 @@
                             </div>
                         </div>
 
-                        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3">
+                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
                             <div class="bg-surface rounded-xl p-5 h-full border border-border">
                                 <p class="text-sm text-ink leading-relaxed">Tempatnya bagus, semua kebutuhan kantor tersedia. Mantap pokoknya.</p>
                                 <div class="mt-4 pt-3 border-t border-border">
@@ -301,7 +301,7 @@
                             </div>
                         </div>
 
-                        <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3">
+                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
                             <div class="bg-surface rounded-xl p-5 h-full border border-border">
                                 <p class="text-sm text-ink leading-relaxed">Pelayanannya baik.</p>
                                 <div class="mt-4 pt-3 border-t border-border">
@@ -314,16 +314,16 @@
                     </div>
                 </div>
                 <!-- Right arrow - desktop only -->
-                <button type="button" id="review-next" class="hidden lg:flex items-center justify-center absolute -right-6 top-1/2 -translate-y-1/2 w-8 h-8 text-text-muted hover:text-ink transition text-xl select-none cursor-pointer z-10" aria-label="Selanjutnya">&#8250;</button>
+                <button type="button" id="review-next" class="hidden md:flex items-center justify-center absolute -right-6 top-1/2 -translate-y-1/2 w-8 h-8 text-text-muted hover:text-ink transition text-xl select-none cursor-pointer z-10" aria-label="Selanjutnya">&#8250;</button>
                 <div class="flex justify-center gap-2 mt-6" id="review-dots"></div>
             </div>
         </div>
     </section>
 
     {{-- INFO TOKO SECTION --}}
-    <section id="info-toko" class="bg-surface py-16 lg:py-20">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <section id="info-toko" class="bg-surface py-16 md:py-18 lg:py-20">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-8 lg:gap-12 items-start">
                 {{-- Left Column --}}
                 <div>
                     <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] block">
@@ -368,8 +368,8 @@
                 </div>
 
                 {{-- Right Column (Map Placeholder) --}}
-                <div class="flex justify-center lg:justify-end">
-                    <div class="w-full max-w-[520px] h-[400px] rounded-xl overflow-hidden border border-border">
+                <div class="flex justify-center md:justify-end">
+                    <div class="w-full max-w-[520px] h-[320px] md:h-[360px] lg:h-[400px] rounded-xl overflow-hidden border border-border">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.37389456605!2d113.42310361182076!3d-7.7501081768125655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd700fee90c7771%3A0x4b6bdcea4e8fe1f5!2sTOKO%20FIRO!5e0!3m2!1sen!2sus!4v1791613296253!5m2!1sen!2sus"
                             width="100%"
@@ -387,8 +387,8 @@
 
     {{-- BANNER CTA SECTION --}}
     <section class="bg-green-900 py-12">
-        <div class="max-w-[1280px] mx-auto px-5 lg:px-[80px]">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
+        <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
                 <div>
                     <h2 class="font-heading font-bold text-2xl text-white">
                         Mau tau stok sebelum ke toko?
@@ -453,7 +453,7 @@
 
     function getPerView() {
         if (window.innerWidth < 640) return 1;
-        if (window.innerWidth < 1024) return 2;
+        if (window.innerWidth < 768) return 2;
         return 3;
     }
 

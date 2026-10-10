@@ -3,9 +3,15 @@
 @section('title', 'Masuk - Toko Firo')
 
 @section('content')
-<div class="max-w-[420px] w-full px-10">
+<div class="max-w-[420px] w-full px-6 lg:px-10">
     <h2 class="font-heading font-bold text-[32px] leading-[40px] text-ink">Masuk</h2>
     <p class="text-text-muted mt-4">Khusus staf Toko Firo</p>
+
+    @if ($errors->has('login'))
+        <div class="mt-4 p-3 bg-danger-50 border border-danger/20 text-danger text-sm rounded-lg">
+            {{ $errors->first('login') }}
+        </div>
+    @endif
 
     <form method="POST" action="/masuk" class="mt-8 space-y-6">
         @csrf
@@ -21,6 +27,9 @@
                 required
                 class="w-full h-[43px] mt-1.5 px-4 border border-border rounded-lg bg-surface text-ink placeholder:text-text-disabled focus:outline-none focus:border-green-700 focus:ring-2 focus:ring-green-50 transition"
             >
+            @error('username')
+                <p class="mt-1 text-xs text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
@@ -46,6 +55,9 @@
                     </svg>
                 </button>
             </div>
+            @error('password')
+                <p class="mt-1 text-xs text-danger">{{ $message }}</p>
+            @enderror
         </div>
 
         <button
