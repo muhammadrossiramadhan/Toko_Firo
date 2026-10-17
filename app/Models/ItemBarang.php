@@ -10,6 +10,12 @@ class ItemBarang extends Model
     use HasFactory;
 
     /**
+     * Batas maksimum stok awal saat penambahan item baru (K9).
+     */
+    public const MAKS_STOK_AWAL = 1000;
+    public const MAX_STOK_AWAL = 1000;
+
+    /**
      * Tabel yang terhubung dengan model.
      *
      * @var string

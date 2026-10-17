@@ -124,12 +124,37 @@
             </h1>
             <button
                 type="button"
-                disabled
-                class="touch-target px-4 py-2 bg-emerald-600/70 text-white font-medium rounded-xl text-base cursor-not-allowed"
+                id="btn-tambah-barang"
+                onclick="bukaModalTambah()"
+                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors"
             >
                 Tambah Barang Baru
             </button>
         </header>
+
+        {{-- Kotak Pesan Sukses dan Pesan Error --}}
+        @if (session('sukses'))
+            <div class="mb-4 p-4 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-base font-medium">
+                {{ session('sukses') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-4 p-4 rounded-xl bg-red-100 border border-red-300 text-red-900 text-base font-medium">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="mb-4 p-4 rounded-xl bg-red-100 border border-red-300 text-red-900 text-base">
+                <div class="font-bold mb-1">Periksa kembali isian formulir:</div>
+                <ul class="list-disc list-inside space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         {{-- Baris Pencarian, Filter Jenis, dan Urutan (Form GET) --}}
         <form method="GET" action="{{ route('admin.barang') }}" class="flex flex-col md:flex-row items-center gap-4 mb-4">
@@ -191,6 +216,17 @@
                         @forelse ($items as $item)
                             <tr
                                 data-kode="{{ $item->kode_item }}"
+                                data-nama="{{ $item->nama_item }}"
+                                data-jenis="{{ $item->jenis }}"
+                                data-merek="{{ $item->merek }}"
+                                data-rak="{{ $item->rak }}"
+                                data-satuan="{{ $item->satuan }}"
+                                data-tipe="{{ $item->tipe_item ?? 'BARANG' }}"
+                                data-harga-pokok="{{ (int) $item->harga_pokok }}"
+                                data-harga-jual="{{ (int) $item->harga_jual }}"
+                                data-stok="{{ $item->stok }}"
+                                data-keterangan="{{ $item->keterangan }}"
+                                data-batas-minimum="{{ $item->batas_minimum ?? 5 }}"
                                 class="baris-barang hover:bg-gray-50/70 transition-colors cursor-pointer"
                             >
                                 <td class="py-3.5 px-4 font-semibold text-gray-900 whitespace-nowrap">
@@ -241,6 +277,7 @@
                                         <button
                                             type="button"
                                             disabled
+                                            onclick="bukaModalUbah(this)"
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-ubah-data"
                                         >
                                             Ubah Data
@@ -248,6 +285,7 @@
                                         <button
                                             type="button"
                                             disabled
+                                            onclick="bukaModalHarga(this)"
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-ubah-harga"
                                         >
                                             Ubah Harga
@@ -255,6 +293,7 @@
                                         <button
                                             type="button"
                                             disabled
+                                            onclick="bukaModalHapus(this)"
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-hapus-data"
                                         >
                                             Hapus Data
@@ -286,8 +325,13 @@
         </div>
     </main>
 
-    {{-- Interaktivitas Pilih Baris JavaScript Murni --}}
+    {{-- Include Modals --}}
+    @include('admin.barang.modals')
+
+    {{-- Interaktivitas JavaScript Murni --}}
     <script>
+        let barisAktif = null;
+
         document.addEventListener('DOMContentLoaded', function () {
             const barisList = document.querySelectorAll('tr.baris-barang');
 
@@ -297,7 +341,7 @@
                         return;
                     }
 
-                    // Reset highlight dan tombol pada baris lain
+                    // Reset baris lain
                     barisList.forEach(function (b) {
                         b.classList.remove('bg-emerald-50', 'ring-1', 'ring-emerald-500');
                         b.querySelectorAll('.btn-aksi-baris').forEach(function (btn) {
@@ -309,6 +353,7 @@
 
                     // Sorot baris terpilih
                     baris.classList.add('bg-emerald-50', 'ring-1', 'ring-emerald-500');
+                    barisAktif = baris;
 
                     // Aktifkan tombol pada baris terpilih
                     const btnUbah = baris.querySelector('.btn-ubah-data');
@@ -332,7 +377,100 @@
                     }
                 });
             });
+
+            // Buka modal tambah otomatis jika ada error validasi
+            @if ($errors->any() || session('open_modal') === 'tambah')
+                bukaModalTambah();
+            @endif
         });
+
+        function bukaModal(idModal) {
+            const m = document.getElementById(idModal);
+            if (m) {
+                m.classList.remove('hidden');
+            }
+        }
+
+        function tutupModal(idModal) {
+            const m = document.getElementById(idModal);
+            if (m) {
+                m.classList.add('hidden');
+            }
+        }
+
+        function bukaModalTambah() {
+            bukaModal('modal-tambah');
+            cekTipeItemTambah();
+        }
+
+        function cekTipeItemTambah() {
+            const tipe = document.getElementById('tambah-tipe').value;
+            const stok = document.getElementById('tambah-stok');
+            if (tipe.toUpperCase() === 'JASA') {
+                stok.disabled = true;
+                stok.value = 0;
+                stok.classList.add('bg-gray-100', 'cursor-not-allowed');
+            } else {
+                stok.disabled = false;
+                stok.classList.remove('bg-gray-100', 'cursor-not-allowed');
+            }
+        }
+
+        function bukaModalUbah(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            document.getElementById('ubah-kode-hidden').value = tr.dataset.kode || '';
+            document.getElementById('ubah-kode-display').textContent = tr.dataset.kode || '';
+            document.getElementById('ubah-nama').value = tr.dataset.nama || '';
+            document.getElementById('ubah-jenis').value = tr.dataset.jenis || '';
+            document.getElementById('ubah-merek').value = tr.dataset.merek || '';
+            document.getElementById('ubah-rak').value = tr.dataset.rak || '';
+            document.getElementById('ubah-satuan').value = tr.dataset.satuan || '';
+
+            const tipeVal = (tr.dataset.tipe || 'BARANG').toUpperCase() === 'JASA' ? 'Jasa' : 'Barang';
+            document.getElementById('ubah-tipe').value = tipeVal;
+
+            document.getElementById('ubah-batas').value = tr.dataset.batasMinimum || 5;
+            document.getElementById('ubah-keterangan').value = tr.dataset.keterangan || '';
+
+            bukaModal('modal-ubah');
+        }
+
+        function bukaModalHarga(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            document.getElementById('harga-kode-hidden').value = tr.dataset.kode || '';
+            document.getElementById('harga-info-barang').textContent = (tr.dataset.kode || '') + ' - ' + (tr.dataset.nama || '');
+            document.getElementById('harga-pokok-input').value = tr.dataset.hargaPokok || 0;
+            document.getElementById('harga-jual-input').value = tr.dataset.hargaJual || 0;
+
+            cekPeringatanHarga();
+            bukaModal('modal-harga');
+        }
+
+        function cekPeringatanHarga() {
+            const pokok = parseFloat(document.getElementById('harga-pokok-input').value) || 0;
+            const jual = parseFloat(document.getElementById('harga-jual-input').value) || 0;
+            const peringatan = document.getElementById('peringatan-harga');
+
+            if (jual < pokok) {
+                peringatan.classList.remove('hidden');
+            } else {
+                peringatan.classList.add('hidden');
+            }
+        }
+
+        function bukaModalHapus(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            document.getElementById('hapus-kode-hidden').value = tr.dataset.kode || '';
+            document.getElementById('hapus-info-barang').textContent = (tr.dataset.kode || '') + ' - ' + (tr.dataset.nama || '');
+
+            bukaModal('modal-hapus');
+        }
     </script>
 </body>
 </html>
