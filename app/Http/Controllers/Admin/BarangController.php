@@ -88,7 +88,7 @@ class BarangController extends Controller
         $batas = $request->validated('batas_minimum') !== null && $request->validated('batas_minimum') !== ''
             ? (int) $request->validated('batas_minimum')
             : 5;
-        $idPengguna = Auth::user()->id_pengguna;
+        $idPengguna = Auth::id() ?? Auth::user()?->id_pengguna ?? 1;
         $kode = $request->validated('kode_item');
         $nama = $request->validated('nama_item');
 
@@ -163,7 +163,7 @@ class BarangController extends Controller
         $batas = $request->validated('batas_minimum') !== null && $request->validated('batas_minimum') !== ''
             ? (int) $request->validated('batas_minimum')
             : 5;
-        $idPengguna = Auth::user()->id_pengguna;
+        $idPengguna = Auth::id() ?? Auth::user()?->id_pengguna ?? 1;
         $kode = $request->validated('kode_item');
         $nama = $request->validated('nama_item');
 
@@ -222,7 +222,7 @@ class BarangController extends Controller
      */
     public function updateHarga(UpdateHargaBarangRequest $request): RedirectResponse
     {
-        $idPengguna = Auth::user()->id_pengguna;
+        $idPengguna = Auth::id() ?? Auth::user()?->id_pengguna ?? 1;
         $kode = $request->validated('kode_item');
         $hargaPokok = $request->validated('harga_pokok');
         $hargaJual = $request->validated('harga_jual');
@@ -270,7 +270,7 @@ class BarangController extends Controller
      */
     public function destroy(DestroyBarangRequest $request): RedirectResponse
     {
-        $idPengguna = Auth::user()->id_pengguna;
+        $idPengguna = Auth::id() ?? Auth::user()?->id_pengguna ?? 1;
         $kode = $request->validated('kode_item');
 
         // Pemeriksaan awal riwayat transaksi sesuai K13

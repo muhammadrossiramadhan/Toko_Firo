@@ -100,10 +100,10 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2">
                 <div class="font-medium text-white text-base truncate">
-                    {{ Auth::user()->nama ?? 'Pengguna' }}
+                    {{ Auth::user()->nama ?? 'Admin / Pemilik' }}
                 </div>
                 <div class="text-sm text-emerald-300">
-                    {{ (Auth::user()->role ?? '') === 'ADMIN' ? 'Admin / Pemilik' : ((Auth::user()->role ?? '') === 'KASIR' ? 'Kasir' : (Auth::user()->role ?? '')) }}
+                    Admin / Pemilik
                 </div>
             </div>
             <form method="POST" action="{{ route('logout') }}">
