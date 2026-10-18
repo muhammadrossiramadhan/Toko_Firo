@@ -15,9 +15,10 @@
 | 9 | Route GET /demo/barang | Selesai | Ditandai DEMO di komentar |
 | 10 | Verifikasi HTTP 200 halaman 1 dan 7, tidak ada SVG, 5 test lulus | Selesai | tests/Feature/DemoBarangTest.php dibuat |
 | 11 | Label tombol Ubah Data dan Hapus Data | Selesai | Diperbaiki di barang.blade.php baris 216 dan 223 |
-| 12 | Perbandingan visual dengan prototype | Belum | Menunggu screenshot |
-| 13 | Migrasi pengguna, model, login, middleware, CRUD | Belum | Milestone 2 (L1–L16 di koreksi_copilot.md) |
+| 12 | Perbandingan visual dengan prototype & zoom 100% | Selesai | Layout modal flexbox sticky max-h-[90vh], font >= 16px, touch-target >= 44px, tanpa SVG |
+| 13 | Model Pengguna, ItemBarang, isolasi rute, CRUD SP | Selesai | Milestone 2 (L1–L16 di koreksi_copilot.md tuntas 100%) |
 | 14 | database/sql/09_procedure_ubah_hapus.sql | Selesai | sp_update_item_v2, sp_delete_item_v2 |
+| 15 | Handoff dan dokumentasi branch staging | Selesai | HANDOFF_CRUD_TOKO_FIRO.md dibuat |
 
 ## Daftar File
 
