@@ -213,14 +213,14 @@
                                             disabled
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium"
                                         >
-                                            Ubah Data
+                                            Ubah
                                         </button>
                                         <button
                                             type="button"
                                             disabled
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium"
                                         >
-                                            Hapus Data
+                                            Hapus
                                         </button>
                                     </div>
                                 </td>

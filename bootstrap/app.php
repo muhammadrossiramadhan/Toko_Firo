@@ -16,8 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo('/masuk');
         $middleware->alias([
-            'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'role' => \App\Http\Middleware\CheckRole::class,
+            'pending2fa' => \App\Http\Middleware\EnsurePending2fa::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
