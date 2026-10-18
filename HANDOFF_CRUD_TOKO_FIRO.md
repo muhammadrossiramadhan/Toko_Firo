@@ -40,3 +40,4 @@ Target Basis PR: staging
 ## 5. REKOMENDASI SAAT MERGE KE STAGING
 - File milik modul barang tidak menyentuh `routes/web.php` milik Adit sehingga minim konflik.
 - Jika ada konflik pada `config/auth.php` saat merge ke `staging`, pertahankan konfigurasi provider autentikasi tim bersama.
+
