@@ -13,13 +13,19 @@
     @endif
 
     <style>
-        /* Aturan tampilan: Font minimal 16px dan tinggi elemen interaktif minimal 44px */
+        /* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama dengan Figma; ubah --skala ke 100% untuk kembali ke 16px/44px. */
+        :root {
+            --skala: 80%;
+        }
+        html {
+            font-size: var(--skala);
+        }
         html, body {
-            font-size: 16px;
+            font-size: 1rem;
         }
         .touch-target {
-            min-height: 44px;
-            min-width: 44px;
+            min-height: 2.75rem;
+            min-width: 2.75rem;
         }
         @media print {
             aside, button, form, .no-print {
@@ -112,7 +118,7 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2">
                 <div class="font-medium text-white text-base truncate">
-                    {{ Auth::user()->nama ?? 'Admin / Pemilik' }}
+                    {{ Auth::user()?->nama ?? 'Admin / Pemilik' }}
                 </div>
                 <div class="text-sm text-emerald-300">
                     Admin / Pemilik
@@ -288,7 +294,7 @@
             </div>
 
             <div class="overflow-x-auto w-full">
-                <table class="w-full min-w-[700px] border-collapse text-left text-base">
+                <table class="w-full min-w-[43.75rem] border-collapse text-left text-base">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 font-semibold">
                             <th class="py-3.5 px-6">Tanggal</th>
