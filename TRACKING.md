@@ -7,7 +7,7 @@
 | 1 | Review 6 diagram (use case, activity, 4 sequence) | Selesai | Analisis kebutuhan modul inventori & transaksi |
 | 2 | Diagram Mermaid Kelola Data Barang (use case admin, activity, sequence) | Selesai | Diagram alur dan arsitektur data |
 | 3 | Inventaris Laravel 12 dan struktur tabel | Selesai | Pemetaan tabel inti MariaDB vs migrasi |
-| 4 | Dokumen rencana koreksi_copilot.md | Selesai | Keputusan teknis K1 sampai K18 |
+| 4 | Dokumen rencana koreksi_copilot.md | Selesai | Keputusan teknis K1 sampai K19 |
 | 5 | Setup FlyEnv: PHP 8.4.26, MariaDB, PATH | Selesai | Ekstensi PHP lengkap (pdo_mysql, curl, dll) |
 | 6 | composer install | Selesai | Dependensi Laravel 12 terpasang |
 | 7 | Konfigurasi .env dan application key | Selesai | Terisolasi dan aman di .gitignore |
@@ -24,7 +24,9 @@
 | 18 | Navigasi sidebar terpadu antar-modul | Selesai | Menu sidebar admin/barang/index.blade.php dihubungkan ke route('admin.laporan.penjualan') |
 | 19 | Decoupling autentikasi & isolasi rute laporan penjualan | Selesai | routes/admin_laporan.php mandiri tanpa sentuh routes/web.php; null-safe user header untuk cegah konflik merge |
 | 20 | Standardisasi skala tampilan global 80% (Figma 100%) | Selesai | resources/views/partials/skala.blade.php (:root --skala: 80%), diterapkan seragam pada modul barang, demo, dan laporan |
-| 21 | Test Suite Laporan Penjualan dan Skala Tampilan | Selesai | tests/Feature/LaporanPenjualanAccessTest.php dan TampilanSkalaTest.php; total 40 test (34 passed, 6 skipped, 0 failed, 130 assertions) |
+| 21 | Test Suite Laporan Penjualan dan Skala Tampilan | Selesai | tests/Feature/LaporanPenjualanAccessTest.php dan TampilanSkalaTest.php |
+| 22 | Controller, rute, dan view Pembelian Barang (Restock - Figma P21) | Selesai | PembelianController.php, routes/admin_pembelian.php, view pembelian index, 2 tab interaktif (Pembelian Baru & Riwayat), kartu restock, tabel riwayat, touch-target 2.75rem, bebas SVG |
+| 23 | Test Suite Pembelian Barang (Restock) | Selesai | tests/Feature/PembelianAdminTest.php (DatabaseTransactions); total 46 test (38 passed, 8 skipped auth, 0 failed, 144 assertions) |
 
 ## Daftar File yang Dibuat / Dimodifikasi
 
@@ -46,20 +48,26 @@
 - `resources/views/admin/laporan/pagination.blade.php`: Komponen navigasi paginasi kustom untuk laporan penjualan.
 - `tests/Feature/LaporanPenjualanAccessTest.php`: 8 pengujian akses, render elemen, filter tanggal, dan proteksi K12.
 
+### Modul Pembelian Barang (Restock - Figma P21)
+- `routes/admin_pembelian.php`: Rute mandiri `GET /admin/pembelian` (`admin.pembelian`).
+- `app/Http/Controllers/Admin/PembelianController.php`: Controller pembelian barang (data contoh 3 item restock dan 4 riwayat transaksi pembelian).
+- `resources/views/admin/pembelian/index.blade.php`: Tampilan pembelian barang sesuai Figma P21 (Tab Pembelian Baru & Riwayat Pembelian, kartu Perlu Segera Restock, baris kuning status merah, tombol Beli hijau).
+- `tests/Feature/PembelianAdminTest.php`: 6 pengujian otorisasi, render konten restock, bebas `<svg`, partial skala, dan menu aktif.
+
 ### Skala Tampilan Global
 - `resources/views/partials/skala.blade.php`: Partial `:root { --skala: 80%; } html { font-size: var(--skala); }` untuk keseragaman ukuran Figma 100% di semua halaman.
 - `tests/Feature/TampilanSkalaTest.php`: Uji integrasi keberadaan partial skala pada halaman demo, barang, dan laporan penjualan.
 
 ## Keputusan Pemilik (Final)
 
-Keputusan pemilik merujuk pada `koreksi_copilot.md`, K1 sampai K18:
+Keputusan pemilik merujuk pada `koreksi_copilot.md`, K1 sampai K19:
 
 - **K1 Skema**: Sumber kebenaran adalah file SQL 01 sampai 05 dan 09, bukan migrasi Laravel. Tabel `pengguna` dibuat oleh `02_tabel_baru.sql`. JANGAN membuat migrasi Laravel untuk tabel `pengguna`.
 - **K2 Model**: `App\Models\Pengguna` (tabel `pengguna`, primary key `id_pengguna`, kolom `password_hash`). `User.php` tidak diubah.
 - **K3 Login**: username dan password, `Auth::attempt`, hanya status AKTIF.
 - **K4 Baca daftar barang**: Eloquent, paginasi 7 per halaman.
 - **K5 Tulis data**: Stored procedure. Tambah: `sp_create_item`. Ubah data: `sp_update_item_v2`. Ubah harga: `sp_update_harga`. Hapus: `sp_delete_item_v2`.
-- **K6 Akses**: Kelola Data Barang & Laporan Penjualan HANYA untuk ADMIN. KASIR mendapat 403.
+- **K6 Akses**: Kelola Data Barang, Laporan Penjualan, & Pembelian Barang HANYA untuk ADMIN. KASIR mendapat 403.
 - **K7 Jejak audit**: Setiap tambah, ubah, harga, dan hapus tercatat di `log_aktivitas` (pelaku, waktu, data sebelum dan sesudah, alasan opsional).
 - **K8 Kode barang**: Bebas (angka atau huruf), tidak kosong, maks 20 karakter, tidak boleh kembar. Pesan kembar: "Kode barang sudah dipakai."
 - **K9 Stok awal**: 0 sampai 1000. Tipe Jasa dikecualikan (database memberi 999999). Form ubah data TIDAK punya kolom stok.
@@ -72,6 +80,7 @@ Keputusan pemilik merujuk pada `koreksi_copilot.md`, K1 sampai K18:
 - **K16 Form**: Urutan dan label sesuai Figma. Jenis dan Satuan pakai datalist karena VARCHAR bebas.
 - **K17 Laporan Penjualan (Figma P11)**: Paginasi 5 item, 3 kartu metrik ringkasan, riwayat transaksi dengan indikator subtotal negatif merah, filter rentang waktu (hari ini, 7 hari, bulan ini, kustom), cetak PDF window.print().
 - **K18 Standardisasi Skala 80%**: Partial global `resources/views/partials/skala.blade.php` agar tampilan pada zoom browser 100% presisi dengan Figma 100% (lebar sidebar ~260px).
+- **K19 Pembelian Barang (Restock - Figma P21)**: Dua tab interaktif via Vanilla JavaScript ("Pembelian Baru" dan "Riwayat Pembelian"), kartu restock dengan 3 item contoh status Habis/Menipis berlatar kuning muda dan teks merah, tombol Beli hijau (modal belum ada di Figma), tabel riwayat pembelian (desain belum ada di Figma).
 
 ## Catatan Database & Stored Procedure
 
@@ -86,4 +95,7 @@ Keputusan pemilik merujuk pada `koreksi_copilot.md`, K1 sampai K18:
   7. `06_hak_akses.sql` — butuh akun root, jalankan terpisah
   8. `07_seed_dev.sql` — data awal dev
   9. `09_procedure_ubah_hapus.sql` — `sp_update_item_v2` dan `sp_delete_item_v2`
-- **TODO Database Laporan Penjualan**: Pada tahap backend laporan penjualan berikutnya, sambungkan method controller laporan ke stored procedure `sp_get_laporan_penjualan` dan definisikan view `v_laporan_penjualan`.
+- **TODO Database & Rilis**:
+  - Penambahan modal dialog pembelian barang baru jika desain detail Figma sudah tersedia.
+  - Sambungkan method controller laporan dan pembelian ke stored procedure database riil pada tahap integrasi backend.
+  - Pulihkan middleware `auth` dan `role:ADMIN` pada seluruh rute mandiri sebelum merge ke `staging`.

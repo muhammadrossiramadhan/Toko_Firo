@@ -1,6 +1,6 @@
-# HANDOFF RESMI: MODUL KELOLA DATA BARANG & LAPORAN PENJUALAN (TOKO FIRO)
-Tanggal Pembaruan: 19 Oktober 2026  
-Penanggung Jawab: Muhammad Rossi Ramadhan (Ketua / Database, Modul Barang, dan Laporan Penjualan)  
+# HANDOFF RESMI: MODUL KELOLA DATA BARANG, LAPORAN PENJUALAN, & PEMBELIAN BARANG (TOKO FIRO)
+Tanggal Pembaruan: 20 Oktober 2026  
+Penanggung Jawab: Muhammad Rossi Ramadhan (Ketua / Database, Modul Barang, Laporan Penjualan, dan Pembelian Barang)  
 Branch Aktif Saat Ini: `Rossi/Sales_Report_Admins`  
 Branch Rilis Modul Barang: `Rossi/Manage-Product-Data-Items_Admins`  
 Target Basis PR: `staging`  
@@ -11,11 +11,12 @@ Target Basis PR: `staging`
 - **DILARANG MERUSAK ATAU MENGUBAH** arsitektur MVC yang sudah selesai:
   - Modul Kelola Data Barang (`app/Models/ItemBarang.php`, `app/Http/Controllers/Admin/BarangController.php`, `resources/views/admin/barang/`).
   - Modul Laporan Penjualan (`app/Http/Controllers/Admin/LaporanPenjualanController.php`, `resources/views/admin/laporan/`).
+  - Modul Pembelian Barang Restock (`app/Http/Controllers/Admin/PembelianController.php`, `resources/views/admin/pembelian/`).
   - Partial Skala Tampilan (`resources/views/partials/skala.blade.php`).
-- Seluruh rute modul ini **terisolasi secara mandiri** di file terpisah (`routes/admin_barang.php` dan `routes/admin_laporan.php`), dimuat via `bootstrap/app.php`, sehingga **tidak pernah menyentuh `routes/web.php` milik rekan tim (Adit)**.
+- Seluruh rute modul ini **terisolasi secara mandiri** di file terpisah (`routes/admin_barang.php`, `routes/admin_laporan.php`, `routes/admin_pembelian.php`), dimuat secara otomatis via glob di `bootstrap/app.php`, sehingga **tidak pernah menyentuh `routes/web.php` milik rekan tim (Adit)**.
 - Tampilan antarmuka 100% mematuhi aturan K12:
-  - Tanpa tag `<svg>`, tanpa ikon grafis, tanpa emoji.
-  - Font minimal 16px (`text-base`).
+  - Tanpa tag `<svg>`, tanpa ikon grafis, tanpa emoji, tanpa lonceng atau segitiga peringatan.
+  - Font minimal 16px (`text-base` / 1rem).
   - Touch-target tombol minimal 44px (dikonversi ke `2.75rem`).
   - Skala tampilan diatur seragam 80% pada tingkat root `:root { --skala: 80%; } html { font-size: var(--skala); }` agar di browser zoom 100% tepat sama persis dengan prototype Figma zoom 100% (lebar sidebar ~260px).
 
@@ -42,6 +43,13 @@ Target Basis PR: `staging`
 - **Cetak Laporan**: Tombol Unduh Laporan (PDF) memanfaatkan CSS print bawaan browser (`window.print()`).
 - **Data Sumber**: Saat ini menggunakan 12 dataset transaksi realistis (`dataContoh()`), siap disambungkan ke query database riil pada tahap backend laporan.
 
+### C. Modul Pembelian Barang (Restock - Figma P21)
+- **Controller**: `app/Http/Controllers/Admin/PembelianController.php`.
+- **Dua Tab Interaktif**: "Pembelian Baru" dan "Riwayat Pembelian" dikendalikan via JavaScript biasa (vanilla JS), tab aktif berwarna hijau.
+- **Kartu Perlu Segera Restock**: Menampilkan daftar barang dengan stok menipis atau habis berlatar kuning muda (3 data contoh: Pensil 2B - Habis, Isi Staples No.10 - Menipis, Kertas HVS A4 - Menipis), teks status merah tebal, dan tombol aksi "Beli" hijau (dengan catatan TODO: modal pembelian belum ada di Figma).
+- **Tabel Riwayat Pembelian**: Tabel riwayat pengadaan barang (4 baris data transaksi contoh: Waktu, Kode Pembelian, Barang, Jumlah, Total, Status).
+- **Rute Terisolasi**: `routes/admin_pembelian.php` (tanpa menyentuh `routes/web.php`).
+
 ---
 
 ## 3. STRUKTUR FILE & DIREKTORI
@@ -49,30 +57,35 @@ Target Basis PR: `staging`
 app/
 ├── Http/Controllers/Admin/
 │   ├── BarangController.php            # Controller CRUD Barang (SP MariaDB)
-│   └── LaporanPenjualanController.php  # Controller Laporan Penjualan (Figma P11)
+│   ├── LaporanPenjualanController.php  # Controller Laporan Penjualan (Figma P11)
+│   └── PembelianController.php         # Controller Pembelian Barang (Figma P21)
 ├── Models/
 │   ├── ItemBarang.php                  # Model pembaca daftar_item
 │   └── Pengguna.php                    # Model auth pengguna MariaDB
 bootstrap/
-└── app.php                             # Pemuat routes/admin_barang.php & routes/admin_laporan.php
+└── app.php                             # Pemuat otomatis routes/admin_*.php via glob
 resources/views/
 ├── admin/
 │   ├── barang/
 │   │   ├── index.blade.php             # View utama tabel barang
 │   │   └── modals.blade.php            # Modal Tambah, Ubah, Harga, Hapus
-│   └── laporan/
-│       ├── penjualan.blade.php         # View utama laporan penjualan
-│       └── pagination.blade.php        # Komponen paginasi laporan
+│   ├── laporan/
+│   │   ├── penjualan.blade.php         # View utama laporan penjualan
+│   │   └── pagination.blade.php        # Komponen paginasi laporan
+│   └── pembelian/
+│       └── index.blade.php             # View utama pembelian barang restock
 └── partials/
     └── skala.blade.php                 # Standardisasi skala tampilan 80% (Figma 100%)
 routes/
 ├── admin_barang.php                    # Rute mandiri modul data barang
-└── admin_laporan.php                   # Rute mandiri modul laporan penjualan
+├── admin_laporan.php                   # Rute mandiri modul laporan penjualan
+└── admin_pembelian.php                 # Rute mandiri modul pembelian barang
 tests/Feature/
 ├── BarangAdminAccessTest.php           # Uji akses & otorisasi modul barang
 ├── BarangCrudTest.php                  # Uji operasi tulis SP & audit trail
 ├── BarangDaftarTest.php                # Uji daftar, filter, pencarian, paginasi
 ├── LaporanPenjualanAccessTest.php      # Uji akses, filter rentang, dan UI laporan
+├── PembelianAdminTest.php              # Uji akses, UI restock, skala, dan tab pembelian
 └── TampilanSkalaTest.php               # Uji skala tampilan 80% antar-modul
 ```
 
@@ -80,19 +93,19 @@ tests/Feature/
 
 ## 4. STATUS TEST SUITE
 Hasil pengujian menyeluruh via `php artisan test`:
-- **Total Test**: 40 tests (130 assertions)
-- **Status**: 34 Passed, 6 Skipped, 0 Failed
-- *Catatan Skipped*: 6 test yang dilewati adalah pengujian middleware auth (2 di `BarangAdminAccessTest`, 2 di `BarangCrudTest`, dan 2 di `LaporanPenjualanAccessTest`) karena middleware `auth` dan `role:ADMIN` sengaja dilepas sementara untuk memungkinkan pengujian independen tanpa bentrok dengan modul auth tim.
+- **Total Test**: 46 tests (144 assertions)
+- **Status**: 38 Passed, 8 Skipped, 0 Failed
+- *Catatan Skipped*: 8 test yang dilewati adalah pengujian middleware auth (2 di `BarangAdminAccessTest`, 2 di `BarangCrudTest`, 2 di `LaporanPenjualanAccessTest`, dan 2 di `PembelianAdminTest`) karena middleware `auth` dan `role:ADMIN` sengaja dilepas sementara untuk memungkinkan pengujian independen tanpa bentrok dengan modul auth tim.
 
 ---
 
 ## 5. TODO & LANGKAH KERJA SAAT MERGE KE STAGING
 1. **Pulihkan Middleware Autentikasi**:
-   - Buka `routes/admin_barang.php` dan `routes/admin_laporan.php`.
+   - Buka `routes/admin_barang.php`, `routes/admin_laporan.php`, dan `routes/admin_pembelian.php`.
    - Aktifkan kembali middleware `auth` dan `role:ADMIN` pada grup rute sebelum membuka Pull Request ke `staging`.
-2. **Koneksi Backend Database Laporan Penjualan**:
+2. **Koneksi Backend Database Laporan Penjualan & Pembelian**:
    - Definisikan view `v_laporan_penjualan` dan sesuaikan parameter stored procedure `sp_get_laporan_penjualan` pada MariaDB.
-   - Ganti pemanggilan `dataContoh()` pada `LaporanPenjualanController` dengan eksekusi query/stored procedure database riil.
+   - Sambungkan controller pembelian ke stored procedure pembelian MariaDB (`sp_create_pembelian`, dll) dan buat modal pembelian jika desain Figma sudah tersedia.
 3. **Resolusi File Konfigurasi**:
    - File `routes/web.php` tidak diubah, sehingga tidak akan menimbulkan merge conflict.
-   - Jika terdapat perbedaan pada `config/auth.php` atau `bootstrap/app.php`, pastikan pendaftaran provider pengguna dan grup rute mandiri tetap dipertahankan.
+   - Pemuatan rute admin dilakukan dinamis melalui `glob(base_path('routes/admin_*.php'))` di `bootstrap/app.php` sehingga penambahan rute baru tidak perlu mengedit `bootstrap/app.php` berulang kali.
