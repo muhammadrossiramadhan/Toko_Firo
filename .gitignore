@@ -29,4 +29,5 @@ storage/logs/*
 composer.phar
 .idea
 .vscode
+PROJECT_STATUS.md
 
