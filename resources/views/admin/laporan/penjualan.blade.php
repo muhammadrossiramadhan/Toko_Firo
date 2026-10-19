@@ -20,9 +20,6 @@
         html {
             font-size: var(--skala);
         }
-        html, body {
-            font-size: 1rem;
-        }
         .touch-target {
             min-height: 2.75rem;
             min-width: 2.75rem;

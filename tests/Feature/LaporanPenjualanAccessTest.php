@@ -125,4 +125,22 @@ class LaporanPenjualanAccessTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee(route('admin.laporan.penjualan'));
     }
+
+    /**
+     * Halaman laporan penjualan menggunakan variabel skala dan tidak memuat font-size 16px.
+     */
+    public function test_skala_tampilan_laporan_penjualan(): void
+    {
+        $admin = Pengguna::factory()->create([
+            'role' => 'ADMIN',
+            'status' => 'AKTIF',
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin/laporan-penjualan');
+
+        $response->assertStatus(200);
+        $response->assertSee('--skala', false);
+        $response->assertDontSee('font-size: 16px', false);
+        $response->assertDontSee('font-size:16px', false);
+    }
 }
