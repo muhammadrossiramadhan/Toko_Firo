@@ -13,13 +13,15 @@
     @endif
 
     <style>
+        /* Aturan tampilan: Font minimal 16px dan tinggi elemen interaktif minimal 44px */
+        html, body {
+            font-size: 16px;
+        }
         .touch-target {
-            min-height: 2.75rem;
-            min-width: 2.75rem;
+            min-height: 44px;
+            min-width: 44px;
         }
     </style>
-
-    @include('partials.skala')
 </head>
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
@@ -126,13 +128,13 @@
             >
             <select
                 disabled
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[9.375rem]"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[150px]"
             >
                 <option>Jenis: Semua</option>
             </select>
             <select
                 disabled
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[10.625rem]"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[170px]"
             >
                 <option>Urutkan: Terbaru</option>
             </select>
@@ -142,7 +144,7 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {{-- Wrapper scroll horizontal untuk layar kecil --}}
             <div class="overflow-x-auto w-full">
-                <table class="w-full min-w-[65.625rem] border-collapse text-left text-base">
+                <table class="w-full min-w-[1050px] border-collapse text-left text-base">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-200 text-gray-700 text-base font-semibold">
                             <th scope="col" class="py-3.5 px-4">Kode</th>
@@ -211,14 +213,14 @@
                                             disabled
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium"
                                         >
-                                            Ubah Data
+                                            Ubah
                                         </button>
                                         <button
                                             type="button"
                                             disabled
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium"
                                         >
-                                            Hapus Data
+                                            Hapus
                                         </button>
                                     </div>
                                 </td>
