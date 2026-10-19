@@ -309,6 +309,7 @@ Dari `database/sql/03_view.sql`:
 | `v_katalog_publik` | Katalog untuk publik (tanpa harga pokok) | `SELECT * FROM v_katalog_publik;` |
 | `v_info_barang` | Info barang + riwayat transaksi | `SELECT * FROM v_info_barang;` |
 | `v_barang_terlaris` | Ranking barang berdasarkan jumlah terjual | `SELECT * FROM v_barang_terlaris;` |
+| `v_laporan_penjualan` | View rekap data transaksi penjualan (dirujuk oleh `sp_get_laporan_penjualan`, integrasi backend laporan) | `SELECT * FROM v_laporan_penjualan;` |
 
 ---
 
@@ -321,9 +322,11 @@ Dari `database/sql/04_procedure.sql`:
 | Procedure | Parameter | Deskripsi |
 |-----------|-----------|-----------|
 | `sp_create_item` | `p_kode, p_nama, p_jenis, p_merek, p_rak, p_tipe, p_satuan, p_h_pokok, p_h_jual, p_stok, p_ket, p_id_pengguna` | Tambah item baru + log |
-| `sp_update_item` | `p_kode, p_nama, p_jenis, p_merek, p_rak, p_tipe, p_satuan, p_ket, p_id_pengguna` | Update data item |
+| `sp_update_item` | `p_kode, p_nama, p_jenis, p_merek, p_rak, p_tipe, p_satuan, p_ket, p_id_pengguna` | Update data item (v1) |
+| `sp_update_item_v2` | `p_kode, p_nama, p_jenis, p_merek, p_rak, p_tipe, p_satuan, p_batas, p_ket, p_id_pengguna` | Update data item v2 (dari `09_procedure_ubah_hapus.sql`, dengan parameter batas minimum) |
 | `sp_update_harga` | `p_kode, p_h_pokok, p_h_jual, p_id_pengguna` | Update harga item |
-| `sp_delete_item` | `p_kode, p_id_pengguna` | Hapus item (cek transaksi dulu) |
+| `sp_delete_item` | `p_kode, p_id_pengguna` | Hapus item (v1) |
+| `sp_delete_item_v2` | `p_kode, p_id_pengguna` | Hapus item v2 (dari `09_procedure_ubah_hapus.sql`, cek transaksi & log audit) |
 | `sp_cari_item` | `p_keyword` | Cari item by nama/kode/jenis/merek |
 | `sp_set_batas_minimum` | `p_kode, p_nilai, p_pelaku` | Set batas minimum stok per item |
 | `sp_set_batas_minimum_semua` | `p_nilai, p_pelaku` | Set batas minimum stok semua item |

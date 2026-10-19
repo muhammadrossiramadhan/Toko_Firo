@@ -4,67 +4,79 @@
 
 | No | Kegiatan | Status | Catatan |
 |---|---|---|---|
-| 1 | Review 6 diagram (use case, activity, 4 sequence) | Selesai | Belum disimpan ke proyek |
-| 2 | Diagram Mermaid Kelola Data Barang (use case admin, activity, sequence) | Selesai | Di chat |
-| 3 | Inventaris Laravel 12 dan struktur tabel | Selesai | users ada, pengguna hanya di SQL |
-| 4 | Dokumen rencana koreksi_copilot.md | Selesai | Keputusan K1 sampai K16 (lihat bagian Keputusan Pemilik) |
-| 5 | Setup FlyEnv: PHP 8.4.26, MariaDB, PATH | Selesai | php -m lengkap |
-| 6 | composer install | Selesai | composer.phar sementara sudah dihapus |
-| 7 | .env dibuat dari .env.example, key:generate, SESSION_DRIVER diganti file | Selesai | Dilakukan tanpa izin, perlu diperiksa |
-| 8 | DemoBarangController dan barang.blade.php (47 data dummy) | Selesai | Belum dicek visual |
-| 9 | Route GET /demo/barang | Selesai | Ditandai DEMO di komentar |
-| 10 | Verifikasi HTTP 200 halaman 1 dan 7, tidak ada SVG, 5 test lulus | Selesai | tests/Feature/DemoBarangTest.php dibuat |
-| 11 | Label tombol Ubah Data dan Hapus Data | Selesai | Diperbaiki di barang.blade.php baris 216 dan 223 |
+| 1 | Review 6 diagram (use case, activity, 4 sequence) | Selesai | Analisis kebutuhan modul inventori & transaksi |
+| 2 | Diagram Mermaid Kelola Data Barang (use case admin, activity, sequence) | Selesai | Diagram alur dan arsitektur data |
+| 3 | Inventaris Laravel 12 dan struktur tabel | Selesai | Pemetaan tabel inti MariaDB vs migrasi |
+| 4 | Dokumen rencana koreksi_copilot.md | Selesai | Keputusan teknis K1 sampai K18 |
+| 5 | Setup FlyEnv: PHP 8.4.26, MariaDB, PATH | Selesai | Ekstensi PHP lengkap (pdo_mysql, curl, dll) |
+| 6 | composer install | Selesai | Dependensi Laravel 12 terpasang |
+| 7 | Konfigurasi .env dan application key | Selesai | Terisolasi dan aman di .gitignore |
+| 8 | DemoBarangController dan barang.blade.php (47 data dummy) | Selesai | Prototype frontend awal |
+| 9 | Route GET /demo/barang | Selesai | Rute demo prototype mandiri |
+| 10 | Verifikasi HTTP 200 halaman 1 dan 7, tanpa SVG, 5 test lulus | Selesai | tests/Feature/DemoBarangTest.php dibuat |
+| 11 | Label tombol Ubah Data dan Hapus Data | Selesai | Diperbaiki sesuai aturan K12 |
 | 12 | Perbandingan visual dengan prototype & zoom 100% | Selesai | Layout modal flexbox sticky max-h-[90vh], font >= 16px, touch-target >= 44px, tanpa SVG |
 | 13 | Model Pengguna, ItemBarang, isolasi rute, CRUD SP | Selesai | Milestone 2 (L1–L16 di koreksi_copilot.md tuntas 100%) |
-| 14 | database/sql/09_procedure_ubah_hapus.sql | Selesai | sp_update_item_v2, sp_delete_item_v2 |
+| 14 | database/sql/09_procedure_ubah_hapus.sql | Selesai | sp_update_item_v2, sp_delete_item_v2 diterapkan |
 | 15 | Handoff dan dokumentasi branch staging | Selesai | HANDOFF_CRUD_TOKO_FIRO.md dibuat |
+| 16 | Controller dan rute Laporan Penjualan (Figma P11) | Selesai | LaporanPenjualanController.php, filter rentang waktu (hari ini, 7 hari, bulan ini, kustom), 12 dummy dataset |
+| 17 | View Laporan Penjualan (penjualan.blade.php & pagination.blade.php) | Selesai | 3 kartu metrik ringkasan, riwayat transaksi tabel, paginasi 5 item, subtotal negatif merah, tombol cetak PDF window.print() |
+| 18 | Navigasi sidebar terpadu antar-modul | Selesai | Menu sidebar admin/barang/index.blade.php dihubungkan ke route('admin.laporan.penjualan') |
+| 19 | Decoupling autentikasi & isolasi rute laporan penjualan | Selesai | routes/admin_laporan.php mandiri tanpa sentuh routes/web.php; null-safe user header untuk cegah konflik merge |
+| 20 | Standardisasi skala tampilan global 80% (Figma 100%) | Selesai | resources/views/partials/skala.blade.php (:root --skala: 80%), diterapkan seragam pada modul barang, demo, dan laporan |
+| 21 | Test Suite Laporan Penjualan dan Skala Tampilan | Selesai | tests/Feature/LaporanPenjualanAccessTest.php dan TampilanSkalaTest.php; total 40 test (34 passed, 6 skipped, 0 failed, 130 assertions) |
 
-## Daftar File
+## Daftar File yang Dibuat / Dimodifikasi
 
-Hasil pemeriksaan `git status --short` (per commit 0945f61):
-- `M .gitignore`: Pembaruan aturan ignore untuk keamanan Git.
-- `M README.md`: Dokumentasi utama proyek Toko Firo.
-- `M routes/web.php`: Penambahan route demo `GET /demo/barang`.
-- `?? .github/`: Template Pull Request `pull_request_template.md`.
-- `?? TRACKING.md`: Log pengerjaan dan status tugas.
-- `?? app/Http/Controllers/DemoBarangController.php`: Controller demo kelola data barang dengan 47 item dummy statis.
-- `?? resources/views/demo/`: View Blade `barang.blade.php` untuk demo antarmuka.
-- `?? koreksi_copilot.md`: Dokumen keputusan teknis K1–K16 dan langkah kerja L0–L16.
+### Modul Kelola Data Barang
+- `routes/admin_barang.php`: Grup rute mandiri modul data barang (prefix `admin/barang`).
+- `app/Http/Controllers/Admin/BarangController.php`: Controller Eloquent & Stored Procedure (index, store, update, updateHarga, destroy).
+- `app/Models/ItemBarang.php`: Model pembaca tabel `daftar_item` dengan accessor `status_stok`.
+- `app/Models/Pengguna.php`: Model pengguna dengan hash password khusus.
+- `resources/views/admin/barang/index.blade.php`: Halaman utama inventori barang (tabel, search, filter, urut).
+- `resources/views/admin/barang/modals.blade.php`: Modal dialog responsive sticky zoom 100% (Tambah, Ubah Data, Ubah Harga, Hapus).
+- `tests/Feature/BarangCrudTest.php`: Uji fitur operasi tulis stored procedure & jejak audit.
+- `tests/Feature/BarangDaftarTest.php`: Uji pembacaan daftar, pencarian, filter, dan paginasi 7 baris.
+- `tests/Feature/BarangAdminAccessTest.php`: Uji otorisasi hak akses dan proteksi SVG.
 
-File tambahan (belum di-commit, tidak akan di-commit):
-- `tests/Feature/DemoBarangTest.php`: 5 feature test untuk /demo/barang.
-- `database/sql/09_procedure_ubah_hapus.sql`: Prosedur v2 dan ALTER alasan.
-- `PROJECT_STATUS.md`: Laporan status internal (tidak untuk commit).
+### Modul Laporan Penjualan (Figma P11)
+- `routes/admin_laporan.php`: Rute mandiri `GET /admin/laporan-penjualan` (`admin.laporan.penjualan`).
+- `app/Http/Controllers/Admin/LaporanPenjualanController.php`: Controller laporan penjualan (filter rentang, validasi tanggal Y-m-d, 12 dataset transaksi realistis, paginasi 5 item per halaman).
+- `resources/views/admin/laporan/penjualan.blade.php`: Tampilan laporan penjualan (3 kartu metrik ringkasan, riwayat transaksi tabel, badge retur subtotal merah, print PDF).
+- `resources/views/admin/laporan/pagination.blade.php`: Komponen navigasi paginasi kustom untuk laporan penjualan.
+- `tests/Feature/LaporanPenjualanAccessTest.php`: 8 pengujian akses, render elemen, filter tanggal, dan proteksi K12.
 
+### Skala Tampilan Global
+- `resources/views/partials/skala.blade.php`: Partial `:root { --skala: 80%; } html { font-size: var(--skala); }` untuk keseragaman ukuran Figma 100% di semua halaman.
+- `tests/Feature/TampilanSkalaTest.php`: Uji integrasi keberadaan partial skala pada halaman demo, barang, dan laporan penjualan.
 
 ## Keputusan Pemilik (Final)
 
-Keputusan pemilik merujuk pada `koreksi_copilot.md`, K1 sampai K16:
+Keputusan pemilik merujuk pada `koreksi_copilot.md`, K1 sampai K18:
 
 - **K1 Skema**: Sumber kebenaran adalah file SQL 01 sampai 05 dan 09, bukan migrasi Laravel. Tabel `pengguna` dibuat oleh `02_tabel_baru.sql`. JANGAN membuat migrasi Laravel untuk tabel `pengguna`.
 - **K2 Model**: `App\Models\Pengguna` (tabel `pengguna`, primary key `id_pengguna`, kolom `password_hash`). `User.php` tidak diubah.
 - **K3 Login**: username dan password, `Auth::attempt`, hanya status AKTIF.
 - **K4 Baca daftar barang**: Eloquent, paginasi 7 per halaman.
 - **K5 Tulis data**: Stored procedure. Tambah: `sp_create_item`. Ubah data: `sp_update_item_v2`. Ubah harga: `sp_update_harga`. Hapus: `sp_delete_item_v2`.
-- **K6 Akses**: Kelola Data Barang HANYA untuk ADMIN. KASIR mendapat 403.
+- **K6 Akses**: Kelola Data Barang & Laporan Penjualan HANYA untuk ADMIN. KASIR mendapat 403.
 - **K7 Jejak audit**: Setiap tambah, ubah, harga, dan hapus tercatat di `log_aktivitas` (pelaku, waktu, data sebelum dan sesudah, alasan opsional).
 - **K8 Kode barang**: Bebas (angka atau huruf), tidak kosong, maks 20 karakter, tidak boleh kembar. Pesan kembar: "Kode barang sudah dipakai."
 - **K9 Stok awal**: 0 sampai 1000. Tipe Jasa dikecualikan (database memberi 999999). Form ubah data TIDAK punya kolom stok.
 - **K10 Harga**: Form punya Harga Pokok dan Harga Jual, diketik manual. Jika Harga Jual < Harga Pokok, tampilkan peringatan teks. Data tetap boleh disimpan.
 - **K11 Batas Minimum**: Ada di form tambah (default 5). Status stok: Habis (stok=0), Menipis (stok<=batas_minimum), Aman (selainnya).
-- **K12 Tampilan**: Tanpa ikon, tanpa emoji. Font minimal 16px, tombol minimal 44px.
+- **K12 Tampilan**: Tanpa ikon, tanpa emoji. Font minimal 16px, tombol minimal 44px (touch-target 2.75rem).
 - **K13 Pesan error hapus**: "Barang tidak bisa dihapus karena sudah pernah dijual." (diterjemahkan di controller dari pesan database).
 - **K14 Hapus**: Hanya untuk barang salah input. Barang bertransaksi tidak bisa dihapus.
 - **K15 Jejak audit terbaca manusia**: Jenis aksi, kode dan nama barang, pelaku, waktu.
 - **K16 Form**: Urutan dan label sesuai Figma. Jenis dan Satuan pakai datalist karena VARCHAR bebas.
+- **K17 Laporan Penjualan (Figma P11)**: Paginasi 5 item, 3 kartu metrik ringkasan, riwayat transaksi dengan indikator subtotal negatif merah, filter rentang waktu (hari ini, 7 hari, bulan ini, kustom), cetak PDF window.print().
+- **K18 Standardisasi Skala 80%**: Partial global `resources/views/partials/skala.blade.php` agar tampilan pada zoom browser 100% presisi dengan Figma 100% (lebar sidebar ~260px).
 
+## Catatan Database & Stored Procedure
 
-## Catatan Database
-
-- **Skema aktif**: `Toko_Firo` (MariaDB via FlyEnv).
-- **Koneksi saat ini**: `.env` mengarah ke SQLite untuk testing (`DB_DATABASE=:memory:`). MariaDB dipakai untuk production/dev manual.
-- **Urutan eksekusi SQL** (dikerjakan pemilik, bukan Antigravity):
+- **Skema aktif**: `toko_firo` (MariaDB via FlyEnv).
+- **Urutan eksekusi SQL**:
   1. `00_preflight.sql` — cek awal
   2. `01_alter_tabel_inti.sql` — tambah kolom ke tabel inti
   3. `02_tabel_baru.sql` — buat tabel pengguna, otp_2fa, dan lainnya
@@ -72,12 +84,6 @@ Keputusan pemilik merujuk pada `koreksi_copilot.md`, K1 sampai K16:
   5. `04_procedure.sql` — buat stored procedure
   6. `05_trigger.sql` — buat trigger
   7. `06_hak_akses.sql` — butuh akun root, jalankan terpisah
-  8. `07_seed_dev.sql` — data awal dev (jangan di produksi)
-  9. `09_procedure_ubah_hapus.sql` — sp_update_item_v2, sp_delete_item_v2
-- **Nilai `tipe_aksi` yang dipakai** di `log_aktivitas` (kolom VARCHAR(50)):
-  - `ITEM_BARU` — sp_create_item
-  - `ITEM_DIUBAH` — sp_update_item, sp_update_item_v2
-  - `HARGA_DIUBAH` — sp_update_harga
-  - `ITEM_DIHAPUS` — sp_delete_item, sp_delete_item_v2
-- **Catatan Fitur**: Fitur alasan dibatalkan atas keputusan pemilik.
-- **TODO database**: `v_laporan_penjualan` dirujuk di `sp_get_laporan_penjualan` tetapi belum didefinisikan di file SQL mana pun.
+  8. `07_seed_dev.sql` — data awal dev
+  9. `09_procedure_ubah_hapus.sql` — `sp_update_item_v2` dan `sp_delete_item_v2`
+- **TODO Database Laporan Penjualan**: Pada tahap backend laporan penjualan berikutnya, sambungkan method controller laporan ke stored procedure `sp_get_laporan_penjualan` dan definisikan view `v_laporan_penjualan`.
