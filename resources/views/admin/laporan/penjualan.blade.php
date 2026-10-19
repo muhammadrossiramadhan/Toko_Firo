@@ -13,13 +13,6 @@
     @endif
 
     <style>
-        /* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama dengan Figma; ubah --skala ke 100% untuk kembali ke 16px/44px. */
-        :root {
-            --skala: 80%;
-        }
-        html {
-            font-size: var(--skala);
-        }
         .touch-target {
             min-height: 2.75rem;
             min-width: 2.75rem;
@@ -37,6 +30,8 @@
             }
         }
     </style>
+
+    @include('partials.skala')
 </head>
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 

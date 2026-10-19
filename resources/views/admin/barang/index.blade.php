@@ -13,15 +13,13 @@
     @endif
 
     <style>
-        /* Aturan tampilan: Font minimal 16px dan tinggi elemen interaktif minimal 44px */
-        html, body {
-            font-size: 16px;
-        }
         .touch-target {
-            min-height: 44px;
-            min-width: 44px;
+            min-height: 2.75rem;
+            min-width: 2.75rem;
         }
     </style>
+
+    @include('partials.skala')
 </head>
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
@@ -167,7 +165,7 @@
             >
             <select
                 name="jenis"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[150px] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[9.375rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="Semua" {{ $jenis === 'Semua' ? 'selected' : '' }}>Jenis: Semua</option>
                 @foreach ($daftarJenis as $itemJenis)
@@ -178,7 +176,7 @@
             </select>
             <select
                 name="urut"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[170px] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[10.625rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="terbaru" {{ $urut === 'terbaru' ? 'selected' : '' }}>Urutkan: Terbaru</option>
                 <option value="nama" {{ $urut === 'nama' ? 'selected' : '' }}>Urutkan: Nama A-Z</option>
@@ -196,7 +194,7 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {{-- Wrapper scroll horizontal untuk layar kecil --}}
             <div class="overflow-x-auto w-full">
-                <table class="w-full min-w-[1050px] border-collapse text-left text-base">
+                <table class="w-full min-w-[65.625rem] border-collapse text-left text-base">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-200 text-gray-700 text-base font-semibold">
                             <th scope="col" class="py-3.5 px-4">Kode</th>
