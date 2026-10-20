@@ -60,18 +60,11 @@
 - **L15**: Pengujian unit/feature test CRUD barang dan jejak audit `log_aktivitas`.
 - **L16**: Penataan modal responsive zoom 100% (`max-h-[90vh]`), decoupling rute auth lokal, dan penyusunan handoff.
 
-### Tahap B: Modul Laporan Penjualan & Standardisasi Skala (LP1 - LP6)
-- **LP1**: Pembuatan controller `LaporanPenjualanController.php` dengan 12 dataset transaksi realistis, paginasi 5 item per halaman, dan pengolahan 4 jenis filter rentang waktu.
-- **LP2**: Pembuatan rute mandiri `routes/admin_laporan.php` (`admin.laporan.penjualan`) yang dimuat via `bootstrap/app.php`.
-- **LP3**: Implementasi tampilan `resources/views/admin/laporan/penjualan.blade.php` dan `pagination.blade.php` sesuai Figma P11 (kartu metrik, riwayat transaksi, badge retur merah, tombol PDF `window.print()`).
-- **LP4**: Penghubungan navigasi sidebar dari `resources/views/admin/barang/index.blade.php` ke rute laporan penjualan.
-- **LP5**: Decoupling rute dan null-safety view pengguna (`Auth::user()?->nama ?? 'Admin / Pemilik'`) untuk mencegah bentrok merge.
-- **LP6**: Standardisasi skala tampilan global melalui `resources/views/partials/skala.blade.php` pada seluruh view dan pengujian `TampilanSkalaTest.php`.
-
-## 4. Status Akhir Implementasi (Per 19 Oktober 2026)
-Seluruh tahapan pengerjaan telah diselesaikan 100%:
-1. **Modul Kelola Data Barang**: Berfungsi penuh dengan CRUD Stored Procedure, audit trail, paginasi 7 baris, dan modal responsif zoom 100%.
-2. **Modul Laporan Penjualan**: Berfungsi penuh dari sisi frontend & filter data contoh sesuai Figma P11, siap untuk dihubungkan ke query database riil pada tahap backend berikutnya.
-3. **Skala Tampilan Global**: Seluruh halaman (barang, demo, dan laporan) menggunakan skala terpusat 80% yang presisi dengan desain Figma.
-4. **Hasil Pengujian**: Test suite mencakup **40 test (34 passed, 6 skipped karena pemisahan auth mandiri, 0 failed, 130 assertions)**.
-5. **Kesiapan Merge**: Rute kedua modul berada di file terpisah (`routes/admin_barang.php` dan `routes/admin_laporan.php`), sehingga bersih dari potensi konflik dengan file `routes/web.php` milik rekan tim.
+## 4. Status Akhir Implementasi
+Seluruh tahapan L0 hingga L16 telah selesai diimplementasikan 100%:
+- CRUD Berbasis Stored Procedure MariaDB (`sp_create_item`, `sp_update_item_v2`, `sp_update_harga`, `sp_delete_item_v2`).
+- Audit trail tercatat lengkap di `log_aktivitas`.
+- Tampilan antarmuka memenuhi K12 (tanpa SVG/ikon, font >= 16px, tombol touch-target >= 44px).
+- Modal box didesain ulang dengan sticky header & footer serta scrollable body untuk pengalaman optimal pada browser zoom 100%.
+- Rute terisolasi independen di `routes/admin_barang.php` untuk mencegah bentrok saat merge ke branch `staging`.
+- Dokumen serah terima telah dibuat di `HANDOFF_CRUD_TOKO_FIRO.md`.
