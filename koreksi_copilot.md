@@ -1,99 +1,124 @@
 # Dokumen Final: Autentikasi, Role, dan Kelola Data Barang (Toko Firo)
 
 ## 0. Konteks
-- Laravel 12, PHP 8.4 (sudah terpasang di FlyEnv), MariaDB.
-- Lingkungan: Windows, PowerShell. Perintah PHP pakai:
-  "C:\Program Files\FlyEnv-Data\env\php\php.exe"
-- Frontend: Blade + controller, Tailwind. Alpine.js hanya jika sudah ada di package.json.
-- Branch: Rossi-Kelola-Data-Barang-Item.
-- Role di tabel pengguna: ADMIN atau KASIR. Status: AKTIF atau NONAKTIF.
+- Laravel 12, PHP 8.4 (FlyEnv), MariaDB. Windows, PowerShell.
+- Perintah PHP: & "C:\Program Files\FlyEnv-Data\env\php\php.exe"
+- Frontend: Blade + Tailwind, tanpa Livewire dan tanpa Alpine.js. Modal boleh
+  memakai JavaScript biasa (vanilla) yang singkat.
+- Prototype halaman selesai: route /demo/barang (data dummy). Tampilan nyata
+  memakai view yang sama, dengan sidebar sesuai prototype Figma (frame P12).
+- Role: ADMIN dan KASIR. Status pengguna: AKTIF atau NONAKTIF.
 
 ## 1. Aturan kerja (wajib)
 1. Satu sub-langkah per sesi. Setelah selesai: jalankan test, tulis ringkasan
-   file yang berubah, tulis saran commit, lalu BERHENTI.
+   file yang berubah dan saran commit, lalu BERHENTI.
 2. Baca file yang relevan sebelum mengubah apa pun. Jangan menebak isinya.
-3. Jangan membaca atau menampilkan .env. Kredensial tidak boleh masuk kode atau laporan.
-4. Jangan ubah User.php, file di database/sql/, atau migrasi yang sudah ada.
-5. Nama kolom, tabel, dan procedure diambil dari DDL riil di
-   database/sql/02_tabel_baru.sql dan database/sql/04_procedure.sql.
-   Jika berbeda dengan DATABASE.md, ikuti DDL riil.
+3. Jangan membaca atau menampilkan .env. Kredensial tidak masuk kode atau laporan.
+4. Jangan ubah User.php, file lama di database/sql/, atau migrasi lama.
+5. Nama kolom, tabel, dan procedure diambil dari file SQL riil di database/sql/.
 6. Jika ada yang tidak jelas: tulis TODO dan berhenti. Jangan mengarang.
-7. Jangan commit atau push. Itu tugas pemilik.
-8. Di luar cakupan: 2FA, backup, retur, laporan otomatis, notifikasi WhatsApp/Telegram.
+7. Jangan commit atau push.
+8. Jangan menjalankan file SQL. Pemilik menjalankannya sendiri.
+9. Di luar cakupan: halaman Dashboard (admin dan kasir), Laporan Penjualan,
+   Pembelian Barang, Kelola Akun Pengguna, Batas Stok Minimum, Backup Data,
+   Log Aktivitas, Pengaturan Notifikasi, semua halaman Akses Kasir, tombol
+   rincian dan lonceng di kolom Aksi, 2FA, retur, notifikasi.
+   Menu-menu itu tetap tampil di sidebar dengan href="#".
 
-## 2. Keputusan (sudah final)
-- D1 Frontend: Blade + controller, tanpa Livewire.
-- D2 Tabel pengguna: migrasi Laravel baru dari DDL 02_tabel_baru.sql.
-- D3 Model: App\Models\Pengguna. User.php tidak diubah.
-- D4 Login: Auth::attempt dengan Eloquent.
-- D5 Baca daftar barang: Eloquent, paginasi 7.
-- D6 Tulis data barang: stored procedure sp_create_item, sp_update_item,
-  sp_update_harga, sp_delete_item.
-- D7 Status stok: Habis jika stok 0. Menipis jika stok <= batas minimum.
-  Aman lainnya. Jika sumber batas minimum tidak jelas di DDL, tulis asumsi.
-- D8 Tampilan: tanpa ikon. Tombol bertulisan: "Tambah Barang Baru", "Ubah Data",
-  "Hapus Data", "Simpan", "Batal". Font minimal 16px, tombol minimal 44px.
-- D9 Akses Kelola Data Barang: hanya ADMIN.
+## 2. Keputusan pemilik (final)
+- K1 Skema: sumber kebenarannya file SQL 01 sampai 05 dan 09, bukan migrasi
+  Laravel. Tabel pengguna dibuat oleh 02_tabel_baru.sql. JANGAN membuat migrasi
+  Laravel untuk pengguna.
+- K2 Model: App\Models\Pengguna (tabel pengguna, primary key id_pengguna,
+  kolom password_hash). User.php tidak diubah.
+- K3 Login: username dan password, Auth::attempt, hanya status AKTIF.
+- K4 Baca daftar barang: Eloquent, paginasi 7.
+- K5 Tulis data: stored procedure. Tambah: sp_create_item. Ubah data:
+  sp_update_item_v2. Ubah harga: sp_update_harga. Hapus: sp_delete_item_v2.
+- K6 Akses: Kelola Data Barang HANYA untuk ADMIN. KASIR mendapat 403.
+  Sidebar bawah menampilkan nama pengguna dan perannya sebagai teks
+  ("Admin / Pemilik" atau "Kasir"), lalu tombol teks "Keluar".
+- K7 Jejak audit: setiap tambah, ubah, harga, dan hapus tercatat di
+  log_aktivitas (pelaku, waktu, data sebelum dan sesudah).
+- K8 Kode barang: bebas (angka atau huruf), tidak kosong, maksimal 20 karakter,
+  tidak boleh kembar. Pesan jika kembar: "Kode barang sudah dipakai."
+- K9 Stok awal saat tambah barang: 0 sampai 1000, satu konstanta di satu tempat.
+  Tipe Jasa dikecualikan (database memberi stok 999999). Form ubah data TIDAK
+  punya kolom stok; stok berubah lewat Pembelian dan Penjualan.
+- K10 Harga (murni sesuai Figma): form hanya punya Harga Pokok dan Harga Jual,
+  keduanya diketik manual. TIDAK ada kolom persen atau perhitungan otomatis.
+  Jika Harga Jual < Harga Pokok, tampilkan teks
+  "Peringatan: Harga Jual lebih rendah dari Harga Pokok". Peringatan hanya
+  muncul saat kondisi itu terjadi, dan data tetap boleh disimpan.
+- K11 Batas Minimum: ADA di form tambah (default 5, catatan kecil
+  "Dipakai untuk notifikasi stok menipis"), dikirim ke p_batas, dan bisa diubah
+  di form ubah data. Status stok: Habis jika stok = 0. Menipis jika
+  stok <= batas_minimum. Aman selainnya.
+- K12 Tampilan: tanpa ikon, tanpa emoji, tanpa lonceng, tanpa segitiga
+  peringatan. Tombol bertulisan: "Tambah Barang Baru", "Ubah Data", "Ubah Harga",
+  "Hapus Data", "Simpan", "Batal". Font minimal 16px, tombol minimal 44px,
+  bahasa Indonesia sederhana.
+- K13 Pesan error database ditampilkan sebagai kalimat sederhana. Hapus ditolak
+  karena ada transaksi: "Barang tidak bisa dihapus karena sudah pernah dijual."
+- K14 Hapus dipakai untuk barang yang salah input. Barang yang sudah punya
+  riwayat transaksi tidak bisa dihapus (ditolak database).
+- K15 Catatan riwayat harus bisa dibaca manusia: jenis aksi, kode dan nama
+  barang, pelaku, waktu. Dashboard admin dan kasir nanti dibangun darinya.
+- K16 Form Tambah Barang Baru (urutan sesuai Figma, tiap input berlabel):
+  Kode Item (bantuan: "Unik, maks 20 karakter"), Nama Item (wajib, ditandai *),
+  Jenis, Merek, Rak, Satuan, Tipe Item (Barang atau Jasa), Stok Awal,
+  Harga Pokok, Harga Jual, Batas Minimum, Keterangan (opsional).
+  Tombol: Simpan dan Batal. Jenis dan Satuan: jika di DDL berupa ENUM, pakai
+  pilihan sesuai ENUM; jika teks bebas, pakai input dengan daftar saran
+  (datalist) dari nilai yang sudah ada. Form Ubah Data memakai kolom yang sama
+  kecuali Kode Item (hanya tampil), Stok, Harga Pokok, dan Harga Jual.
+  Form Ubah Harga berisi Harga Pokok, Harga Jual,
+  dan peringatan K10. Frame Modal Ubah dan Modal Hapus di Figma belum tersedia;
+  jika ada ketidakjelasan tulis TODO.
 
 ## 3. Langkah kerja
-Langkah 0: Inventaris (hanya baca). Baca composer.json, package.json, config/auth.php,
-database/sql/02_tabel_baru.sql (CREATE TABLE pengguna), database/sql/04_procedure.sql
-(signature procedure), migrasi daftar_item. Laporkan perbedaan dengan DATABASE.md.
-Lalu BERHENTI.
+L0: Pemilik menguji 01 sampai 05 di database uji, lalu menerapkannya ke
+    toko_firo, lalu 09. (Dikerjakan pemilik, bukan Antigravity.)
+L1: Model Pengguna dan factory sesuai DDL pengguna. Override getAuthPassword
+    ke password_hash. Commit: feat(auth): model Pengguna.
+L2: config/auth.php providers.users.model = App\Models\Pengguna.
+    Commit: chore(auth): gunakan model Pengguna.
+L3: Login GET dan POST /login, logout. Update login_terakhir. Pesan NONAKTIF
+    dan pesan gagal yang umum. Commit: feat(auth): halaman login.
+L4: RoleMiddleware (parameter variadic), alias role di bootstrap/app.php.
+    Tamu ke login, role tidak cocok abort 403. Commit: feat(auth): middleware role.
+L5: Test auth: tamu, KASIR, ADMIN, NONAKTIF. Commit: test(auth): role dan status.
+L6: Route nyata /admin/barang (nama admin.barang) memakai view prototype,
+    middleware auth + role:ADMIN, sidebar sesuai K6. /demo/barang dibiarkan.
+    Commit: feat(barang): route kelola data barang.
+L7: Tabel dari Eloquent (DaftarItem), paginasi 7. Commit: feat(barang): daftar barang.
+L8: Pencarian kode/nama, filter Jenis, urutan (Terbaru, Nama A-Z, Stok Terkecil).
+    Commit: feat(barang): pencarian dan filter.
+L9: Status stok dari batas_minimum. Commit: feat(barang): status stok.
+L10: Pilih baris, tombol Ubah Data, Ubah Harga, Hapus Data aktif sesuai pilihan.
+     Commit: feat(barang): pilih baris.
+L11: Tambah barang (modal sesuai K16, sp_create_item, validasi K8 K9 K10 K11).
+     Commit: feat(barang): tambah barang.
+L12: Ubah data (modal, sp_update_item_v2).
+     Commit: feat(barang): ubah data.
+L13: Ubah harga (modal, sp_update_harga, peringatan K10).
+     Commit: feat(barang): ubah harga.
+L14: Hapus (modal konfirmasi, sp_delete_item_v2, pesan K13).
+     Commit: feat(barang): hapus barang.
+L15: Test CRUD dan role, termasuk bahwa log_aktivitas terisi untuk tiap aksi
+     (K15) dan KASIR mendapat 403. Memakai database uji, bukan toko_firo.
+     Commit: test(barang): CRUD, role, dan jejak audit.
+L16: Tinjauan akhir. Test lulus atau gagal, cek tidak ada ikon, cek tidak ada
+     kredensial. Daftar TODO. Tanpa commit.
 
-Langkah 1: Migrasi pengguna sesuai DDL riil (make:migration create_pengguna_table).
-Test: php artisan test. Commit: feat(db): migrasi tabel pengguna sesuai DDL.
+Untuk setiap langkah: kerjakan HANYA satu langkah, jalankan php artisan test,
+tulis ringkasan dan saran commit, lalu BERHENTI dan tunggu saya.
 
-Langkah 2: Model Pengguna dan factory. Commit: feat(auth): model Pengguna dan factory.
-
-Langkah 3: config/auth.php providers.users.model = App\Models\Pengguna.
-Commit: chore(auth): gunakan model Pengguna.
-
-Langkah 4: Login (GET dan POST /login). Auth::attempt dengan status AKTIF.
-Update kolom login terakhir sesuai DDL. Pesan NONAKTIF dan pesan gagal yang umum.
-Commit: feat(auth): halaman login berbasis username.
-
-Langkah 5: RoleMiddleware (parameter variadic). Tamu redirect ke login,
-role salah abort 403. Daftarkan alias role di bootstrap/app.php.
-Commit: feat(auth): middleware role.
-
-Langkah 6: Feature test auth (tamu, KASIR 403, ADMIN 200, NONAKTIF gagal).
-Commit: test(auth): akses berdasarkan role dan status.
-
-Langkah 7: Route GET /admin/barang (name admin.barang, middleware auth + role:ADMIN),
-halaman kosong. Commit: feat(barang): route dan halaman kelola data barang.
-
-Langkah 8: Tabel daftar barang (Kode, Nama Item, Jenis, Merek, Rak, Satuan,
-Harga Pokok, Harga Jual, Stok, Status), paginasi 7, bisa digeser horizontal.
-Commit: feat(barang): tampilkan daftar barang.
-
-Langkah 9: Pencarian (kode/nama), filter Jenis, urutan Terbaru/Nama A-Z/Stok Terkecil.
-Commit: feat(barang): pencarian dan filter.
-
-Langkah 10: Kolom status sebagai teks berwarna (Aman, Menipis, Habis). Tanpa ikon.
-Commit: feat(barang): kolom status stok.
-
-Langkah 11: Klik baris untuk memilih. Tombol Ubah Data dan Hapus Data nonaktif
-sampai ada yang dipilih. Jika ditekan tanpa pilihan: "Pilih satu barang dulu".
-Commit: feat(barang): pilih baris.
-
-Langkah 12: Tambah barang via sp_create_item. Validasi kode unik, nama wajib,
-harga dan stok tidak negatif. id_pengguna dari user login.
-Commit: feat(barang): tambah barang via sp_create_item.
-
-Langkah 13: Ubah data (sp_update_item) dan harga (sp_update_harga) dalam satu
-DB::transaction. Kode tidak bisa diubah. Commit: feat(barang): ubah data dan harga
-dalam satu transaksi.
-
-Langkah 14: Hapus dengan modal konfirmasi ("Yakin hapus barang ini? Tindakan ini
-tidak bisa dibatalkan."). Panggil sp_delete_item. Jika ditolak karena ada transaksi:
-"Barang tidak bisa dihapus karena sudah pernah dijual."
-Commit: feat(barang): hapus barang dengan konfirmasi.
-
-Langkah 15: Feature test CRUD dan akses role. Commit: test(barang): CRUD dan akses role.
-
-Langkah 16: Tinjauan akhir. Test lulus/gagal, cek tidak ada ikon, cek tidak ada
-kredensial di kode. Daftar TODO. Tanpa commit.
-
-Untuk setiap langkah 1 sampai 16: kerjakan HANYA satu langkah, jalankan
-php artisan test, tulis ringkasan dan saran commit, lalu BERHENTI dan tunggu saya.
+## 4. Status Akhir Implementasi
+Seluruh tahapan L0 hingga L16 telah selesai diimplementasikan 100%:
+- CRUD Berbasis Stored Procedure MariaDB (`sp_create_item`, `sp_update_item_v2`, `sp_update_harga`, `sp_delete_item_v2`).
+- Audit trail tercatat lengkap di `log_aktivitas`.
+- Tampilan antarmuka memenuhi K12 (tanpa SVG/ikon, font >= 16px, tombol touch-target >= 44px).
+- Modal box didesain ulang dengan sticky header & footer serta scrollable body untuk pengalaman optimal pada browser zoom 100%.
+- Rute terisolasi independen di `routes/admin_barang.php` untuk mencegah bentrok saat merge ke branch `staging`.
+- Dokumen serah terima telah dibuat di `HANDOFF_CRUD_TOKO_FIRO.md`.

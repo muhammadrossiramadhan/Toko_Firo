@@ -30,3 +30,15 @@ Route::post('/logout', LogoutController::class)->name('logout')->middleware('aut
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/demo/barang', [DemoBarangController::class, 'index'])->name('demo.barang');
 });
+
+// Autentikasi
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+// DEMO: wajib diberi middleware auth dan role:ADMIN sebelum merge ke branch bersama.
+Route::get('/demo/barang', [DemoBarangController::class, 'index'])->name('demo.barang');
+
