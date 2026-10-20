@@ -1,177 +1,67 @@
 # Toko Firo
 
-Sistem informasi berbasis web untuk pengelolaan data master barang, stok inventori, riwayat transaksi, laporan penjualan, pembelian barang (restock), serta manajemen akun pengguna dan hak akses pada Toko Firo (usaha ATK dan fotokopi).
+Sistem informasi berbasis web untuk pengelolaan data barang, stok, transaksi penjualan, akun pengguna, batas stok minimum, dan laporan pada Toko Firo (usaha ATK dan fotokopi).
 
 Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Universitas Negeri Malang, 2026.
 
 ## Anggota Kelompok
-- **Muhammad Rossi Ramadhan** (250535625057) — Ketua Kelompok, Database, Modul Data Barang, & Modul Pembelian Barang
-- **Muhammad Totti Al Fikri** (250535630175) — Backend Developer
-- **Refina Aprilia Dewi** (250535624776) — UI/UX Designer & Analis Sistem
-- **Teofilus Aditya Suseno Pandeangan** (250535626205) — Frontend, Backend, & QA Tester
+- Muhammad Rossi Ramadhan (250535625057), Ketua Kelompok, Database, Modul Data Barang, Laporan Penjualan, Pembelian Barang, Kelola Akun Pengguna, dan Batas Stok Minimum
+- Muhammad Totti Al Fikri (250535630175), Backend
+- Refina Aprilia Dewi (250535624776), UI/UX dan Analisis
+- Teofilus Aditya Suseno Pandeangan (250535626205), Frontend, Backend, dan QA
 
-## Teknologi & Lingkungan Pengembangan
-- **Framework**: Laravel 12.0
-- **Bahasa Pemrograman**: PHP 8.4 (FlyEnv / PHP 8.2+)
-- **Database**: MariaDB 13.1.1 (dengan integritas logika pada Stored Procedure, View, & Trigger)
-- **Frontend & Styling**: Blade Templates & Tailwind CSS (tanpa Livewire dan tanpa Alpine.js; interaktivitas tab dan filter berbasis Vanilla JavaScript murni)
-- **Lingkungan Lokal**: Windows 11 dengan FlyEnv runtime environment
+## Teknologi
+- Framework: Laravel 12, PHP 8.2 ke atas (dikembangkan dengan PHP 8.4 via FlyEnv)
+- Database: MariaDB 13.1.1, dengan logika bisnis pada Stored Procedure & Trigger
+- Frontend: Blade dan Tailwind CSS (tanpa Livewire dan tanpa Alpine.js; interaktivitas modal, filter, stepper, dan tombol aksi via Vanilla JavaScript)
+- Lingkungan Pengembangan: Windows dengan FlyEnv
 
 ## Struktur Dokumentasi
-- `README.md`: Dokumentasi utama proyek, arsitektur, panduan instalasi, dan spesifikasi modul.
-- `HANDOFF_CRUD_TOKO_FIRO.md`: Panduan serah terima teknis resmi, isolasi rute mandiri, dan mitigasi merge modul ke branch staging.
-- `DATABASE.md`: Dokumentasi skema basis data lengkap (ERD, DDL tabel, view, stored procedure, trigger, hak akses, dan tata cara seed/testing).
-- `TRACKING.md`: Log pengerjaan berkala, milestone, dan status historis fitur yang dikembangkan.
-- `koreksi_copilot.md`: Keputusan teknis final pemilik sistem (aturan K1 sampai K19) dan alur kerja teknis.
-- `PROJECT_STATUS.md`: Laporan status teknis internal proyek (pelacakan status rute, test suite, dan kesiapan merge).
+- `HANDOFF_CRUD_TOKO_FIRO.md`: Panduan serah terima resmi arsitektur teknis, isolasi rute, dan mitigasi merge modul admin
+- `DATABASE.md`: ERD, skema tabel, view, stored procedure, trigger, hak akses, dan catatan prosedur
+- `database/sql/`: Skrip SQL berurutan 00 sampai 09 (skema inti, tabel baru, view, SP, trigger, dan SP v2)
+- `TRACKING.md`: Log pengerjaan berkala dan status tiap tahapan milestone proyek
+- `koreksi_copilot.md`: Keputusan teknis final pemilik (K1 sampai K19) dan verifikasi langkah kerja
+- `PROJECT_STATUS.md`: Laporan status teknis menyeluruh internal (status branch, file, test suite, dan kesiapan merge)
 
----
+## Status Fitur: Modul Batas Stok Minimum (Admin)
+Modul Batas Stok Minimum (sesuai prototype Figma frame P14) telah diimplementasikan secara mandiri pada branch ini:
+- **Kotak Notifikasi Otomatis Telegram**: Banner peringatan informatif berwarna kuning lembut (`bg-amber-50 text-amber-900 border border-amber-200`) terkait pengiriman notifikasi otomatis ke bot Telegram saat stok mencapai atau di bawah batas minimum (format teks bersih tanpa ikon grafis).
+- **Pencarian & Filter Cepat**:
+  - Kolom pencarian teks bersih dengan placeholder `"Cari nama atau kode barang..."`.
+  - Dropdown filter jenis barang (`Semua Jenis`, `ATK`, `Fotocopy`).
+- **Tombol Pengaturan Cepat (Mass Action)**:
+  - Tombol aksi cepat `"Atur semua ke 3 pcs"` dan `"Atur semua ke 5 pcs"` dengan touch-target minimal 44px (`min-h-[2.75rem]`).
+- **Tabel Data Stok & Input Stepper**:
+  - Kolom tabel lengkap: `Kode`, `Nama Barang`, `Jenis`, `Stok Sekarang`, `Batas Minimum`, dan `Status`.
+  - Input kuantitas batas minimum dilengkapi tombol stepper minus `[-]` dan plus `[+]` berbasis teks murni dengan ukuran interaktif minimal 44px.
+  - Lima data contoh realistis sesuai Figma P14:
+    - `BRG-008` (Pensil 2B) — 0 pcs — Batas: 3 — Status: **Habis** (`bg-red-100 text-red-700`)
+    - `BRG-006` (Isi Staples No.10) — 2 box — Batas: 3 — Status: **Menipis** (`bg-amber-100 text-amber-800`)
+    - `BRG-003` (Kertas HVS A4 70gr) — 4 rim — Batas: 5 — Status: **Menipis** (`bg-amber-100 text-amber-800`)
+    - `BRG-005` (Stapler HD-10) — 8 pcs — Batas: 5 — Status: **Normal** (`bg-blue-100 text-blue-700`)
+    - `BRG-001` (Pulpen Standard AE7) — 120 pcs — Batas: 5 — Status: **Aman** (`bg-emerald-100 text-emerald-800`)
+- **Bilah Aksi Perubahan (Bottom Action Bar)**:
+  - Panel mengambang di bawah tabel yang memuat indikator perubahan ("2 perubahan batas minimum belum disimpan").
+  - Tombol aksi sekunder **Batalkan** dan tombol aksi utama hijau **Simpan Perubahan** (`bg-emerald-600 hover:bg-emerald-700 text-white`).
+- **Kepatuhan UI/UX (K12) & Skala Global 80% (K18)**: Bebas tag `<svg>`, bebas ikon grafis dan emoji, ukuran font minimal 16px (`text-base`), touch-target tombol minimal 44px, dan proporsional pada browser zoom 100%.
 
-## Status Fitur: Modul Pembelian Barang Restock (Branch: `Rossi/Purchase_Admins`)
-Modul Pembelian Barang Restock telah diimplementasikan sesuai desain **Figma frame P21 (Pembelian Barang / Desktop / Restock)** dengan arsitektur terisolasi dan pemisahan dependensi (decoupling) yang aman:
+## Arsitektur Skala Tampilan Global (K12 Adaptif)
+Untuk memastikan antarmuka pada zoom browser 100% presisi dengan desain Figma (lebar sidebar ~260px, bukan 325px yang terjadi jika font-size akar tidak disesuaikan):
+- Menggunakan partial global terpusat: `resources/views/partials/skala.blade.php`.
+- Skala akar halaman ditetapkan sebesar `80%` (`:root { --skala: 80%; } html { font-size: var(--skala); }`).
+- Seluruh elemen tetap mematuhi standar touch-target K12: ukuran tombol minimal `2.75rem` (setara 44px pada font basis 16px) dan font minimum `1rem` (`text-base`).
+- Kontainer sidebar menerapkan `min-h-screen flex flex-col justify-between` sehingga kartu profil pengguna ("Admin / Pemilik") dan tombol "Keluar" di pojok kiri bawah selalu terkunci rapi tanpa terpotong.
 
-1. **Dua Tab Navigasi Interaktif (Vanilla JavaScript)**:
-   - Navigasi tab responsif tanpa reload halaman dan tanpa library eksternal: Tab **"Pembelian Baru"** (tab aktif hijau) dan Tab **"Riwayat Pembelian"**.
-2. **Kartu "Perlu Segera Restock" (Tab Pembelian Baru)**:
-   - Menampilkan daftar barang dengan status stok habis atau menipis berlatar kuning muda (`bg-amber-50` / `border-amber-200`) dengan teks nama tebal.
-   - Menampilkan informasi kuantitas dan label status warna merah tegas (`text-red-600 font-semibold`):
-     - `Pensil 2B` — `0 pcs (Habis)`
-     - `Isi Staples No.10` — `2 box (Menipis)`
-     - `Kertas HVS A4` — `4 rim (Menipis)`
-   - Tombol aksi primer **"Catat Restock"** berwarna hijau (`bg-emerald-600 hover:bg-emerald-700 text-white`) dengan touch-target interaktif minimal 44px (`min-h-[2.75rem]`).
-3. **Tabel Riwayat Pembelian (Tab Riwayat Pembelian)**:
-   - Menampilkan catatan pengadaan barang masuk: `Waktu`, `Kode Pembelian`, `Barang`, `Jumlah`, `Total` (format Rupiah tebal), dan `Status` (badge hijau selesai).
-   - Memuat 4 dataset representatif transaksi pembelian:
-     - `PB-20261018-001`: Kertas HVS A4 (10 rim) — Rp 550.000 (Selesai)
-     - `PB-20261017-001`: Pulpen Faster C600 (5 pak) — Rp 175.000 (Selesai)
-     - `PB-20261015-001`: Buku Tulis Sinar Dunia 38 (20 pak) — Rp 760.000 (Selesai)
-     - `PB-20261012-001`: Tinta Printer Epson 003 Black (3 botol) — Rp 285.000 (Selesai)
+## Isolasi Arsitektur & Decoupling Sesi
+Untuk mencegah konflik (*conflict*) merge dengan modul Autentikasi dan 2FA yang dikembangkan rekan tim:
+- Rute modul didaftarkan mandiri di `routes/admin_batas_stok.php`.
+- Rute dimuat melalui blok `then:` pada `bootstrap/app.php` tanpa memodifikasi `routes/web.php`.
+- Controller mandiri ditempatkan di `app/Http/Controllers/Admin/BatasStokController.php`.
+- Middleware `auth` dan `role:ADMIN` dilepas sementara di tingkat rute lokal untuk mempermudah verifikasi tampilan independen (dengan pengingat pemulihan sebelum penggabungan ke branch `staging`/`main`).
+- Pembacaan profil pengguna pada view menggunakan fallback aman null-safe: `Auth::user()?->nama ?? 'Admin / Pemilik'`.
 
----
-
-## Fitur Modul Terkait Lainnya (Admin)
-
-### 1. Modul Kelola Data Barang & Riwayat Transaksi (Figma P12)
-- Pembacaan data riil tabel `daftar_item` via Eloquent model `ItemBarang` dengan paginasi 7 baris.
-- Perhitungan status stok real-time: `Habis` (stok = 0), `Menipis` (stok ≤ batas_minimum), dan `Aman`.
-- Pencarian multi-kolom (`q`), filter dropdown Jenis dinamis, serta 3 opsi urutan (Terbaru, Nama A-Z, Stok Terkecil).
-- Operasi tulis tersimpan penuh via Stored Procedure MariaDB: `sp_create_item`, `sp_update_item_v2`, `sp_update_harga`, dan `sp_delete_item_v2`.
-- Modal interaktif (Tambah, Ubah Data, Ubah Harga, Hapus) yang responsif pada zoom browser 100% (`max-h-[90vh]` dengan header/footer *sticky*).
-- Halaman **Riwayat Transaksi** (`admin.barang.riwayat`) menampilkan 8 riwayat transaksi kasir, rincian items, total nominal, metode (Tunai/QRIS), dan status selesai.
-
-### 2. Modul Laporan Penjualan (Figma P11)
-- 3 kartu ringkasan metrik: Total Penjualan Kotor, Jumlah Transaksi Nota, dan Laba Bersih Estimasi.
-- Filter rentang waktu terpadu (Hari Ini, 7 Hari Terakhir, Bulan Ini, dan Rentang Kustom dengan validasi tanggal `Y-m-d`).
-- Tabel transaksi berpaginasi 5 item, indikator subtotal retur negatif berwarna merah, dan fungsi cetak laporan PDF via `window.print()`.
-
-### 3. Modul Kelola Akun Pengguna (Figma P13)
-- Pengelolaan akun pengguna sistem (Admin & Kasir) dengan avatar lingkaran inisial huruf dinamis.
-- Pengaturan hak akses, reset kata sandi, serta aktivasi dan penonaktifan akun.
-
----
-
-## Arsitektur Skala Tampilan Global (K12 & K18)
-Untuk memastikan antarmuka pada zoom peramban 100% presisi dan identik dengan desain Figma (lebar sidebar ~260px dan rasio elemen proporsional tanpa perlu memperkecil zoom browser):
-- Menggunakan parsial terpusat: `resources/views/partials/skala.blade.php`.
-- Skala akar halaman ditetapkan sebesar `80%`:
-  ```css
-  :root { --skala: 80%; }
-  html { font-size: var(--skala); }
-
-- Seluruh elemen mematuhi standar aksesibilitas K12:
-  - **Bebas SVG & Grafis**: Dilarang menggunakan tag `<svg>`, ikon grafis eksternal, emoji, lonceng, atau segitiga peringatan (seluruh aksi menggunakan tombol teks yang tegas).
-  - **Ukuran Font**: Tetap minimal `1rem` / 16px (`text-base`).
-  - **Touch-Target**: Tombol interaktif dan input form wajib minimal `2.75rem` / 44px (`min-h-[2.75rem]`).
-
----
-
-## Isolasi Arsitektur & Decoupling Rute
-Untuk mencegah konflik (*merge conflict*) dengan modul Autentikasi/2FA milik rekan tim pada branch `staging`:
-- Rute modul didaftarkan secara independen:
-  - `routes/admin_pembelian.php` $\to$ Prefix `/admin/pembelian` (nama rute `admin.pembelian`)
-  - `routes/admin_barang.php` $\to$ Prefix `/admin/barang`
-  - `routes/admin_laporan.php` $\to$ Prefix `/admin/laporan-penjualan`
-  - `routes/admin_pengguna.php` $\to$ Prefix `/admin/pengguna`
-- Pemuatan rute admin dilakukan secara dinamis melalui `glob(base_path('routes/admin_*.php'))` di `bootstrap/app.php` tanpa menyentuh file `routes/web.php` milik rekan tim.
-- Middleware `auth` dan `role:ADMIN` dilepas sementara pada grup rute lokal (diberi penanda `TODO WAJIB` sebelum rilis/merge ke `staging`).
-- Pembacaan profil pengguna pada view dan controller menerapkan null-safety:
-  ```php
-  Auth::user()?->nama ?? 'Admin / Pemilik'
-  ```
-
----
-
-## Panduan Menjalankan Sistem (Lokal)
-
-1. **Clone repositori dan beralih ke branch kerja:**
+## Cara Menjalankan (Lingkungan Lokal)
+1. Beralih ke branch kerja:
    ```bash
-   git checkout Rossi/Purchase_Admins
-   ```
-
-2. **Instal dependensi PHP:**
-   ```bash
-   composer install
-   ```
-
-3. **Konfigurasi Environment (`.env`):**
-   - Salin file konfigurasi:
-     ```bash
-     Copy-Item .env.example .env
-     ```
-   - Generate Application Key:
-     ```bash
-     php artisan key:generate
-     ```
-   - Sesuaikan konfigurasi database MariaDB pada `.env` (`DB_DATABASE=toko_firo`).
-
-4. **Eksekusi Skrip Database MariaDB:**
-   - Jalankan skrip SQL di folder `database/sql/` berurutan dari `00_preflight.sql` sampai `09_procedure_ubah_hapus.sql` pada database `toko_firo` dan `toko_firo_test`.
-
-5. **Jalankan Server Lokal:**
-   ```bash
-   php artisan serve
-   ```
-   Akses modul melalui peramban web:
-   - **Pembelian Barang (Restock)**: `http://127.0.0.1:8000/admin/pembelian`
-   - **Kelola Data Barang**: `http://127.0.0.1:8000/admin/barang`
-   - **Riwayat Transaksi**: `http://127.0.0.1:8000/admin/barang/riwayat`
-   - **Laporan Penjualan**: `http://127.0.0.1:8000/admin/laporan-penjualan`
-   - **Kelola Akun Pengguna**: `http://127.0.0.1:8000/admin/pengguna`
-
----
-
-## Pengujian Otomatis (Testing)
-Pengujian modul dijalankan menggunakan PHPUnit / Pest dengan trait `DatabaseTransactions` untuk menjaga integritas data:
-
-```bash
-# Jalankan seluruh test suite
-php artisan test
-
-# Pengujian khusus modul Pembelian Barang Restock
-php artisan test --filter=PembelianAdminTest
-
-# Pengujian modul terkait lainnya
-php artisan test --filter=BarangDaftarTest
-php artisan test --filter=BarangRiwayatTest
-php artisan test --filter=LaporanPenjualanAccessTest
-```
-
----
-
-## Aturan Keamanan & Integritas Data
-- Kredensial sensitif database dan API dilarang keras di-commit ke repositori (terlindungi di `.gitignore` melalui `.env`).
-- Seluruh formulir pengiriman data dilindungi token proteksi `@csrf`.
-- Form modal menggunakan validasi FormRequest ketat (`StoreBarangRequest`, `UpdateBarangRequest`, dll).
-- Penghapusan data barang salah input dilindungi validasi ganda di level database (Stored Procedure `sp_delete_item_v2`) untuk mencegah terhapusnya barang yang memiliki riwayat transaksi penjualan.
-- Setiap aktivitas penambahan, pengubahan, perubahan harga, dan penghapusan data otomatis tercatat ke dalam tabel audit trail `log_aktivitas`.
-
----
-
-## Strategi Branching Git
-- **`main`**: Versi rilis produksi yang stabil dan siap guna.
-- **`staging`**: Basis cabang integrasi bersama seluruh tim sebelum rilis ke `main`.
-- **`Rossi/Purchase_Admins`**: Cabang kerja resmi untuk modul Pembelian Barang Restock (Figma P21).
-- **`Rossi/Manage-Product-Data-Items_Admins`**: Cabang kerja resmi untuk modul Kelola Data Barang dan Riwayat Transaksi.
-- **`Rossi/User-Settings`**: Cabang kerja resmi untuk modul Kelola Akun Pengguna.
-- **`Rossi/Sales_Report_Admins`**: Cabang kerja resmi untuk modul Laporan Penjualan.
-```
+   git checkout Rossi/Minimum-Stock_Admins
