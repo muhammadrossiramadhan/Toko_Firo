@@ -30,6 +30,7 @@ Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Univer
 | P06 | Kasir - Transaksi Penjualan | Refina-Toti/Sales-Transaction_Kasir | Selesai (Frontend Prototype K12/K18) |
 | P07 | Kasir - Lihat Stok Barang | Refina-Toti/Stock-Data_Kasir | Selesai (Frontend Prototype K12/K18) |
 | P08 | Kasir - Saldo Harian | Refina-Toti/Daily-Balance_Kasir | Selesai (Frontend Prototype K12/K18) |
+| P09 | Kasir - Info Barang Baru | Refina-Toti/New-Product-Info_Kasir | Selesai (Frontend Prototype K12/K18) |
 
 ## Status Fitur: Modul Kelola Data Barang (Admin)
 Modul Kelola Data Barang telah selesai 100% dan terisolasi secara mandiri:
