@@ -122,14 +122,22 @@
             <h1 class="text-2xl font-bold text-gray-900">
                 Kelola Data Barang
             </h1>
-            <button
-                type="button"
-                id="btn-tambah-barang"
-                onclick="bukaModalTambah()"
-                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors"
-            >
-                Tambah Barang Baru
-            </button>
+            <div class="flex items-center gap-3">
+                <a
+                    href="{{ route('admin.barang.riwayat') }}"
+                    class="touch-target px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center"
+                >
+                    Riwayat Transaksi
+                </a>
+                <button
+                    type="button"
+                    id="btn-tambah-barang"
+                    onclick="bukaModalTambah()"
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors"
+                >
+                    Tambah Barang Baru
+                </button>
+            </div>
         </header>
 
         {{-- Kotak Pesan Sukses dan Pesan Error --}}
