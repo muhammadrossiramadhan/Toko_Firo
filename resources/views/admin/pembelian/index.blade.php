@@ -170,7 +170,7 @@
                                     type="button"
                                     class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors flex items-center justify-center"
                                 >
-                                    Beli
+                                    Catat Restock
                                 </button>
                             </div>
                         </div>

@@ -53,6 +53,7 @@ class PembelianAdminTest extends TestCase
         $response->assertSee('Perlu Segera Restock');
         $response->assertSee('Pensil 2B');
         $response->assertSee('Riwayat Pembelian');
+        $response->assertSee('Catat Restock');
     }
 
     /**
