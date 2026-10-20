@@ -74,6 +74,9 @@
                     <a href="{{ Route::has('admin.notifikasi') ? route('admin.notifikasi') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm">
                         Pengaturan Notifikasi
                     </a>
+                    <a href="{{ Route::has('admin.toko') ? route('admin.toko') : '#' }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 text-base text-emerald-100 hover:bg-emerald-900/60 hover:text-white rounded-lg transition-colors">
+                        Pengaturan Toko
+                    </a>
                 </nav>
             </div>
 
