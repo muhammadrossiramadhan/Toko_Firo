@@ -32,6 +32,7 @@ class DaftarItem extends Model
         'harga_jual',
         'stok',
         'keterangan',
+        'foto',
     ];
 
     protected function casts(): array
