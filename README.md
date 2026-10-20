@@ -24,25 +24,27 @@ Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Univer
 - `koreksi_copilot.md`: Keputusan teknis final pemilik (K1 sampai K19) dan verifikasi langkah kerja
 - `PROJECT_STATUS.md`: Laporan status teknis menyeluruh internal (status branch, file, test suite, dan kesiapan merge)
 
-## Status Fitur: Modul Backup Data (Admin)
-Modul Backup Data (sesuai prototype Figma frame P15) telah diimplementasikan secara mandiri dan terisolasi pada branch ini:
-- **Dua Kartu Pengaturan Backup**:
-  - **Backup Manual**: Kartu berbingkai hijau (`border-emerald-500`) dengan deskripsi pencadangan database SQL terenkripsi dan tombol aksi hijau "Jalankan Backup Sekarang" (`bg-emerald-600`) dengan touch-target minimal 44px.
-  - **Backup Otomatis**: Kartu berbingkai netral yang menampilkan jadwal aktif setiap hari pukul 22.00 WIB pada server toko, dilengkapi tombol "Atur Jadwal Backup" dengan touch-target minimal 44px.
-- **Tabel Riwayat Backup**:
-  - Kolom tabel lengkap: `Waktu Backup`, `Tipe`, `Ukuran File`, `Status`, dan `Aksi`.
-  - 4 data contoh riwayat realistis sesuai Figma P15:
-    - Hari ini, 14.30 — Manual — 2,4 MB — Berhasil
-    - Kemarin, 22.00 — Otomatis — 2,4 MB — Berhasil
-    - 1 Okt 2026, 22.00 — Otomatis — 2,3 MB — Berhasil
-    - 30 Sep 2026, 22.00 — Otomatis — 2,3 MB — Berhasil
-  - Badge status "Berhasil" berwarna hijau lembut (`bg-emerald-100 text-emerald-800 rounded-full px-3 py-1`).
-  - Kolom aksi berbasis teks murni "Unduh" warna hijau (`text-emerald-700`) tanpa ketergantungan ikon grafis (K12).
-- **Banner Informasi Keamanan**:
-  - Kotak pemberitahuan biru muda (`bg-blue-50 border-blue-200 text-blue-900`) terkait penyimpanan backup di server lokal dan anjuran pengunduhan berkala ke perangkat terpisah secara teks bersih.
-- **Kepatuhan UI/UX (K12) & Skala Global 80% (K18)**:
-  - Bebas tag `<svg>`, bebas ikon grafis (disket, lonceng, unduh ditiadakan), dan bebas emoji.
-  - Ukuran font minimal 16px (`text-base`), touch-target tombol minimal 44px (`min-h-[2.75rem]`), dan proporsional pada browser zoom 100%.
+## Progress Implementasi Modul Antarmuka (Figma)
+| Frame | Modul | Branch | Status |
+|---|---|---|---|
+| P05 | Kasir - Dashboard | Refina-Toti/Dashboard_Kasir | Selesai (Frontend Prototype K12/K18) |
+| P06 | Kasir - Transaksi Penjualan | Refina-Toti/Sales-Transaction_Kasir | Selesai (Frontend Prototype K12/K18) |
+| P07 | Kasir - Lihat Stok Barang | Refina-Toti/Stock-Data_Kasir | Selesai (Frontend Prototype K12/K18) |
+| P08 | Kasir - Saldo Harian | Refina-Toti/Daily-Balance_Kasir | Selesai (Frontend Prototype K12/K18) |
+
+## Status Fitur: Modul Kelola Data Barang (Admin)
+Modul Kelola Data Barang telah selesai 100% dan terisolasi secara mandiri:
+- **Tabel & Paginasi**: Pembacaan data riil dari tabel `daftar_item` via Eloquent model `ItemBarang` dengan paginasi 7 item per halaman.
+- **Status Stok Otomatis**: Menghitung status stok secara real-time: `Habis` (stok = 0), `Menipis` (stok ≤ batas_minimum), dan `Aman` (stok > batas_minimum).
+- **Pencarian, Filter, & Urutan**: Fitur pencarian kode/nama barang (`q`), dropdown filter Jenis unik dari database, dan 3 opsi pengurutan (Terbaru, Nama A-Z, Stok Terkecil) dengan persistensi query string pada paginasi.
+- **Pilih Baris & Aksi Dinamis**: Seleksi baris tabel untuk mengaktifkan tombol Ubah Data, Ubah Harga, dan Hapus Data.
+- **Operasi Tulis (Stored Procedure)**:
+  - **Tambah Barang**: `sp_create_item` (12 input form sesuai Figma, tipe Jasa otomatis stok 999999).
+  - **Ubah Data**: `sp_update_item_v2` (tanpa kolom kode, stok, dan harga).
+  - **Ubah Harga**: `sp_update_harga` (mendukung teks peringatan jika harga jual < harga pokok sesuai aturan K10).
+  - **Hapus Data**: `sp_delete_item_v2` (proteksi integritas transaksi dengan pesan error K13: "Barang tidak bisa dihapus karena sudah pernah dijual.").
+- **Jejak Audit (Audit Trail)**: Seluruh operasi tulis otomatis dicatat ke tabel `log_aktivitas` (`ITEM_BARU`, `ITEM_DIUBAH`, `HARGA_DIUBAH`, `ITEM_DIHAPUS`).
+- **Kepatuhan UI/UX (K12) & Zoom 100%**: Bebas tag `<svg>`, bebas ikon/grafis/emoji, font minimal 16px, tinggi tombol minimal 44px, serta dialog modal responsif (`max-h-[90vh]` dengan header/footer sticky dan body form scrollable sehingga proporsional pada browser zoom 100%).
 
 ## Arsitektur Skala Tampilan Global (K12 Adaptif)
 Untuk memastikan antarmuka pada zoom browser 100% presisi dengan desain Figma (lebar sidebar ~260px, bukan 325px yang terjadi jika font-size akar tidak disesuaikan):

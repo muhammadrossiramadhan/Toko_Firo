@@ -45,16 +45,16 @@
                     <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Dashboard
                     </a>
-                    <a href="{{ route('admin.laporan.penjualan') }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="{{ Route::has('admin.laporan.penjualan') ? route('admin.laporan.penjualan') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Laporan Penjualan
                     </a>
-                    <a href="{{ route('admin.barang') }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm">
+                    <a href="{{ Route::has('admin.barang') ? route('admin.barang') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm">
                         Kelola Data Barang
                     </a>
                     <a href="{{ Route::has('admin.pembelian') ? route('admin.pembelian') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Pembelian Barang
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="{{ Route::has('admin.pengguna') ? route('admin.pengguna') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Kelola Akun Pengguna
                     </a>
                     <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
@@ -98,7 +98,7 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2">
                 <div class="font-medium text-white text-base truncate">
-                    {{ Auth::user()->nama ?? 'Admin / Pemilik' }}
+                    {{ Auth::user()?->nama ?? 'Admin / Pemilik' }}
                 </div>
                 <div class="text-sm text-emerald-300">
                     Admin / Pemilik
@@ -116,18 +116,29 @@
     {{-- Area Konten Utama --}}
     <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">
         {{-- Header Halaman (Tanpa Ikon Lonceng) --}}
-        <header class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">
-                Kelola Data Barang
-            </h1>
-            <button
-                type="button"
-                id="btn-tambah-barang"
-                onclick="bukaModalTambah()"
-                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors"
-            >
-                Tambah Barang Baru
-            </button>
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">
+                    Kelola Data Barang
+                </h1>
+                <p class="text-slate-500 text-base mt-1">Daftar master barang dan status inventori stok Toko Firo.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <a
+                    href="{{ Route::has('admin.barang.riwayat') ? route('admin.barang.riwayat') : '#' }}"
+                    class="touch-target px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center whitespace-nowrap"
+                >
+                    Riwayat Transaksi
+                </a>
+                <button
+                    type="button"
+                    id="btn-tambah-barang"
+                    onclick="bukaModalTambah()"
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors whitespace-nowrap"
+                >
+                    Tambah Barang Baru
+                </button>
+            </div>
         </header>
 
         {{-- Kotak Pesan Sukses dan Pesan Error --}}
@@ -194,20 +205,20 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {{-- Wrapper scroll horizontal untuk layar kecil --}}
             <div class="overflow-x-auto w-full">
-                <table class="w-full min-w-[65.625rem] border-collapse text-left text-base">
+                <table class="w-full border-collapse text-left text-base">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-200 text-gray-700 text-base font-semibold">
-                            <th scope="col" class="py-3.5 px-4">Kode</th>
-                            <th scope="col" class="py-3.5 px-4">Nama Item</th>
-                            <th scope="col" class="py-3.5 px-4">Jenis</th>
-                            <th scope="col" class="py-3.5 px-4">Merek</th>
-                            <th scope="col" class="py-3.5 px-4">Rak</th>
-                            <th scope="col" class="py-3.5 px-4">Satuan</th>
-                            <th scope="col" class="py-3.5 px-4">Harga Pokok</th>
-                            <th scope="col" class="py-3.5 px-4">Harga Jual</th>
-                            <th scope="col" class="py-3.5 px-4">Stok</th>
-                            <th scope="col" class="py-3.5 px-4">Status</th>
-                            <th scope="col" class="py-3.5 px-4">Aksi</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Kode</th>
+                            <th scope="col" class="py-3 px-3">Nama Item</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Jenis</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Merek</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Rak</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Satuan</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Harga Pokok</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Harga Jual</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap text-center">Stok</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Status</th>
+                            <th scope="col" class="py-3 px-3 whitespace-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-gray-800">
@@ -227,34 +238,34 @@
                                 data-batas-minimum="{{ $item->batas_minimum ?? 5 }}"
                                 class="baris-barang hover:bg-gray-50/70 transition-colors cursor-pointer"
                             >
-                                <td class="py-3.5 px-4 font-semibold text-gray-900 whitespace-nowrap">
+                                <td class="py-3 px-3 font-semibold text-gray-900 whitespace-nowrap">
                                     {{ $item->kode_item }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-900 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-900 font-medium">
                                     {{ $item->nama_item }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-700 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-700 whitespace-nowrap">
                                     {{ $item->jenis }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-700 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-700 whitespace-nowrap">
                                     {{ $item->merek }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-700 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-700 whitespace-nowrap">
                                     {{ $item->rak }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-700 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-700 whitespace-nowrap">
                                     {{ $item->satuan }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-900 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-900 whitespace-nowrap">
                                     Rp {{ number_format($item->harga_pokok, 0, ',', '.') }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-900 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-900 whitespace-nowrap">
                                     Rp {{ number_format($item->harga_jual, 0, ',', '.') }}
                                 </td>
-                                <td class="py-3.5 px-4 text-gray-900 whitespace-nowrap">
+                                <td class="py-3 px-3 text-gray-900 whitespace-nowrap text-center">
                                     {{ $item->stok }}
                                 </td>
-                                <td class="py-3.5 px-4 whitespace-nowrap">
+                                <td class="py-3 px-3 whitespace-nowrap">
                                     @if ($item->status_stok === 'Aman')
                                         <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-full text-base">
                                             Aman
@@ -269,7 +280,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="py-3.5 px-4 whitespace-nowrap text-base">
+                                <td class="py-3 px-3 whitespace-nowrap text-base">
                                     {{-- Tombol Aksi Teks (Tanpa Ikon) --}}
                                     <div class="flex items-center gap-2">
                                         <button
