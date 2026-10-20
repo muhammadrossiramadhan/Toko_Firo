@@ -344,4 +344,89 @@ class BarangController extends Controller
 
         return 'Terjadi kesalahan. Coba lagi.';
     }
+
+    /**
+     * Menampilkan riwayat transaksi contoh (Figma frame P12).
+     */
+    public function riwayat(): View
+    {
+        $transaksi = [
+            (object) [
+                'tanggal' => '03 Okt 2026, 14:20',
+                'no_transaksi' => 'TRX-001',
+                'kasir' => 'Rina',
+                'items' => 'Kertas HVS A4 (2 rim), Pulpen Snowman (3 pcs)',
+                'total' => 125000,
+                'metode' => 'Tunai',
+                'status' => 'Selesai',
+            ],
+            (object) [
+                'tanggal' => '03 Okt 2026, 13:45',
+                'no_transaksi' => 'TRX-002',
+                'kasir' => 'Deni',
+                'items' => 'Buku Tulis Sinar Dunia 38 Lembar (5 pcs)',
+                'total' => 25000,
+                'metode' => 'QRIS',
+                'status' => 'Selesai',
+            ],
+            (object) [
+                'tanggal' => '02 Okt 2026, 16:10',
+                'no_transaksi' => 'TRX-003',
+                'kasir' => 'Siti',
+                'items' => 'Spidol Whiteboard Snowman (2 pcs), Penghapus Papan (1 pcs)',
+                'total' => 32000,
+                'metode' => 'Tunai',
+                'status' => 'Selesai',
+            ],
+            (object) [
+                'tanggal' => '02 Okt 2026, 11:30',
+                'no_transaksi' => 'TRX-004',
+                'kasir' => 'Rina',
+                'items' => 'Map Snellhechter Plastik (10 pcs), Stopmap Folio (5 pcs)',
+                'total' => 45000,
+                'metode' => 'QRIS',
+                'status' => 'Selesai',
+            ],
+            (object) [
+                'tanggal' => '02 Okt 2026, 09:15',
+                'no_transaksi' => 'TRX-005',
+                'kasir' => 'Deni',
+                'items' => 'Fotokopi KTP (20 lbr), Jilid Lakban (2 buku)',
+                'total' => 18000,
+                'metode' => 'Tunai',
+                'status' => 'Selesai',
+            ],
+            (object) [
+                'tanggal' => '01 Okt 2026, 15:50',
+                'no_transaksi' => 'TRX-006',
+                'kasir' => 'Siti',
+                'items' => 'Kertas Buffalo Warna (1 rim), Lem Glukol (1 botol)',
+                'total' => 65000,
+                'metode' => 'Tunai',
+                'status' => 'Selesai',
+            ],
+            (object) [
+                'tanggal' => '01 Okt 2026, 13:05',
+                'no_transaksi' => 'TRX-007',
+                'kasir' => 'Rina',
+                'items' => 'Tinta Stempel Yamura (1 botol), Bantalan Stempel (1 pcs)',
+                'total' => 27500,
+                'metode' => 'QRIS',
+                'status' => 'Selesai',
+            ],
+            (object) [
+                'tanggal' => '01 Okt 2026, 10:00',
+                'no_transaksi' => 'TRX-008',
+                'kasir' => 'Deni',
+                'items' => 'Gunting Joyko Sedang (1 pcs), Penggaris Besi 30cm (1 pcs)',
+                'total' => 22000,
+                'metode' => 'Tunai',
+                'status' => 'Selesai',
+            ],
+        ];
+
+        return view('admin.barang.riwayat', [
+            'transaksi' => $transaksi,
+        ]);
+    }
 }
