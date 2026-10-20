@@ -92,7 +92,7 @@
                 {{-- 10. Pengaturan Toko --}}
                 <a
                     href="{{ Route::has('admin.toko') ? route('admin.toko') : url('/admin/pengaturan-toko') }}"
-                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors {{ request()->routeIs('admin.toko*') || request()->is('admin/pengaturan-toko*') ? 'bg-emerald-600 text-white font-semibold text-base shadow-sm' : 'text-emerald-100 hover:text-white hover:bg-emerald-900/60' }}"
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors {{ request()->routeIs('admin.toko*') || request()->is('admin/pengaturan-toko*') || request()->is('admin/toko*') ? 'bg-emerald-600 text-white font-semibold text-base shadow-sm' : 'text-emerald-100 hover:text-white hover:bg-emerald-900/60' }}"
                 >
                     Pengaturan Toko
                 </a>
