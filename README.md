@@ -24,28 +24,27 @@ Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Univer
 - `koreksi_copilot.md`: Keputusan teknis final pemilik (K1 sampai K19) dan verifikasi langkah kerja
 - `PROJECT_STATUS.md`: Laporan status teknis menyeluruh internal (status branch, file, test suite, dan kesiapan merge)
 
-## Status Fitur: Modul Dashboard Admin (Admin)
-Modul Dashboard Admin (sesuai prototype Figma frame P10) telah diimplementasikan secara mandiri dan terisolasi pada branch ini:
-- **Header Atas & Navigasi Akun**:
-  - Judul modul "Dashboard Admin" dengan penanda status notifikasi berbasis teks bersih dan avatar profil inisial "J" berdampingan dengan nama "Junaidi Saleh" di pojok kanan atas.
-- **Sapaan & Ringkasan Toko**:
-  - Teks sapaan profesional "Halo, Junaidi" dengan tanggal dinamis ("Jumat, 3 Oktober 2026 · Ringkasan toko hari ini") tanpa emoji tangan sesuai standar K12.
-- **4 Kartu Metrik Utama (KPI)**:
-  - **Penjualan Hari Ini**: `Rp 3.180.000` dengan badge pertumbuhan hijau `+12%`.
-  - **Jumlah Transaksi**: `14` dengan badge pertumbuhan hijau `+3`.
-  - **Stok Menipis**: `7` dengan keterangan peringatan stok `2 habis`.
-  - **Laba Hari Ini**: `Rp 680.000` dengan badge estimasi laba `+8%`.
-  - Seluruh kartu didesain minimalis elegan tanpa menggunakan emoji atau ikon grafis berlebih.
-- **Diagram Batang Penjualan 7 Hari Terakhir**:
-  - Visualisasi grafik batang vertikal murni menggunakan Tailwind CSS (tanpa beban pustaka pihak ketiga seperti Chart.js).
-  - Skala hari Senin s.d. Minggu dengan highlight hari puncak (Jumat) menggunakan warna hijau emerald pekat (`bg-emerald-600`) dan hari lainnya menggunakan warna pastel lembut (`bg-emerald-100`).
-- **Kartu Produk Terlaris (Top Barang Hari Ini)**:
-  - Daftar 3 produk teratas hari ini: Kertas HVS A4 (8 terjual), Pulpen Pilot G2 (6 terjual), dan Fotocopy A4 (5 layanan).
-- **Log Aktivitas Terbaru**:
-  - Linimasa riwayat aksi sistem secara real-time dengan penanda titik hijau lembut dan penunjuk waktu (14:32 transaksi TRX-001, 13:50 info stok habis, 12:00 sesi login kasir, 10:30 penambahan item).
-- **Kepatuhan UI/UX (K12) & Skala Global 80% (K18)**:
-  - Bebas tag `<svg>`, bebas ikon grafis, dan bebas emoji.
-  - Ukuran font minimal 16px (`text-base`), touch-target tombol minimal 44px (`min-h-[2.75rem]`), dan proporsional pada browser zoom 100%.
+## Progress Implementasi Modul Antarmuka (Figma)
+| Frame | Modul | Branch | Status |
+|---|---|---|---|
+| P05 | Kasir - Dashboard | Refina-Toti/Dashboard_Kasir | Selesai (Frontend Prototype K12/K18) |
+| P06 | Kasir - Transaksi Penjualan | Refina-Toti/Sales-Transaction_Kasir | Selesai (Frontend Prototype K12/K18) |
+| P07 | Kasir - Lihat Stok Barang | Refina-Toti/Stock-Data_Kasir | Selesai (Frontend Prototype K12/K18) |
+| P08 | Kasir - Saldo Harian | Refina-Toti/Daily-Balance_Kasir | Selesai (Frontend Prototype K12/K18) |
+
+## Status Fitur: Modul Kelola Data Barang (Admin)
+Modul Kelola Data Barang telah selesai 100% dan terisolasi secara mandiri:
+- **Tabel & Paginasi**: Pembacaan data riil dari tabel `daftar_item` via Eloquent model `ItemBarang` dengan paginasi 7 item per halaman.
+- **Status Stok Otomatis**: Menghitung status stok secara real-time: `Habis` (stok = 0), `Menipis` (stok ≤ batas_minimum), dan `Aman` (stok > batas_minimum).
+- **Pencarian, Filter, & Urutan**: Fitur pencarian kode/nama barang (`q`), dropdown filter Jenis unik dari database, dan 3 opsi pengurutan (Terbaru, Nama A-Z, Stok Terkecil) dengan persistensi query string pada paginasi.
+- **Pilih Baris & Aksi Dinamis**: Seleksi baris tabel untuk mengaktifkan tombol Ubah Data, Ubah Harga, dan Hapus Data.
+- **Operasi Tulis (Stored Procedure)**:
+  - **Tambah Barang**: `sp_create_item` (12 input form sesuai Figma, tipe Jasa otomatis stok 999999).
+  - **Ubah Data**: `sp_update_item_v2` (tanpa kolom kode, stok, dan harga).
+  - **Ubah Harga**: `sp_update_harga` (mendukung teks peringatan jika harga jual < harga pokok sesuai aturan K10).
+  - **Hapus Data**: `sp_delete_item_v2` (proteksi integritas transaksi dengan pesan error K13: "Barang tidak bisa dihapus karena sudah pernah dijual.").
+- **Jejak Audit (Audit Trail)**: Seluruh operasi tulis otomatis dicatat ke tabel `log_aktivitas` (`ITEM_BARU`, `ITEM_DIUBAH`, `HARGA_DIUBAH`, `ITEM_DIHAPUS`).
+- **Kepatuhan UI/UX (K12) & Zoom 100%**: Bebas tag `<svg>`, bebas ikon/grafis/emoji, font minimal 16px, tinggi tombol minimal 44px, serta dialog modal responsif (`max-h-[90vh]` dengan header/footer sticky dan body form scrollable sehingga proporsional pada browser zoom 100%).
 
 ## Arsitektur Skala Tampilan Global (K12 Adaptif)
 Untuk memastikan antarmuka pada zoom browser 100% presisi dengan desain Figma (lebar sidebar ~260px, bukan 325px yang terjadi jika font-size akar tidak disesuaikan):
