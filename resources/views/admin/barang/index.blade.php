@@ -176,7 +176,7 @@
             >
             <select
                 name="jenis"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[150px] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[9.375rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="Semua" {{ $jenis === 'Semua' ? 'selected' : '' }}>Jenis: Semua</option>
                 @foreach ($daftarJenis as $itemJenis)
@@ -187,7 +187,7 @@
             </select>
             <select
                 name="urut"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[170px] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[10.625rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="terbaru" {{ $urut === 'terbaru' ? 'selected' : '' }}>Urutkan: Terbaru</option>
                 <option value="nama" {{ $urut === 'nama' ? 'selected' : '' }}>Urutkan: Nama A-Z</option>
