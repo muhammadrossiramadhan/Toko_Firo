@@ -13,8 +13,14 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware('web')
                 ->group(base_path('routes/admin_barang.php'));
-            Route::middleware('web')
-                ->group(base_path('routes/admin_pengguna.php'));
+
+            $kasirRoutes = glob(base_path('routes/kasir_*.php')) ?: [];
+            sort($kasirRoutes);
+
+            foreach ($kasirRoutes as $routeFile) {
+                Route::middleware('web')
+                    ->group($routeFile);
+            }
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
