@@ -5,7 +5,7 @@ Sistem informasi berbasis web untuk pengelolaan data barang, stok, transaksi pen
 Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Universitas Negeri Malang, 2026.
 
 ## Anggota Kelompok
-- Muhammad Rossi Ramadhan (250535625057), Ketua Kelompok, Database, Modul Data Barang, Laporan Penjualan, Pembelian Barang, Kelola Akun Pengguna, dan Batas Stok Minimum
+- Muhammad Rossi Ramadhan (250535625057), Ketua Kelompok, Database, Modul Data Barang, Laporan Penjualan, Pembelian Barang, Kelola Akun Pengguna, Batas Stok Minimum, dan Dashboard Admin
 - Muhammad Totti Al Fikri (250535630175), Backend
 - Refina Aprilia Dewi (250535624776), UI/UX dan Analisis
 - Teofilus Aditya Suseno Pandeangan (250535626205), Frontend, Backend, dan QA
@@ -13,7 +13,7 @@ Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Univer
 ## Teknologi
 - Framework: Laravel 12, PHP 8.2 ke atas (dikembangkan dengan PHP 8.4 via FlyEnv)
 - Database: MariaDB 13.1.1, dengan logika bisnis pada Stored Procedure & Trigger
-- Frontend: Blade dan Tailwind CSS (tanpa Livewire dan tanpa Alpine.js; interaktivitas modal, filter, stepper, dan tombol aksi via Vanilla JavaScript)
+- Frontend: Blade dan Tailwind CSS (tanpa Livewire dan tanpa Alpine.js; visualisasi diagram batang dan interaktivitas via HTML/Tailwind CSS & Vanilla JavaScript)
 - Lingkungan Pengembangan: Windows dengan FlyEnv
 
 ## Struktur Dokumentasi
@@ -24,27 +24,28 @@ Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Univer
 - `koreksi_copilot.md`: Keputusan teknis final pemilik (K1 sampai K19) dan verifikasi langkah kerja
 - `PROJECT_STATUS.md`: Laporan status teknis menyeluruh internal (status branch, file, test suite, dan kesiapan merge)
 
-## Status Fitur: Modul Batas Stok Minimum (Admin)
-Modul Batas Stok Minimum (sesuai prototype Figma frame P14) telah diimplementasikan secara mandiri pada branch ini:
-- **Kotak Notifikasi Otomatis Telegram**: Banner peringatan informatif berwarna kuning lembut (`bg-amber-50 text-amber-900 border border-amber-200`) terkait pengiriman notifikasi otomatis ke bot Telegram saat stok mencapai atau di bawah batas minimum (format teks bersih tanpa ikon grafis).
-- **Pencarian & Filter Cepat**:
-  - Kolom pencarian teks bersih dengan placeholder `"Cari nama atau kode barang..."`.
-  - Dropdown filter jenis barang (`Semua Jenis`, `ATK`, `Fotocopy`).
-- **Tombol Pengaturan Cepat (Mass Action)**:
-  - Tombol aksi cepat `"Atur semua ke 3 pcs"` dan `"Atur semua ke 5 pcs"` dengan touch-target minimal 44px (`min-h-[2.75rem]`).
-- **Tabel Data Stok & Input Stepper**:
-  - Kolom tabel lengkap: `Kode`, `Nama Barang`, `Jenis`, `Stok Sekarang`, `Batas Minimum`, dan `Status`.
-  - Input kuantitas batas minimum dilengkapi tombol stepper minus `[-]` dan plus `[+]` berbasis teks murni dengan ukuran interaktif minimal 44px.
-  - Lima data contoh realistis sesuai Figma P14:
-    - `BRG-008` (Pensil 2B) — 0 pcs — Batas: 3 — Status: **Habis** (`bg-red-100 text-red-700`)
-    - `BRG-006` (Isi Staples No.10) — 2 box — Batas: 3 — Status: **Menipis** (`bg-amber-100 text-amber-800`)
-    - `BRG-003` (Kertas HVS A4 70gr) — 4 rim — Batas: 5 — Status: **Menipis** (`bg-amber-100 text-amber-800`)
-    - `BRG-005` (Stapler HD-10) — 8 pcs — Batas: 5 — Status: **Normal** (`bg-blue-100 text-blue-700`)
-    - `BRG-001` (Pulpen Standard AE7) — 120 pcs — Batas: 5 — Status: **Aman** (`bg-emerald-100 text-emerald-800`)
-- **Bilah Aksi Perubahan (Bottom Action Bar)**:
-  - Panel mengambang di bawah tabel yang memuat indikator perubahan ("2 perubahan batas minimum belum disimpan").
-  - Tombol aksi sekunder **Batalkan** dan tombol aksi utama hijau **Simpan Perubahan** (`bg-emerald-600 hover:bg-emerald-700 text-white`).
-- **Kepatuhan UI/UX (K12) & Skala Global 80% (K18)**: Bebas tag `<svg>`, bebas ikon grafis dan emoji, ukuran font minimal 16px (`text-base`), touch-target tombol minimal 44px, dan proporsional pada browser zoom 100%.
+## Status Fitur: Modul Dashboard Admin (Admin)
+Modul Dashboard Admin (sesuai prototype Figma frame P10) telah diimplementasikan secara mandiri dan terisolasi pada branch ini:
+- **Header Atas & Navigasi Akun**:
+  - Judul modul "Dashboard Admin" dengan penanda status notifikasi berbasis teks bersih dan avatar profil inisial "J" berdampingan dengan nama "Junaidi Saleh" di pojok kanan atas.
+- **Sapaan & Ringkasan Toko**:
+  - Teks sapaan profesional "Halo, Junaidi" dengan tanggal dinamis ("Jumat, 3 Oktober 2026 · Ringkasan toko hari ini") tanpa emoji tangan sesuai standar K12.
+- **4 Kartu Metrik Utama (KPI)**:
+  - **Penjualan Hari Ini**: `Rp 3.180.000` dengan badge pertumbuhan hijau `+12%`.
+  - **Jumlah Transaksi**: `14` dengan badge pertumbuhan hijau `+3`.
+  - **Stok Menipis**: `7` dengan keterangan peringatan stok `2 habis`.
+  - **Laba Hari Ini**: `Rp 680.000` dengan badge estimasi laba `+8%`.
+  - Seluruh kartu didesain minimalis elegan tanpa menggunakan emoji atau ikon grafis berlebih.
+- **Diagram Batang Penjualan 7 Hari Terakhir**:
+  - Visualisasi grafik batang vertikal murni menggunakan Tailwind CSS (tanpa beban pustaka pihak ketiga seperti Chart.js).
+  - Skala hari Senin s.d. Minggu dengan highlight hari puncak (Jumat) menggunakan warna hijau emerald pekat (`bg-emerald-600`) dan hari lainnya menggunakan warna pastel lembut (`bg-emerald-100`).
+- **Kartu Produk Terlaris (Top Barang Hari Ini)**:
+  - Daftar 3 produk teratas hari ini: Kertas HVS A4 (8 terjual), Pulpen Pilot G2 (6 terjual), dan Fotocopy A4 (5 layanan).
+- **Log Aktivitas Terbaru**:
+  - Linimasa riwayat aksi sistem secara real-time dengan penanda titik hijau lembut dan penunjuk waktu (14:32 transaksi TRX-001, 13:50 info stok habis, 12:00 sesi login kasir, 10:30 penambahan item).
+- **Kepatuhan UI/UX (K12) & Skala Global 80% (K18)**:
+  - Bebas tag `<svg>`, bebas ikon grafis, dan bebas emoji.
+  - Ukuran font minimal 16px (`text-base`), touch-target tombol minimal 44px (`min-h-[2.75rem]`), dan proporsional pada browser zoom 100%.
 
 ## Arsitektur Skala Tampilan Global (K12 Adaptif)
 Untuk memastikan antarmuka pada zoom browser 100% presisi dengan desain Figma (lebar sidebar ~260px, bukan 325px yang terjadi jika font-size akar tidak disesuaikan):
@@ -55,13 +56,13 @@ Untuk memastikan antarmuka pada zoom browser 100% presisi dengan desain Figma (l
 
 ## Isolasi Arsitektur & Decoupling Sesi
 Untuk mencegah konflik (*conflict*) merge dengan modul Autentikasi dan 2FA yang dikembangkan rekan tim:
-- Rute modul didaftarkan mandiri di `routes/admin_batas_stok.php`.
+- Rute modul didaftarkan mandiri di `routes/admin_dashboard.php`.
 - Rute dimuat melalui blok `then:` pada `bootstrap/app.php` tanpa memodifikasi `routes/web.php`.
-- Controller mandiri ditempatkan di `app/Http/Controllers/Admin/BatasStokController.php`.
+- Controller mandiri ditempatkan di `app/Http/Controllers/Admin/DashboardController.php`.
 - Middleware `auth` dan `role:ADMIN` dilepas sementara di tingkat rute lokal untuk mempermudah verifikasi tampilan independen (dengan pengingat pemulihan sebelum penggabungan ke branch `staging`/`main`).
 - Pembacaan profil pengguna pada view menggunakan fallback aman null-safe: `Auth::user()?->nama ?? 'Admin / Pemilik'`.
 
 ## Cara Menjalankan (Lingkungan Lokal)
 1. Beralih ke branch kerja:
    ```bash
-   git checkout Rossi/Minimum-Stock_Admins
+   git checkout Rossi/Dashboard-admin
