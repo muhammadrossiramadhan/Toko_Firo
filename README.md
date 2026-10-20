@@ -1,11 +1,11 @@
 # Toko Firo
 
-Sistem informasi berbasis web untuk pengelolaan data barang, stok, transaksi penjualan, akun pengguna, batas stok minimum, dan laporan pada Toko Firo (usaha ATK dan fotokopi).
+Sistem informasi berbasis web untuk pengelolaan data barang, stok, transaksi penjualan, akun pengguna, batas stok minimum, cadangan data (backup), dan laporan pada Toko Firo (usaha ATK dan fotokopi).
 
 Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Universitas Negeri Malang, 2026.
 
 ## Anggota Kelompok
-- Muhammad Rossi Ramadhan (250535625057), Ketua Kelompok, Database, Modul Data Barang, Laporan Penjualan, Pembelian Barang, Kelola Akun Pengguna, Batas Stok Minimum, dan Dashboard Admin
+- Muhammad Rossi Ramadhan (250535625057), Ketua Kelompok, Database, Modul Data Barang, Laporan Penjualan, Pembelian Barang, Kelola Akun Pengguna, Batas Stok Minimum, Dashboard Admin, dan Backup Data
 - Muhammad Totti Al Fikri (250535630175), Backend
 - Refina Aprilia Dewi (250535624776), UI/UX dan Analisis
 - Teofilus Aditya Suseno Pandeangan (250535626205), Frontend, Backend, dan QA
@@ -13,7 +13,7 @@ Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Univer
 ## Teknologi
 - Framework: Laravel 12, PHP 8.2 ke atas (dikembangkan dengan PHP 8.4 via FlyEnv)
 - Database: MariaDB 13.1.1, dengan logika bisnis pada Stored Procedure & Trigger
-- Frontend: Blade dan Tailwind CSS (tanpa Livewire dan tanpa Alpine.js; visualisasi diagram batang dan interaktivitas via HTML/Tailwind CSS & Vanilla JavaScript)
+- Frontend: Blade dan Tailwind CSS (tanpa Livewire dan tanpa Alpine.js; interaktivitas via Vanilla JavaScript)
 - Lingkungan Pengembangan: Windows dengan FlyEnv
 
 ## Struktur Dokumentasi
@@ -55,13 +55,13 @@ Untuk memastikan antarmuka pada zoom browser 100% presisi dengan desain Figma (l
 
 ## Isolasi Arsitektur & Decoupling Sesi
 Untuk mencegah konflik (*conflict*) merge dengan modul Autentikasi dan 2FA yang dikembangkan rekan tim:
-- Rute modul didaftarkan mandiri di `routes/admin_dashboard.php`.
+- Rute modul didaftarkan mandiri di `routes/admin_backup.php`.
 - Rute dimuat melalui blok `then:` pada `bootstrap/app.php` tanpa memodifikasi `routes/web.php`.
-- Controller mandiri ditempatkan di `app/Http/Controllers/Admin/DashboardController.php`.
+- Controller mandiri ditempatkan di `app/Http/Controllers/Admin/BackupController.php`.
 - Middleware `auth` dan `role:ADMIN` dilepas sementara di tingkat rute lokal untuk mempermudah verifikasi tampilan independen (dengan pengingat pemulihan sebelum penggabungan ke branch `staging`/`main`).
 - Pembacaan profil pengguna pada view menggunakan fallback aman null-safe: `Auth::user()?->nama ?? 'Admin / Pemilik'`.
 
 ## Cara Menjalankan (Lingkungan Lokal)
 1. Beralih ke branch kerja:
    ```bash
-   git checkout Rossi/Dashboard-admin
+   git checkout Rossi/Backup-Data_Admins
