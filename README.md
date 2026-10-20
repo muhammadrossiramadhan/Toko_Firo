@@ -93,3 +93,62 @@ php artisan test --filter=BarangDaftarTest
 - `main`: Versi rilis produksi yang stabil.
 - `staging`: Basis integrasi utama tim sebelum penggabungan ke `main`.
 - `Rossi/Manage-Product-Data-Items_Admins`: Branch kerja resmi modul Kelola Data Barang.
+# Toko Firo
+
+Sistem informasi berbasis web untuk pengelolaan data barang, stok, transaksi penjualan, akun pengguna, dan laporan pada Toko Firo (usaha ATK dan fotokopi).
+
+Dikerjakan untuk mata kuliah Sistem Informasi / Rekayasa Perangkat Lunak, Universitas Negeri Malang, 2026.
+
+## Anggota Kelompok
+- Muhammad Rossi Ramadhan (250535625057), Ketua Kelompok, Database, Modul Data Barang, Laporan Penjualan, Pembelian Barang, dan Kelola Akun Pengguna
+- Muhammad Totti Al Fikri (250535630175), Backend
+- Refina Aprilia Dewi (250535624776), UI/UX dan Analisis
+- Teofilus Aditya Suseno Pandeangan (250535626205), Frontend, Backend, dan QA
+
+## Teknologi
+- Framework: Laravel 12, PHP 8.2 ke atas (dikembangkan dengan PHP 8.4 via FlyEnv)
+- Database: MariaDB 13.1.1, dengan logika bisnis pada Stored Procedure & Trigger
+- Frontend: Blade dan Tailwind CSS (tanpa Livewire dan tanpa Alpine.js; interaktivitas modal, filter, dan tab navigasi via Vanilla JavaScript)
+- Lingkungan Pengembangan: Windows dengan FlyEnv
+
+## Struktur Dokumentasi
+- `HANDOFF_CRUD_TOKO_FIRO.md`: Panduan serah terima resmi arsitektur teknis, isolasi rute, dan mitigasi merge modul admin
+- `DATABASE.md`: ERD, skema tabel, view, stored procedure, trigger, hak akses, dan catatan prosedur
+- `database/sql/`: Skrip SQL berurutan 00 sampai 09 (skema inti, tabel baru, view, SP, trigger, dan SP v2)
+- `TRACKING.md`: Log pengerjaan berkala dan status tiap tahapan milestone proyek
+- `koreksi_copilot.md`: Keputusan teknis final pemilik (K1 sampai K19) dan verifikasi langkah kerja
+- `PROJECT_STATUS.md`: Laporan status teknis menyeluruh internal (status branch, file, test suite, dan kesiapan merge)
+
+## Status Fitur: Modul Kelola Akun Pengguna (Admin)
+Modul Kelola Akun Pengguna (sesuai prototype Figma frame P13) telah diimplementasikan pada branch ini dengan arsitektur terisolasi:
+- **Header & Tombol Tambah Akun**: Menampilkan judul halaman, deskripsi modul, dan tombol aksi "+ Tambah Akun" berwarna hijau (`bg-emerald-600`) dengan touch-target minimal 44px.
+- **Pencarian Pengguna**: Kolom input pencarian teks bersih dengan placeholder `"Cari pengguna..."` tanpa dependensi ikon SVG atau emoji sesuai aturan K12.
+- **Tabel Akun Pengguna & Avatar Inisial**:
+  - Kolom tabel lengkap: `Nama Lengkap`, `Username`, `Role`, `Status`, `Login Terakhir`, dan `Aksi`.
+  - Avatar lingkaran inisial otomatis berdasarkan nama (Junaidi - hijau, Rina - biru, Siti - abu-abu).
+  - Badge role informatif: `Admin` (latar hijau lembut) dan `Kasir` (latar biru lembut).
+  - Indikator status visual teks bersih: "• Aktif" (teks hijau) dan "• Nonaktif" (teks abu-abu).
+- **Aksi Cepat Pengguna**:
+  - Tombol aksi per baris: **Ubah**, **Reset Password**, serta tombol sakelar status **Nonaktifkan** (merah) atau **Aktifkan** (hijau) dengan touch-target minimal 44px (`min-h-[2.75rem]`).
+- **Footer Tabel**: Menampilkan informasi total data terdaftar ("Menampilkan 3 pengguna terdaftar").
+- **Kepatuhan UI/UX (K12) & Skala Global 80% (K18)**: Bebas tag `<svg>`, bebas ikon dan emoji, font minimal 16px (`text-base`), touch-target minimal 44px, dan proporsional pada browser zoom 100%.
+
+## Arsitektur Skala Tampilan Global (K12 Adaptif)
+Untuk memastikan antarmuka pada zoom browser 100% presisi dengan desain Figma (lebar sidebar ~260px, bukan 325px yang terjadi jika font-size akar tidak disesuaikan):
+- Menggunakan partial global terpusat: `resources/views/partials/skala.blade.php`.
+- Skala akar halaman ditetapkan sebesar `80%` (`:root { --skala: 80%; } html { font-size: var(--skala); }`).
+- Seluruh elemen tetap mematuhi standar touch-target K12: ukuran tombol minimal `2.75rem` (setara 44px pada font basis 16px) dan font minimum `1rem` (`text-base`).
+- Struktur layout sidebar menerapkan `min-h-screen flex flex-col justify-between` agar kartu profil pengguna di pojok kiri bawah selalu terkunci rapi tanpa terpotong.
+
+## Isolasi Arsitektur & Decoupling Sesi
+Untuk mencegah konflik (*conflict*) merge dengan modul Autentikasi dan rute utama yang dikembangkan rekan tim:
+- Rute modul didaftarkan mandiri di `routes/admin_pengguna.php`.
+- Rute dimuat melalui blok `then:` pada `bootstrap/app.php` tanpa memodifikasi `routes/web.php`.
+- Controller mandiri ditempatkan di `app/Http/Controllers/Admin/PenggunaController.php`.
+- Middleware `auth` dan `role:ADMIN` dilepas sementara pada tingkat rute lokal untuk mempermudah verifikasi tampilan independen (dengan catatan pemulihan sebelum penggabungan ke branch `staging`/`main`).
+- Sidebar dan view menggunakan fallback aman null-safe: `Auth::user()?->nama ?? 'Admin / Pemilik'`.
+
+## Cara Menjalankan (Lingkungan Lokal)
+1. Beralih ke branch kerja:
+   ```bash
+   git checkout Rossi/User-Settings
