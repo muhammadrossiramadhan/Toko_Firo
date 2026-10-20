@@ -1,6 +1,3 @@
-Berikut adalah isi lengkap berkas **`README.md`** final yang sudah diselaraskan khusus untuk branch **`Rossi/User-Settings`** (Modul Kelola Akun Pengguna & Pengaturan Sistem). Anda dapat langsung menyalin (*copy-paste*) seluruh isi di bawah ini:
-
-```markdown
 # Toko Firo
 
 Sistem informasi berbasis web untuk pengelolaan data master barang, stok inventori, riwayat transaksi, laporan penjualan, pembelian restock, serta manajemen akun pengguna dan hak akses pada Toko Firo (usaha ATK dan fotokopi).
@@ -81,7 +78,7 @@ Untuk memastikan antarmuka pada zoom peramban 100% presisi dan identik dengan de
   ```css
   :root { --skala: 80%; }
   html { font-size: var(--skala); }
-  ```
+
 - Seluruh elemen mematuhi standar aksesibilitas K12:
   - **Bebas SVG & Grafis**: Dilarang menggunakan tag `<svg>`, ikon grafis eksternal, atau emoji (seluruh aksi menggunakan tombol teks yang tegas).
   - **Ukuran Font**: Tetap minimal `1rem` / 16px (`text-base`).
