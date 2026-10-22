@@ -21,7 +21,7 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-slate-800 text-base antialiased min-h-screen flex">
+<body class="min-h-screen flex bg-slate-50 text-slate-800 text-base antialiased">
 
     {{-- Notifikasi Feedback Prototype --}}
     <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
@@ -32,7 +32,7 @@
     @include('partials.sidebar_admin')
 
     {{-- Area Konten Utama --}}
-    <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">
+    <main class="flex-1 min-w-0 p-8">
         {{-- Header Halaman --}}
         <header class="mb-6">
             <h1 class="text-2xl font-bold text-slate-900">

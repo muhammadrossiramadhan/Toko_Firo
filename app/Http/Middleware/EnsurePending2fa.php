@@ -12,7 +12,13 @@ class EnsurePending2fa
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            return redirect()->route('demo.barang');
+            $role = strtoupper(Auth::user()->role ?? '');
+            if ($role === 'ADMIN') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($role === 'KASIR') {
+                return redirect()->route('kasir.dashboard');
+            }
+            return redirect('/');
         }
 
         if (! $request->session()->has('pending_2fa_user_id')) {

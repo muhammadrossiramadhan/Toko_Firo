@@ -21,13 +21,13 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
 
     {{-- Area Konten Utama --}}
-    <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">
+    <main class="flex-1 min-w-0 p-8">
         {{-- Top Header Bar --}}
         <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-gray-200 mb-6">
             <div>

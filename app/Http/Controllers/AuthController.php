@@ -6,6 +6,7 @@ use App\Models\Pengguna;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -52,7 +53,13 @@ class AuthController extends Controller
                 'login_terakhir' => now(),
             ]);
 
-            // TODO: Route /admin/barang belum ada (dibuat di L6), sesuaikan tujuan redirect setelah route tersedia.
+            $role = strtoupper($user->role ?? '');
+            if ($role === 'ADMIN') {
+                return redirect()->intended(Route::has('admin.dashboard') ? route('admin.dashboard') : '/admin/dashboard');
+            } elseif ($role === 'KASIR') {
+                return redirect()->intended(Route::has('kasir.dashboard') ? route('kasir.dashboard') : '/kasir/dashboard');
+            }
+
             return redirect()->intended('/');
         }
 
