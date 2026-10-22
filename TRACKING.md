@@ -37,6 +37,13 @@
 | 31 | Test Suite Backup Data | Selesai | tests/Feature/BackupAdminTest.php; 4 passed, 21 assertions |
 | 32 | Controller, rute, dan view Log Aktivitas (Figma P16) | Selesai | LogAktivitasController.php, routes/admin_log.php, view admin/log/index.blade.php, tombol teks "Ekspor CSV", baris filter keterangan/tanggal/pengguna/tipe aksi, tabel 10 baris riwayat audit dengan badge warna lembut, teks footer info total log, patuh K12 & K18 |
 | 33 | Test Suite Log Aktivitas | Selesai | tests/Feature/LogAktivitasAdminTest.php; 4 passed, 19 assertions; Total seluruh proyek: 54 passed, 16 skipped, 0 failed (241 assertions) |
+| 34 | Standardisasi rute login /masuk dan verifikasi 2FA OTP | Selesai | LoginController & OtpController, routes/web.php, rute dinamai 'login', redirect alias dari /login ke /masuk |
+| 35 | Pengujian koneksi Telegram Bot API via Tinker & set-commands | Selesai | Verifikasi API token, kirim OTP grup Telegram, command artisan telegram:set-commands untuk pendaftaran 4 bot command |
+| 36 | Konsistensi menu Pengaturan Toko pada sidebar admin | Selesai | resources/views/partials/sidebar_admin.blade.php menyertakan menu Pengaturan Toko dinamis di seluruh modul |
+| 37 | Perbaikan layout scrolling sidebar admin terkunci (sticky) | Selesai | Tag aside distandarkan: h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto w-64 |
+| 38 | Antarmuka UI Sesi Kedaluwarsa (Expired) K12 & K18 | Selesai | resources/views/auth/expired.blade.php (rute /sesi-berakhir) dan resources/views/errors/419.blade.php, bebas SVG, target 44px |
+| 39 | Implementasi arsitektur bot Telegram dua arah | Selesai | TelegramBotService, TelegramReportService, DomPDF laporan A4, TelegramWebhookController, rute api/telegram/webhook |
+| 40 | Evaluasi keamanan & penetapan status bot webhook | Pending | Status PENDING (on hold) menunggu finalisasi backend admin; Cyber Security Checklist disusun rapi |
 
 ---
 
@@ -95,6 +102,25 @@
 - `app/Http/Controllers/Admin/LogAktivitasController.php`: Controller riwayat jejak audit (10 data log transaksi, stok, login, barang, harga, modal).
 - `resources/views/admin/log/index.blade.php`: Tombol teks "Ekspor CSV", 3 dropdown filter, tabel riwayat log dengan badge status lembut, dan info footer total log.
 - `tests/Feature/LogAktivitasAdminTest.php`: Uji HTTP 200, teks log, tombol ekspor, bebas SVG, dan partial skala 80%.
+
+### 9. Autentikasi Staf & Two-Factor Authentication (2FA)
+- `routes/web.php`: Rute utama `/masuk` (`login`) dan `/verifikasi` (`verifikasi`), redirect alias dari `/login` ke `/masuk`.
+- `app/Http/Controllers/LoginController.php`: Controller login validasi username/password dan dispatch OTP Telegram.
+- `app/Http/Controllers/OtpController.php`: Controller verifikasi kode 6 digit OTP dan redirect cerdas sesuai role (Admin ke `/admin/dashboard`, Kasir ke `/kasir/dashboard`).
+- `app/Services/TelegramService.php`: Pengiriman pesan kode OTP ke grup Telegram staf.
+
+### 10. Sesi Kedaluwarsa & Halaman Error 419 (K12/K18)
+- `resources/views/auth/expired.blade.php`: Tampilan kartu sesi berakhir dengan tombol Masuk Kembali dan Kembali ke Beranda.
+- `resources/views/errors/419.blade.php`: Penanganan error page 419 Page Expired menggunakan template yang sama.
+- `routes/web.php`: Rute statis `GET /sesi-berakhir` (`auth.expired`).
+
+### 11. Integrasi Telegram Bot Webhook (STATUS: PENDING)
+- `app/Services/Telegram/TelegramBotService.php`: Layanan HTTP client API bot Telegram.
+- `app/Services/Telegram/TelegramReportService.php`: Layanan generator PDF rekap penjualan via DomPDF dan caption HTML.
+- `resources/views/admin/laporan/pdf.blade.php`: Template cetak A4 laporan penjualan harian.
+- `app/Http/Controllers/TelegramWebhookController.php`: Controller pemroses pesan teks dan interaksi callback query.
+- `app/Console/Commands/SetTelegramCommands.php`: Artisan command `telegram:set-commands` pendaftaran menu bot.
+- `routes/api.php`: Endpoint `POST /api/telegram/webhook` (status PENDING on-hold).
 
 ---
 

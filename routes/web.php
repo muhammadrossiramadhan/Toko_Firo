@@ -15,6 +15,11 @@ Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog');
 // Redirect alias /login ke /masuk
 Route::redirect('/login', '/masuk');
 
+// Sesi Kedaluwarsa (Expired)
+Route::get('/sesi-berakhir', function () {
+    return view('auth.expired');
+})->name('auth.expired');
+
 // Autentikasi 2FA (Step 1: Masuk)
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login');
