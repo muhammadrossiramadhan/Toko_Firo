@@ -22,7 +22,7 @@ class EnsurePending2fa
         }
 
         if (! $request->session()->has('pending_2fa_user_id')) {
-            return redirect()->route('masuk');
+            return redirect()->route('login');
         }
 
         return $next($request);

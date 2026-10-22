@@ -42,7 +42,7 @@ class OtpController extends Controller
 
         if ($result === 'max_attempts') {
             $request->session()->forget('pending_2fa_user_id');
-            return redirect()->route('masuk')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'login' => 'Terlalu banyak percobaan salah, silakan login ulang.',
             ]);
         }
