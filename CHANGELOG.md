@@ -6,6 +6,18 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `Rossi/Purchase_Admins` (25 Oktober 2026)
+
+### Added
+- **Modul Pembelian Barang / Restock (Data Riil MariaDB)**:
+  - `app/Services/PembelianService.php`: layanan pembacaan item butuh restock (`stok <= batas_minimum`), riwayat transaksi pembelian (JOIN `daftar_pembelian`, `daftar_transaksi`, `daftar_item`), dan pencatatan pembelian restock via Stored Procedure (`sp_create_pembelian`, `sp_tambah_item_pembelian`).
+  - `tests/Feature/PembelianDataTest.php`: feature test suite data riil dengan transaksi database (5 passed, 2 skipped, 21 assertions).
+
+### Changed
+- **PembelianController**:
+  - Menghapus dataset dummy statis dan mengintegrasikan pembacaan data nyata via `PembelianService`.
+  - Menambahkan method `store()` untuk validasi input dan pencatatan transaksi restock baru dengan pesan kilas (flash message) sukses.
+
 ## [Unreleased] - Branch `staging` (22 Oktober 2026)
 
 ### Added

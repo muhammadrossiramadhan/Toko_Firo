@@ -44,6 +44,7 @@
 | 38 | Antarmuka UI Sesi Kedaluwarsa (Expired) K12 & K18 | Selesai | resources/views/auth/expired.blade.php (rute /sesi-berakhir) dan resources/views/errors/419.blade.php, bebas SVG, target 44px |
 | 39 | Implementasi arsitektur bot Telegram dua arah | Selesai | TelegramBotService, TelegramReportService, DomPDF laporan A4, TelegramWebhookController, rute api/telegram/webhook |
 | 40 | Evaluasi keamanan & penetapan status bot webhook | Pending | Status PENDING (on hold) menunggu finalisasi backend admin; Cyber Security Checklist disusun rapi |
+| 41 | Integrasi data riil Pembelian Restock (Figma P21) | Selesai | app/Services/PembelianService.php, sp_create_pembelian, sp_tambah_item_pembelian, tests/Feature/PembelianDataTest.php (5 passed, 21 assertions) |
 
 ---
 
