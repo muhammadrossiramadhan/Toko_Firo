@@ -6,17 +6,20 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
-## [Unreleased] - Branch `Rossi/Purchase_Admins` (25 Oktober 2026)
+## [Unreleased] - Branch `staging` (25 Oktober 2026)
 
 ### Added
-- **Modul Pembelian Barang / Restock (Data Riil MariaDB)**:
-  - `app/Services/PembelianService.php`: layanan pembacaan item butuh restock (`stok <= batas_minimum`), riwayat transaksi pembelian (JOIN `daftar_pembelian`, `daftar_transaksi`, `daftar_item`), dan pencatatan pembelian restock via Stored Procedure (`sp_create_pembelian`, `sp_tambah_item_pembelian`).
-  - `tests/Feature/PembelianDataTest.php`: feature test suite data riil dengan transaksi database (5 passed, 2 skipped, 21 assertions).
+- **Backend Laporan Penjualan & Dashboard Admin (Data Nyata)**:
+  - `app/Services/LaporanPenjualanService.php`: perhitungan ringkasan penjualan kotor, jumlah nota, barang terjual bersih, barang terlaris, estimasi laba bersih, dan riwayat transaksi terpaginasi (5 per halaman) dengan rentang tanggal inklusif.
+  - `app/Services/DashboardService.php`: penyedia metrik 4 kartu hari ini (penjualan, transaksi, stok menipis, laba), volume 7 hari mingguan (nilai 0 untuk hari kosong), top barang hari ini, dan 10 aktivitas log terbaru (pelaku null dipetakan ke "Sistem").
+  - Test suite data nyata `tests/Feature/LaporanPenjualanDataTest.php` (8 passed, 2 skipped, 35 assertions).
+  - Test suite data nyata `tests/Feature/DashboardDataTest.php` (5 passed, 2 skipped, 21 assertions).
 
 ### Changed
-- **PembelianController**:
-  - Menghapus dataset dummy statis dan mengintegrasikan pembacaan data nyata via `PembelianService`.
-  - Menambahkan method `store()` untuk validasi input dan pencatatan transaksi restock baru dengan pesan kilas (flash message) sukses.
+- **LaporanPenjualanController & DashboardController**:
+  - Menghapus method mock `dataContoh()` dan dataset dummy admin pada controller.
+  - Mengintegrasikan pembacaan data nyata via `LaporanPenjualanService` dan `DashboardService`.
+  - Validasi parameter tanggal ketat (`Y-m-d`) dengan batas rentang kustom maksimal 366 hari serta proteksi injeksi SQL.
 
 ## [Unreleased] - Branch `staging` (22 Oktober 2026)
 
