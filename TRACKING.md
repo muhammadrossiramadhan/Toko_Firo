@@ -44,6 +44,7 @@
 | 38 | Antarmuka UI Sesi Kedaluwarsa (Expired) K12 & K18 | Selesai | resources/views/auth/expired.blade.php (rute /sesi-berakhir) dan resources/views/errors/419.blade.php, bebas SVG, target 44px |
 | 39 | Implementasi arsitektur bot Telegram dua arah | Selesai | TelegramBotService, TelegramReportService, DomPDF laporan A4, TelegramWebhookController, rute api/telegram/webhook |
 | 40 | Evaluasi keamanan & penetapan status bot webhook | Pending | Status PENDING (on hold) menunggu finalisasi backend admin; Cyber Security Checklist disusun rapi |
+| 41 | Integrasi data riil Log Aktivitas (Figma P16) | Selesai | app/Services/LogAktivitasService.php, pembacaan riil tabel log_aktivitas, filter tipe/tanggal/kunci, paginasi 10 item, ekspor CSV murni, tests/Feature/LogAktivitasDataTest.php (7 passed, 27 assertions) |
 
 ---
 

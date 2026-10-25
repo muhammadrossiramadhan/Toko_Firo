@@ -6,6 +6,18 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `Rossi/Activity-Log_Admins` (25 Oktober 2026)
+
+### Added
+- **Modul Log Aktivitas (Data Riil MariaDB)**:
+  - `app/Services/LogAktivitasService.php`: layanan pembacaan data audit trail dari tabel `log_aktivitas` (LEFT JOIN `pengguna`), filter tipe aksi, filter rentang tanggal `waktu`, pencarian kata kunci aman dengan parameter binding, paginasi 10 item per halaman (`withQueryString`), dan ekspor data ke format CSV murni.
+  - `tests/Feature/LogAktivitasDataTest.php`: feature test suite data riil dengan transaksi database (7 passed, 2 skipped, 27 assertions).
+
+### Changed
+- **LogAktivitasController**:
+  - Menghapus array mock dummy statis lama dan mengintegrasikan pembacaan data nyata via `LogAktivitasService`.
+  - Menambahkan method `ekspor()` untuk pengunduhan berkas CSV stream `log-aktivitas-YYYY-MM-DD.csv` dengan header `text/csv; charset=UTF-8`.
+
 ## [Unreleased] - Branch `staging` (22 Oktober 2026)
 
 ### Added
