@@ -8,9 +8,9 @@ use Tests\TestCase;
 
 class TelegramWebhookSecurityTest extends TestCase
 {
-    protected string $secretToken = 'secure-webhook-token-test-xyz';
+    protected string $secretToken = 'TokoFiroSecret123';
     protected string $allowedChatId = '-1001234567890';
-    protected string $adminChatId = '987654321';
+    protected string $adminChatId = '8063111465';
 
     protected function setUp(): void
     {
