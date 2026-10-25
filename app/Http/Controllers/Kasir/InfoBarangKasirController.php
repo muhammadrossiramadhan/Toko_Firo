@@ -49,23 +49,21 @@ class InfoBarangKasirController extends Controller
             $kode = trim(Str::before($sisa, ' - '));
             $nama = trim(Str::after($sisa, ' - '));
 
-            $sebelum = json_decode($row->data_sebelum ?? '', true) ?: [];
-            $sesudah = json_decode($row->data_sesudah ?? '', true) ?: [];
+        $item = ItemBarang::where('kode_item', $kode)->first();
 
-            if ($p['tipe'] === 'baru') {
-                $item = ItemBarang::where('kode_item', $kode)->first();
-                $detail = $item
-                    ? 'Harga: Rp ' . number_format($item->harga_jual, 0, ',', '.') . ' · Stok awal: ' . $item->stok
-                    : '-';
-            } elseif ($p['tipe'] === 'harga') {
-                $detail = isset($sebelum['harga_jual'], $sesudah['harga_jual'])
-                    ? 'Rp ' . number_format($sebelum['harga_jual'], 0, ',', '.') . ' -> Rp ' . number_format($sesudah['harga_jual'], 0, ',', '.')
-                    : 'Harga jual diperbarui';
-            } else {
-                $detail = isset($sebelum['stok'], $sesudah['stok'])
-                    ? 'Stok: ' . $sebelum['stok'] . ' -> ' . $sesudah['stok']
-                    : 'Stok diperbarui';
-            }
+        if ($p['tipe'] === 'baru') {
+            $detail = $item
+                ? 'Harga: Rp ' . number_format($item->harga_jual, 0, ',', '.') . ' · Stok awal: ' . $item->stok
+                : 'Barang ditambahkan ke katalog';
+        } elseif ($p['tipe'] === 'harga') {
+            $detail = $item
+                ? 'Harga jual: Rp ' . number_format($item->harga_jual, 0, ',', '.')
+                : 'Harga jual diperbarui';
+        } else {
+            $detail = $item
+                ? 'Stok saat ini: ' . $item->stok
+                : 'Stok diperbarui';
+        }
 
             return [
                 'tipe'       => $p['tipe'],
