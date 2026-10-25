@@ -6,6 +6,20 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `Rossi/Backup-Data_Admins` (25 Oktober 2026)
+
+### Added
+- **Backend Backup Data (Data Nyata MariaDB)**:
+  - `app/Services/BackupService.php`: Layanan pembacaan riwayat backup terpaginasi 10 baris (`getRiwayatBackup`), pencatatan riwayat pencadangan ke tabel `riwayat_backup` via Stored Procedure `sp_catat_backup`, dan proses backup (`prosesBackup`) dengan penamaan file terstandarisasi.
+  - Test suite data nyata `tests/Feature/BackupDataTest.php` (4 passed, 2 skipped, 26 assertions).
+
+### Changed
+- **BackupController**:
+  - Menghapus dataset mock statis lama dan mengalihkan pemanggilan ke `BackupService`.
+  - Mengintegrasikan aksi backup manual dan otomatis via Stored Procedure MariaDB.
+
+---
+
 ## [Unreleased] - Branch `staging` (25 Oktober 2026)
 
 ### Added
