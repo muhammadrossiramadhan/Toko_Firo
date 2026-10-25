@@ -6,6 +6,20 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `Rossi/Min-Stock-Threshold_Admins` (25 Oktober 2026)
+
+### Added
+- **Backend Batas Stok Minimum (Data Nyata MariaDB)**:
+  - `app/Services/BatasStokService.php`: Query builder `daftar_item` terpaginasi 10 item per halaman, filter jenis item, pencarian keyword kebal SQL injection, pemetaan status stok (Habis, Menipis, Normal, Aman), dan eksekusi Stored Procedure `sp_set_batas_minimum` (satuan) serta `sp_set_batas_minimum_semua` (massal).
+  - Test suite data nyata `tests/Feature/BatasStokDataTest.php` (8 passed, 2 skipped, 30 assertions).
+
+### Changed
+- **BatasStokController**:
+  - Menghapus dataset mock statis lama dan mengalihkan pemanggilan ke `BatasStokService`.
+  - Mengintegrasikan pembaruan batas stok satuan dan massal dengan validasi input batas minimum (0 - 1000).
+
+---
+
 ## [Unreleased] - Branch `staging` (25 Oktober 2026)
 
 ### Added

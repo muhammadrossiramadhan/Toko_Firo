@@ -47,6 +47,7 @@
 | 41 | Layanan LaporanPenjualanService & integrasi DB nyata | Selesai | app/Services/LaporanPenjualanService.php, agregasi penjualan/laba/qty/terlaris, paginasi 5 item, filter rentang tanggal inklusif |
 | 42 | Layanan DashboardService & integrasi DB nyata | Selesai | app/Services/DashboardService.php, 4 kartu ringkasan, tren 7 hari (nilai 0 hari kosong), top barang hari ini, 10 aktivitas audit log (null -> Sistem) |
 | 43 | Test Suite Feature Data Nyata Laporan & Dashboard | Selesai | tests/Feature/LaporanPenjualanDataTest.php (8 passed, 35 assertions) dan DashboardDataTest.php (5 passed, 21 assertions) |
+| 44 | Layanan BatasStokService & integrasi DB nyata (Figma P14) | Selesai | app/Services/BatasStokService.php, integrasi sp_set_batas_minimum dan sp_set_batas_minimum_semua, BatasStokController data riil, tests/Feature/BatasStokDataTest.php (8 passed, 30 assertions) |
 
 ---
 
@@ -84,9 +85,11 @@
 
 ### 5. Modul Batas Stok Minimum (Figma P14)
 - `routes/admin_batas_stok.php`: Rute mandiri `GET /admin/batas-stok` (`admin.batas-stok`).
-- `app/Http/Controllers/Admin/BatasStokController.php`: Controller batas stok minimum (5 data item contoh Figma P14).
+- `app/Services/BatasStokService.php`: Layanan backend pembacaan data item terpaginasi (10 item), filter jenis, pencarian nama/kode, pemetaan status stok, eksekusi Stored Procedure batas stok satuan dan massal.
+- `app/Http/Controllers/Admin/BatasStokController.php`: Controller batas stok minimum terhubung data riil via BatasStokService.
 - `resources/views/admin/batas_stok/index.blade.php`: Banner bot Telegram teks murni, stepper tombol teks `[-]` dan `[+]`, tombol aksi cepat 3/5 pcs, dan bilah simpan mengambang (*floating bar*).
-- `tests/Feature/BatasStokAdminTest.php`: Uji HTTP 200, bebas SVG, partial skala 80%, dan verifikasi elemen stepper.
+- `tests/Feature/BatasStokAdminTest.php`: Uji prototype HTTP 200, bebas SVG, partial skala 80%, dan verifikasi elemen stepper.
+- `tests/Feature/BatasStokDataTest.php`: Feature test data nyata MariaDB (8 passed, 2 skipped, 30 assertions).
 
 ### 6. Modul Dashboard Admin (Figma P10)
 - `routes/admin_dashboard.php`: Rute mandiri `GET /admin/dashboard` (`admin.dashboard`).
