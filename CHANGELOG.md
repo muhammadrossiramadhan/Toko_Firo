@@ -6,17 +6,20 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
-## [Unreleased] - Branch `Rossi/Activity-Log_Admins` (25 Oktober 2026)
+## [Unreleased] - Branch `staging` (25 Oktober 2026)
 
 ### Added
-- **Modul Log Aktivitas (Data Riil MariaDB)**:
-  - `app/Services/LogAktivitasService.php`: layanan pembacaan data audit trail dari tabel `log_aktivitas` (LEFT JOIN `pengguna`), filter tipe aksi, filter rentang tanggal `waktu`, pencarian kata kunci aman dengan parameter binding, paginasi 10 item per halaman (`withQueryString`), dan ekspor data ke format CSV murni.
-  - `tests/Feature/LogAktivitasDataTest.php`: feature test suite data riil dengan transaksi database (7 passed, 2 skipped, 27 assertions).
+- **Backend Laporan Penjualan & Dashboard Admin (Data Nyata)**:
+  - `app/Services/LaporanPenjualanService.php`: perhitungan ringkasan penjualan kotor, jumlah nota, barang terjual bersih, barang terlaris, estimasi laba bersih, dan riwayat transaksi terpaginasi (5 per halaman) dengan rentang tanggal inklusif.
+  - `app/Services/DashboardService.php`: penyedia metrik 4 kartu hari ini (penjualan, transaksi, stok menipis, laba), volume 7 hari mingguan (nilai 0 untuk hari kosong), top barang hari ini, dan 10 aktivitas log terbaru (pelaku null dipetakan ke "Sistem").
+  - Test suite data nyata `tests/Feature/LaporanPenjualanDataTest.php` (8 passed, 2 skipped, 35 assertions).
+  - Test suite data nyata `tests/Feature/DashboardDataTest.php` (5 passed, 2 skipped, 21 assertions).
 
 ### Changed
-- **LogAktivitasController**:
-  - Menghapus array mock dummy statis lama dan mengintegrasikan pembacaan data nyata via `LogAktivitasService`.
-  - Menambahkan method `ekspor()` untuk pengunduhan berkas CSV stream `log-aktivitas-YYYY-MM-DD.csv` dengan header `text/csv; charset=UTF-8`.
+- **LaporanPenjualanController & DashboardController**:
+  - Menghapus method mock `dataContoh()` dan dataset dummy admin pada controller.
+  - Mengintegrasikan pembacaan data nyata via `LaporanPenjualanService` dan `DashboardService`.
+  - Validasi parameter tanggal ketat (`Y-m-d`) dengan batas rentang kustom maksimal 366 hari serta proteksi injeksi SQL.
 
 ## [Unreleased] - Branch `staging` (22 Oktober 2026)
 
