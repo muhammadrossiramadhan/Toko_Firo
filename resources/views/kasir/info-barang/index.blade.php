@@ -133,43 +133,33 @@
         </header>
 
         {{-- Baris Tab Filter Status (Pills) --}}
+        @php
+            $tabs = [
+                ''      => 'Semua',
+                'baru'  => 'Barang Baru',
+                'harga' => 'Perubahan Harga',
+                'stok'  => 'Stok Diperbarui',
+            ];
+            $tipeAktif = $tipe ?? '';
+        @endphp
+
         <div class="flex flex-wrap items-center gap-3 mb-6">
-            {{-- Tab Semua (Aktif) --}}
-            <button
-                type="button"
-                class="touch-target bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base shadow-sm transition-colors cursor-pointer"
-            >
-                Semua
-            </button>
-
-            {{-- Tab Barang Baru --}}
-            <button
-                type="button"
-                class="touch-target bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors cursor-pointer"
-            >
-                Barang Baru
-            </button>
-
-            {{-- Tab Perubahan Harga --}}
-            <button
-                type="button"
-                class="touch-target bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors cursor-pointer"
-            >
-                Perubahan Harga
-            </button>
-
-            {{-- Tab Stok Diperbarui --}}
-            <button
-                type="button"
-                class="touch-target bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors cursor-pointer"
-            >
-                Stok Diperbarui
-            </button>
+            @foreach ($tabs as $key => $label)
+                <a
+                    href="{{ route('kasir.info-barang', $key !== '' ? ['tipe' => $key] : []) }}"
+                    class="touch-target font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors
+                        {{ $tipeAktif === $key
+                            ? 'bg-emerald-700 text-white shadow-sm'
+                            : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' }}"
+                >
+                    {{ $label }}
+                </a>
+            @endforeach
         </div>
 
         {{-- Daftar Kartu Riwayat Pembaruan --}}
         <div class="space-y-4">
-            @foreach ($daftarPembaruan as $item)
+            @forelse ($daftarPembaruan as $item)
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:border-emerald-300 transition-colors">
                     {{-- Sisi Kiri: Badge Inisial Teks Murni & Informasi Produk --}}
                     <div class="flex items-center min-w-0">
@@ -213,7 +203,11 @@
                         {{ $item['waktu'] }}
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 text-base">
+                    Belum ada pembaruan untuk kategori ini.
+                </div>
+            @endforelse
         </div>
     </main>
 

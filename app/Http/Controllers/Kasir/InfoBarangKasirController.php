@@ -3,77 +3,91 @@
 namespace App\Http\Controllers\Kasir;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\View;
+use App\Models\ItemBarang;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class InfoBarangKasirController extends Controller
 {
     /**
-     * Menampilkan antarmuka Info Barang Baru Kasir (Frontend Prototype Figma Frame P09).
+     * Menampilkan Info Barang Baru untuk kasir, dibaca dari tabel log_aktivitas.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $kategori = [
-            'Semua',
-            'Barang Baru',
-            'Perubahan Harga',
-            'Stok Diperbarui',
+        // Pemetaan tipe_aksi di log_aktivitas -> tampilan Card
+        $tampilanAksi = [
+            'ITEM_BARU'    => ['tipe' => 'baru',  'badge' => 'Baru',   'inisial' => 'NEW', 'ket' => 'Ditambahkan ke katalog'],
+            'HARGA_DIUBAH' => ['tipe' => 'harga', 'badge' => 'Harga',  'inisial' => 'Rp',  'ket' => 'Harga diperbarui'],
+            'STOK_DIUBAH'  => ['tipe' => 'stok',  'badge' => 'Update', 'inisial' => 'STK', 'ket' => 'Stok diperbarui oleh Admin'],
         ];
 
-        $daftarPembaruan = [
-            [
-                'tipe' => 'baru',
-                'badge' => 'Baru',
-                'inisial' => 'NEW',
-                'nama' => 'Spidol Snowman Hitam',
-                'keterangan' => 'Ditambahkan ke katalog',
-                'detail' => 'Harga: Rp 8.000 · Stok awal: 12',
-                'waktu' => '2 jam lalu',
-            ],
-            [
-                'tipe' => 'harga',
-                'badge' => 'Harga',
-                'inisial' => 'Rp',
-                'nama' => 'Buku Tulis Sidu 58hal',
-                'keterangan' => 'Harga diperbarui',
-                'detail' => 'Rp 5.000 -> Rp 5.500',
-                'waktu' => '5 jam lalu',
-            ],
-            [
-                'tipe' => 'stok',
-                'badge' => 'Update',
-                'inisial' => 'STK',
-                'nama' => 'Penghapus Faber-Castell',
-                'keterangan' => 'Stok diperbarui oleh Admin',
-                'detail' => 'Stok: 15 -> 18',
-                'waktu' => '1 hari lalu',
-            ],
-            [
-                'tipe' => 'baru',
-                'badge' => 'Baru',
-                'inisial' => 'NEW',
-                'nama' => 'Amplop Putih Polos',
-                'keterangan' => 'Ditambahkan ke katalog',
-                'detail' => 'Harga: Rp 500 · Stok awal: 200',
-                'waktu' => '1 hari lalu',
-            ],
-            [
-                'tipe' => 'harga',
-                'badge' => 'Harga',
-                'inisial' => 'Rp',
-                'nama' => 'Tinta Printer Canon',
-                'keterangan' => 'Harga diperbarui',
-                'detail' => 'Rp 85.000 -> Rp 90.000',
-                'waktu' => '2 hari lalu',
-            ],
-        ];
+        // Filter dari URL: ?tipe=baru|harga|stok (selain itu = Semua)
+        $tipe = $request->query('tipe');
+        if (! in_array($tipe, ['baru', 'harga', 'stok'], true)) {
+            $tipe = null;
+        }
 
+        $aksiDipakai = collect($tampilanAksi)
+            ->filter(fn ($p) => $tipe === null || $p['tipe'] === $tipe)
+            ->keys()
+            ->all();
+
+        $log = DB::table('log_aktivitas')
+            ->whereIn('tipe_aksi', $aksiDipakai)
+            ->orderByDesc('waktu')
+            ->limit(50)
+            ->get();
+
+        $daftarPembaruan = $log->map(function ($row) use ($tampilanAksi) {
+            $p = $tampilanAksi[$row->tipe_aksi];
+
+            // keterangan berformat "Awalan: KODE - Nama"
+            $sisa = Str::after($row->keterangan, ': ');
+            $kode = trim(Str::before($sisa, ' - '));
+            $nama = trim(Str::after($sisa, ' - '));
+
+            $sebelum = json_decode($row->data_sebelum ?? '', true) ?: [];
+            $sesudah = json_decode($row->data_sesudah ?? '', true) ?: [];
+
+            if ($p['tipe'] === 'baru') {
+                $item = ItemBarang::where('kode_item', $kode)->first();
+                $detail = $item
+                    ? 'Harga: Rp ' . number_format($item->harga_jual, 0, ',', '.') . ' · Stok awal: ' . $item->stok
+                    : '-';
+            } elseif ($p['tipe'] === 'harga') {
+                $detail = isset($sebelum['harga_jual'], $sesudah['harga_jual'])
+                    ? 'Rp ' . number_format($sebelum['harga_jual'], 0, ',', '.') . ' -> Rp ' . number_format($sesudah['harga_jual'], 0, ',', '.')
+                    : 'Harga jual diperbarui';
+            } else {
+                $detail = isset($sebelum['stok'], $sesudah['stok'])
+                    ? 'Stok: ' . $sebelum['stok'] . ' -> ' . $sesudah['stok']
+                    : 'Stok diperbarui';
+            }
+
+            return [
+                'tipe'       => $p['tipe'],
+                'badge'      => $p['badge'],
+                'inisial'    => $p['inisial'],
+                'nama'       => $nama,
+                'keterangan' => $p['ket'],
+                'detail'     => $detail,
+                'waktu'      => Carbon::parse($row->waktu)->locale('id')->diffForHumans(),
+            ];
+        });
+
+        $kategori = ['Semua', 'Barang Baru', 'Perubahan Harga', 'Stok Diperbarui'];
+
+        $user = auth()->user();
+        $namaUser = $user->name ?? $user->nama ?? 'Kasir';
         $kasir = [
-            'nama' => 'Rina Putri',
-            'inisial' => 'R',
-            'role' => 'Kasir',
+            'nama'    => $namaUser,
+            'inisial' => strtoupper(substr($namaUser, 0, 1)),
+            'role'    => 'Kasir',
         ];
 
-        return view('kasir.info-barang.index', compact('kategori', 'daftarPembaruan', 'kasir'));
+        return view('kasir.info-barang.index', compact('kategori', 'daftarPembaruan', 'kasir', 'tipe'));
     }
 }
-
