@@ -6,6 +6,20 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `Rossi/User-Settings_Admins` (25 Oktober 2026)
+
+### Added
+- **Backend Kelola Akun Pengguna (Data Nyata MariaDB)**:
+  - `app/Services/PenggunaService.php`: Layanan backend manajemen pengguna terpaginasi 10 item per halaman, filter role (ADMIN/KASIR), filter status (AKTIF/NONAKTIF), pencarian keyword nama/username aman dari SQL injection, pemetaan inisial & format login terakhir, serta eksekusi Stored Procedure `sp_create_pengguna`, `sp_update_pengguna`, `sp_set_status_pengguna`, `sp_reset_password`, dan `sp_delete_pengguna`.
+  - Test suite data nyata `tests/Feature/PenggunaDataTest.php` (8 passed, 2 skipped, 31 assertions).
+
+### Changed
+- **PenggunaController**:
+  - Menghapus dataset mock statis lama dan mengalihkan pemanggilan ke `PenggunaService`.
+  - Menangani aksi penambahan staf (validasi nama min 3 char, username unik min 4 char, password min 6 char, role valid), pembaruan data, toggle status (AKTIF/NONAKTIF), dan reset password pengguna.
+
+---
+
 ## [Unreleased] - Branch `staging` (25 Oktober 2026)
 
 ### Added

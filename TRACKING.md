@@ -47,6 +47,7 @@
 | 41 | Layanan LaporanPenjualanService & integrasi DB nyata | Selesai | app/Services/LaporanPenjualanService.php, agregasi penjualan/laba/qty/terlaris, paginasi 5 item, filter rentang tanggal inklusif |
 | 42 | Layanan DashboardService & integrasi DB nyata | Selesai | app/Services/DashboardService.php, 4 kartu ringkasan, tren 7 hari (nilai 0 hari kosong), top barang hari ini, 10 aktivitas audit log (null -> Sistem) |
 | 43 | Test Suite Feature Data Nyata Laporan & Dashboard | Selesai | tests/Feature/LaporanPenjualanDataTest.php (8 passed, 35 assertions) dan DashboardDataTest.php (5 passed, 21 assertions) |
+| 44 | Layanan PenggunaService & integrasi DB nyata (Figma P13) | Selesai | app/Services/PenggunaService.php, integrasi sp_create_pengguna, sp_update_pengguna, sp_set_status_pengguna, sp_reset_password, sp_delete_pengguna, PenggunaController data riil, tests/Feature/PenggunaDataTest.php (8 passed, 31 assertions) |
 
 ---
 
@@ -78,9 +79,11 @@
 
 ### 4. Modul Kelola Akun Pengguna (Figma P13)
 - `routes/admin_pengguna.php`: Rute mandiri `GET /admin/pengguna` (`admin.pengguna`).
-- `app/Http/Controllers/Admin/PenggunaController.php`: Controller manajemen pengguna dengan data master peran Admin dan Kasir.
+- `app/Services/PenggunaService.php`: Layanan backend manajemen pengguna terpaginasi (10 item), filter role & status, pencarian nama/username, dan eksekusi Stored Procedure pengguna.
+- `app/Http/Controllers/Admin/PenggunaController.php`: Controller manajemen pengguna terhubung data riil via PenggunaService.
 - `resources/views/admin/pengguna/index.blade.php`: Tampilan daftar pengguna, tabel hak akses, indikator status AKTIF/NONAKTIF, dan modal manajemen akun.
-- `tests/Feature/PenggunaAdminTest.php`: Uji akses, struktur tabel pengguna, bebas SVG, dan skala tampilan.
+- `tests/Feature/PenggunaAdminTest.php`: Uji prototype akses, struktur tabel pengguna, bebas SVG, dan skala tampilan.
+- `tests/Feature/PenggunaDataTest.php`: Feature test data nyata MariaDB (8 passed, 2 skipped, 31 assertions).
 
 ### 5. Modul Batas Stok Minimum (Figma P14)
 - `routes/admin_batas_stok.php`: Rute mandiri `GET /admin/batas-stok` (`admin.batas-stok`).
