@@ -6,17 +6,17 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
-## [Unreleased] - Branch `Rossi/Backup-Data_Admins` (25 Oktober 2026)
+## [Unreleased] - Branch `Rossi/Min-Stock-Threshold_Admins` (25 Oktober 2026)
 
 ### Added
-- **Backend Backup Data (Data Nyata MariaDB)**:
-  - `app/Services/BackupService.php`: Layanan pembacaan riwayat backup terpaginasi 10 baris (`getRiwayatBackup`), pencatatan riwayat pencadangan ke tabel `riwayat_backup` via Stored Procedure `sp_catat_backup`, dan proses backup (`prosesBackup`) dengan penamaan file terstandarisasi.
-  - Test suite data nyata `tests/Feature/BackupDataTest.php` (4 passed, 2 skipped, 26 assertions).
+- **Backend Batas Stok Minimum (Data Nyata MariaDB)**:
+  - `app/Services/BatasStokService.php`: Query builder `daftar_item` terpaginasi 10 item per halaman, filter jenis item, pencarian keyword kebal SQL injection, pemetaan status stok (Habis, Menipis, Normal, Aman), dan eksekusi Stored Procedure `sp_set_batas_minimum` (satuan) serta `sp_set_batas_minimum_semua` (massal).
+  - Test suite data nyata `tests/Feature/BatasStokDataTest.php` (8 passed, 2 skipped, 30 assertions).
 
 ### Changed
-- **BackupController**:
-  - Menghapus dataset mock statis lama dan mengalihkan pemanggilan ke `BackupService`.
-  - Mengintegrasikan aksi backup manual dan otomatis via Stored Procedure MariaDB.
+- **BatasStokController**:
+  - Menghapus dataset mock statis lama dan mengalihkan pemanggilan ke `BatasStokService`.
+  - Mengintegrasikan pembaruan batas stok satuan dan massal dengan validasi input batas minimum (0 - 1000).
 
 ---
 
