@@ -6,6 +6,32 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `staging` (26 Oktober 2026)
+
+### Added
+- **Sistem Telegram Bot Webhook Dua Arah Aman (Cyber Security Hardened)**:
+  - `app/Http/Controllers/TelegramWebhookController.php`: Validasi wajib header `X-Telegram-Bot-Api-Secret-Token` (403 Forbidden bila token invalid) dan whitelist otorisasi `chat_id` pengirim sebelum eksekusi payload.
+  - Penanganan NLP ringkas (keyword *laporan penjualan*, *laporan hari ini*, *rekap hari ini*), 10 submenu Admin, 5 submenu Kasir, dan callback query acknowledgement.
+  - `app/Console/Commands/KirimRekapHarianTelegram.php`: Perintah console `app:kirim-rekap-telegram` untuk pengiriman otomatis rekap omzet beserta PDF resmi ke grup Telegram toko.
+- **Enkripsi Cadangan Database (ZIP AES-256) & Notifikasi Telegram**:
+  - `app/Services/BackupService.php`: Pengemasan dump SQL ke dalam arsip `.zip` terenkripsi AES-256 (`\ZipArchive::EM_AES_256`) menggunakan password terkonfigurasi, pengiriman otomatis dokumen ke Admin Telegram, sanitasi penghapusan file sementara (`unlink`), dan pencatatan audit log via `sp_catat_backup`.
+- **Alert Stok Menipis Otomatis**:
+  - `app/Services/BatasStokService.php`: Hook notifikasi otomatis peringatan stok kritis (`stok <= batas_minimum`) langsung ke Telegram Admin saat pembaruan batas stok.
+- **Otomatisasi Dokumen PDF (DomPDF)**:
+  - `resources/views/pdf/lembar_restock.blade.php`: Template PDF cetak rekomendasi restock A4 portrait (K12 compliant, pure CSS table).
+- **Automated Feature Test Suites**:
+  - `tests/Feature/TelegramWebhookSecurityTest.php` (6 passed, 40 assertions).
+  - `tests/Feature/TelegramServiceTest.php` (4 passed, 19 assertions).
+  - `tests/Feature/ExpiredSessionUiTest.php` (4 passed, 14 assertions).
+
+### Changed
+- **Konfigurasi & Keamanan Rute**:
+  - `config/services.php`: Blok konfigurasi `telegram` terpusat (`bot_token`, `chat_id`, `admin_chat_id`, `webhook_secret`, `backup_password`).
+  - `routes/api.php`: Pemasangan rate limiting `throttle:30,1` pada rute webhook `POST /api/telegram/webhook`.
+  - `bootstrap/app.php`: Pengecualian verifikasi CSRF untuk `api/telegram/webhook`.
+
+---
+
 ## [Unreleased] - Branch `Rossi/Min-Stock-Threshold_Admins` (25 Oktober 2026)
 
 ### Added

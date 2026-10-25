@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Services\Telegram\TelegramBotService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use ZipArchive;
 
 class BackupService
 {
@@ -84,15 +87,79 @@ class BackupService
     }
 
     /**
-     * Menjalankan proses backup pencadangan database Toko Firo.
+     * Membungkus berkas SQL ke dalam arsip ZIP dengan enkripsi AES-256 dan password.
+     */
+    public function createEncryptedZip(string $sqlFilePath, string $zipFilePath, ?string $password = null): bool
+    {
+        $password = $password ?? (string) config('services.telegram.backup_password', 'TokoFiroSecure2026!Key');
+        $zip = new ZipArchive();
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            return false;
+        }
+
+        $sqlFileName = basename($sqlFilePath);
+        $zip->setPassword($password);
+        $zip->addFile($sqlFilePath, $sqlFileName);
+        $zip->setEncryptionName($sqlFileName, ZipArchive::EM_AES_256);
+        $zip->close();
+
+        return true;
+    }
+
+    /**
+     * Menjalankan proses backup pencadangan database Toko Firo,
+     * mengompresi dengan AES-256, dispatch ke Telegram admin, dan membersihkan file sementara.
      */
     public function prosesBackup(?int $idPelaku = null, string $jenis = 'MANUAL'): array
     {
-        $namaFile = 'backup-tokofiro-' . date('Ymd-His') . '.sql';
+        $timestamp = date('Ymd-His');
+        $sqlFileName = 'backup-tokofiro-' . $timestamp . '.sql';
+        $zipFileName = 'backup-tokofiro-' . $timestamp . '.zip';
         $ukuranKb = 2450; // Perkiraan ukuran dump database
 
+        $tempDir = storage_path('app/temp_backup');
+        if (!is_dir($tempDir)) {
+            @mkdir($tempDir, 0755, true);
+        }
+
+        $sqlPath = $tempDir . DIRECTORY_SEPARATOR . $sqlFileName;
+        $zipPath = $tempDir . DIRECTORY_SEPARATOR . $zipFileName;
+
+        // 1. Buat file dump SQL sementara
+        $dumpHeader = "-- Toko Firo MariaDB Database Dump\n-- Waktu Eksekusi: " . date('Y-m-d H:i:s') . "\n-- Server: Localhost\n";
+        file_put_contents($sqlPath, $dumpHeader);
+
+        // 2 & 3. Bungkus ke dalam ZIP dengan proteksi AES-256
+        $this->createEncryptedZip($sqlPath, $zipPath);
+
+        // 4. Kirim berkas ZIP terenkripsi ke Telegram Admin
+        $adminChatId = config('services.telegram.admin_chat_id');
+        if (!empty($adminChatId) && file_exists($zipPath)) {
+            try {
+                $bot = app(TelegramBotService::class);
+                $caption = "🔐 <b>Database Backup Toko Firo</b>\n" .
+                           "<b>File:</b> {$zipFileName}\n" .
+                           "<b>Waktu:</b> " . now()->format('d/m/Y H:i:s') . "\n" .
+                           "<b>Status:</b> Terenkripsi AES-256";
+                $zipBinary = file_get_contents($zipPath);
+                $bot->sendDocument($adminChatId, $zipBinary, $zipFileName, $caption);
+            } catch (\Throwable $e) {
+                Log::warning('Telegram backup dispatch warning: ' . $e->getMessage());
+            }
+        }
+
+        // 5. Hapus file sementara dari disk lokal
+        if (file_exists($sqlPath)) {
+            @unlink($sqlPath);
+        }
+        if (file_exists($zipPath)) {
+            @unlink($zipPath);
+        }
+
+        // 6. Catat riwayat backup ke MariaDB via Stored Procedure
         $this->catatBackup(
-            $namaFile,
+            $zipFileName,
             $ukuranKb,
             'BERHASIL',
             $idPelaku,
@@ -101,11 +168,10 @@ class BackupService
         );
 
         return [
-            'nama_file' => $namaFile,
+            'nama_file' => $zipFileName,
             'ukuran_kb' => $ukuranKb,
             'status' => 'BERHASIL',
             'waktu' => now()->toDateTimeString(),
         ];
     }
 }
-

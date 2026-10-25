@@ -20,21 +20,60 @@ class TelegramWebhookController extends Controller
      */
     public function handle(Request $request): JsonResponse
     {
+        // 1. Validasi Secret Token (X-Telegram-Bot-Api-Secret-Token)
+        $expectedSecret = (string) config('services.telegram.webhook_secret');
+        $receivedSecret = (string) $request->header('X-Telegram-Bot-Api-Secret-Token');
+
+        if (empty($expectedSecret) || $receivedSecret !== $expectedSecret) {
+            Log::warning('Telegram webhook rejected: secret token tidak valid atau tidak disediakan.');
+            return response()->json(['error' => 'Forbidden: Invalid secret token'], 403);
+        }
+
         $update = $request->all();
 
-        // 1. Penanganan Callback Query dari tombol Inline Keyboard
+        // Ambil Chat ID dari update (message atau callback_query)
+        $chatId = $update['message']['chat']['id']
+            ?? $update['callback_query']['message']['chat']['id']
+            ?? $update['callback_query']['from']['id']
+            ?? null;
+
+        // 2. Whitelist Otorisasi Chat ID
+        if (! $this->isAuthorizedChat($chatId)) {
+            Log::warning("Telegram webhook rejected: chat ID {$chatId} tidak terdaftar di whitelist.");
+            return response()->json(['error' => 'Forbidden: Unauthorized chat ID'], 403);
+        }
+
+        // 3. Penanganan Callback Query dari tombol Inline Keyboard
         if (isset($update['callback_query'])) {
             $this->handleCallbackQuery($update['callback_query']);
             return response()->json(['status' => 'ok', 'type' => 'callback_query']);
         }
 
-        // 2. Penanganan Pesan Teks
+        // 4. Penanganan Pesan Teks
         if (isset($update['message'])) {
             $this->handleMessage($update['message']);
             return response()->json(['status' => 'ok', 'type' => 'message']);
         }
 
         return response()->json(['status' => 'ignored']);
+    }
+
+    /**
+     * Memeriksa apakah chat ID terdaftar di whitelist (chat_id atau admin_chat_id).
+     */
+    protected function isAuthorizedChat($chatId): bool
+    {
+        if (empty($chatId)) {
+            return false;
+        }
+
+        $allowedGroup = (string) config('services.telegram.chat_id');
+        $allowedAdmin = (string) config('services.telegram.admin_chat_id');
+
+        $chatIdStr = (string) $chatId;
+
+        return ($allowedGroup !== '' && $chatIdStr === $allowedGroup)
+            || ($allowedAdmin !== '' && $chatIdStr === $allowedAdmin);
     }
 
     /**
@@ -166,7 +205,7 @@ class TelegramWebhookController extends Controller
                     $chatId,
                     "⚠️ <b>Batas Stok Minimum</b>\n\n" .
                     "• Ambang Peringatan Dini: Minimal 5 pcs\n" .
-                    "• Barang Perlu Restock Cepat: <b>4 item</b> (Kertas HVS A4, Tinta Epson, Map Kertas, Pulpen Gel)\n\n" .
+                    "• Barang Perlu Restock Cepat: <b>4 item</b>\n\n" .
                     "🔗 <a href=\"" . url('/admin/batas-stok') . "\">Buka Modul Batas Stok</a>",
                     $this->getKembaliKeyboard('menu_admin')
                 );
@@ -204,7 +243,7 @@ class TelegramWebhookController extends Controller
                     "💾 <b>Pencadangan Data (Backup)</b>\n\n" .
                     "• Status Backup: <b>Tersedia</b>\n" .
                     "• Jadwal Otomatis: Tiap 24 Jam (Tengah Malam)\n" .
-                    "• Backup Terakhir: 22 Okt 2026, 00:00 WIB\n\n" .
+                    "• Proteksi: Enkripsi ZIP AES-256\n\n" .
                     "🔗 <a href=\"" . url('/admin/backup') . "\">Buka Modul Backup</a>",
                     $this->getKembaliKeyboard('menu_admin')
                 );
@@ -386,4 +425,3 @@ class TelegramWebhookController extends Controller
         ];
     }
 }
-

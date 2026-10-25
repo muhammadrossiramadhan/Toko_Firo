@@ -43,11 +43,14 @@
 | 37 | Perbaikan layout scrolling sidebar admin terkunci (sticky) | Selesai | Tag aside distandarkan: h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto w-64 |
 | 38 | Antarmuka UI Sesi Kedaluwarsa (Expired) K12 & K18 | Selesai | resources/views/auth/expired.blade.php (rute /sesi-berakhir) dan resources/views/errors/419.blade.php, bebas SVG, target 44px |
 | 39 | Implementasi arsitektur bot Telegram dua arah | Selesai | TelegramBotService, TelegramReportService, DomPDF laporan A4, TelegramWebhookController, rute api/telegram/webhook |
-| 40 | Evaluasi keamanan & penetapan status bot webhook | Pending | Status PENDING (on hold) menunggu finalisasi backend admin; Cyber Security Checklist disusun rapi |
+| 40 | Pengerasan Keamanan Siber Bot Webhook | Selesai | Validasi Secret Token via header X-Telegram-Bot-Api-Secret-Token (403 Forbidden bila invalid), whitelist chat_id terotorisasi, throttling throttle:30,1 |
 | 41 | Layanan LaporanPenjualanService & integrasi DB nyata | Selesai | app/Services/LaporanPenjualanService.php, agregasi penjualan/laba/qty/terlaris, paginasi 5 item, filter rentang tanggal inklusif |
 | 42 | Layanan DashboardService & integrasi DB nyata | Selesai | app/Services/DashboardService.php, 4 kartu ringkasan, tren 7 hari (nilai 0 hari kosong), top barang hari ini, 10 aktivitas audit log (null -> Sistem) |
 | 43 | Test Suite Feature Data Nyata Laporan & Dashboard | Selesai | tests/Feature/LaporanPenjualanDataTest.php (8 passed, 35 assertions) dan DashboardDataTest.php (5 passed, 21 assertions) |
 | 44 | Layanan BatasStokService & integrasi DB nyata (Figma P14) | Selesai | app/Services/BatasStokService.php, integrasi sp_set_batas_minimum dan sp_set_batas_minimum_semua, BatasStokController data riil, tests/Feature/BatasStokDataTest.php (8 passed, 30 assertions) |
+| 45 | Enkripsi Backup Database ZIP AES-256 & Integrasi Telegram | Selesai | app/Services/BackupService.php, kompresi arsip ZIP AES-256 (\ZipArchive::EM_AES_256) ber-password, dispatch dokumen ke Admin Telegram, pembersihan unlink file sementara |
+| 46 | Template Dokumen Restock & Artisan Rekap Harian | Selesai | resources/views/pdf/lembar_restock.blade.php (K12 compliant), app/Console/Commands/KirimRekapHarianTelegram.php (app:kirim-rekap-telegram) |
+| 47 | Feature Test Suite Webhook Keamanan, Service, & UI Expired | Selesai | tests/Feature/TelegramWebhookSecurityTest.php (6 passed), tests/Feature/TelegramServiceTest.php (4 passed), tests/Feature/ExpiredSessionUiTest.php (4 passed) |
 
 ---
 
@@ -124,13 +127,18 @@
 - `resources/views/errors/419.blade.php`: Penanganan error page 419 Page Expired menggunakan template yang sama.
 - `routes/web.php`: Rute statis `GET /sesi-berakhir` (`auth.expired`).
 
-### 11. Integrasi Telegram Bot Webhook (STATUS: PENDING)
-- `app/Services/Telegram/TelegramBotService.php`: Layanan HTTP client API bot Telegram.
-- `app/Services/Telegram/TelegramReportService.php`: Layanan generator PDF rekap penjualan via DomPDF dan caption HTML.
+### 11. Integrasi Telegram Bot Webhook (STATUS: SELESAI & AMAN)
+- `app/Services/Telegram/TelegramBotService.php`: Layanan HTTP client API bot Telegram dengan timeout aman dan fail-safe error handling.
+- `app/Services/Telegram/TelegramReportService.php`: Layanan generator PDF rekap penjualan & lembar restock via DomPDF dan caption HTML.
 - `resources/views/admin/laporan/pdf.blade.php`: Template cetak A4 laporan penjualan harian.
-- `app/Http/Controllers/TelegramWebhookController.php`: Controller pemroses pesan teks dan interaksi callback query.
+- `resources/views/pdf/lembar_restock.blade.php`: Template cetak A4 rekomendasi restock barang kritis (K12 compliant).
+- `app/Http/Controllers/TelegramWebhookController.php`: Controller webhook aman dengan validasi secret token header `X-Telegram-Bot-Api-Secret-Token` dan whitelist `chat_id`.
 - `app/Console/Commands/SetTelegramCommands.php`: Artisan command `telegram:set-commands` pendaftaran menu bot.
-- `routes/api.php`: Endpoint `POST /api/telegram/webhook` (status PENDING on-hold).
+- `app/Console/Commands/KirimRekapHarianTelegram.php`: Artisan command `app:kirim-rekap-telegram` pengiriman berkas rekap harian otomatis.
+- `routes/api.php`: Endpoint `POST /api/telegram/webhook` terproteksi `throttle:30,1` dan pengecualian CSRF.
+- `tests/Feature/TelegramWebhookSecurityTest.php`: Feature test keamanan webhook (6 passed, 40 assertions).
+- `tests/Feature/TelegramServiceTest.php`: Feature test layanan Telegram, PDF, dan ZIP AES-256 (4 passed, 19 assertions).
+- `tests/Feature/ExpiredSessionUiTest.php`: Feature test UI sesi kedaluwarsa K12 & K18 (4 passed, 14 assertions).
 
 ---
 
