@@ -101,9 +101,11 @@
 
 ### 7. Modul Backup Data (Figma P15)
 - `routes/admin_backup.php`: Rute mandiri `GET /admin/backup` (`admin.backup`).
-- `app/Http/Controllers/Admin/BackupController.php`: Controller pencadangan database dengan 4 data riwayat backup.
+- `app/Services/BackupService.php`: Layanan backend pencadangan database (`getRiwayatBackup`, `catatBackup`, `prosesBackup`) terhubung tabel `riwayat_backup` dan Stored Procedure `sp_catat_backup`.
+- `app/Http/Controllers/Admin/BackupController.php`: Controller pencadangan database terhubung data riil via BackupService.
 - `resources/views/admin/backup/index.blade.php`: Kartu Backup Manual (`border-emerald-500`), kartu Backup Otomatis (`border-slate-200`), tabel riwayat backup, dan kotak pemberitahuan keamanan lokal.
-- `tests/Feature/BackupAdminTest.php`: Uji HTTP 200, kartu backup, tabel unduh, bebas SVG, dan partial skala 80%.
+- `tests/Feature/BackupAdminTest.php`: Uji prototype HTTP 200, kartu backup, tabel unduh, bebas SVG, dan partial skala 80%.
+- `tests/Feature/BackupDataTest.php`: Feature test data nyata MariaDB (4 passed, 2 skipped, 26 assertions).
 
 ### 8. Modul Log Aktivitas (Figma P16)
 - `routes/admin_log.php`: Rute mandiri `GET /admin/log-aktivitas` (`admin.log`).
