@@ -21,100 +21,13 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
-    {{-- Sidebar Navigasi (Sesuai Desain UI Prototype Toko Firo) --}}
-    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
-        <div class="space-y-6">
-            {{-- Brand Card Toko Firo (Tanpa Ikon) --}}
-            <div class="bg-white rounded-xl p-3 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">
-                    F
-                </div>
-                <div class="font-bold text-gray-900 text-lg">
-                    Toko Firo
-                </div>
-            </div>
-
-            {{-- Menu Admin --}}
-            <div>
-                <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">
-                    Menu Admin
-                </div>
-                <nav class="space-y-1">
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Dashboard
-                    </a>
-                    <a href="{{ Route::has('admin.laporan.penjualan') ? route('admin.laporan.penjualan') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Laporan Penjualan
-                    </a>
-                    <a href="{{ Route::has('admin.barang') ? route('admin.barang') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm">
-                        Kelola Data Barang
-                    </a>
-                    <a href="{{ Route::has('admin.pembelian') ? route('admin.pembelian') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Pembelian Barang
-                    </a>
-                    <a href="{{ Route::has('admin.pengguna') ? route('admin.pengguna') : '#' }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Kelola Akun Pengguna
-                    </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Batas Stok Minimum
-                    </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Backup Data
-                    </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Log Aktivitas
-                    </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Pengaturan Notifikasi
-                    </a>
-                </nav>
-            </div>
-
-            {{-- Akses Kasir --}}
-            <div>
-                <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">
-                    Akses Kasir
-                </div>
-                <nav class="space-y-1">
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Transaksi Penjualan
-                    </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Lihat Stok Barang
-                    </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Saldo Harian
-                    </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
-                        Info Barang Baru
-                    </a>
-                </nav>
-            </div>
-        </div>
-
-        {{-- Profil Pengguna di Bawah Sidebar (Tanpa Avatar / Ikon) --}}
-        <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-xl p-3 mb-2">
-                <div class="font-medium text-white text-base truncate">
-                    {{ Auth::user()?->nama ?? 'Admin / Pemilik' }}
-                </div>
-                <div class="text-sm text-emerald-300">
-                    Admin / Pemilik
-                </div>
-            </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">
-                    Keluar
-                </button>
-            </form>
-        </div>
-    </aside>
+    {{-- Sidebar Navigasi Admin Terpusat (Kepatuhan K12 & K18) --}}
+    @include('partials.sidebar_admin')
 
     {{-- Area Konten Utama --}}
-    <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">
+    <main class="flex-1 min-w-0 p-8">
         {{-- Header Halaman (Tanpa Ikon Lonceng) --}}
         <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
@@ -176,7 +89,7 @@
             >
             <select
                 name="jenis"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[150px] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[9.375rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="Semua" {{ $jenis === 'Semua' ? 'selected' : '' }}>Jenis: Semua</option>
                 @foreach ($daftarJenis as $itemJenis)
@@ -187,7 +100,7 @@
             </select>
             <select
                 name="urut"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[170px] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[10.625rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="terbaru" {{ $urut === 'terbaru' ? 'selected' : '' }}>Urutkan: Terbaru</option>
                 <option value="nama" {{ $urut === 'nama' ? 'selected' : '' }}>Urutkan: Nama A-Z</option>

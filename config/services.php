@@ -38,6 +38,9 @@ return [
     'telegram' => [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
         'chat_id' => env('TELEGRAM_GROUP_CHAT_ID'),
+        'admin_chat_id' => env('TELEGRAM_ADMIN_CHAT_ID'),
+        'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+        'backup_password' => env('BACKUP_ARCHIVE_PASSWORD', 'TokoFiroSecure2026!Key'),
     ],
 
 ];
