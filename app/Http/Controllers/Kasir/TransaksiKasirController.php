@@ -25,89 +25,36 @@ class TransaksiKasirController extends Controller
      */
     public function index(Request $request): View|JsonResponse|RedirectResponse
     {
-        // Proteksi autentikasi untuk rute kasir.transaksi.index
+        // Proteksi autentikasi untuk rute kasir.transaksi.index jika diterapkan
         if ($request->routeIs('kasir.transaksi.index') && !auth()->check()) {
             return redirect()->guest(route('login'));
         }
 
-        $items = ItemBarang::query()->limit(15)->get();
+        // Ambil katalog barang aktif dengan stok > 0
+        $items = ItemBarang::query()
+            ->where('stok', '>', 0)
+            ->orderBy('nama_item', 'asc')
+            ->limit(50)
+            ->get();
 
         if ($items->isEmpty()) {
-            // Mock data fallback untuk prototype UI & testing independen
-            $katalog = [
-                [
-                    'kode' => 'BRG-002',
-                    'nama' => 'Kertas HVS A4 70gr',
-                    'harga' => 52000,
-                    'stok' => 3,
-                    'satuan' => 'rim',
-                ],
-                [
-                    'kode' => 'BRG-003',
-                    'nama' => 'Pulpen Pilot G2',
-                    'harga' => 15000,
-                    'stok' => 24,
-                    'satuan' => 'pcs',
-                ],
-                [
-                    'kode' => 'BRG-004',
-                    'nama' => 'Buku Tulis Sidu 58hal',
-                    'harga' => 5500,
-                    'stok' => 40,
-                    'satuan' => 'buku',
-                ],
-                [
-                    'kode' => 'BRG-005',
-                    'nama' => 'Spidol Snowman Hitam',
-                    'harga' => 8000,
-                    'stok' => 12,
-                    'satuan' => 'pcs',
-                ],
-                [
-                    'kode' => 'BRG-006',
-                    'nama' => 'Isi Staples No.10',
-                    'harga' => 4500,
-                    'stok' => 2,
-                    'satuan' => 'kotak',
-                ],
-                [
-                    'kode' => 'BRG-007',
-                    'nama' => 'Map Plastik F4',
-                    'harga' => 3000,
-                    'stok' => 35,
-                    'satuan' => 'lembar',
-                ],
-            ];
-            $keranjang = [
-                [
-                    'kode' => 'BRG-002',
-                    'nama' => 'Kertas HVS A4 70gr',
-                    'harga' => 52000,
-                    'qty' => 1,
-                    'subtotal' => 52000,
-                ],
-                [
-                    'kode' => 'BRG-003',
-                    'nama' => 'Pulpen Pilot G2',
-                    'harga' => 15000,
-                    'qty' => 2,
-                    'subtotal' => 30000,
-                ],
-            ];
-            $totalBelanja = 82000;
-        } else {
-            $katalog = $items->map(function ($it) {
-                return [
-                    'kode' => $it->kode_item,
-                    'nama' => $it->nama_item,
-                    'harga' => (float) $it->harga_jual,
-                    'stok' => (int) $it->stok,
-                    'satuan' => $it->satuan ?: 'pcs',
-                ];
-            })->toArray();
-            $keranjang = [];
-            $totalBelanja = 0;
+            $items = ItemBarang::query()->orderBy('nama_item', 'asc')->limit(50)->get();
         }
+
+        $katalog = $items->map(function ($it) {
+            return [
+                'kode' => $it->kode_item,
+                'nama' => $it->nama_item,
+                'harga' => (float) $it->harga_jual,
+                'stok' => (int) $it->stok,
+                'satuan' => $it->satuan ?: 'pcs',
+            ];
+        })->toArray();
+
+        // Ambil keranjang dari session jika ada
+        $keranjangMap = session('keranjang', []);
+        $keranjang = array_values($keranjangMap);
+        $totalBelanja = (float) array_sum(array_column($keranjang, 'subtotal'));
 
         $user = auth()->user();
         $kasir = [
@@ -120,6 +67,117 @@ class TransaksiKasirController extends Controller
     }
 
     /**
+     * Memperbarui keranjang belanja kasir dalam session (tambah, kurangi, set, kosongkan).
+     */
+    public function updateKeranjang(Request $request): JsonResponse
+    {
+        $action = (string) $request->input('action', 'tambah');
+        $kode = trim((string) $request->input('kode_item', $request->input('kode', '')));
+        $keranjang = session('keranjang', []);
+
+        if ($action === 'kosongkan') {
+            session()->forget('keranjang');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Keranjang berhasil dikosongkan.',
+                'keranjang' => [],
+                'total_belanja' => 0,
+                'total_item' => 0,
+            ]);
+        }
+
+        if (empty($kode)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kode item tidak boleh kosong.',
+            ], 422);
+        }
+
+        $barang = ItemBarang::where('kode_item', $kode)->first();
+        if (!$barang) {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Barang dengan kode '{$kode}' tidak ditemukan.",
+            ], 404);
+        }
+
+        $stokTersedia = (int) $barang->stok;
+        $qtySekarang = isset($keranjang[$kode]) ? (int) $keranjang[$kode]['qty'] : 0;
+
+        if ($action === 'tambah') {
+            $tambahQty = max(1, (int) $request->input('qty', 1));
+            $targetQty = $qtySekarang + $tambahQty;
+
+            if ($targetQty > $stokTersedia) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Stok '{$barang->nama_item}' tidak mencukupi (sisa: {$stokTersedia}, diminta: {$targetQty}).",
+                ], 422);
+            }
+
+            $keranjang[$kode] = [
+                'kode' => $barang->kode_item,
+                'nama' => $barang->nama_item,
+                'harga' => (float) $barang->harga_jual,
+                'satuan' => $barang->satuan ?: 'pcs',
+                'qty' => $targetQty,
+                'stok' => $stokTersedia,
+                'subtotal' => (float) $barang->harga_jual * $targetQty,
+            ];
+        } elseif ($action === 'kurang') {
+            $kurangQty = max(1, (int) $request->input('qty', 1));
+            $targetQty = $qtySekarang - $kurangQty;
+
+            if ($targetQty <= 0) {
+                unset($keranjang[$kode]);
+            } else {
+                $keranjang[$kode]['qty'] = $targetQty;
+                $keranjang[$kode]['subtotal'] = (float) $keranjang[$kode]['harga'] * $targetQty;
+            }
+        } elseif ($action === 'hapus') {
+            unset($keranjang[$kode]);
+        } elseif ($action === 'set') {
+            $targetQty = (int) $request->input('qty', 1);
+            if ($targetQty <= 0) {
+                unset($keranjang[$kode]);
+            } else {
+                if ($targetQty > $stokTersedia) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => "Stok '{$barang->nama_item}' tidak mencukupi (sisa: {$stokTersedia}).",
+                    ], 422);
+                }
+                $keranjang[$kode] = [
+                    'kode' => $barang->kode_item,
+                    'nama' => $barang->nama_item,
+                    'harga' => (float) $barang->harga_jual,
+                    'satuan' => $barang->satuan ?: 'pcs',
+                    'qty' => $targetQty,
+                    'stok' => $stokTersedia,
+                    'subtotal' => (float) $barang->harga_jual * $targetQty,
+                ];
+            }
+        }
+
+        session(['keranjang' => $keranjang]);
+
+        $totalBelanja = 0;
+        $totalItem = 0;
+        foreach ($keranjang as $item) {
+            $totalBelanja += $item['subtotal'];
+            $totalItem += $item['qty'];
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Keranjang berhasil diperbarui.',
+            'keranjang' => array_values($keranjang),
+            'total_belanja' => $totalBelanja,
+            'total_item' => $totalItem,
+        ]);
+    }
+
+    /**
      * Memproses penyimpanan transaksi penjualan POS kasir.
      */
     public function simpan(SimpanTransaksiRequest $request): JsonResponse
@@ -127,6 +185,9 @@ class TransaksiKasirController extends Controller
         try {
             $kasirId = (int) (auth()->id() ?? auth()->user()?->id_pengguna ?? 1);
             $transaksi = $this->transaksiKasirService->prosesTransaksi($request->validated(), $kasirId);
+
+            // Bersihkan session keranjang setelah transaksi berhasil
+            session()->forget('keranjang');
 
             $nomorNota = $transaksi->kode_transaksi;
             $kembalian = (float) $transaksi->kembalian;

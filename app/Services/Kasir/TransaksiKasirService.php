@@ -9,15 +9,15 @@ use Illuminate\Validation\ValidationException;
 class TransaksiKasirService
 {
     /**
-     * Menghasilkan nomor nota transaksi unik harian dengan format TRX-YYYYMMDD-XXXX.
+     * Menghasilkan nomor nota transaksi unik harian dengan format PJ-YYYYMMDD-XXXX (atau prefix kustom).
      */
-    public function generateNomorNota(): string
+    public function generateNomorNota(string $prefix = 'PJ'): string
     {
-        $prefix = 'TRX-' . date('Ymd') . '-';
+        $prefixFull = $prefix . '-' . date('Ymd') . '-';
 
-        // Cari transaksi terakhir pada hari yang sama
+        // Cari transaksi terakhir pada hari yang sama dengan prefix terkait
         $lastNota = DB::table('daftar_penjualan')
-            ->where('kode_transaksi', 'like', $prefix . '%')
+            ->where('kode_transaksi', 'like', $prefixFull . '%')
             ->orderByDesc('kode_transaksi')
             ->value('kode_transaksi');
 
@@ -28,7 +28,7 @@ class TransaksiKasirService
             $seq = 1;
         }
 
-        return $prefix . str_pad((string) $seq, 4, '0', STR_PAD_LEFT);
+        return $prefixFull . str_pad((string) $seq, 4, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -42,7 +42,7 @@ class TransaksiKasirService
     public function prosesTransaksi(array $dataTransaksi, int $kasirId): DaftarPenjualan
     {
         return DB::transaction(function () use ($dataTransaksi, $kasirId) {
-            $nomorNota = $this->generateNomorNota();
+            $nomorNota = $this->generateNomorNota('PJ');
             $items = $dataTransaksi['items'] ?? [];
 
             if (empty($items)) {
@@ -56,7 +56,7 @@ class TransaksiKasirService
 
             // 1. Validasi dan kunci baris data barang (pessimistic locking lockForUpdate)
             foreach ($items as $item) {
-                $kodeItem = (string) ($item['barang_id'] ?? $item['kode_item'] ?? '');
+                $kodeItem = (string) ($item['kode_item'] ?? $item['barang_id'] ?? $item['kode'] ?? '');
                 $qty = (int) ($item['qty'] ?? $item['jumlah'] ?? 0);
 
                 if ($qty <= 0) {
@@ -102,20 +102,27 @@ class TransaksiKasirService
             // 2. Kalkulasi diskon, total akhir, pembayaran, dan kembalian
             $diskon = max(0.0, (float) ($dataTransaksi['diskon'] ?? 0));
             $totalAkhir = max(0.0, $subtotalSemua - $diskon);
-            $bayar = (float) ($dataTransaksi['bayar'] ?? 0);
+            $bayar = (float) ($dataTransaksi['nominal_bayar'] ?? $dataTransaksi['bayar'] ?? 0);
+
+            $metodeBayar = strtoupper((string) ($dataTransaksi['metode_bayar'] ?? 'TUNAI'));
+            if (!in_array($metodeBayar, ['TUNAI', 'QRIS', 'TRANSFER'], true)) {
+                $metodeBayar = 'TUNAI';
+            }
+
+            // Untuk non-tunai jika nominal tidak diisi, otomatis dianggap uang pas
+            if ($metodeBayar !== 'TUNAI' && $bayar <= 0) {
+                $bayar = $totalAkhir;
+            }
 
             if ($bayar < $totalAkhir) {
                 $kekurangan = $totalAkhir - $bayar;
                 throw ValidationException::withMessages([
+                    'nominal_bayar' => ["Uang pembayaran kurang sebesar Rp " . number_format($kekurangan, 0, ',', '.') . "."],
                     'bayar' => ["Uang pembayaran kurang sebesar Rp " . number_format($kekurangan, 0, ',', '.') . "."],
                 ]);
             }
 
-            $kembalian = $bayar - $totalAkhir;
-            $metodeBayar = strtoupper((string) ($dataTransaksi['metode_bayar'] ?? 'TUNAI'));
-            if (!in_array($metodeBayar, ['TUNAI', 'QRIS'], true)) {
-                $metodeBayar = 'TUNAI';
-            }
+            $kembalian = max(0.0, $bayar - $totalAkhir);
             $namaPelanggan = trim((string) ($dataTransaksi['nama_pelanggan'] ?? '')) ?: 'Umum';
 
             // 3. Simpan record tabel induk penjualan (daftar_penjualan)
@@ -130,7 +137,7 @@ class TransaksiKasirService
 
             // 4. Kurangi stok dan simpan detail item transaksi (daftar_transaksi)
             foreach ($detailList as $detail) {
-                // Pengurangan stok otomatis
+                // Pengurangan stok otomatis pada database riil
                 DB::table('daftar_item')
                     ->where('kode_item', $detail['kode_item'])
                     ->decrement('stok', $detail['qty']);
@@ -159,15 +166,35 @@ class TransaksiKasirService
                 }
             }
 
-            // 5. Catat ke log aktivitas (audit trail immutable)
+            // 5. Catat / perbarui saldo_harian jika pembayaran adalah TUNAI
+            if ($metodeBayar === 'TUNAI') {
+                $today = now()->toDateString();
+                $existingSaldo = DB::table('saldo_harian')->where('tanggal', $today)->first();
+
+                if ($existingSaldo) {
+                    DB::table('saldo_harian')
+                        ->where('tanggal', $today)
+                        ->increment('saldo_akhir', $totalAkhir);
+                } else {
+                    DB::table('saldo_harian')->insert([
+                        'tanggal' => $today,
+                        'saldo_awal' => 0.00,
+                        'saldo_akhir' => $totalAkhir,
+                        'diatur_oleh' => $kasirId > 0 ? $kasirId : null,
+                        'dibuat_pada' => now(),
+                    ]);
+                }
+            }
+
+            // 6. Catat ke log aktivitas (audit trail immutable)
             DB::table('log_aktivitas')->insert([
                 'waktu' => now(),
-                'keterangan' => "Transaksi penjualan kasir {$nomorNota} berhasil diproses. Total: Rp " . number_format($totalAkhir, 0, ',', '.'),
+                'keterangan' => "Transaksi penjualan kasir {$nomorNota} berhasil diproses ({$metodeBayar}). Total: Rp " . number_format($totalAkhir, 0, ',', '.'),
                 'tipe_aksi' => 'PENJUALAN',
                 'id_pengguna' => $kasirId > 0 ? $kasirId : null,
             ]);
 
-            // 6. Muat dan pasang atribut transaksi yang berhasil
+            // 7. Muat dan pasang atribut transaksi yang berhasil
             /** @var DaftarPenjualan $transaksi */
             $transaksi = DaftarPenjualan::with(['transaksi.item'])
                 ->where('kode_transaksi', $nomorNota)
@@ -177,6 +204,7 @@ class TransaksiKasirService
             $transaksi->subtotal = $subtotalSemua;
             $transaksi->diskon = $diskon;
             $transaksi->total_akhir = $totalAkhir;
+            $transaksi->nominal_bayar = $bayar;
             $transaksi->uang_dibayar = $bayar;
             $transaksi->kembalian = $kembalian;
 

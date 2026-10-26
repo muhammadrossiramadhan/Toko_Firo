@@ -181,7 +181,7 @@ class TransaksiKasirTest extends TestCase
         $this->assertEquals(5, (int) ItemBarang::where('kode_item', 'TRX-TEST-03')->value('stok'));
 
         // Pastikan tidak ada transaksi yang tersimpan
-        $this->assertEquals(0, DaftarPenjualan::where('kode_transaksi', 'like', 'TRX-' . date('Ymd') . '-%')->whereHas('transaksi', function ($q) {
+        $this->assertEquals(0, DaftarPenjualan::where('kode_transaksi', 'like', 'PJ-' . date('Ymd') . '-%')->whereHas('transaksi', function ($q) {
             $q->where('kode_item', 'TRX-TEST-03');
         })->count());
     }
@@ -221,14 +221,14 @@ class TransaksiKasirTest extends TestCase
     }
 
     /**
-     * Uji generator nomor nota menghasilkan nomor unik dan berurutan.
+     * Uji generator nomor nota menghasilkan nomor unik dan berurutan dengan format PJ-YYYYMMDD-XXXX.
      */
     public function test_generate_nomor_nota_harian(): void
     {
         $service = app(TransaksiKasirService::class);
 
         $nota1 = $service->generateNomorNota();
-        $this->assertStringStartsWith('TRX-' . date('Ymd') . '-', $nota1);
+        $this->assertStringStartsWith('PJ-' . date('Ymd') . '-', $nota1);
 
         // Simpan 1 transaksi dummy untuk memastikan urutan berikutnya bertambah
         DaftarPenjualan::create([
@@ -240,7 +240,108 @@ class TransaksiKasirTest extends TestCase
 
         $nota2 = $service->generateNomorNota();
         $this->assertNotEquals($nota1, $nota2);
-        $this->assertStringStartsWith('TRX-' . date('Ymd') . '-', $nota2);
+        $this->assertStringStartsWith('PJ-' . date('Ymd') . '-', $nota2);
+    }
+
+    /**
+     * Uji endpoint POST /kasir/transaksi/keranjang untuk penambahan item dan validasi stok.
+     */
+    public function test_update_keranjang_berhasil_dan_validasi_stok(): void
+    {
+        $item = ItemBarang::create([
+            'kode_item' => 'TRX-TEST-05',
+            'nama_item' => 'Map Kancing Uji',
+            'harga_pokok' => 1500,
+            'harga_jual' => 3000,
+            'stok' => 5,
+            'batas_minimum' => 2,
+        ]);
+
+        // 1. Tambah 2 item ke keranjang (stok 5 -> cukup)
+        $response = $this->postJson(route('kasir.transaksi.keranjang'), [
+            'action' => 'tambah',
+            'kode_item' => 'TRX-TEST-05',
+            'qty' => 2,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonPath('status', 'success');
+        $response->assertJsonPath('total_belanja', 6000);
+        $response->assertJsonPath('total_item', 2);
+
+        // 2. Tambah lagi 10 item (total 12 > stok 5 -> harus ditolak 422)
+        $responseOver = $this->postJson(route('kasir.transaksi.keranjang'), [
+            'action' => 'tambah',
+            'kode_item' => 'TRX-TEST-05',
+            'qty' => 10,
+        ]);
+
+        $responseOver->assertStatus(422);
+        $responseOver->assertJsonPath('status', 'error');
+
+        // 3. Kosongkan keranjang
+        $responseKosong = $this->postJson(route('kasir.transaksi.keranjang'), [
+            'action' => 'kosongkan',
+        ]);
+
+        $responseKosong->assertStatus(200);
+        $responseKosong->assertJsonPath('total_belanja', 0);
+        $responseKosong->assertJsonPath('total_item', 0);
+    }
+
+    /**
+     * Uji alur pembayaran via POST /kasir/transaksi/bayar memotong stok dan mencatat transaksi di MariaDB.
+     */
+    public function test_checkout_bayar_via_endpoint_bayar_berhasil(): void
+    {
+        /** @var Pengguna $kasir */
+        $kasir = Pengguna::factory()->kasir()->create();
+
+        $item = ItemBarang::create([
+            'kode_item' => 'TRX-TEST-06',
+            'nama_item' => 'Staples Max Uji',
+            'harga_pokok' => 8000,
+            'harga_jual' => 12000,
+            'stok' => 10,
+            'batas_minimum' => 2,
+        ]);
+
+        $payload = [
+            'items' => [
+                ['barang_id' => 'TRX-TEST-06', 'qty' => 3],
+            ],
+            'bayar' => 40000,
+            'metode_bayar' => 'TUNAI',
+        ];
+
+        $response = $this->actingAs($kasir)->postJson(route('kasir.transaksi.bayar'), $payload);
+
+        $response->assertStatus(201);
+        $response->assertJsonPath('status', 'success');
+        $response->assertJsonPath('kembalian', 4000); // 40000 - (3 * 12000 = 36000) = 4000
+
+        // Pastikan stok di database terpotong: 10 - 3 = 7
+        $this->assertEquals(7, (int) ItemBarang::where('kode_item', 'TRX-TEST-06')->value('stok'));
+
+        // Pastikan header transaksi tercatat di daftar_penjualan
+        $nota = $response->json('nomor_nota');
+        $this->assertDatabaseHas('daftar_penjualan', [
+            'kode_transaksi' => $nota,
+            'total_bayar' => 36000,
+        ]);
+
+        // Pastikan baris item tercatat di daftar_transaksi
+        $this->assertDatabaseHas('daftar_transaksi', [
+            'kode_penjualan' => $nota,
+            'kode_item' => 'TRX-TEST-06',
+            'item_keluar' => 3,
+            'subtotal' => 36000,
+        ]);
+
+        // Pastikan saldo_harian terisi/bertambah untuk transaksi TUNAI
+        $this->assertDatabaseHas('saldo_harian', [
+            'tanggal' => now()->toDateString(),
+        ]);
     }
 }
 
