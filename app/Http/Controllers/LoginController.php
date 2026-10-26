@@ -13,7 +13,17 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return Auth::check() ? redirect()->route('demo.barang') : view('masuk');
+        if (Auth::check()) {
+            $role = strtoupper(Auth::user()->role ?? '');
+            if ($role === 'ADMIN') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($role === 'KASIR') {
+                return redirect()->route('kasir.dashboard');
+            }
+            return redirect('/');
+        }
+
+        return view('masuk');
     }
 
     public function authenticate(Request $request, OtpService $otp, TelegramService $telegram)

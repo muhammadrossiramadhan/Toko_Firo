@@ -17,7 +17,7 @@
                 <ul class="space-y-2 text-sm">
                     <li><a href="/" class="text-white/60 hover:text-white transition">Beranda</a></li>
                     <li><a href="/katalog" class="text-white/60 hover:text-white transition">Katalog</a></li>
-                    <li><a href="/masuk" class="text-white/60 hover:text-white transition">Masuk Staf</a></li>
+                    <li><a href="{{ route('login') }}" class="text-white/60 hover:text-white transition">Masuk Staf</a></li>
                 </ul>
             </div>
 

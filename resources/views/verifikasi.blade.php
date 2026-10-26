@@ -71,7 +71,7 @@
             @endif
         </div>
         <div>
-            <a href="/masuk" class="text-sm text-text-muted hover:text-ink transition inline-block">
+            <a href="{{ route('login') }}" class="text-sm text-text-muted hover:text-ink transition inline-block">
                 ← Kembali ke login
             </a>
         </div>
