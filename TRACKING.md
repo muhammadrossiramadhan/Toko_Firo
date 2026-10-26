@@ -19,6 +19,7 @@
 | 13 | Model Pengguna, ItemBarang, isolasi rute, CRUD SP | Selesai | Milestone 2 (L1–L16 di koreksi_copilot.md tuntas 100%) |
 | 14 | database/sql/09_procedure_ubah_hapus.sql | Selesai | sp_update_item_v2, sp_delete_item_v2 |
 | 15 | Handoff dan dokumentasi branch staging | Selesai | HANDOFF_CRUD_TOKO_FIRO.md dibuat |
+| 16 | Backend Mesin Transaksi POS Kasir (TransaksiKasirService, lockForUpdate, SimpanTransaksiRequest, struk cetak) | Selesai | Branch Refina-Toti/Sales-Transaction_Kasir, 10 test lulus |
 
 ## Daftar File
 
