@@ -58,15 +58,15 @@ class DashboardKasirService
 
     public function infoBarangBaru(): array
     {
-        return DB::table('info_barang')
-            ->orderByDesc('created_at')
+        return DB::table('v_info_barang')
+            ->orderByDesc('waktu')
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
-                    'deskripsi' => $item->deskripsi,
+                    'deskripsi' => $item->keterangan,
                     'waktu' => \Carbon\Carbon::parse(
-                        $item->created_at
+                        $item->waktu
                     )->diffForHumans(),
                 ];
         })
