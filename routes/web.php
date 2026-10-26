@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\DemoBarangController;
+use App\Http\Controllers\Kasir\StokKasirController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
