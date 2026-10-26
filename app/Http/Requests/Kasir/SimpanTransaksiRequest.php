@@ -20,6 +20,23 @@ class SimpanTransaksiRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
+        // Ambil data items dari session keranjang jika tidak dikirimkan eksplisit pada request
+        if (empty($this->input('items')) && session()->has('keranjang')) {
+            $sessionCart = session('keranjang', []);
+            $itemsFromSession = [];
+            foreach ($sessionCart as $cartItem) {
+                if (is_array($cartItem)) {
+                    $itemsFromSession[] = [
+                        'barang_id' => $cartItem['kode'] ?? $cartItem['kode_item'] ?? '',
+                        'qty' => $cartItem['qty'] ?? 1,
+                    ];
+                }
+            }
+            if (!empty($itemsFromSession)) {
+                $this->merge(['items' => $itemsFromSession]);
+            }
+        }
+
         // Decode JSON jika input items dikirim sebagai string
         if (is_string($this->input('items'))) {
             $decoded = json_decode($this->input('items'), true);
@@ -28,29 +45,44 @@ class SimpanTransaksiRequest extends FormRequest
             }
         }
 
-        // Normalisasi format item agar mendukung alias parameter umum
+        // Normalisasi format item agar mendukung alias parameter umum (kode_item & barang_id)
         if (is_array($this->input('items'))) {
             $normalizedItems = [];
             foreach ($this->input('items') as $item) {
                 if (is_array($item)) {
-                    $barangId = (string) ($item['barang_id'] ?? $item['kode_item'] ?? $item['kode'] ?? '');
+                    $kodeItem = (string) ($item['kode_item'] ?? $item['barang_id'] ?? $item['kode'] ?? '');
                     $qty = $item['qty'] ?? $item['jumlah'] ?? $item['kuantitas'] ?? 1;
 
                     // Jika numeric id diberikan dan bukan kode_item langsung, coba padding BRG-XXX
-                    if (is_numeric($barangId) && !DB::table('daftar_item')->where('kode_item', $barangId)->exists()) {
-                        $padded = 'BRG-' . str_pad($barangId, 3, '0', STR_PAD_LEFT);
+                    if (is_numeric($kodeItem) && !DB::table('daftar_item')->where('kode_item', $kodeItem)->exists()) {
+                        $padded = 'BRG-' . str_pad($kodeItem, 3, '0', STR_PAD_LEFT);
                         if (DB::table('daftar_item')->where('kode_item', $padded)->exists()) {
-                            $barangId = $padded;
+                            $kodeItem = $padded;
                         }
                     }
 
                     $normalizedItems[] = [
-                        'barang_id' => $barangId,
+                        'kode_item' => $kodeItem,
+                        'barang_id' => $kodeItem,
                         'qty' => is_numeric($qty) ? (int) $qty : $qty,
                     ];
                 }
             }
             $this->merge(['items' => $normalizedItems]);
+        }
+
+        // Sinkronisasi dan pembersihan nominal_bayar & bayar
+        $rawBayar = $this->input('nominal_bayar', $this->input('bayar'));
+        if (is_string($rawBayar)) {
+            $cleanBayar = preg_replace('/[^0-9]/', '', $rawBayar);
+            $rawBayar = $cleanBayar !== '' ? (float) $cleanBayar : null;
+        }
+
+        if ($rawBayar !== null) {
+            $this->merge([
+                'nominal_bayar' => (float) $rawBayar,
+                'bayar' => (float) $rawBayar,
+            ]);
         }
     }
 
@@ -63,13 +95,65 @@ class SimpanTransaksiRequest extends FormRequest
     {
         return [
             'items' => ['required', 'array', 'min:1'],
-            'items.*.barang_id' => ['required', 'string', 'exists:daftar_item,kode_item'],
+            'items.*.kode_item' => ['required', 'string', 'exists:daftar_item,kode_item'],
+            'items.*.barang_id' => ['nullable', 'string', 'exists:daftar_item,kode_item'],
             'items.*.qty' => ['required', 'integer', 'min:1'],
-            'bayar' => ['required', 'numeric', 'min:0'],
+            'nominal_bayar' => ['nullable', 'numeric', 'min:0'],
+            'bayar' => ['nullable', 'numeric', 'min:0'],
             'diskon' => ['nullable', 'numeric', 'min:0'],
-            'metode_bayar' => ['nullable', 'string', 'in:TUNAI,QRIS,tunai,qris'],
+            'metode_bayar' => ['nullable', 'string', 'in:TUNAI,QRIS,TRANSFER,tunai,qris,transfer'],
             'nama_pelanggan' => ['nullable', 'string', 'max:100'],
         ];
+    }
+
+    /**
+     * Konfigurasi validator tambahan untuk validasi kecukupan pembayaran TUNAI.
+     */
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            $metode = strtoupper((string) ($this->input('metode_bayar') ?? 'TUNAI'));
+            if ($metode === 'TUNAI') {
+                $nominalBayar = (float) ($this->input('nominal_bayar') ?? $this->input('bayar') ?? 0);
+                $items = $this->input('items', []);
+
+                if (is_array($items) && !empty($items)) {
+                    $totalBelanja = 0.0;
+                    foreach ($items as $item) {
+                        $kode = (string) ($item['kode_item'] ?? $item['barang_id'] ?? '');
+                        $qty = (int) ($item['qty'] ?? 1);
+                        if (!empty($kode) && $qty > 0) {
+                            $harga = (float) DB::table('daftar_item')->where('kode_item', $kode)->value('harga_jual');
+                            $totalBelanja += ($harga * $qty);
+                        }
+                    }
+
+                    $diskon = max(0.0, (float) ($this->input('diskon') ?? 0));
+                    $totalAkhir = max(0.0, $totalBelanja - $diskon);
+
+                    if ($nominalBayar < $totalAkhir) {
+                        $kekurangan = $totalAkhir - $nominalBayar;
+                        $pesan = "Uang pembayaran kurang sebesar Rp " . number_format($kekurangan, 0, ',', '.') . ".";
+                        $validator->errors()->add('nominal_bayar', $pesan);
+                        $validator->errors()->add('bayar', $pesan);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Format respon JSON jika validasi form request gagal.
+     */
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator): void
+    {
+        $response = response()->json([
+            'status' => 'error',
+            'message' => $validator->errors()->first() ?: 'Data masukan transaksi tidak valid.',
+            'errors' => $validator->errors(),
+        ], 422);
+
+        throw new \Illuminate\Http\Exceptions\HttpResponseException($response);
     }
 
     /**
