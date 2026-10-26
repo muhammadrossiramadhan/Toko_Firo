@@ -148,6 +148,86 @@ class TelegramWebhookSecurityTest extends TestCase
     }
 
     /**
+     * Uji eksekusi command /help dan /bantuan berhasil merespon 200.
+     */
+    public function test_eksekusi_command_help_dan_bantuan_valid(): void
+    {
+        $payload = [
+            'update_id' => 10006,
+            'message' => [
+                'message_id' => 6,
+                'chat' => ['id' => $this->allowedChatId],
+                'text' => '/help',
+            ],
+        ];
+
+        $response = $this->withHeaders([
+            'X-Telegram-Bot-Api-Secret-Token' => $this->secretToken,
+        ])->postJson('/api/telegram/webhook', $payload);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'ok',
+            'type' => 'message',
+        ]);
+    }
+
+    /**
+     * Uji command dengan suffix bot username seperti /laporan@tokofiro_bot dieksekusi dengan benar.
+     */
+    public function test_eksekusi_command_dengan_suffix_bot_username(): void
+    {
+        $payload = [
+            'update_id' => 10007,
+            'message' => [
+                'message_id' => 7,
+                'chat' => ['id' => $this->allowedChatId],
+                'text' => '/laporan@tokofiro_bot',
+            ],
+        ];
+
+        $response = $this->withHeaders([
+            'X-Telegram-Bot-Api-Secret-Token' => $this->secretToken,
+        ])->postJson('/api/telegram/webhook', $payload);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'ok',
+            'type' => 'message',
+        ]);
+    }
+
+    /**
+     * Uji fallback error handling mengembalikan 200 JSON agar Telegram tidak melakukan retry loop berulang.
+     */
+    public function test_fallback_error_handling_mengembalikan_200_saat_terjadi_eksepsi(): void
+    {
+        // Mock TelegramBotService agar melempar Exception saat dipanggil
+        $mockBot = $this->mock(\App\Services\Telegram\TelegramBotService::class);
+        $mockBot->shouldReceive('sendMessage')
+            ->andThrow(new \RuntimeException('Koneksi Telegram bermasalah atau API timeout'));
+
+        $payload = [
+            'update_id' => 10008,
+            'message' => [
+                'message_id' => 8,
+                'chat' => ['id' => $this->allowedChatId],
+                'text' => '/help',
+            ],
+        ];
+
+        $response = $this->withHeaders([
+            'X-Telegram-Bot-Api-Secret-Token' => $this->secretToken,
+        ])->postJson('/api/telegram/webhook', $payload);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'error',
+            'message' => 'Processed with fallback',
+        ]);
+    }
+
+    /**
      * Uji rate limiter webhook (throttle:30,1).
      */
     public function test_rate_limiter_webhook_membatasi_request_berlebih(): void

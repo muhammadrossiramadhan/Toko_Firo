@@ -6,6 +6,29 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `staging` (27 Oktober 2026)
+
+### Added
+- **Peningkatan Fitur Bot Telegram Webhook**:
+  - `app/Http/Controllers/TelegramWebhookController.php`:
+    - Validasi token rahasia `X-Telegram-Bot-Api-Secret-Token` menggunakan `hash_equals()` dengan fallback ke `env('TELEGRAM_WEBHOOK_SECRET')`.
+    - Dukungan perintah slash bot: `/start`, `/help`, `/bantuan`, `/laporan`, `/rekap`, `/menu_admin`, `/menu_kasir`.
+    - Pembersihan otomatis suffix username bot (misal: `/laporan@tokofiro_bot` menjadi `/laporan`).
+    - Penanganan kesalahan fallback dengan `try-catch` eksternal yang mencatat error ke `Log::error(...)` dan merespon HTTP 200 JSON untuk mencegah webhook retry loop dari Telegram.
+    - Penambahan method `kirimBantuan($chatId)` untuk panduan lengkap bot beserta tombol inline keyboard.
+  - `tests/Feature/TelegramWebhookSecurityTest.php`:
+    - Pengujian eksekusi perintah `/help` dan `/bantuan`.
+    - Pengujian penanganan perintah dengan suffix bot username (`@tokofiro_bot`).
+    - Pengujian fallback error handling merespon 200 JSON saat terjadi pengecualian internal.
+
+### Fixed
+- **Optimasi Query & Null Safety Laporan Penjualan Admin**:
+  - `bootstrap/app.php`: Pengecualian CSRF untuk pola rute `api/*` dan `api/telegram/webhook`.
+  - `app/Services/LaporanPenjualanService.php`: Memperbaiki klausa `groupBy()` pada query riwayat transaksi paginasi agar mematuhi standar ketat MariaDB `ONLY_FULL_GROUP_BY` (SQL Error 1055).
+  - `resources/views/admin/laporan/penjualan.blade.php`: Mencegah *null pointer exception* atau *undefined array key* pada kartu metrik ringkasan (menggunakan null-coalescing `?? 0` dan pengecekan aman `!empty($ringkasan['barang_terlaris'])`).
+
+---
+
 ## [Unreleased] - Branch `staging` (26 Oktober 2026)
 
 ### Added

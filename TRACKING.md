@@ -55,6 +55,8 @@
 | 49 | Pendaftaran Rute Endpoint AJAX Stok Kasir & POS Transaksi Kasir | Selesai | routes/kasir_stok.php (kasir.stok.cari) & routes/kasir_transaksi.php (kasir.transaksi.simpan, detail, cetak) |
 | 50 | Pendaftaran Rute Penyimpanan Restock Pembelian Admin | Selesai | routes/admin_pembelian.php (POST /admin/pembelian -> admin.pembelian.store) |
 | 51 | Validasi Seluruh Test Suite Kasir & Pembelian | Selesai | StokKasirTest (10 passed), TransaksiKasirTest (10 passed), PembelianDataTest (5 passed, 2 skipped auth) 100% Lulus |
+| 52 | Audit & Perbaikan MariaDB ONLY_FULL_GROUP_BY Laporan Penjualan | Selesai | app/Services/LaporanPenjualanService.php groupBy() lengkap, view null-safety pada data transaksi kosong |
+| 53 | Peningkatan Keamanan & Slash Commands Telegram Webhook | Selesai | hash_equals() secret token, CSRF exemption api/*, slash commands (/help, /laporan, /rekap), sanitasi @bot_name, fallback HTTP 200 JSON |
 
 ---
 

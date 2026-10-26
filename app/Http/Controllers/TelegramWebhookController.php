@@ -21,10 +21,10 @@ class TelegramWebhookController extends Controller
     public function handle(Request $request): JsonResponse
     {
         // 1. Validasi Secret Token (X-Telegram-Bot-Api-Secret-Token)
-        $expectedSecret = (string) config('services.telegram.webhook_secret');
-        $receivedSecret = (string) $request->header('X-Telegram-Bot-Api-Secret-Token');
+        $expectedSecret = (string) (config('services.telegram.webhook_secret') ?: env('TELEGRAM_WEBHOOK_SECRET', ''));
+        $receivedSecret = (string) $request->header('X-Telegram-Bot-Api-Secret-Token', '');
 
-        if (empty($expectedSecret) || $receivedSecret !== $expectedSecret) {
+        if ($expectedSecret === '' || ! hash_equals($expectedSecret, $receivedSecret)) {
             Log::warning('Telegram webhook rejected: secret token tidak valid atau tidak disediakan.');
             return response()->json(['error' => 'Forbidden: Invalid secret token'], 403);
         }
@@ -43,19 +43,27 @@ class TelegramWebhookController extends Controller
             return response()->json(['error' => 'Forbidden: Unauthorized chat ID'], 403);
         }
 
-        // 3. Penanganan Callback Query dari tombol Inline Keyboard
-        if (isset($update['callback_query'])) {
-            $this->handleCallbackQuery($update['callback_query']);
-            return response()->json(['status' => 'ok', 'type' => 'callback_query']);
-        }
+        try {
+            // 3. Penanganan Callback Query dari tombol Inline Keyboard
+            if (isset($update['callback_query'])) {
+                $this->handleCallbackQuery($update['callback_query']);
+                return response()->json(['status' => 'ok', 'type' => 'callback_query']);
+            }
 
-        // 4. Penanganan Pesan Teks
-        if (isset($update['message'])) {
-            $this->handleMessage($update['message']);
-            return response()->json(['status' => 'ok', 'type' => 'message']);
-        }
+            // 4. Penanganan Pesan Teks
+            if (isset($update['message'])) {
+                $this->handleMessage($update['message']);
+                return response()->json(['status' => 'ok', 'type' => 'message']);
+            }
 
-        return response()->json(['status' => 'ignored']);
+            return response()->json(['status' => 'ignored']);
+        } catch (\Throwable $e) {
+            Log::error('Telegram webhook processing error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'update' => $update,
+            ]);
+            return response()->json(['status' => 'error', 'message' => 'Processed with fallback'], 200);
+        }
     }
 
     /**
@@ -67,8 +75,8 @@ class TelegramWebhookController extends Controller
             return false;
         }
 
-        $allowedGroup = (string) config('services.telegram.chat_id');
-        $allowedAdmin = (string) config('services.telegram.admin_chat_id');
+        $allowedGroup = (string) (config('services.telegram.chat_id') ?: env('TELEGRAM_GROUP_CHAT_ID', env('TELEGRAM_CHAT_ID', '')));
+        $allowedAdmin = (string) (config('services.telegram.admin_chat_id') ?: env('TELEGRAM_ADMIN_CHAT_ID', ''));
 
         $chatIdStr = (string) $chatId;
 
@@ -88,9 +96,46 @@ class TelegramWebhookController extends Controller
             return;
         }
 
+        // Ekstrak command utama jika diawali '/', buang '@username' bot dan ambil keyword awal
+        $cleanCommand = null;
+        if (str_starts_with($text, '/')) {
+            $firstWord = explode(' ', $text, 2)[0];
+            $cleanCommand = strtolower(explode('@', $firstWord)[0]);
+        }
+
+        // a. Penanganan Command Bot Telegram
+        if ($cleanCommand !== null) {
+            switch ($cleanCommand) {
+                case '/start':
+                case '/menu':
+                    $this->kirimMenuUtama($chatId);
+                    return;
+
+                case '/help':
+                case '/bantuan':
+                    $this->kirimBantuan($chatId);
+                    return;
+
+                case '/laporan':
+                case '/rekap':
+                case '/laporan_penjualan':
+                case '/rekap_harian':
+                    $this->kirimLaporanPdf($chatId);
+                    return;
+
+                case '/menu_admin':
+                    $this->kirimMenuAdmin($chatId);
+                    return;
+
+                case '/menu_kasir':
+                    $this->kirimMenuKasir($chatId);
+                    return;
+            }
+        }
+
         $lowerText = strtolower($text);
 
-        // a. Deteksi kata kunci natural untuk unduh Laporan Penjualan
+        // b. Deteksi kata kunci natural untuk unduh Laporan Penjualan
         if (
             str_contains($lowerText, 'laporan penjualan') ||
             str_contains($lowerText, 'laporan hari ini') ||
@@ -101,31 +146,29 @@ class TelegramWebhookController extends Controller
             return;
         }
 
-        // b. Perintah standar
-        if ($text === '/start' || $text === '/menu') {
-            $this->kirimMenuUtama($chatId);
-            return;
-        }
+        // c. Pesan bantuan panduan default
+        $this->kirimBantuan($chatId);
+    }
 
-        if ($text === '/menu_admin') {
-            $this->kirimMenuAdmin($chatId);
-            return;
-        }
+    /**
+     * Mengirim panduan bantuan operasional bot.
+     */
+    protected function kirimBantuan($chatId): void
+    {
+        $pesan = "📖 <b>PANDUAN PENGGUNAAN BOT TOKO FIRO</b>\n\n" .
+                 "Berikut adalah perintah yang dapat Anda gunakan:\n\n" .
+                 "• <b>/start</b> atau <b>/menu</b> : Menampilkan Menu Utama navigasi bot\n" .
+                 "• <b>/help</b> atau <b>/bantuan</b> : Menampilkan panduan bantuan ini\n" .
+                 "• <b>/laporan</b> atau <b>/rekap</b> : Mengunduh berkas Laporan Penjualan PDF hari ini\n" .
+                 "• <b>/menu_admin</b> : Membuka pintasan menu Administrator\n" .
+                 "• <b>/menu_kasir</b> : Membuka pintasan menu Kasir\n\n" .
+                 "<i>Anda juga dapat mengetik kata kunci seperti \"laporan penjualan\" atau memilih tombol berikut:</i>";
 
-        if ($text === '/menu_kasir') {
-            $this->kirimMenuKasir($chatId);
-            return;
-        }
-
-        // c. Pesan bantuan default
-        $pesanDefault = "Halo! Silakan gunakan menu berikut untuk berinteraksi:\n\n" .
-                        "• Ketik <b>/menu</b> untuk membuka navigasi fitur.\n" .
-                        "• Ketik <i>\"laporan penjualan\"</i> untuk mengunduh rekap PDF hari ini.";
-
-        $this->botService->sendMessage($chatId, $pesanDefault, [
+        $this->botService->sendMessage($chatId, $pesan, [
             'inline_keyboard' => [
                 [
-                    ['text' => '📋 Buka Menu Utama', 'callback_data' => 'menu_utama'],
+                    ['text' => '📋 Menu Utama', 'callback_data' => 'menu_utama'],
+                    ['text' => '📊 Unduh Laporan (PDF)', 'callback_data' => 'admin_laporan_pdf'],
                 ],
             ],
         ]);
@@ -150,6 +193,11 @@ class TelegramWebhookController extends Controller
         switch ($data) {
             case 'menu_utama':
                 $this->kirimMenuUtama($chatId);
+                break;
+
+            case 'bantuan':
+            case 'help':
+                $this->kirimBantuan($chatId);
                 break;
 
             case 'menu_admin':

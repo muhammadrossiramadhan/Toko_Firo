@@ -156,7 +156,7 @@
                     Total Penjualan
                 </div>
                 <div class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                    Rp {{ number_format($ringkasan['total_penjualan'], 0, ',', '.') }}
+                    Rp {{ number_format($ringkasan['total_penjualan'] ?? 0, 0, ',', '.') }}
                 </div>
                 <div class="text-sm text-gray-500">
                     {{ $ringkasan['pembanding_penjualan'] ?? 'Belum ada pembanding' }}
@@ -169,7 +169,7 @@
                     Jumlah Nota
                 </div>
                 <div class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                    {{ number_format($ringkasan['jumlah_nota'], 0, ',', '.') }}
+                    {{ number_format($ringkasan['jumlah_nota'] ?? 0, 0, ',', '.') }}
                 </div>
                 <div class="text-sm text-gray-500">
                     {{ $ringkasan['pembanding_nota'] ?? 'Belum ada pembanding' }}
@@ -182,10 +182,10 @@
                     Barang Terjual
                 </div>
                 <div class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                    {{ number_format($ringkasan['barang_terjual'], 0, ',', '.') }} item
+                    {{ number_format($ringkasan['barang_terjual'] ?? 0, 0, ',', '.') }} item
                 </div>
                 <div class="text-sm text-gray-500">
-                    {{ $ringkasan['barang_terlaris'] ? 'Terlaris: ' . $ringkasan['barang_terlaris'] : 'Belum ada data' }}
+                    {{ !empty($ringkasan['barang_terlaris']) ? 'Terlaris: ' . $ringkasan['barang_terlaris'] : 'Belum ada data' }}
                 </div>
             </div>
         </div>
