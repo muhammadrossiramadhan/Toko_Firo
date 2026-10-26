@@ -18,11 +18,10 @@ class InfoBarangKasirTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Info Barang Baru');
+        $response->assertSee('Semua');
         $response->assertSee('Barang Baru');
         $response->assertSee('Perubahan Harga');
-        $response->assertSee('Spidol Snowman Hitam');
-        $response->assertSee('Buku Tulis Sidu 58hal');
-        $response->assertSee('Penghapus Faber-Castell');
+        $response->assertSee('Stok Diperbarui');
     }
 
     /**

@@ -51,6 +51,10 @@
 | 45 | Enkripsi Backup Database ZIP AES-256 & Integrasi Telegram | Selesai | app/Services/BackupService.php, kompresi arsip ZIP AES-256 (\ZipArchive::EM_AES_256) ber-password, dispatch dokumen ke Admin Telegram, pembersihan unlink file sementara |
 | 46 | Template Dokumen Restock & Artisan Rekap Harian | Selesai | resources/views/pdf/lembar_restock.blade.php (K12 compliant), app/Console/Commands/KirimRekapHarianTelegram.php (app:kirim-rekap-telegram) |
 | 47 | Feature Test Suite Webhook Keamanan, Service, & UI Expired | Selesai | tests/Feature/TelegramWebhookSecurityTest.php (6 passed), tests/Feature/TelegramServiceTest.php (4 passed), tests/Feature/ExpiredSessionUiTest.php (4 passed) |
+| 48 | Eksekusi Migrasi Database Skema Saldo Harian | Selesai | 2026_10_24_105035_add_saldo_akhir_to_saldo_harian_table dieksekusi via artisan migrate --force |
+| 49 | Pendaftaran Rute Endpoint AJAX Stok Kasir & POS Transaksi Kasir | Selesai | routes/kasir_stok.php (kasir.stok.cari) & routes/kasir_transaksi.php (kasir.transaksi.simpan, detail, cetak) |
+| 50 | Pendaftaran Rute Penyimpanan Restock Pembelian Admin | Selesai | routes/admin_pembelian.php (POST /admin/pembelian -> admin.pembelian.store) |
+| 51 | Validasi Seluruh Test Suite Kasir & Pembelian | Selesai | StokKasirTest (10 passed), TransaksiKasirTest (10 passed), PembelianDataTest (5 passed, 2 skipped auth) 100% Lulus |
 
 ---
 

@@ -1,0 +1,227 @@
+﻿
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true
+
+   WARN  Tests\Feature\BackupDataTest
+  - tamu diarahkan ke login → Middleware auth dinonaktifkan sementara.                                           0.25s  
+  - kasir aktif mendapat 403 → Middleware check role dinonaktifkan sementara.                                    0.03s  
+  ✓ endpoint index menampilkan riwayat backup riil dari database                                                 0.09s  
+  ✓ pencatatan backup berhasil menambah baris riwayat dan log aktivitas                                          1.37s  
+  ✓ catat backup via stored procedure                                                                            0.06s  
+  ✓ halaman backup tidak memuat tag svg                                                                          0.05s  
+
+   WARN  Tests\Feature\BarangAdminAccessTest
+  - tamu diarahkan ke halaman login → Auth dinonaktifkan sementara untuk pengujian independen.                   0.03s  
+  - kasir aktif mendapat 403 → Auth dinonaktifkan sementara untuk pengujian independen.                          0.03s  
+  ✓ admin aktif mendapat 200 dan halaman memuat kelola data barang                                               0.03s  
+  ✓ halaman tidak memuat svg                                                                                     0.05s  
+
+   WARN  Tests\Feature\BarangCrudTest
+  ✓ admin menambah barang                                                                                        0.04s  
+  ✓ kode kembar ditolak                                                                                          0.04s  
+  ✓ validasi input penambahan barang                                                                             0.06s  
+  ✓ tipe jasa stok tersimpan 999999                                                                              0.04s  
+  ✓ ubah data barang                                                                                             0.03s  
+  ✓ ubah harga barang dan harga jual lebih rendah tetap tersimpan                                                0.04s  
+  ✓ hapus barang tanpa transaksi                                                                                 0.05s  
+  ✓ hapus barang dengan riwayat transaksi ditolak                                                                0.04s  
+  - kasir mendapat 403 untuk semua aksi → Auth dinonaktifkan sementara untuk pengujian independen.               0.02s  
+  - tamu diarahkan ke login untuk semua aksi → Auth dinonaktifkan sementara untuk pengujian independen.          0.03s  
+  ✓ halaman tidak memuat svg                                                                                     0.04s  
+
+   PASS  Tests\Feature\BarangDaftarTest
+  ✓ admin melihat barang yang dibuat                                                                             0.04s  
+  ✓ paginasi tujuh item per halaman                                                                              0.07s  
+  ✓ pencarian q cocok nama dan kode serta mengecualikan lainnya                                                  0.05s  
+  ✓ filter jenis hanya menampilkan jenis itu                                                                     0.07s  
+  ✓ urutan stok dan nama                                                                                         0.07s  
+  ✓ status stok habis menipis dan aman                                                                           0.04s  
+  ✓ halaman tidak memuat svg                                                                                     0.04s  
+
+   PASS  Tests\Feature\BarangRiwayatTest
+  ✓ admin melihat halaman riwayat transaksi                                                                      0.05s  
+  ✓ halaman riwayat tidak memuat svg                                                                             0.03s  
+  ✓ halaman riwayat memuat partial skala                                                                         0.03s  
+  ✓ halaman barang memuat tautan riwayat transaksi                                                               0.05s  
+
+   WARN  Tests\Feature\BatasStokDataTest
+  - tamu diarahkan ke login → Middleware auth dinonaktifkan sementara.                                           0.04s  
+  - kasir aktif mendapat 403 → Middleware check role dinonaktifkan sementara.                                    0.02s  
+  ✓ endpoint index menampilkan data riil dari database                                                           0.05s  
+  ✓ filter jenis dan pencarian kata kunci                                                                        0.05s  
+  ✓ pembaruan batas stok satuan dan pencatatan audit log                                                         0.86s  
+  ✓ pembaruan batas stok massal semua item                                                                       0.06s  
+  ✓ validasi input penolakan nilai negatif                                                                       0.04s  
+  ✓ validasi input penolakan nilai negatif semua                                                                 0.05s  
+  ✓ keamanan input karakter injeksi sql ditangani secara aman                                                    0.03s  
+  ✓ halaman batas stok tidak memuat tag svg                                                                      0.05s  
+
+   WARN  Tests\Feature\DashboardDataTest
+  - tamu diarahkan ke login → Middleware auth dinonaktifkan sementara.                                           0.04s  
+  - kasir aktif mendapat 403 → Middleware check role dinonaktifkan sementara.                                    0.02s  
+  ✓ empat kartu ringkasan dashboard akurat                                                                       0.06s  
+  ✓ konsistensi grafik tujuh hari dan nilai nol hari kosong                                                      0.06s  
+  ✓ top barang hari ini terurut nama dan qty                                                                     0.05s  
+  ✓ aktivitas terbaru dari log dan pemetaan sistem jika user null                                                0.04s  
+  ✓ halaman dashboard tidak memuat tag svg                                                                       0.03s  
+
+   PASS  Tests\Feature\DashboardKasirTest
+  ✓ halaman dashboard kasir dapat diakses dan memuat konten                                                      0.04s  
+  ✓ halaman kasir tidak memuat svg                                                                               0.04s  
+  ✓ halaman kasir memuat partial skala                                                                           0.03s  
+  ✓ menu dashboard kasir aktif                                                                                   0.03s  
+  ✓ touch target elemen interaktif                                                                               0.04s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                                                                0.04s  
+
+   PASS  Tests\Feature\ExpiredSessionUiTest
+  ✓ route sesi berakhir mengembalikan status 200                                                                 0.02s  
+  ✓ halaman sesi berakhir bebas dari tag svg                                                                     0.02s  
+  ✓ tombol memiliki touch target minimal 44px dan aturan k18                                                     0.04s  
+  ✓ view error 419 memuat antarmuka sesi berakhir                                                                0.02s  
+
+   PASS  Tests\Feature\InfoBarangKasirTest
+  ✓ halaman info barang kasir dapat diakses dan memuat konten                                                    0.03s  
+  ✓ halaman info barang tidak memuat svg                                                                         0.02s  
+  ✓ halaman info barang memuat partial skala                                                                     0.03s  
+  ✓ menu info barang aktif                                                                                       0.04s  
+  ✓ touch target elemen interaktif                                                                               0.03s  
+
+   PASS  Tests\Feature\Kasir\StokKasirTest
+  ✓ kasir belum login dialihkan ke login                                                                         0.05s  
+  ✓ kasir terautentikasi dapat mengakses stok                                                                    0.04s  
+  ✓ pencarian barang berdasarkan nama dan barcode                                                                0.03s  
+  ✓ akurasi kalkulasi komputasi status stok                                                                      0.03s  
+  ✓ method cek ketersediaan mengembalikan respon boolean valid                                                   0.04s  
+
+   PASS  Tests\Feature\Kasir\TransaksiKasirTest
+  ✓ kasir belum login dialihkan ke login                                                                         0.03s  
+  ✓ transaksi berhasil dan stok berkurang serta kembalian akurat                                                 0.06s  
+  ✓ penolakan transaksi jika stok tidak mencukupi                                                                0.03s  
+  ✓ penolakan transaksi jika uang bayar kurang                                                                   0.04s  
+  ✓ generate nomor nota harian                                                                                   0.02s  
+
+   WARN  Tests\Feature\LaporanPenjualanAccessTest
+  - tamu diarahkan ke login → Auth dinonaktifkan sementara untuk pengujian independen.                           0.03s  
+  - kasir aktif mendapat 403 → Auth dinonaktifkan sementara untuk pengujian independen.                          0.03s  
+  ✓ admin aktif mendapat 200 dan memuat konten utama                                                             0.05s  
+  ✓ halaman tidak memuat svg                                                                                     0.06s  
+  ✓ rentang tujuh hari mengisi nilai tanggal yang benar di form                                                  0.04s  
+  ✓ tanggal tidak valid menampilkan pesan                                                                        0.03s  
+  ✓ halaman barang memuat tautan laporan penjualan                                                               0.04s  
+  ✓ skala tampilan laporan penjualan                                                                             0.03s  
+
+   WARN  Tests\Feature\LaporanPenjualanDataTest
+  - tamu diarahkan ke login → Middleware auth dinonaktifkan sementara.                                           0.02s  
+  - kasir aktif mendapat 403 → Middleware check role dinonaktifkan sementara.                                    0.03s  
+  ✓ total dan jumlah nota laporan penjualan benar                                                                0.04s  
+  ✓ rentang tanggal inklusif batas awal dan akhir                                                                0.05s  
+  ✓ kasir null tampil tanda strip                                                                                0.06s  
+  ✓ paginasi lima item per halaman                                                                               0.05s  
+  ✓ tanggal tidak valid dan rentang lebih dari 366 hari menampilkan pesan                                        0.06s  
+  ✓ keamanan input karakter injeksi sql ditolak secara aman                                                      0.04s  
+  ✓ subtotal negatif berawalan minus rp                                                                          0.05s  
+  ✓ halaman laporan penjualan tidak memuat tag svg                                                               0.03s  
+
+   WARN  Tests\Feature\LogAktivitasDataTest
+  - tamu diarahkan ke login → Middleware auth dinonaktifkan sementara.                                           0.04s  
+  - kasir aktif mendapat 403 → Middleware check role dinonaktifkan sementara.                                    0.04s  
+  ✓ pembacaan daftar log dan paginasi sepuluh baris                                                              0.04s  
+  ✓ filter kata kunci keterangan                                                                                 0.03s  
+  ✓ filter tipe aksi                                                                                             0.03s  
+  ✓ filter rentang tanggal                                                                                       0.05s  
+  ✓ keamanan input karakter injeksi sql ditangani dengan aman                                                    0.05s  
+  ✓ ekspor csv mengembalikan status 200 dan header text csv                                                      0.05s  
+  ✓ halaman log aktivitas bebas tag svg                                                                          0.05s  
+
+   WARN  Tests\Feature\NotifikasiAdminTest
+  - tamu diarahkan ke login → Auth dinonaktifkan sementara untuk pengujian independen prototype.                 0.03s  
+  - kasir aktif mendapat 403 → Auth dinonaktifkan sementara untuk pengujian independen prototype.                0.02s  
+  ✓ admin aktif mendapat 200 dan memuat konten utama                                                             0.03s  
+  ✓ halaman tidak memuat svg                                                                                     0.03s  
+  ✓ halaman memuat partial skala                                                                                 0.02s  
+  ✓ menu pengaturan notifikasi aktif                                                                             0.03s  
+
+   WARN  Tests\Feature\PembelianDataTest
+  - tamu diarahkan ke login → Middleware auth dinonaktifkan sementara.                                           0.04s  
+  - kasir aktif mendapat 403 → Middleware check role dinonaktifkan sementara.                                    0.03s  
+  ✓ barang stok kurang atau sama dengan batas muncul di daftar restock                                           0.05s  
+  ✓ barang stok nol berstatus habis                                                                              0.04s  
+  ✓ pencatatan pembelian menambah stok dan menambah baris daftar transaksi                                       0.05s  
+  ✓ validasi input jumlah tidak boleh negatif atau nol                                                           0.04s  
+  ✓ halaman pembelian tidak memuat tag svg                                                                       0.04s  
+
+   WARN  Tests\Feature\PenggunaDataTest
+  - tamu diarahkan ke login → Middleware auth dinonaktifkan sementara.                                           0.03s  
+  - kasir aktif mendapat 403 → Middleware check role dinonaktifkan sementara.                                    0.02s  
+  ✓ endpoint index menampilkan pengguna riil dari database                                                       0.03s  
+  ✓ filter role status dan pencarian kata kunci                                                                  0.06s  
+  ✓ pembuatan pengguna baru via service                                                                          0.03s  
+  ✓ pengubahan status pengguna via service                                                                       0.03s  
+  ✓ reset password pengguna via service                                                                          0.04s  
+  ✓ validasi input penolakan role tidak valid                                                                    0.05s  
+  ✓ validasi input penolakan password terlalu pendek                                                             0.05s  
+  ✓ halaman pengguna tidak memuat tag svg                                                                        0.04s  
+
+   PASS  Tests\Feature\PenggunaModelTest
+  ✓ membuat pengguna lewat factory dan get auth password                                                         0.04s  
+  ✓ state kasir dan nonaktif                                                                                     0.05s  
+
+   WARN  Tests\Feature\ProfilAdminTest
+  - tamu diarahkan ke login → Auth dinonaktifkan sementara untuk pengujian independen prototype.                 0.02s  
+  - kasir aktif mendapat 403 → Auth dinonaktifkan sementara untuk pengujian independen prototype.                0.03s  
+  ✓ admin aktif mendapat 200 dan memuat konten utama                                                             0.05s  
+  ✓ halaman tidak memuat svg                                                                                     0.04s  
+  ✓ halaman memuat partial skala                                                                                 0.05s  
+  ✓ kartu profil sidebar memiliki tautan ke profil                                                               0.05s  
+
+   PASS  Tests\Feature\SaldoKasirTest
+  ✓ halaman saldo kasir dapat diakses dan memuat konten                                                          0.04s  
+  ✓ halaman saldo tidak memuat svg                                                                               0.04s  
+  ✓ halaman saldo memuat partial skala                                                                           0.04s  
+  ✓ menu saldo aktif                                                                                             0.04s  
+  ✓ touch target elemen interaktif                                                                               0.04s  
+
+   PASS  Tests\Feature\StokKasirTest
+  ✓ halaman stok kasir dapat diakses dan memuat konten                                                           0.03s  
+  ✓ halaman stok tidak memuat svg                                                                                0.04s  
+  ✓ halaman stok memuat partial skala                                                                            0.05s  
+  ✓ menu stok barang aktif                                                                                       0.03s  
+  ✓ touch target elemen interaktif                                                                               0.04s  
+
+   PASS  Tests\Feature\TampilanSkalaTest
+  ✓ skala tampilan semua halaman                                                                                 0.09s  
+
+   PASS  Tests\Feature\TelegramServiceTest
+  ✓ telegram bot service mengirim pesan teks                                                                     0.03s  
+  ✓ telegram bot service mengirim dokumen biner                                                                  0.02s  
+  ✓ telegram report service menghasilkan binary pdf                                                              0.15s  
+  ✓ backup service membuat arsip zip terenkripsi aes256                                                          0.02s  
+
+   PASS  Tests\Feature\TelegramWebhookSecurityTest
+  ✓ penolakan request tanpa secret token                                                                         0.04s  
+  ✓ penolakan request dengan secret token salah                                                                  0.02s  
+  ✓ penolakan request dari chat id liar tidak terdaftar                                                          0.02s  
+  ✓ respon 200 ok saat secret token dan chat id valid                                                            0.02s  
+  ✓ respon 200 ok untuk callback query admin valid                                                               0.02s  
+  ✓ rate limiter webhook membatasi request berlebih                                                              0.07s  
+
+   WARN  Tests\Feature\TokoAdminTest
+  - tamu diarahkan ke login → Auth dinonaktifkan sementara untuk pengujian independen prototype.                 0.06s  
+  - kasir aktif mendapat 403 → Auth dinonaktifkan sementara untuk pengujian independen prototype.                0.03s  
+  ✓ admin aktif mendapat 200 dan memuat konten utama                                                             0.05s  
+  ✓ halaman tidak memuat svg                                                                                     0.03s  
+  ✓ halaman memuat partial skala                                                                                 0.04s  
+  ✓ menu pengaturan toko aktif                                                                                   0.04s  
+
+   PASS  Tests\Feature\TransaksiKasirTest
+  ✓ halaman transaksi kasir dapat diakses dan memuat konten                                                      0.04s  
+  ✓ halaman transaksi tidak memuat svg                                                                           0.04s  
+  ✓ halaman transaksi memuat partial skala                                                                       0.02s  
+  ✓ menu transaksi penjualan aktif                                                                               0.04s  
+  ✓ touch target elemen interaktif                                                                               0.02s  
+
+  Tests:    26 skipped, 139 passed (613 assertions)
+  Duration: 9.23s
+

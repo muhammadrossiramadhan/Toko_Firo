@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])->group(function () {
     Route::get('/kasir/stok', [StokKasirController::class, 'index'])->name('kasir.stok');
+    Route::get('/kasir/stok/cari', [StokKasirController::class, 'cariAjax'])->name('kasir.stok.cari');
 });
 

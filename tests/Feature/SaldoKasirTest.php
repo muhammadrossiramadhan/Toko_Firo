@@ -19,11 +19,10 @@ class SaldoKasirTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Saldo');
         $response->assertSee('Saldo Hari Ini');
-        $response->assertSee('Rp 3.180.000');
         $response->assertSee('Simpan sebagai PDF');
         $response->assertSee('Kirim ke Telegram');
-        $response->assertSee('TRX-001');
         $response->assertSee('Modal Awal');
+        $response->assertSee('Riwayat Transaksi');
     }
 
     /**

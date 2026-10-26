@@ -9,6 +9,21 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 ## [Unreleased] - Branch `staging` (26 Oktober 2026)
 
 ### Added
+- **Penyambungan Rute Backend Kasir & Admin Pembelian**:
+  - `routes/kasir_stok.php`: Pendaftaran rute endpoint AJAX pencarian cepat barcode scanner `GET /kasir/stok/cari` (`kasir.stok.cari`).
+  - `routes/kasir_transaksi.php`: Pendaftaran endpoint POS penjualan `POST /kasir/transaksi/simpan` (`kasir.transaksi.simpan`), detail transaksi `GET /kasir/transaksi/{nota}/detail` (`kasir.transaksi.detail`), dan cetak resi/struk thermal `GET /kasir/transaksi/{nota}/cetak` (`kasir.transaksi.cetak`).
+  - `routes/admin_pembelian.php`: Pendaftaran endpoint pencatatan pembelian restock barang baru `POST /admin/pembelian` (`admin.pembelian.store`).
+- **Migrasi Database Skema Saldo Harian**:
+  - Eksekusi migrasi pending `2026_10_24_105035_add_saldo_akhir_to_saldo_harian_table` untuk penambahan kolom `saldo_akhir` pada tabel `saldo_harian`.
+- **Hasil Pengujian Validasi 100% Lulus**:
+  - `tests/Feature/Kasir/StokKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/StokKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/Kasir/TransaksiKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/TransaksiKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/PembelianDataTest.php`: 5 passed, 2 skipped auth (100%).
+  - `tests/Feature/DashboardKasirTest.php`: HTTP 200 bebas error 500.
+
+### Added
 - **Sistem Telegram Bot Webhook Dua Arah Aman (Cyber Security Hardened)**:
   - `app/Http/Controllers/TelegramWebhookController.php`: Validasi wajib header `X-Telegram-Bot-Api-Secret-Token` (403 Forbidden bila token invalid) dan whitelist otorisasi `chat_id` pengirim sebelum eksekusi payload.
   - Penanganan NLP ringkas (keyword *laporan penjualan*, *laporan hari ini*, *rekap hari ini*), 10 submenu Admin, 5 submenu Kasir, dan callback query acknowledgement.

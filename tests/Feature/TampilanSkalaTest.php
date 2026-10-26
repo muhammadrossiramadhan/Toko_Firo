@@ -17,17 +17,21 @@ class TampilanSkalaTest extends TestCase
     public function test_skala_tampilan_semua_halaman(): void
     {
         $admin = Pengguna::factory()->create([
-            'role' => 'ADMIN',
+            'role' => 'admin',
             'status' => 'AKTIF',
         ]);
 
-        $routes = [
+        $kasir = Pengguna::factory()->kasir()->create([
+            'status' => 'AKTIF',
+        ]);
+
+        $adminRoutes = [
             route('demo.barang'),
             route('admin.barang'),
             route('admin.laporan.penjualan'),
         ];
 
-        foreach ($routes as $url) {
+        foreach ($adminRoutes as $url) {
             $response = $this->actingAs($admin)->get($url);
 
             $response->assertStatus(200);
@@ -35,6 +39,22 @@ class TampilanSkalaTest extends TestCase
             $response->assertSee('--skala', false);
             $response->assertDontSee('font-size: 16px', false);
             $response->assertDontSee('font-size:16px', false);
+        }
+
+        $kasirRoutes = [
+            route('kasir.dashboard'),
+            route('kasir.stok'),
+            route('kasir.transaksi'),
+            route('kasir.saldo'),
+            route('kasir.info-barang'),
+        ];
+
+        foreach ($kasirRoutes as $url) {
+            $response = $this->actingAs($kasir)->get($url);
+
+            $response->assertStatus(200);
+            $response->assertSee('id="skala-tampilan"', false);
+            $response->assertSee('--skala', false);
         }
     }
 }
