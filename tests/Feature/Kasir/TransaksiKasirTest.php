@@ -248,6 +248,9 @@ class TransaksiKasirTest extends TestCase
      */
     public function test_update_keranjang_berhasil_dan_validasi_stok(): void
     {
+        $kasir = Pengguna::factory()->kasir()->create();
+        $this->actingAs($kasir);
+
         $item = ItemBarang::create([
             'kode_item' => 'TRX-TEST-05',
             'nama_item' => 'Map Kancing Uji',

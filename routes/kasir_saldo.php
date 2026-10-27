@@ -5,14 +5,11 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Rute Modul Kasir: Saldo Harian (Frontend Prototype Figma Frame P08)
+| Rute Modul Kasir: Saldo Harian
 |--------------------------------------------------------------------------
-| CATATAN: Untuk kebutuhan prototype frontend independen, middleware auth
-| dan role:KASIR dinonaktifkan sementara. Pulihkan middleware ['auth', 'role:KASIR']
-| sebelum integrasi final.
+| Izin akses diberikan untuk peran kasir, admin, dan pemilik toko.
 */
 
-Route::middleware(['web'])->group(function () {
+Route::middleware(['web', 'auth', 'role:kasir,admin,pemilik'])->group(function () {
     Route::get('/kasir/saldo', [SaldoKasirController::class, 'index'])->name('kasir.saldo');
 });
-
