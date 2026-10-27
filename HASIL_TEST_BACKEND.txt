@@ -1,0 +1,3319 @@
+﻿
+   PASS  Tests\Unit\ExampleTest
+  Γ£ô that true is true
+
+   FAIL  Tests\Feature\BackupAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                        0.21s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                       0.04s  
+  Γ¿» admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.13s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.05s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.05s  
+  Γ£ô menu backup data aktif                                                                                                                              0.04s  
+
+   WARN  Tests\Feature\BackupDataTest
+  - tamu diarahkan ke login ΓåÆ Middleware auth dinonaktifkan sementara.                                                                                  0.04s  
+  - kasir aktif mendapat 403 ΓåÆ Middleware check role dinonaktifkan sementara.                                                                           0.02s  
+  Γ£ô endpoint index menampilkan riwayat backup riil dari database                                                                                        0.04s  
+  Γ£ô pencatatan backup berhasil menambah baris riwayat dan log aktivitas                                                                                 1.27s  
+  Γ£ô catat backup via stored procedure                                                                                                                   0.06s  
+  Γ£ô halaman backup tidak memuat tag svg                                                                                                                 0.03s  
+
+   WARN  Tests\Feature\BarangAdminAccessTest
+  - tamu diarahkan ke halaman login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                          0.05s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                                 0.02s  
+  Γ£ô admin aktif mendapat 200 dan halaman memuat kelola data barang                                                                                      0.04s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.04s  
+
+   WARN  Tests\Feature\BarangCrudTest
+  Γ£ô admin menambah barang                                                                                                                               0.06s  
+  Γ£ô kode kembar ditolak                                                                                                                                 0.06s  
+  Γ£ô validasi input penambahan barang                                                                                                                    0.05s  
+  Γ£ô tipe jasa stok tersimpan 999999                                                                                                                     0.04s  
+  Γ£ô ubah data barang                                                                                                                                    0.03s  
+  Γ£ô ubah harga barang dan harga jual lebih rendah tetap tersimpan                                                                                       0.05s  
+  Γ£ô hapus barang tanpa transaksi                                                                                                                        0.04s  
+  Γ£ô hapus barang dengan riwayat transaksi ditolak                                                                                                       0.03s  
+  - kasir mendapat 403 untuk semua aksi ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                      0.02s  
+  - tamu diarahkan ke login untuk semua aksi ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                 0.04s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.04s  
+
+   PASS  Tests\Feature\BarangDaftarTest
+  Γ£ô admin melihat barang yang dibuat                                                                                                                    0.04s  
+  Γ£ô paginasi tujuh item per halaman                                                                                                                     0.06s  
+  Γ£ô pencarian q cocok nama dan kode serta mengecualikan lainnya                                                                                         0.03s  
+  Γ£ô filter jenis hanya menampilkan jenis itu                                                                                                            0.05s  
+  Γ£ô urutan stok dan nama                                                                                                                                0.06s  
+  Γ£ô status stok habis menipis dan aman                                                                                                                  0.06s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.04s  
+
+   PASS  Tests\Feature\BarangRiwayatTest
+  Γ£ô admin melihat halaman riwayat transaksi                                                                                                             0.06s  
+  Γ£ô halaman riwayat tidak memuat svg                                                                                                                    0.03s  
+  Γ£ô halaman riwayat memuat partial skala                                                                                                                0.04s  
+  Γ£ô halaman barang memuat tautan riwayat transaksi                                                                                                      0.06s  
+
+   FAIL  Tests\Feature\BatasStokAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                        0.02s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                       0.03s  
+  Γ¿» admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.04s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.04s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.05s  
+  Γ£ô menu batas stok minimum aktif                                                                                                                       0.05s  
+
+   WARN  Tests\Feature\BatasStokDataTest
+  - tamu diarahkan ke login ΓåÆ Middleware auth dinonaktifkan sementara.                                                                                  0.04s  
+  - kasir aktif mendapat 403 ΓåÆ Middleware check role dinonaktifkan sementara.                                                                           0.03s  
+  Γ£ô endpoint index menampilkan data riil dari database                                                                                                  0.05s  
+  Γ£ô filter jenis dan pencarian kata kunci                                                                                                               0.04s  
+  Γ£ô pembaruan batas stok satuan dan pencatatan audit log                                                                                                0.88s  
+  Γ£ô pembaruan batas stok massal semua item                                                                                                              0.05s  
+  Γ£ô validasi input penolakan nilai negatif                                                                                                              0.05s  
+  Γ£ô validasi input penolakan nilai negatif semua                                                                                                        0.05s  
+  Γ£ô keamanan input karakter injeksi sql ditangani secara aman                                                                                           0.02s  
+  Γ£ô halaman batas stok tidak memuat tag svg                                                                                                             0.04s  
+
+   FAIL  Tests\Feature\DashboardAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                        0.04s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                       0.05s  
+  Γ¿» admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.06s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.06s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.05s  
+  Γ£ô menu dashboard aktif                                                                                                                                0.06s  
+
+   WARN  Tests\Feature\DashboardDataTest
+  - tamu diarahkan ke login ΓåÆ Middleware auth dinonaktifkan sementara.                                                                                  0.02s  
+  - kasir aktif mendapat 403 ΓåÆ Middleware check role dinonaktifkan sementara.                                                                           0.03s  
+  Γ£ô empat kartu ringkasan dashboard akurat                                                                                                              0.05s  
+  Γ£ô konsistensi grafik tujuh hari dan nilai nol hari kosong                                                                                             0.06s  
+  Γ£ô top barang hari ini terurut nama dan qty                                                                                                            0.06s  
+  Γ£ô aktivitas terbaru dari log dan pemetaan sistem jika user null                                                                                       0.06s  
+  Γ£ô halaman dashboard tidak memuat tag svg                                                                                                              0.04s  
+
+   FAIL  Tests\Feature\DashboardKasirTest
+  Γ¿» halaman dashboard kasir dapat diakses dan memuat konten                                                                                             0.04s  
+  Γ£ô halaman kasir tidak memuat svg                                                                                                                      0.05s  
+  Γ£ô halaman kasir memuat partial skala                                                                                                                  0.05s  
+  Γ£ô menu dashboard kasir aktif                                                                                                                          0.03s  
+  Γ£ô touch target elemen interaktif                                                                                                                      0.02s  
+
+   FAIL  Tests\Feature\DemoBarangTest
+  Γ¿» demo barang returns 200                                                                                                                             0.03s  
+  Γ¿» halaman 1 menampilkan rentang yang benar                                                                                                            0.02s  
+  Γ¿» halaman 7 menampilkan rentang yang benar                                                                                                            0.02s  
+  Γ¿» tombol aksi berlabel ubah data dan hapus data                                                                                                       0.02s  
+  Γ¿» halaman tidak mengandung tag svg                                                                                                                    0.04s  
+
+   PASS  Tests\Feature\ExampleTest
+  Γ£ô the application returns a successful response                                                                                                       0.03s  
+
+   PASS  Tests\Feature\ExpiredSessionUiTest
+  Γ£ô route sesi berakhir mengembalikan status 200                                                                                                        0.03s  
+  Γ£ô halaman sesi berakhir bebas dari tag svg                                                                                                            0.02s  
+  Γ£ô tombol memiliki touch target minimal 44px dan aturan k18                                                                                            0.02s  
+  Γ£ô view error 419 memuat antarmuka sesi berakhir                                                                                                       0.02s  
+
+   FAIL  Tests\Feature\InfoBarangKasirTest
+  Γ¿» halaman info barang kasir dapat diakses dan memuat konten                                                                                           0.04s  
+  Γ£ô halaman info barang tidak memuat svg                                                                                                                0.03s  
+  Γ£ô halaman info barang memuat partial skala                                                                                                            0.04s  
+  Γ£ô menu info barang aktif                                                                                                                              0.03s  
+  Γ£ô touch target elemen interaktif                                                                                                                      0.03s  
+
+   PASS  Tests\Feature\Kasir\StokKasirTest
+  Γ£ô kasir belum login dialihkan ke login                                                                                                                0.05s  
+  Γ£ô kasir terautentikasi dapat mengakses stok                                                                                                           0.04s  
+  Γ£ô pencarian barang berdasarkan nama dan barcode                                                                                                       0.05s  
+  Γ£ô akurasi kalkulasi komputasi status stok                                                                                                             0.06s  
+  Γ£ô method cek ketersediaan mengembalikan respon boolean valid                                                                                          0.03s  
+
+   PASS  Tests\Feature\Kasir\TransaksiKasirTest
+  Γ£ô kasir belum login dialihkan ke login                                                                                                                0.04s  
+  Γ£ô transaksi berhasil dan stok berkurang serta kembalian akurat                                                                                        0.09s  
+  Γ£ô penolakan transaksi jika stok tidak mencukupi                                                                                                       0.06s  
+  Γ£ô penolakan transaksi jika uang bayar kurang                                                                                                          0.03s  
+  Γ£ô generate nomor nota harian                                                                                                                          0.03s  
+
+   WARN  Tests\Feature\LaporanPenjualanAccessTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                                  0.03s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                                 0.03s  
+  Γ£ô admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.04s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.06s  
+  Γ£ô rentang tujuh hari mengisi nilai tanggal yang benar di form                                                                                         0.05s  
+  Γ£ô tanggal tidak valid menampilkan pesan                                                                                                               0.03s  
+  Γ£ô halaman barang memuat tautan laporan penjualan                                                                                                      0.03s  
+  Γ£ô skala tampilan laporan penjualan                                                                                                                    0.04s  
+
+   WARN  Tests\Feature\LaporanPenjualanDataTest
+  - tamu diarahkan ke login ΓåÆ Middleware auth dinonaktifkan sementara.                                                                                  0.02s  
+  - kasir aktif mendapat 403 ΓåÆ Middleware check role dinonaktifkan sementara.                                                                           0.05s  
+  Γ£ô total dan jumlah nota laporan penjualan benar                                                                                                       0.03s  
+  Γ£ô rentang tanggal inklusif batas awal dan akhir                                                                                                       0.03s  
+  Γ£ô kasir null tampil tanda strip                                                                                                                       0.04s  
+  Γ£ô paginasi lima item per halaman                                                                                                                      0.03s  
+  Γ£ô tanggal tidak valid dan rentang lebih dari 366 hari menampilkan pesan                                                                               0.06s  
+  Γ£ô keamanan input karakter injeksi sql ditolak secara aman                                                                                             0.06s  
+  Γ£ô subtotal negatif berawalan minus rp                                                                                                                 0.04s  
+  Γ£ô halaman laporan penjualan tidak memuat tag svg                                                                                                      0.05s  
+
+   FAIL  Tests\Feature\LogAktivitasAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                        0.03s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                       0.03s  
+  Γ¿» admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.03s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.04s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.04s  
+  Γ£ô menu log aktivitas aktif                                                                                                                            0.03s  
+
+   WARN  Tests\Feature\LogAktivitasDataTest
+  - tamu diarahkan ke login ΓåÆ Middleware auth dinonaktifkan sementara.                                                                                  0.02s  
+  - kasir aktif mendapat 403 ΓåÆ Middleware check role dinonaktifkan sementara.                                                                           0.03s  
+  Γ£ô pembacaan daftar log dan paginasi sepuluh baris                                                                                                     0.03s  
+  Γ£ô filter kata kunci keterangan                                                                                                                        0.05s  
+  Γ£ô filter tipe aksi                                                                                                                                    0.05s  
+  Γ£ô filter rentang tanggal                                                                                                                              0.03s  
+  Γ£ô keamanan input karakter injeksi sql ditangani dengan aman                                                                                           0.02s  
+  Γ£ô ekspor csv mengembalikan status 200 dan header text csv                                                                                             0.04s  
+  Γ£ô halaman log aktivitas bebas tag svg                                                                                                                 0.04s  
+
+   WARN  Tests\Feature\NotifikasiAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                        0.04s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                       0.04s  
+  Γ£ô admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.06s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.04s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.05s  
+  Γ£ô menu pengaturan notifikasi aktif                                                                                                                    0.03s  
+
+   FAIL  Tests\Feature\PembelianAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                                  0.05s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen.                                                                 0.03s  
+  Γ¿» admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.04s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.04s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.04s  
+  Γ£ô menu pembelian barang aktif                                                                                                                         0.06s  
+
+   WARN  Tests\Feature\PembelianDataTest
+  - tamu diarahkan ke login ΓåÆ Middleware auth dinonaktifkan sementara.                                                                                  0.03s  
+  - kasir aktif mendapat 403 ΓåÆ Middleware check role dinonaktifkan sementara.                                                                           0.02s  
+  Γ£ô barang stok kurang atau sama dengan batas muncul di daftar restock                                                                                  0.03s  
+  Γ£ô barang stok nol berstatus habis                                                                                                                     0.05s  
+  Γ£ô pencatatan pembelian menambah stok dan menambah baris daftar transaksi                                                                              0.05s  
+  Γ£ô validasi input jumlah tidak boleh negatif atau nol                                                                                                  0.05s  
+  Γ£ô halaman pembelian tidak memuat tag svg                                                                                                              0.04s  
+
+   FAIL  Tests\Feature\PenggunaAdminTest
+  Γ¿» admin melihat halaman kelola akun pengguna                                                                                                          0.04s  
+  Γ£ô halaman pengguna tidak memuat svg                                                                                                                   0.04s  
+  Γ£ô halaman pengguna memuat partial skala                                                                                                               0.04s  
+  Γ£ô menu sidebar kelola akun pengguna aktif                                                                                                             0.04s  
+
+   WARN  Tests\Feature\PenggunaDataTest
+  - tamu diarahkan ke login ΓåÆ Middleware auth dinonaktifkan sementara.                                                                                  0.04s  
+  - kasir aktif mendapat 403 ΓåÆ Middleware check role dinonaktifkan sementara.                                                                           0.04s  
+  Γ£ô endpoint index menampilkan pengguna riil dari database                                                                                              0.05s  
+  Γ£ô filter role status dan pencarian kata kunci                                                                                                         0.03s  
+  Γ£ô pembuatan pengguna baru via service                                                                                                                 0.04s  
+  Γ£ô pengubahan status pengguna via service                                                                                                              0.04s  
+  Γ£ô reset password pengguna via service                                                                                                                 0.05s  
+  Γ£ô validasi input penolakan role tidak valid                                                                                                           0.05s  
+  Γ£ô validasi input penolakan password terlalu pendek                                                                                                    0.05s  
+  Γ£ô halaman pengguna tidak memuat tag svg                                                                                                               0.05s  
+
+   PASS  Tests\Feature\PenggunaModelTest
+  Γ£ô membuat pengguna lewat factory dan get auth password                                                                                                0.04s  
+  Γ£ô state kasir dan nonaktif                                                                                                                            0.03s  
+
+   WARN  Tests\Feature\ProfilAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                        0.04s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                       0.05s  
+  Γ£ô admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.05s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.05s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.04s  
+  Γ£ô kartu profil sidebar memiliki tautan ke profil                                                                                                      0.04s  
+
+   FAIL  Tests\Feature\SaldoKasirTest
+  Γ¿» halaman saldo kasir dapat diakses dan memuat konten                                                                                                 0.06s  
+  Γ£ô halaman saldo tidak memuat svg                                                                                                                      0.05s  
+  Γ£ô halaman saldo memuat partial skala                                                                                                                  0.03s  
+  Γ£ô menu saldo aktif                                                                                                                                    0.05s  
+  Γ£ô touch target elemen interaktif                                                                                                                      0.05s  
+
+   PASS  Tests\Feature\StokKasirTest
+  Γ£ô halaman stok kasir dapat diakses dan memuat konten                                                                                                  0.05s  
+  Γ£ô halaman stok tidak memuat svg                                                                                                                       0.05s  
+  Γ£ô halaman stok memuat partial skala                                                                                                                   0.04s  
+  Γ£ô menu stok barang aktif                                                                                                                              0.05s  
+  Γ£ô touch target elemen interaktif                                                                                                                      0.05s  
+
+   FAIL  Tests\Feature\TampilanSkalaTest
+  Γ¿» skala tampilan semua halaman                                                                                                                        0.03s  
+
+   PASS  Tests\Feature\TelegramServiceTest
+  Γ£ô telegram bot service mengirim pesan teks                                                                                                            0.04s  
+  Γ£ô telegram bot service mengirim dokumen biner                                                                                                         0.03s  
+  Γ£ô telegram report service menghasilkan binary pdf                                                                                                     0.14s  
+  Γ£ô backup service membuat arsip zip terenkripsi aes256                                                                                                 0.02s  
+
+   FAIL  Tests\Feature\TelegramWebhookAndExpiredTest
+  Γ£ô halaman sesi berakhir memuat konten dan patuh k12 k18                                                                                               0.03s  
+  Γ£ô halaman error 419 memuat tampilan expired                                                                                                           0.02s  
+  Γ¿» telegram webhook menerima post tanpa csrf                                                                                                           0.03s  
+  Γ¿» telegram webhook menerima callback query                                                                                                            0.03s  
+  Γ¿» telegram report service menghasilkan pdf valid                                                                                                      0.02s  
+
+   PASS  Tests\Feature\TelegramWebhookSecurityTest
+  Γ£ô penolakan request tanpa secret token                                                                                                                0.02s  
+  Γ£ô penolakan request dengan secret token salah                                                                                                         0.02s  
+  Γ£ô penolakan request dari chat id liar tidak terdaftar                                                                                                 0.02s  
+  Γ£ô respon 200 ok saat secret token dan chat id valid                                                                                                   0.02s  
+  Γ£ô respon 200 ok untuk callback query admin valid                                                                                                      0.02s  
+  Γ£ô rate limiter webhook membatasi request berlebih                                                                                                     0.05s  
+
+   WARN  Tests\Feature\TokoAdminTest
+  - tamu diarahkan ke login ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                        0.04s  
+  - kasir aktif mendapat 403 ΓåÆ Auth dinonaktifkan sementara untuk pengujian independen prototype.                                                       0.03s  
+  Γ£ô admin aktif mendapat 200 dan memuat konten utama                                                                                                    0.04s  
+  Γ£ô halaman tidak memuat svg                                                                                                                            0.05s  
+  Γ£ô halaman memuat partial skala                                                                                                                        0.03s  
+  Γ£ô menu pengaturan toko aktif                                                                                                                          0.02s  
+
+   PASS  Tests\Feature\TransaksiKasirTest
+  Γ£ô halaman transaksi kasir dapat diakses dan memuat konten                                                                                             0.05s  
+  Γ£ô halaman transaksi tidak memuat svg                                                                                                                  0.02s  
+  Γ£ô halaman transaksi memuat partial skala                                                                                                              0.04s  
+  Γ£ô menu transaksi penjualan aktif                                                                                                                      0.03s  
+  Γ£ô touch target elemen interaktif                                                                                                                      0.04s  
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\BackupAdminTest > admin aktif mendapat 200 dan memuat konten utama                                                                    
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Backup Data - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">\n
+\n
+    \n
+    <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">\n
+        Aksi backup berhasil dijalankan (prototype).\n
+    </div>\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">\n
+    <div class="space-y-6">\n
+        \n
+        <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+            <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                F\n
+            </div>\n
+            <div class="font-bold text-gray-900 text-lg">\n
+                Toko Firo\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Menu Admin\n
+            </div>\n
+            <nav class="space-y-1">\n
+                \n
+                <a\n
+                    href="http://localhost/admin/dashboard"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Dashboard\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/laporan-penjualan"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Laporan Penjualan\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/barang"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Data Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pembelian"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pembelian Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengguna"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Akun Pengguna\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/batas-stok"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Batas Stok Minimum\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/backup"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold text-base shadow-sm"\n
+                >\n
+                    Backup Data\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/log-aktivitas"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Log Aktivitas\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-notifikasi"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Notifikasi\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-toko"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Toko\n
+                </a>\n
+            </nav>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Akses Kasir\n
+            </div>\n
+            <nav class="space-y-1">\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Transaksi Penjualan\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Lihat Stok Barang\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Saldo Harian\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Info Barang Baru\n
+                </a>\n
+            </nav>\n
+        </div>\n
+    </div>\n
+\n
+    \n
+    <div class="pt-4 border-t border-emerald-900/60">\n
+        <a href="http://localhost/admin/profil" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-xl p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">\n
+            <div class="font-medium text-white text-base truncate">\n
+                Mandy Grimes\n
+            </div>\n
+            <div class="text-sm text-emerald-300">\n
+                Admin / Pemilik\n
+            </div>\n
+        </a>\n
+        <form method="POST" action="http://localhost/logout">\n
+            <input type="hidden" name="_token" value="K921xXKx651VkG9SS2A34HNNh7lckbCyh98TM23E" autocomplete="off">            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">\n
+                Keluar\n
+            </button>\n
+        </form>\n
+    </div>\n
+</aside>\n
+\n
+\n
+    \n
+    <main class="flex-1 min-w-0 p-8">\n
+        \n
+        <header class="mb-6">\n
+            <h1 class="text-2xl font-bold text-gray-900">\n
+                Backup Data\n
+            </h1>\n
+            <p class="text-slate-500 text-base mt-1">\n
+                Pencadangan database toko untuk mengamankan riwayat transaksi dan data master barang Toko Firo.\n
+            </p>\n
+        </header>\n
+\n
+        \n
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">\n
+            \n
+            <div class="border-2 border-emerald-500 bg-white p-6 rounded-xl shadow-sm flex flex-col justify-between">\n
+                <div>\n
+                    <div class="flex items-center justify-between mb-3">\n
+                        <h2 class="text-xl font-bold text-gray-900">\n
+                            Backup Manual\n
+                        </h2>\n
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">\n
+                            Tersedia\n
+                        </span>\n
+                    </div>\n
+                    <p class="text-base text-gray-600 mb-6 leading-relaxed">\n
+                        Unduh salinan cadangan database Toko Firo saat ini ke file SQL terenkripsi.\n
+                    </p>\n
+                </div>\n
+                <div>\n
+                    <button\n
+                        type="button"\n
+                        onclick="tampilkanNotif('Proses backup manual sedang disiapkan (prototype).')"\n
+                        class="touch-target w-full sm:w-auto px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors text-center cursor-pointer"\n
+                    >\n
+                        Jalankan Backup Sekarang\n
+                    </button>\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="border border-slate-200 bg-white p-6 rounded-xl shadow-sm flex flex-col justify-between">\n
+                <div>\n
+                    <div class="flex items-center justify-between mb-3">\n
+                        <h2 class="text-xl font-bold text-gray-900">\n
+                            Backup Otomatis\n
+                        </h2>\n
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">\n
+                            Aktif\n
+                        </span>\n
+                    </div>\n
+                    <p class="text-base text-gray-600 mb-6 leading-relaxed">\n
+                        Jadwal aktif: Setiap hari pukul 22.00 WIB. Disimpan di server toko.\n
+                    </p>\n
+                </div>\n
+                <div>\n
+                    <button\n
+                        type="button"\n
+                        onclick="tampilkanNotif('Pengaturan jadwal backup otomatis (prototype).')"\n
+                        class="touch-target w-full sm:w-auto px-6 py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base shadow-sm transition-colors text-center cursor-pointer"\n
+                    >\n
+                        Atur Jadwal Backup\n
+                    </button>\n
+                </div>\n
+            </div>\n
+        </section>\n
+\n
+        \n
+        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">\n
+            <div class="p-5 border-b border-gray-200 flex items-center justify-between">\n
+                <h3 class="text-lg font-bold text-gray-900">\n
+                    Riwayat Backup Tersimpan\n
+                </h3>\n
+                <span class="text-sm font-medium text-gray-500">\n
+                    Total 4 file backup\n
+                </span>\n
+            </div>\n
+            <div class="overflow-x-auto">\n
+                <table class="w-full text-left border-collapse text-base">\n
+                    <thead>\n
+                        <tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase font-semibold text-gray-600 tracking-wider">\n
+                            <th class="px-6 py-4">Waktu Backup</th>\n
+                            <th class="px-6 py-4">Tipe</th>\n
+                            <th class="px-6 py-4">Ukuran File</th>\n
+                            <th class="px-6 py-4">Status</th>\n
+                            <th class="px-6 py-4 text-right">Aksi</th>\n
+                        </tr>\n
+                    </thead>\n
+                    <tbody class="divide-y divide-gray-200 text-gray-700">\n
+                                            </tbody>\n
+                </table>\n
+            </div>\n
+        </section>\n
+\n
+        \n
+        <section class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-4 text-base mt-2">\n
+            <div>\n
+                <span class="font-bold">Pemberitahuan:</span>\n
+                Backup disimpan di server lokal. Untuk keamanan tambahan, unduh file backup secara berkala ke perangkat terpisah.\n
+            </div>\n
+        </section>\n
+    </main>\n
+\n
+    \n
+    <script>\n
+        function tampilkanNotif(pesan) {\n
+            const notif = document.getElementById('notif-feedback');\n
+            notif.textContent = pesan;\n
+            notif.classList.remove('hidden');\n
+            setTimeout(() => {\n
+                notif.classList.add('hidden');\n
+            }, 3000);\n
+        }\n
+    </script>\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Hari ini, 14.30
+
+  at tests\Feature\BackupAdminTest.php:57
+     53Γûò         $response->assertSee('Backup Manual');
+     54Γûò         $response->assertSee('Jalankan Backup Sekarang');
+     55Γûò         $response->assertSee('Backup Otomatis');
+     56Γûò         $response->assertSee('Atur Jadwal Backup');
+  Γ₧£  57Γûò         $response->assertSee('Hari ini, 14.30');
+     58Γûò         $response->assertSee('Kemarin, 22.00');
+     59Γûò         $response->assertSee('1 Okt 2026, 22.00');
+     60Γûò         $response->assertSee('30 Sep 2026, 22.00');
+     61Γûò         $response->assertSee('Pemberitahuan:');
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\BatasStokAdminTest > admin aktif mendapat 200 dan memuat konten utama                                                                 
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Batas Stok Minimum - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">\n
+\n
+    \n
+    <div id="notif-sukses" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">\n
+        Perubahan batas minimum berhasil disimpan (prototype).\n
+    </div>\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">\n
+    <div class="space-y-6">\n
+        \n
+        <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+            <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                F\n
+            </div>\n
+            <div class="font-bold text-gray-900 text-lg">\n
+                Toko Firo\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Menu Admin\n
+            </div>\n
+            <nav class="space-y-1">\n
+                \n
+                <a\n
+                    href="http://localhost/admin/dashboard"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Dashboard\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/laporan-penjualan"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Laporan Penjualan\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/barang"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Data Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pembelian"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pembelian Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengguna"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Akun Pengguna\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/batas-stok"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold text-base shadow-sm"\n
+                >\n
+                    Batas Stok Minimum\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/backup"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Backup Data\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/log-aktivitas"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Log Aktivitas\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-notifikasi"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Notifikasi\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-toko"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Toko\n
+                </a>\n
+            </nav>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Akses Kasir\n
+            </div>\n
+            <nav class="space-y-1">\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Transaksi Penjualan\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Lihat Stok Barang\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Saldo Harian\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Info Barang Baru\n
+                </a>\n
+            </nav>\n
+        </div>\n
+    </div>\n
+\n
+    \n
+    <div class="pt-4 border-t border-emerald-900/60">\n
+        <a href="http://localhost/admin/profil" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-xl p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">\n
+            <div class="font-medium text-white text-base truncate">\n
+                Savanah Gutkowski\n
+            </div>\n
+            <div class="text-sm text-emerald-300">\n
+                Admin / Pemilik\n
+            </div>\n
+        </a>\n
+        <form method="POST" action="http://localhost/logout">\n
+            <input type="hidden" name="_token" value="MvXVIgr12NTJsNMyVXpYwjs7xHASFWX7aS7Ofswt" autocomplete="off">            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">\n
+                Keluar\n
+            </button>\n
+        </form>\n
+    </div>\n
+</aside>\n
+\n
+\n
+    \n
+    <main class="flex-1 min-w-0 p-8 pb-32">\n
+        \n
+        <header class="mb-6">\n
+            <h1 class="text-2xl font-bold text-gray-900">\n
+                Batas Stok Minimum\n
+            </h1>\n
+            <p class="text-slate-500 text-base mt-1">\n
+                Atur batas peringatan stok untuk setiap barang. Notifikasi otomatis dikirim ke bot Telegram saat stok berada di bawah batas.\n
+            </p>\n
+        </header>\n
+\n
+        \n
+        <section class="bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-4 text-base mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">\n
+            <div>\n
+                <span class="font-bold">Pengingat Telegram Aktif:</span>\n
+                Sistem akan otomatis mengirimkan pesan peringatan saat stok barang mencapai atau di bawah batas minimum yang ditentukan.\n
+            </div>\n
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-200/80 text-amber-900 shrink-0">\n
+                Bot Terhubung\n
+            </span>\n
+        </section>\n
+\n
+        \n
+        <section class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">\n
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">\n
+                <input\n
+                    type="text"\n
+                    id="input-cari"\n
+                    placeholder="Cari nama atau kode barang..."\n
+                    onkeyup="filterTabel()"\n
+                    class="touch-target w-full sm:w-72 px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"\n
+                >\n
+                <select\n
+                    id="filter-jenis"\n
+                    onchange="filterTabel()"\n
+                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"\n
+                >\n
+                    <option value="">Semua Jenis</option>\n
+                    <option value="ATK">ATK</option>\n
+                    <option value="Fotocopy">Fotocopy</option>\n
+                </select>\n
+            </div>\n
+\n
+            <div class="flex flex-wrap items-center gap-2">\n
+                <span class="text-base font-medium text-gray-600 mr-1">Aksi Cepat:</span>\n
+                <button\n
+                    type="button"\n
+                    onclick="aturSemua(3)"\n
+                    class="touch-target px-4 py-2.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"\n
+                >\n
+                    Atur semua ke 3 pcs\n
+                </button>\n
+                <button\n
+                    type="button"\n
+                    onclick="aturSemua(5)"\n
+                    class="touch-target px-4 py-2.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"\n
+                >\n
+                    Atur semua ke 5 pcs\n
+                </button>\n
+            </div>\n
+        </section>\n
+\n
+        \n
+        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">\n
+            <div class="overflow-x-auto">\n
+                <table class="w-full text-left border-collapse text-base" id="tabel-batas-stok">\n
+                    <thead>\n
+                        <tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase font-semibold text-gray-600 tracking-wider">\n
+                            <th class="px-6 py-4">KODE BARANG</th>\n
+                            <th class="px-6 py-4">NAMA BARANG</th>\n
+                            <th class="px-6 py-4">JENIS</th>\n
+                            <th class="px-6 py-4">STOK SEKARANG</th>\n
+                            <th class="px-6 py-4">BATAS MINIMUM</th>\n
+                            <th class="px-6 py-4">STATUS</th>\n
+                        </tr>\n
+                    </thead>\n
+                    <tbody class="divide-y divide-gray-200 text-gray-700">\n
+                                            </tbody>\n
+                </table>\n
+            </div>\n
+        </section>\n
+\n
+        \n
+        <div id="floating-bar" class="fixed bottom-6 left-72 right-8 bg-white border border-gray-300 shadow-2xl rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-30 transition-all">\n
+            <div class="flex items-center gap-3">\n
+                <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-sm rounded-md uppercase tracking-wider">\n
+                    Pemberitahuan\n
+                </span>\n
+                <span id="label-perubahan" class="text-base font-medium text-gray-800">\n
+                    2 perubahan batas minimum belum disimpan.\n
+                </span>\n
+            </div>\n
+            <div class="flex items-center gap-3">\n
+                <button\n
+                    type="button"\n
+                    id="btn-batalkan"\n
+                    onclick="batalkanPerubahan()"\n
+                    class="touch-target px-5 py-2.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"\n
+                >\n
+                    Batalkan\n
+                </button>\n
+                <button\n
+                    type="button"\n
+                    id="btn-simpan"\n
+                    onclick="simpanPerubahan()"\n
+                    class="touch-target px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors cursor-pointer"\n
+                >\n
+                    Simpan Perubahan\n
+                </button>\n
+            </div>\n
+        </div>\n
+    </main>\n
+\n
+    \n
+    <script>\n
+        function kurangiBatas(btn) {\n
+            const input = btn.parentElement.querySelector('.input-batas');\n
+            let val = parseInt(input.value) || 0;\n
+            if (val > 0) {\n
+                input.value = val - 1;\n
+                hitungPerubahan();\n
+            }\n
+        }\n
+\n
+        function tambahBatas(btn) {\n
+            const input = btn.parentElement.querySelector('.input-batas');\n
+            let val = parseInt(input.value) || 0;\n
+            input.value = val + 1;\n
+            hitungPerubahan();\n
+        }\n
+\n
+        function aturSemua(angka) {\n
+            const inputs = document.querySelectorAll('.input-batas');\n
+            inputs.forEach(input => {\n
+                input.value = angka;\n
+            });\n
+            hitungPerubahan();\n
+        }\n
+\n
+        function hitungPerubahan() {\n
+            const inputs = document.querySelectorAll('.input-batas');\n
+            let jumlahPerubahan = 0;\n
+\n
+            inputs.forEach(input => {\n
+                const awal = parseInt(input.getAttribute('data-awal')) || 0;\n
+                const sekarang = parseInt(input.value) || 0;\n
+                if (awal !== sekarang) {\n
+                    jumlahPerubahan++;\n
+                }\n
+            });\n
+\n
+            const label = document.getElementById('label-perubahan');\n
+            const floatingBar = document.getElementById('floating-bar');\n
+\n
+            if (jumlahPerubahan > 0) {\n
+                label.textContent = jumlahPerubahan + ' perubahan batas minimum belum disimpan.';\n
+                floatingBar.classList.remove('opacity-60');\n
+            } else {\n
+                label.textContent = 'Semua perubahan batas minimum sudah tersimpan.';\n
+            }\n
+        }\n
+\n
+        function batalkanPerubahan() {\n
+            const inputs = document.querySelectorAll('.input-batas');\n
+            inputs.forEach(input => {\n
+                input.value = input.getAttribute('data-awal') || 0;\n
+            });\n
+            hitungPerubahan();\n
+        }\n
+\n
+        function simpanPerubahan() {\n
+            const inputs = document.querySelectorAll('.input-batas');\n
+            inputs.forEach(input => {\n
+                input.setAttribute('data-awal', input.value);\n
+            });\n
+            hitungPerubahan();\n
+\n
+            const notif = document.getElementById('notif-sukses');\n
+            notif.classList.remove('hidden');\n
+            setTimeout(() => {\n
+                notif.classList.add('hidden');\n
+            }, 3000);\n
+        }\n
+\n
+        function filterTabel() {\n
+            const kataKunci = (document.getElementById('input-cari').value || '').toLowerCase();\n
+            const filterJenis = (document.getElementById('filter-jenis').value || '').toLowerCase();\n
+            const rows = document.querySelectorAll('.row-barang');\n
+\n
+            rows.forEach(row => {\n
+                const kode = row.querySelector('.kol-kode').textContent.toLowerCase();\n
+                const nama = row.querySelector('.kol-nama').textContent.toLowerCase();\n
+                const jenis = row.getAttribute('data-jenis').toLowerCase();\n
+\n
+                const cocokTeks = kode.includes(kataKunci) || nama.includes(kataKunci);\n
+                const cocokJenis = (filterJenis === '') || (jenis === filterJenis);\n
+\n
+                if (cocokTeks && cocokJenis) {\n
+                    row.style.display = '';\n
+                } else {\n
+                    row.style.display = 'none';\n
+                }\n
+            });\n
+        }\n
+    </script>\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Pensil 2B
+
+  at tests\Feature\BatasStokAdminTest.php:55
+     51Γûò         $response->assertStatus(200);
+     52Γûò         $response->assertSee('Batas Stok Minimum');
+     53Γûò         $response->assertSee('Notifikasi otomatis dikirim ke bot Telegram');
+     54Γûò         $response->assertSee('Pengingat Telegram Aktif');
+  Γ₧£  55Γûò         $response->assertSee('Pensil 2B');
+     56Γûò         $response->assertSee('BRG-008');
+     57Γûò         $response->assertSee('Isi Staples No.10');
+     58Γûò         $response->assertSee('BRG-006');
+     59Γûò         $response->assertSee('Kertas HVS A4 70gr');
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\DashboardAdminTest > admin aktif mendapat 200 dan memuat konten utama                                                                 
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Dashboard Admin - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">\n
+    <div class="space-y-6">\n
+        \n
+        <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+            <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                F\n
+            </div>\n
+            <div class="font-bold text-gray-900 text-lg">\n
+                Toko Firo\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Menu Admin\n
+            </div>\n
+            <nav class="space-y-1">\n
+                \n
+                <a\n
+                    href="http://localhost/admin/dashboard"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold text-base shadow-sm"\n
+                >\n
+                    Dashboard\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/laporan-penjualan"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Laporan Penjualan\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/barang"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Data Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pembelian"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pembelian Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengguna"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Akun Pengguna\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/batas-stok"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Batas Stok Minimum\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/backup"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Backup Data\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/log-aktivitas"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Log Aktivitas\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-notifikasi"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Notifikasi\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-toko"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Toko\n
+                </a>\n
+            </nav>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Akses Kasir\n
+            </div>\n
+            <nav class="space-y-1">\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Transaksi Penjualan\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Lihat Stok Barang\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Saldo Harian\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Info Barang Baru\n
+                </a>\n
+            </nav>\n
+        </div>\n
+    </div>\n
+\n
+    \n
+    <div class="pt-4 border-t border-emerald-900/60">\n
+        <a href="http://localhost/admin/profil" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-xl p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">\n
+            <div class="font-medium text-white text-base truncate">\n
+                Lexus Hoppe MD\n
+            </div>\n
+            <div class="text-sm text-emerald-300">\n
+                Admin / Pemilik\n
+            </div>\n
+        </a>\n
+        <form method="POST" action="http://localhost/logout">\n
+            <input type="hidden" name="_token" value="B72l7KuH6m8jdgmk8hbtkcDstY37EZSkkhd88pOS" autocomplete="off">            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">\n
+                Keluar\n
+            </button>\n
+        </form>\n
+    </div>\n
+</aside>\n
+\n
+\n
+    \n
+    <main class="flex-1 min-w-0 p-8">\n
+        \n
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-gray-200 mb-6">\n
+            <div>\n
+                <h1 class="text-2xl font-bold text-gray-900">\n
+                    Dashboard Admin\n
+                </h1>\n
+            </div>\n
+\n
+            <div class="flex items-center gap-4">\n
+                \n
+                <button type="button" class="touch-target px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors flex items-center gap-2 cursor-pointer">\n
+                    <span>Notifikasi</span>\n
+                    <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">\n
+                        3 Baru\n
+                    </span>\n
+                </button>\n
+\n
+                \n
+                <div class="flex items-center gap-3 pl-2 border-l border-gray-300">\n
+                    <div class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-base">\n
+                        J\n
+                    </div>\n
+                    <div class="hidden md:block text-left">\n
+                        <div class="font-semibold text-gray-900 text-base leading-tight">\n
+                            Junaidi Saleh\n
+                        </div>\n
+                        <div class="text-xs text-gray-500 font-medium">\n
+                            Pemilik Toko\n
+                        </div>\n
+                    </div>\n
+                </div>\n
+            </div>\n
+        </header>\n
+\n
+        \n
+        <section class="mb-6">\n
+            <h2 class="text-2xl font-bold text-gray-900">\n
+                Halo, Junaidi\n
+            </h2>\n
+            <p class="text-slate-500 text-base mt-1">\n
+                Jumat, 3 Oktober 2026 ┬╖ Ringkasan toko hari ini\n
+            </p>\n
+        </section>\n
+\n
+        \n
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">\n
+            \n
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">\n
+                <div class="flex items-center justify-between mb-2">\n
+                    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">\n
+                        Penjualan Hari Ini\n
+                    </span>\n
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">\n
+                        +0%\n
+                    </span>\n
+                </div>\n
+                <div class="text-2xl font-bold text-gray-900">\n
+                    Rp 0\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">\n
+                <div class="flex items-center justify-between mb-2">\n
+                    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">\n
+                        Jumlah Transaksi\n
+                    </span>\n
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">\n
+                        +0\n
+                    </span>\n
+                </div>\n
+                <div class="text-2xl font-bold text-gray-900">\n
+                    0\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">\n
+                <div class="flex items-center justify-between mb-2">\n
+                    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">\n
+                        Stok Menipis\n
+                    </span>\n
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">\n
+                        0 habis\n
+                    </span>\n
+                </div>\n
+                <div class="text-2xl font-bold text-gray-900">\n
+                    0\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">\n
+                <div class="flex items-center justify-between mb-2">\n
+                    <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">\n
+                        Laba Hari Ini\n
+                    </span>\n
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">\n
+                        +0%\n
+                    </span>\n
+                </div>\n
+                <div class="text-2xl font-bold text-gray-900">\n
+                    Rp 0\n
+                </div>\n
+            </div>\n
+        </section>\n
+\n
+        \n
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">\n
+            \n
+            <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col justify-between">\n
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">\n
+                    <div>\n
+                        <h3 class="text-lg font-bold text-gray-900">\n
+                            Penjualan 7 Hari Terakhir\n
+                        </h3>\n
+                        <p class="text-sm text-gray-500">\n
+                            Volume tren penjualan harian toko (tertutup per hari)\n
+                        </p>\n
+                    </div>\n
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">\n
+                        Puncak Tertinggi: Jum (Rp 3.180.000)\n
+                    </span>\n
+                </div>\n
+\n
+                \n
+                <div class="h-64 sm:h-72 flex items-end justify-between gap-3 sm:gap-6 px-4 pt-8 pb-2 border-b border-gray-200">\n
+                                            <div class="flex-1 flex flex-col items-center h-full justify-end group">\n
+                            \n
+                            <div class="text-xs font-semibold mb-2 text-gray-500 ">\n
+                                0%\n
+                            </div>\n
+\n
+                            \n
+                            <div class="w-full max-w-[48px] flex items-end justify-center h-full">\n
+                                <div\n
+                                    class="w-full rounded-t-md transition-all duration-300 bg-emerald-100 group-hover:bg-emerald-200"\n
+                                    style="height: 0%;"\n
+                                    title="Sel: Rp 0"\n
+                                ></div>\n
+                            </div>\n
+\n
+                            \n
+                            <div class="text-base font-medium mt-3 text-gray-700">\n
+                                Sel\n
+                            </div>\n
+                        </div>\n
+                                            <div class="flex-1 flex flex-col items-center h-full justify-end group">\n
+                            \n
+                            <div class="text-xs font-semibold mb-2 text-gray-500 ">\n
+                                0%\n
+                            </div>\n
+\n
+                            \n
+                            <div class="w-full max-w-[48px] flex items-end justify-center h-full">\n
+                                <div\n
+                                    class="w-full rounded-t-md transition-all duration-300 bg-emerald-100 group-hover:bg-emerald-200"\n
+                                    style="height: 0%;"\n
+                                    title="Rab: Rp 0"\n
+                                ></div>\n
+                            </div>\n
+\n
+                            \n
+                            <div class="text-base font-medium mt-3 text-gray-700">\n
+                                Rab\n
+                            </div>\n
+                        </div>\n
+                                            <div class="flex-1 flex flex-col items-center h-full justify-end group">\n
+                            \n
+                            <div class="text-xs font-semibold mb-2 text-gray-500 ">\n
+                                0%\n
+                            </div>\n
+\n
+                            \n
+                            <div class="w-full max-w-[48px] flex items-end justify-center h-full">\n
+                                <div\n
+                                    class="w-full rounded-t-md transition-all duration-300 bg-emerald-100 group-hover:bg-emerald-200"\n
+                                    style="height: 0%;"\n
+                                    title="Kam: Rp 0"\n
+                                ></div>\n
+                            </div>\n
+\n
+                            \n
+                            <div class="text-base font-medium mt-3 text-gray-700">\n
+                                Kam\n
+                            </div>\n
+                        </div>\n
+                                            <div class="flex-1 flex flex-col items-center h-full justify-end group">\n
+                            \n
+                            <div class="text-xs font-semibold mb-2 text-gray-500 ">\n
+                                0%\n
+                            </div>\n
+\n
+                            \n
+                            <div class="w-full max-w-[48px] flex items-end justify-center h-full">\n
+                                <div\n
+                                    class="w-full rounded-t-md transition-all duration-300 bg-emerald-100 group-hover:bg-emerald-200"\n
+                                    style="height: 0%;"\n
+                                    title="Jum: Rp 0"\n
+                                ></div>\n
+                            </div>\n
+\n
+                            \n
+                            <div class="text-base font-medium mt-3 text-gray-700">\n
+                                Jum\n
+                            </div>\n
+                        </div>\n
+                                            <div class="flex-1 flex flex-col items-center h-full justify-end group">\n
+                            \n
+                            <div class="text-xs font-semibold mb-2 text-gray-500 ">\n
+                                0%\n
+                            </div>\n
+\n
+                            \n
+                            <div class="w-full max-w-[48px] flex items-end justify-center h-full">\n
+                                <div\n
+                                    class="w-full rounded-t-md transition-all duration-300 bg-emerald-100 group-hover:bg-emerald-200"\n
+                                    style="height: 0%;"\n
+                                    title="Sab: Rp 0"\n
+                                ></div>\n
+                            </div>\n
+\n
+                            \n
+                            <div class="text-base font-medium mt-3 text-gray-700">\n
+                                Sab\n
+                            </div>\n
+                        </div>\n
+                                            <div class="flex-1 flex flex-col items-center h-full justify-end group">\n
+                            \n
+                            <div class="text-xs font-semibold mb-2 text-gray-500 ">\n
+                                0%\n
+                            </div>\n
+\n
+                            \n
+                            <div class="w-full max-w-[48px] flex items-end justify-center h-full">\n
+                                <div\n
+                                    class="w-full rounded-t-md transition-all duration-300 bg-emerald-100 group-hover:bg-emerald-200"\n
+                                    style="height: 0%;"\n
+                                    title="Min: Rp 0"\n
+                                ></div>\n
+                            </div>\n
+\n
+                            \n
+                            <div class="text-base font-medium mt-3 text-gray-700">\n
+                                Min\n
+                            </div>\n
+                        </div>\n
+                                            <div class="flex-1 flex flex-col items-center h-full justify-end group">\n
+                            \n
+                            <div class="text-xs font-semibold mb-2 text-gray-500 ">\n
+                                0%\n
+                            </div>\n
+\n
+                            \n
+                            <div class="w-full max-w-[48px] flex items-end justify-center h-full">\n
+                                <div\n
+                                    class="w-full rounded-t-md transition-all duration-300 bg-emerald-100 group-hover:bg-emerald-200"\n
+                                    style="height: 0%;"\n
+                                    title="Sen: Rp 0"\n
+                                ></div>\n
+                            </div>\n
+\n
+                            \n
+                            <div class="text-base font-medium mt-3 text-gray-700">\n
+                                Sen\n
+                            </div>\n
+                        </div>\n
+                                    </div>\n
+\n
+                \n
+                <div class="flex items-center justify-between text-xs text-gray-500 mt-4 px-2">\n
+                    <div class="flex items-center gap-4">\n
+                        <div class="flex items-center gap-2">\n
+                            <span class="w-3 h-3 rounded-sm bg-emerald-600 inline-block"></span>\n
+                            <span class="text-sm text-gray-600">Hari Ini (Puncak)</span>\n
+                        </div>\n
+                        <div class="flex items-center gap-2">\n
+                            <span class="w-3 h-3 rounded-sm bg-emerald-100 inline-block"></span>\n
+                            <span class="text-sm text-gray-600">Hari Sebelumnya</span>\n
+                        </div>\n
+                    </div>\n
+                    <span class="text-sm text-gray-500">Pembaruan real-time</span>\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="lg:col-span-1 space-y-6">\n
+                \n
+                <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">\n
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">\n
+                        Top Barang Hari Ini\n
+                    </h3>\n
+                    <div class="space-y-3">\n
+                                            </div>\n
+                </div>\n
+\n
+                \n
+                <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">\n
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">\n
+                        Aktivitas Terbaru\n
+                    </h3>\n
+                    <div class="space-y-3">\n
+                                            </div>\n
+                </div>\n
+            </div>\n
+        </section>\n
+    </main>\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Rp 680.000
+
+  at tests\Feature\DashboardAdminTest.php:60
+     56Γûò         $response->assertSee('Rp 3.180.000');
+     57Γûò         $response->assertSee('Jumlah Transaksi');
+     58Γûò         $response->assertSee('Stok Menipis');
+     59Γûò         $response->assertSee('Laba Hari Ini');
+  Γ₧£  60Γûò         $response->assertSee('Rp 680.000');
+     61Γûò         $response->assertSee('Penjualan 7 Hari Terakhir');
+     62Γûò         $response->assertSee('Top Barang Hari Ini');
+     63Γûò         $response->assertSee('Kertas HVS A4');
+     64Γûò         $response->assertSee('Pulpen Pilot G2');
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\DashboardKasirTest > halaman dashboard kasir dapat diakses dan memuat konten                                                          
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Dashboard Kasir - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">\n
+        <div class="space-y-6">\n
+            \n
+            <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                    F\n
+                </div>\n
+                <div class="font-bold text-gray-900 text-lg">\n
+                    Toko Firo\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div>\n
+                <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                    Menu Kasir\n
+                </div>\n
+                <nav class="space-y-1">\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/dashboard"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"\n
+                    >\n
+                        Dashboard\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/transaksi"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Transaksi Penjualan\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/stok"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Lihat Stok Barang\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/saldo"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Saldo\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/info-barang"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Info Barang Baru\n
+                    </a>\n
+                </nav>\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div class="pt-4 border-t border-emerald-900/60">\n
+            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">\n
+                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">\n
+                    K\n
+                </div>\n
+                <div class="min-w-0 flex-1">\n
+                    <div class="font-medium text-white text-base truncate">\n
+                        Kasir\n
+                    </div>\n
+                    <div class="text-sm text-emerald-300">\n
+                        Kasir\n
+                    </div>\n
+                </div>\n
+            </div>\n
+            <form method="POST" action="http://localhost/logout">\n
+                <input type="hidden" name="_token" value="tAh7rirMehMgcAHflBqBjTkvX0KwBBD3WqNlOxo3" autocomplete="off">                <button\n
+                    type="submit"\n
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"\n
+                >\n
+                    Keluar\n
+                </button>\n
+            </form>\n
+        </div>\n
+    </aside>\n
+\n
+    \n
+    <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">\n
+        \n
+        <header class="flex items-center justify-between pb-6 border-b border-gray-200 mb-6">\n
+            <div>\n
+                <h1 class="text-2xl font-bold text-gray-900">\n
+                    Dashboard\n
+                </h1>\n
+            </div>\n
+            <div class="flex items-center gap-3">\n
+                <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">\n
+                    K\n
+                </div>\n
+                <span class="font-medium text-gray-800 text-base">\n
+                    Kasir\n
+                </span>\n
+            </div>\n
+        </header>\n
+\n
+        \n
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">\n
+            <div>\n
+                <h2 class="text-2xl font-bold text-gray-900">\n
+                    Halo, Rina\n
+                </h2>\n
+                <p class="text-slate-500 text-base mt-0.5">\n
+                    26-10-2026\n
+                </p>\n
+            </div>\n
+            <div>\n
+                <a\n
+                    href="http://localhost/kasir/transaksi"\n
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg min-h-[2.75rem] inline-flex items-center justify-center text-base shadow-sm transition-colors whitespace-nowrap"\n
+                >\n
+                    + Transaksi Baru\n
+                </a>\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">\n
+            \n
+            <a\n
+                href="http://localhost/kasir/transaksi"\n
+                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"\n
+            >\n
+                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">\n
+                    PENJUALAN\n
+                </span>\n
+                <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">\n
+                    Transaksi Penjualan\n
+                </h3>\n
+                <p class="text-slate-500 text-base mt-1">\n
+                    Catat penjualan baru\n
+                </p>\n
+            </a>\n
+\n
+            \n
+            <a\n
+                href="http://localhost/kasir/stok"\n
+                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"\n
+            >\n
+                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800 mb-2">\n
+                    INVENTORI\n
+                </span>\n
+                <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">\n
+                    Lihat Stok Barang\n
+                </h3>\n
+                <p class="text-slate-500 text-base mt-1">\n
+                    Cek ketersediaan stok\n
+                </p>\n
+            </a>\n
+\n
+            \n
+            <a\n
+                href="http://localhost/kasir/saldo"\n
+                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"\n
+            >\n
+                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-100 text-amber-800 mb-2">\n
+                    KEUANGAN\n
+                </span>\n
+                <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">\n
+                    Saldo\n
+                </h3>\n
+                <p class="text-slate-500 text-base mt-1">\n
+                    Lihat saldo hari ini\n
+                </p>\n
+            </a>\n
+\n
+            \n
+            <a\n
+                href="http://localhost/kasir/info-barang"\n
+                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"\n
+            >\n
+                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-800 mb-2">\n
+                    KATALOG\n
+                </span>\n
+                <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">\n
+                    Info Barang Baru\n
+                </h3>\n
+                <p class="text-slate-500 text-base mt-1">\n
+                    Perubahan & item baru\n
+                </p>\n
+            </a>\n
+        </div>\n
+\n
+        \n
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">\n
+            \n
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">\n
+                <div>\n
+                    <span class="text-slate-500 text-base font-medium block">\n
+                        Saldo Hari Ini\n
+                    </span>\n
+                    <div class="text-3xl font-bold text-slate-800 my-3">\n
+                        Rp 0\n
+                    </div>\n
+                </div>\n
+                <div class="pt-2 border-t border-slate-100">\n
+                    <a\n
+                        href="http://localhost/kasir/saldo"\n
+                        class="text-emerald-700 font-medium hover:underline inline-flex items-center min-h-[44px] text-base"\n
+                    >\n
+                        Lihat rincian -&gt;\n
+                    </a>\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">\n
+                <div>\n
+                    <h3 class="text-lg font-bold text-slate-800 mb-3">\n
+                        Stok Menipis\n
+                    </h3>\n
+                    <div class="divide-y divide-slate-100">\n
+                                            </div>\n
+                </div>\n
+                <div class="pt-2 border-t border-slate-100 mt-2">\n
+                    <a\n
+                        href="http://localhost/kasir/stok"\n
+                        class="text-emerald-700 font-medium hover:underline inline-flex items-center min-h-[44px] text-base"\n
+                    >\n
+                        Lihat semua -&gt;\n
+                    </a>\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">\n
+                <div>\n
+                    <h3 class="text-lg font-bold text-slate-800 mb-3">\n
+                        Info Barang Baru\n
+                    </h3>\n
+                    <div class="divide-y divide-slate-100">\n
+                                            </div>\n
+                </div>\n
+                <div class="pt-2 border-t border-slate-100 mt-2">\n
+                    <a\n
+                        href="http://localhost/kasir/info-barang"\n
+                        class="text-emerald-700 font-medium hover:underline inline-flex items-center min-h-[44px] text-base"\n
+                    >\n
+                        Lihat semua -&gt;\n
+                    </a>\n
+                </div>\n
+            </div>\n
+        </div>\n
+    </main>\n
+\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Rp 3.180.000
+
+  at tests\Feature\DashboardKasirTest.php:22
+     18Γûò 
+     19Γûò         $response->assertStatus(200);
+     20Γûò         $response->assertSee('Dashboard');
+     21Γûò         $response->assertSee('Halo, Rina');
+  Γ₧£  22Γûò         $response->assertSee('Rp 3.180.000');
+     23Γûò         $response->assertSee('+ Transaksi Baru');
+     24Γûò         $response->assertSee('Kertas HVS A4 70gr');
+     25Γûò         $response->assertSee('Spidol Snowman Hitam ditambahkan');
+     26Γûò     }
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\DemoBarangTest > demo barang returns 200                                                                                              
+  Expected response status code [200] but received 302.
+Failed asserting that 302 is identical to 200.
+
+  at tests\Feature\DemoBarangTest.php:16
+     12Γûò     public function test_demo_barang_returns_200(): void
+     13Γûò     {
+     14Γûò         $response = $this->get('/demo/barang');
+     15Γûò 
+  Γ₧£  16Γûò         $response->assertStatus(200);
+     17Γûò     }
+     18Γûò 
+     19Γûò     /**
+     20Γûò      * b. Halaman 1 memuat "Menampilkan 1-7 dari 47 barang".
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\DemoBarangTest > halaman 1 menampilkan rentang yang benar                                                                             
+  Expected response status code [200] but received 302.
+Failed asserting that 302 is identical to 200.
+
+  at tests\Feature\DemoBarangTest.php:26
+     22Γûò     public function test_halaman_1_menampilkan_rentang_yang_benar(): void
+     23Γûò     {
+     24Γûò         $response = $this->get('/demo/barang?page=1');
+     25Γûò 
+  Γ₧£  26Γûò         $response->assertStatus(200);
+     27Γûò         $response->assertSee('Menampilkan 1-7 dari 47 barang');
+     28Γûò     }
+     29Γûò 
+     30Γûò     /**
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\DemoBarangTest > halaman 7 menampilkan rentang yang benar                                                                             
+  Expected response status code [200] but received 302.
+Failed asserting that 302 is identical to 200.
+
+  at tests\Feature\DemoBarangTest.php:37
+     33Γûò     public function test_halaman_7_menampilkan_rentang_yang_benar(): void
+     34Γûò     {
+     35Γûò         $response = $this->get('/demo/barang?page=7');
+     36Γûò 
+  Γ₧£  37Γûò         $response->assertStatus(200);
+     38Γûò         $response->assertSee('Menampilkan 43-47 dari 47 barang');
+     39Γûò     }
+     40Γûò 
+     41Γûò     /**
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\DemoBarangTest > tombol aksi berlabel ubah data dan hapus data                                                                        
+  Expected response status code [200] but received 302.
+Failed asserting that 302 is identical to 200.
+
+  at tests\Feature\DemoBarangTest.php:48
+     44Γûò     public function test_tombol_aksi_berlabel_ubah_data_dan_hapus_data(): void
+     45Γûò     {
+     46Γûò         $response = $this->get('/demo/barang');
+     47Γûò 
+  Γ₧£  48Γûò         $response->assertStatus(200);
+     49Γûò         $response->assertSee('Ubah Data');
+     50Γûò         $response->assertSee('Hapus Data');
+     51Γûò     }
+     52Γûò
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\DemoBarangTest > halaman tidak mengandung tag svg                                                                                     
+  Expected response status code [200] but received 302.
+Failed asserting that 302 is identical to 200.
+
+  at tests\Feature\DemoBarangTest.php:60
+     56Γûò     public function test_halaman_tidak_mengandung_tag_svg(): void
+     57Γûò     {
+     58Γûò         $response = $this->get('/demo/barang');
+     59Γûò 
+  Γ₧£  60Γûò         $response->assertStatus(200);
+     61Γûò         $response->assertDontSee('<svg', false);
+     62Γûò     }
+     63Γûò }
+     64Γûò
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\InfoBarangKasirTest > halaman info barang kasir dapat diakses dan memuat konten                                                       
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Info Barang Baru - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">\n
+        <div class="space-y-6">\n
+            \n
+            <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                    F\n
+                </div>\n
+                <div class="font-bold text-gray-900 text-lg">\n
+                    Toko Firo\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div>\n
+                <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                    Menu Kasir\n
+                </div>\n
+                <nav class="space-y-1">\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/dashboard"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Dashboard\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/transaksi"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Transaksi Penjualan\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/stok"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Lihat Stok Barang\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/saldo"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Saldo\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/info-barang"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"\n
+                    >\n
+                        Info Barang Baru\n
+                    </a>\n
+                </nav>\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div class="pt-4 border-t border-emerald-900/60">\n
+            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">\n
+                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">\n
+                    K\n
+                </div>\n
+                <div class="min-w-0 flex-1">\n
+                    <div class="font-medium text-white text-base truncate">\n
+                        Kasir\n
+                    </div>\n
+                    <div class="text-sm text-emerald-300">\n
+                        Kasir\n
+                    </div>\n
+                </div>\n
+            </div>\n
+            <form method="POST" action="http://localhost/logout">\n
+                <input type="hidden" name="_token" value="1GSomiEnOKBFs5k7Afa0fa9BhXNVhAJzzG0bcjUb" autocomplete="off">                <button\n
+                    type="submit"\n
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"\n
+                >\n
+                    Keluar\n
+                </button>\n
+            </form>\n
+        </div>\n
+    </aside>\n
+\n
+    \n
+    <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">\n
+        \n
+        <header class="flex items-center justify-between pb-6 border-b border-gray-200 mb-6">\n
+            <div>\n
+                <h1 class="text-2xl font-bold text-gray-900">\n
+                    Info Barang Baru\n
+                </h1>\n
+                <p class="text-slate-500 text-base mt-0.5">Pembaruan produk baru, penyesuaian harga jual, dan status stok masuk dari Admin.</p>\n
+            </div>\n
+            <div class="flex items-center gap-3">\n
+                <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">\n
+                    K\n
+                </div>\n
+                <span class="font-medium text-gray-800 text-base">\n
+                    Kasir\n
+                </span>\n
+            </div>\n
+        </header>\n
+\n
+        \n
+        \n
+        <div class="flex flex-wrap items-center gap-3 mb-6">\n
+                            <a\n
+                    href="http://localhost/kasir/info-barang"\n
+                    class="touch-target font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors\n
+                        bg-emerald-700 text-white shadow-sm"\n
+                >\n
+                    Semua\n
+                </a>\n
+                            <a\n
+                    href="http://localhost/kasir/info-barang?tipe=baru"\n
+                    class="touch-target font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors\n
+                        bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"\n
+                >\n
+                    Barang Baru\n
+                </a>\n
+                            <a\n
+                    href="http://localhost/kasir/info-barang?tipe=harga"\n
+                    class="touch-target font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors\n
+                        bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"\n
+                >\n
+                    Perubahan Harga\n
+                </a>\n
+                            <a\n
+                    href="http://localhost/kasir/info-barang?tipe=stok"\n
+                    class="touch-target font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors\n
+                        bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"\n
+                >\n
+                    Stok Diperbarui\n
+                </a>\n
+                    </div>\n
+\n
+        \n
+        <div class="space-y-4">\n
+                            <div class="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 text-base">\n
+                    Belum ada pembaruan untuk kategori ini.\n
+                </div>\n
+                    </div>\n
+    </main>\n
+\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Spidol Snowman Hitam
+
+  at tests\Feature\InfoBarangKasirTest.php:23
+     19Γûò         $response->assertStatus(200);
+     20Γûò         $response->assertSee('Info Barang Baru');
+     21Γûò         $response->assertSee('Barang Baru');
+     22Γûò         $response->assertSee('Perubahan Harga');
+  Γ₧£  23Γûò         $response->assertSee('Spidol Snowman Hitam');
+     24Γûò         $response->assertSee('Buku Tulis Sidu 58hal');
+     25Γûò         $response->assertSee('Penghapus Faber-Castell');
+     26Γûò     }
+     27Γûò
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\LogAktivitasAdminTest > admin aktif mendapat 200 dan memuat konten utama                                                              
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Log Aktivitas - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">\n
+\n
+    \n
+    <div id="notif-ekspor" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">\n
+        File log aktivitas (CSV) berhasil diunduh (prototype).\n
+    </div>\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">\n
+    <div class="space-y-6">\n
+        \n
+        <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+            <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                F\n
+            </div>\n
+            <div class="font-bold text-gray-900 text-lg">\n
+                Toko Firo\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Menu Admin\n
+            </div>\n
+            <nav class="space-y-1">\n
+                \n
+                <a\n
+                    href="http://localhost/admin/dashboard"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Dashboard\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/laporan-penjualan"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Laporan Penjualan\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/barang"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Data Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pembelian"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pembelian Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengguna"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Akun Pengguna\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/batas-stok"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Batas Stok Minimum\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/backup"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Backup Data\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/log-aktivitas"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold text-base shadow-sm"\n
+                >\n
+                    Log Aktivitas\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-notifikasi"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Notifikasi\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-toko"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Toko\n
+                </a>\n
+            </nav>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Akses Kasir\n
+            </div>\n
+            <nav class="space-y-1">\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Transaksi Penjualan\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Lihat Stok Barang\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Saldo Harian\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Info Barang Baru\n
+                </a>\n
+            </nav>\n
+        </div>\n
+    </div>\n
+\n
+    \n
+    <div class="pt-4 border-t border-emerald-900/60">\n
+        <a href="http://localhost/admin/profil" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-xl p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">\n
+            <div class="font-medium text-white text-base truncate">\n
+                Stewart Adams\n
+            </div>\n
+            <div class="text-sm text-emerald-300">\n
+                Admin / Pemilik\n
+            </div>\n
+        </a>\n
+        <form method="POST" action="http://localhost/logout">\n
+            <input type="hidden" name="_token" value="juZOmgLdlVjpAk1zZ8TQlLV8WWXxlV3y81niOGQq" autocomplete="off">            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">\n
+                Keluar\n
+            </button>\n
+        </form>\n
+    </div>\n
+</aside>\n
+\n
+\n
+    \n
+    <main class="flex-1 min-w-0 p-8">\n
+        \n
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">\n
+            <div>\n
+                <h1 class="text-2xl font-bold text-gray-900">\n
+                    Log Aktivitas\n
+                </h1>\n
+                <p class="text-slate-500 text-base mt-1">\n
+                    Rekam jejak seluruh aktivitas sistem, transaksi, dan perubahan data Toko Firo.\n
+                </p>\n
+            </div>\n
+            <div>\n
+                <button\n
+                    type="button"\n
+                    onclick="eksporCsv()"\n
+                    class="touch-target bg-white border border-slate-300 text-slate-700 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-50 text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"\n
+                >\n
+                    Ekspor CSV\n
+                </button>\n
+            </div>\n
+        </header>\n
+\n
+        \n
+        <section class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">\n
+            <div class="flex-1 max-w-md">\n
+                <input\n
+                    type="text"\n
+                    id="input-cari"\n
+                    placeholder="Cari keterangan..."\n
+                    onkeyup="filterLog()"\n
+                    class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"\n
+                >\n
+            </div>\n
+\n
+            <div class="flex flex-wrap items-center gap-3">\n
+                \n
+                <select\n
+                    id="filter-waktu"\n
+                    onchange="filterLog()"\n
+                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"\n
+                >\n
+                    <option value="">Hari ini</option>\n
+                    <option value="7hari">7 Hari Terakhir</option>\n
+                    <option value="bulan">Bulan Ini</option>\n
+                </select>\n
+\n
+                \n
+                <select\n
+                    id="filter-user"\n
+                    onchange="filterLog()"\n
+                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"\n
+                >\n
+                    <option value="">User: Semua</option>\n
+                    <option value="Rina Putri">Rina Putri</option>\n
+                    <option value="Deni Saputra">Deni Saputra</option>\n
+                    <option value="Junaidi Saleh">Junaidi Saleh</option>\n
+                    <option value="Sistem">Sistem</option>\n
+                </select>\n
+\n
+                \n
+                <select\n
+                    id="filter-tipe"\n
+                    onchange="filterLog()"\n
+                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"\n
+                >\n
+                    <option value="">Tipe: Semua</option>\n
+                    <option value="Transaksi">Transaksi</option>\n
+                    <option value="Stok">Stok</option>\n
+                    <option value="Login">Login</option>\n
+                    <option value="Barang">Barang</option>\n
+                    <option value="Harga">Harga</option>\n
+                    <option value="Modal">Modal</option>\n
+                </select>\n
+            </div>\n
+        </section>\n
+\n
+        \n
+        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">\n
+            <div class="overflow-x-auto">\n
+                <table class="w-full text-left border-collapse text-base" id="tabel-log">\n
+                    <thead>\n
+                        <tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase font-semibold text-gray-600 tracking-wider">\n
+                            <th class="px-6 py-4">Waktu</th>\n
+                            <th class="px-6 py-4">User</th>\n
+                            <th class="px-6 py-4">Tipe Aksi</th>\n
+                            <th class="px-6 py-4">Detail</th>\n
+                        </tr>\n
+                    </thead>\n
+                    <tbody class="divide-y divide-gray-200 text-gray-700">\n
+                                            </tbody>\n
+                </table>\n
+            </div>\n
+\n
+            \n
+            <div class="p-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between text-base text-gray-600 gap-2">\n
+                <div id="info-jumlah-log">\n
+                    Menampilkan 1-10 dari 48 log\n
+                </div>\n
+                <div class="flex items-center gap-2">\n
+                    <button type="button" class="touch-target px-4 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-500 font-medium text-base hover:bg-gray-100 cursor-not-allowed opacity-60" disabled>\n
+                        Sebelumnya\n
+                    </button>\n
+                    <button type="button" class="touch-target px-4 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100 cursor-pointer">\n
+                        Berikutnya\n
+                    </button>\n
+                </div>\n
+            </div>\n
+        </section>\n
+    </main>\n
+\n
+    \n
+    <script>\n
+        function eksporCsv() {\n
+            const notif = document.getElementById('notif-ekspor');\n
+            notif.classList.remove('hidden');\n
+            setTimeout(() => {\n
+                notif.classList.add('hidden');\n
+            }, 3000);\n
+        }\n
+\n
+        function filterLog() {\n
+            const kataKunci = (document.getElementById('input-cari').value || '').toLowerCase();\n
+            const filterUser = (document.getElementById('filter-user').value || '').toLowerCase();\n
+            const filterTipe = (document.getElementById('filter-tipe').value || '').toLowerCase();\n
+            const rows = document.querySelectorAll('.row-log');\n
+            let tampak = 0;\n
+\n
+            rows.forEach(row => {\n
+                const user = (row.getAttribute('data-user') || '').toLowerCase();\n
+                const tipe = (row.getAttribute('data-tipe') || '').toLowerCase();\n
+                const detail = (row.querySelector('.kol-detail').textContent || '').toLowerCase();\n
+\n
+                const cocokKunci = detail.includes(kataKunci) || user.includes(kataKunci);\n
+                const cocokUser = (filterUser === '') || (user === filterUser);\n
+                const cocokTipe = (filterTipe === '') || (tipe === filterTipe);\n
+\n
+                if (cocokKunci && cocokUser && cocokTipe) {\n
+                    row.style.display = '';\n
+                    tampak++;\n
+                } else {\n
+                    row.style.display = 'none';\n
+                }\n
+            });\n
+\n
+            const info = document.getElementById('info-jumlah-log');\n
+            info.textContent = 'Menampilkan 1-' + tampak + ' dari 48 log';\n
+        }\n
+    </script>\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: TRX-261003-001
+
+  at tests\Feature\LogAktivitasAdminTest.php:54
+     50Γûò 
+     51Γûò         $response->assertStatus(200);
+     52Γûò         $response->assertSee('Log Aktivitas');
+     53Γûò         $response->assertSee('Ekspor CSV');
+  Γ₧£  54Γûò         $response->assertSee('TRX-261003-001');
+     55Γûò         $response->assertSee('Spidol Snowman Hitam');
+     56Γûò         $response->assertSee('Set modal awal');
+     57Γûò         $response->assertSee('Rina Putri');
+     58Γûò         $response->assertSee('Deni Saputra');
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\PembelianAdminTest > admin aktif mendapat 200 dan memuat konten utama                                                                 
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Pembelian Barang - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">\n
+    <div class="space-y-6">\n
+        \n
+        <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+            <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                F\n
+            </div>\n
+            <div class="font-bold text-gray-900 text-lg">\n
+                Toko Firo\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Menu Admin\n
+            </div>\n
+            <nav class="space-y-1">\n
+                \n
+                <a\n
+                    href="http://localhost/admin/dashboard"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Dashboard\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/laporan-penjualan"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Laporan Penjualan\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/barang"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Data Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pembelian"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold text-base shadow-sm"\n
+                >\n
+                    Pembelian Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengguna"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Akun Pengguna\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/batas-stok"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Batas Stok Minimum\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/backup"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Backup Data\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/log-aktivitas"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Log Aktivitas\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-notifikasi"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Notifikasi\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-toko"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Toko\n
+                </a>\n
+            </nav>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Akses Kasir\n
+            </div>\n
+            <nav class="space-y-1">\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Transaksi Penjualan\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Lihat Stok Barang\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Saldo Harian\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Info Barang Baru\n
+                </a>\n
+            </nav>\n
+        </div>\n
+    </div>\n
+\n
+    \n
+    <div class="pt-4 border-t border-emerald-900/60">\n
+        <a href="http://localhost/admin/profil" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-xl p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">\n
+            <div class="font-medium text-white text-base truncate">\n
+                Marlene Daugherty II\n
+            </div>\n
+            <div class="text-sm text-emerald-300">\n
+                Admin / Pemilik\n
+            </div>\n
+        </a>\n
+        <form method="POST" action="http://localhost/logout">\n
+            <input type="hidden" name="_token" value="5cUJSV73lXetVGjdxMq4K9qwecE7VQLn2sLvI0sq" autocomplete="off">            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">\n
+                Keluar\n
+            </button>\n
+        </form>\n
+    </div>\n
+</aside>\n
+\n
+\n
+    \n
+    <main class="flex-1 min-w-0 p-8">\n
+        \n
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">\n
+            <h1 class="text-2xl font-bold text-gray-900">\n
+                Pembelian Barang (Restock)\n
+            </h1>\n
+        </header>\n
+\n
+        \n
+        <div class="flex items-center gap-3 mb-6">\n
+            <button\n
+                type="button"\n
+                id="btn-tab-baru"\n
+                onclick="bukaTab('baru')"\n
+                class="touch-target px-6 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors"\n
+            >\n
+                Pembelian Baru\n
+            </button>\n
+            <button\n
+                type="button"\n
+                id="btn-tab-riwayat"\n
+                onclick="bukaTab('riwayat')"\n
+                class="touch-target px-6 py-2.5 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors"\n
+            >\n
+                Riwayat Pembelian\n
+            </button>\n
+        </div>\n
+\n
+        \n
+        <div id="tab-konten-baru" class="space-y-6">\n
+            \n
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">\n
+                <h2 class="text-xl font-bold text-gray-900 mb-2">\n
+                    Perlu Segera Restock\n
+                </h2>\n
+                <p class="text-gray-600 text-base mb-4">\n
+                    Barang dengan stok menipis atau habis:\n
+                </p>\n
+\n
+                <div class="space-y-3">\n
+                                            <div class="p-4 text-center text-gray-500">\n
+                            Tidak ada barang yang perlu restock saat ini.\n
+                        </div>\n
+                                    </div>\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        \n
+        <div id="tab-konten-riwayat" class="space-y-6 hidden">\n
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">\n
+                <div class="p-6 border-b border-gray-200">\n
+                    <h2 class="text-xl font-bold text-gray-900">\n
+                        Riwayat Pembelian\n
+                    </h2>\n
+                </div>\n
+                <div class="overflow-x-auto">\n
+                    <table class="w-full text-left border-collapse text-base">\n
+                        <thead>\n
+                            <tr class="bg-gray-50 text-gray-700 border-b border-gray-200">\n
+                                <th class="py-3 px-4 font-semibold">Waktu</th>\n
+                                <th class="py-3 px-4 font-semibold">Kode Pembelian</th>\n
+                                <th class="py-3 px-4 font-semibold">Barang</th>\n
+                                <th class="py-3 px-4 font-semibold">Jumlah</th>\n
+                                <th class="py-3 px-4 font-semibold">Total</th>\n
+                                <th class="py-3 px-4 font-semibold">Status</th>\n
+                            </tr>\n
+                        </thead>\n
+                        <tbody class="divide-y divide-gray-200 text-gray-800">\n
+                                                            <tr>\n
+                                    <td colspan="6" class="py-6 text-center text-gray-500">\n
+                                        Belum ada riwayat pembelian.\n
+                                    </td>\n
+                                </tr>\n
+                                                    </tbody>\n
+                    </table>\n
+                </div>\n
+            </div>\n
+        </div>\n
+    </main>\n
+\n
+    \n
+    <script>\n
+        function bukaTab(namaTab) {\n
+            const tabPembelianBaru = document.getElementById('tab-konten-baru');\n
+            const tabRiwayat = document.getElementById('tab-konten-riwayat');\n
+            const btnTabBaru = document.getElementById('btn-tab-baru');\n
+            const btnTabRiwayat = document.getElementById('btn-tab-riwayat');\n
+\n
+            if (namaTab === 'baru') {\n
+                tabPembelianBaru.classList.remove('hidden');\n
+                tabRiwayat.classList.add('hidden');\n
+                btnTabBaru.className = 'touch-target px-6 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors';\n
+                btnTabRiwayat.className = 'touch-target px-6 py-2.5 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors';\n
+            } else {\n
+                tabPembelianBaru.classList.add('hidden');\n
+                tabRiwayat.classList.remove('hidden');\n
+                btnTabBaru.className = 'touch-target px-6 py-2.5 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors';\n
+                btnTabRiwayat.className = 'touch-target px-6 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors';\n
+            }\n
+        }\n
+    </script>\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Pensil 2B
+
+  at tests\Feature\PembelianAdminTest.php:54
+     50Γûò 
+     51Γûò         $response->assertStatus(200);
+     52Γûò         $response->assertSee('Pembelian Barang (Restock)');
+     53Γûò         $response->assertSee('Perlu Segera Restock');
+  Γ₧£  54Γûò         $response->assertSee('Pensil 2B');
+     55Γûò         $response->assertSee('Riwayat Pembelian');
+     56Γûò         $response->assertSee('Catat Restock');
+     57Γûò     }
+     58Γûò
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\PenggunaAdminTest > admin melihat halaman kelola akun pengguna                                                                        
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Kelola Akun Pengguna - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">\n
+    <div class="space-y-6">\n
+        \n
+        <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+            <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                F\n
+            </div>\n
+            <div class="font-bold text-gray-900 text-lg">\n
+                Toko Firo\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Menu Admin\n
+            </div>\n
+            <nav class="space-y-1">\n
+                \n
+                <a\n
+                    href="http://localhost/admin/dashboard"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Dashboard\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/laporan-penjualan"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Laporan Penjualan\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/barang"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Kelola Data Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pembelian"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pembelian Barang\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengguna"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold text-base shadow-sm"\n
+                >\n
+                    Kelola Akun Pengguna\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/batas-stok"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Batas Stok Minimum\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/backup"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Backup Data\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/log-aktivitas"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Log Aktivitas\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-notifikasi"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Notifikasi\n
+                </a>\n
+\n
+                \n
+                <a\n
+                    href="http://localhost/admin/pengaturan-toko"\n
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                >\n
+                    Pengaturan Toko\n
+                </a>\n
+            </nav>\n
+        </div>\n
+\n
+        \n
+        <div>\n
+            <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                Akses Kasir\n
+            </div>\n
+            <nav class="space-y-1">\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Transaksi Penjualan\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Lihat Stok Barang\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Saldo Harian\n
+                </a>\n
+                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">\n
+                    Info Barang Baru\n
+                </a>\n
+            </nav>\n
+        </div>\n
+    </div>\n
+\n
+    \n
+    <div class="pt-4 border-t border-emerald-900/60">\n
+        <a href="http://localhost/admin/profil" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-xl p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">\n
+            <div class="font-medium text-white text-base truncate">\n
+                Mr. Graham Bergstrom V\n
+            </div>\n
+            <div class="text-sm text-emerald-300">\n
+                Admin / Pemilik\n
+            </div>\n
+        </a>\n
+        <form method="POST" action="http://localhost/logout">\n
+            <input type="hidden" name="_token" value="is2W6FB1oMMwuktqYF9BU7vUi92PiGkz8mGe4keN" autocomplete="off">            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">\n
+                Keluar\n
+            </button>\n
+        </form>\n
+    </div>\n
+</aside>\n
+\n
+\n
+    \n
+    <main class="flex-1 min-w-0 p-8">\n
+        \n
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">\n
+            <div>\n
+                <h1 class="text-2xl font-bold text-gray-900">\n
+                    Kelola Akun Pengguna\n
+                </h1>\n
+                <p class="text-gray-600 text-base mt-1">\n
+                    Daftar pengguna dan hak akses sistem Toko Firo.\n
+                </p>\n
+            </div>\n
+        </header>\n
+\n
+        \n
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">\n
+            <div class="w-full sm:w-80">\n
+                <input\n
+                    type="text"\n
+                    placeholder="Cari pengguna..."\n
+                    class="touch-target w-full px-4 py-2 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"\n
+                >\n
+            </div>\n
+            <div>\n
+                <button\n
+                    type="button"\n
+                    onclick="alert('Fitur tambah akun dalam pengembangan.')"\n
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center whitespace-nowrap"\n
+                >\n
+                    + Tambah Akun\n
+                </button>\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">\n
+            <div class="overflow-x-auto">\n
+                <table class="w-full text-left border-collapse text-base">\n
+                    <thead>\n
+                        <tr class="bg-gray-50 text-gray-700 border-b border-gray-200">\n
+                            <th class="py-3 px-4 font-semibold whitespace-nowrap">Nama Lengkap</th>\n
+                            <th class="py-3 px-4 font-semibold whitespace-nowrap">Username</th>\n
+                            <th class="py-3 px-4 font-semibold whitespace-nowrap">Role</th>\n
+                            <th class="py-3 px-4 font-semibold whitespace-nowrap">Status</th>\n
+                            <th class="py-3 px-4 font-semibold whitespace-nowrap">Login Terakhir</th>\n
+                            <th class="py-3 px-4 font-semibold whitespace-nowrap text-center">Aksi</th>\n
+                        </tr>\n
+                    </thead>\n
+                    <tbody class="divide-y divide-gray-200 text-gray-800">\n
+                                                    <tr class="hover:bg-gray-50/80 transition-colors">\n
+                                <td class="py-3 px-4 whitespace-nowrap">\n
+                                    <div class="flex items-center gap-3">\n
+                                        \n
+                                                                                <div class="w-9 h-9 rounded-full bg-slate-500 text-white font-bold flex items-center justify-center text-sm shrink-0">\n
+                                            M\n
+                                        </div>\n
+                                        <div class="font-semibold text-gray-900">\n
+                                            Mr. Graham Bergstrom V\n
+                                        </div>\n
+                                    </div>\n
+                                </td>\n
+                                <td class="py-3 px-4 whitespace-nowrap font-mono text-gray-700">\n
+                                    gdietrich\n
+                                </td>\n
+                                <td class="py-3 px-4 whitespace-nowrap">\n
+                                                                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-semibold text-sm">\n
+                                            Admin\n
+                                        </span>\n
+                                                                    </td>\n
+                                <td class="py-3 px-4 whitespace-nowrap font-medium">\n
+                                                                            <span class="text-emerald-600">\n
+                                            &bull; Aktif\n
+                                        </span>\n
+                                                                    </td>\n
+                                <td class="py-3 px-4 whitespace-nowrap text-gray-600">\n
+                                    -\n
+                                </td>\n
+                                <td class="py-3 px-4 whitespace-nowrap">\n
+                                    <div class="flex items-center justify-center gap-2">\n
+                                        <button\n
+                                            type="button"\n
+                                            class="touch-target px-3 py-1.5 border border-blue-500 text-blue-600 hover:bg-blue-50 font-medium rounded-lg text-base flex items-center justify-center transition-colors"\n
+                                        >\n
+                                            Ubah\n
+                                        </button>\n
+                                        <button\n
+                                            type="button"\n
+                                            class="touch-target px-3 py-1.5 border border-amber-500 text-amber-600 hover:bg-amber-50 font-medium rounded-lg text-base flex items-center justify-center transition-colors"\n
+                                        >\n
+                                            Reset Password\n
+                                        </button>\n
+                                                                                    <button\n
+                                                type="button"\n
+                                                class="touch-target px-3 py-1.5 border border-red-500 text-red-600 hover:bg-red-50 font-medium rounded-lg text-base flex items-center justify-center transition-colors"\n
+                                            >\n
+                                                Nonaktifkan\n
+                                            </button>\n
+                                                                            </div>\n
+                                </td>\n
+                            </tr>\n
+                                            </tbody>\n
+                </table>\n
+            </div>\n
+\n
+            \n
+            <div class="p-4 bg-gray-50 border-t border-gray-200 text-gray-600 text-base">\n
+                Menampilkan 1 pengguna terdaftar\n
+            </div>\n
+        </div>\n
+    </main>\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Junaidi Saleh
+
+  at tests\Feature\PenggunaAdminTest.php:27
+     23Γûò         $response = $this->actingAs($admin)->get('/admin/pengguna');
+     24Γûò 
+     25Γûò         $response->assertStatus(200);
+     26Γûò         $response->assertSee('Kelola Akun Pengguna');
+  Γ₧£  27Γûò         $response->assertSee('Junaidi Saleh');
+     28Γûò         $response->assertSee('Rina Putri');
+     29Γûò         $response->assertSee('Siti Aminah');
+     30Γûò         $response->assertSee('Tambah Akun');
+     31Γûò         $response->assertSee('Menampilkan 3 pengguna terdaftar');
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\SaldoKasirTest > halaman saldo kasir dapat diakses dan memuat konten                                                                  
+  Expected: <!DOCTYPE html>\n
+<html lang="id">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Saldo Harian - Toko Firo</title>\n
+\n
+    \n
+    <script src="https://cdn.tailwindcss.com"></script>\n
+\n
+            <link rel="preload" as="style" href="http://localhost/build/assets/app-a3es279r.css" /><link rel="modulepreload" as="script" href="http://localhost/build/assets/app-DMsN-rLE.js" /><link rel="stylesheet" href="http://localhost/build/assets/app-a3es279r.css" /><script type="module" src="http://localhost/build/assets/app-DMsN-rLE.js"></script>    \n
+    <style>\n
+        .touch-target {\n
+            min-height: 2.75rem;\n
+            min-width: 2.75rem;\n
+        }\n
+    </style>\n
+\n
+    <style id="skala-tampilan">\n
+/* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama\n
+   dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */\n
+:root { --skala: 80%; }\n
+html { font-size: var(--skala); }\n
+</style>\n
+\n
+</head>\n
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">\n
+\n
+    \n
+    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">\n
+        <div class="space-y-6">\n
+            \n
+            <div class="bg-white rounded-xl p-3 flex items-center gap-3">\n
+                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">\n
+                    F\n
+                </div>\n
+                <div class="font-bold text-gray-900 text-lg">\n
+                    Toko Firo\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div>\n
+                <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">\n
+                    Menu Kasir\n
+                </div>\n
+                <nav class="space-y-1">\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/dashboard"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Dashboard\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/transaksi"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Transaksi Penjualan\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/stok"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Lihat Stok Barang\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/saldo"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"\n
+                    >\n
+                        Saldo\n
+                    </a>\n
+\n
+                    \n
+                    <a\n
+                        href="http://localhost/kasir/info-barang"\n
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"\n
+                    >\n
+                        Info Barang Baru\n
+                    </a>\n
+                </nav>\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div class="pt-4 border-t border-emerald-900/60">\n
+            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">\n
+                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">\n
+                    K\n
+                </div>\n
+                <div class="min-w-0 flex-1">\n
+                    <div class="font-medium text-white text-base truncate">\n
+                        Kasir\n
+                    </div>\n
+                    <div class="text-sm text-emerald-300">\n
+                        Kasir\n
+                    </div>\n
+                </div>\n
+            </div>\n
+            <form method="POST" action="http://localhost/logout">\n
+                <input type="hidden" name="_token" value="O1SnHBLzKJYBPbhNt1P2j8jvA63Y4lk90DPZFcuO" autocomplete="off">                <button\n
+                    type="submit"\n
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"\n
+                >\n
+                    Keluar\n
+                </button>\n
+            </form>\n
+        </div>\n
+    </aside>\n
+\n
+    \n
+    <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">\n
+        \n
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-gray-200 mb-6">\n
+            <div>\n
+                <h1 class="text-2xl font-bold text-gray-900">\n
+                    Saldo\n
+                </h1>\n
+                <p class="text-slate-500 text-base mt-0.5">Rekapitulasi penerimaan kas dan riwayat transaksi harian kasir.</p>\n
+            </div>\n
+            <div class="flex items-center gap-3">\n
+                \n
+                <button\n
+                    type="button"\n
+                    class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"\n
+                >\n
+                    Simpan sebagai PDF\n
+                </button>\n
+                <button\n
+                    type="button"\n
+                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"\n
+                >\n
+                    Kirim ke Telegram\n
+                </button>\n
+            </div>\n
+        </header>\n
+\n
+        \n
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">\n
+            \n
+            <div class="lg:col-span-2 p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">\n
+                <div>\n
+                    <span class="text-slate-500 text-base font-medium block">\n
+                        Saldo Hari Ini ΓÇö Monday, 26 Oct 2026\n
+                    </span>\n
+                    <div class="text-3xl md:text-4xl font-bold text-emerald-600 my-2">\n
+                        Rp 0\n
+                    </div>\n
+                </div>\n
+                <div class="pt-3 border-t border-slate-100 flex items-center gap-6 text-slate-600 text-base font-medium">\n
+                    <div>\n
+                        Transaksi: <span class="font-bold text-slate-800">0</span>\n
+                    </div>\n
+                    <div>\n
+                        Rata-rata: <span class="font-bold text-slate-800">Rp 0</span>\n
+                    </div>\n
+                </div>\n
+            </div>\n
+\n
+            \n
+            <div class="lg:col-span-1 p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">\n
+                <div>\n
+                    <span class="text-slate-500 text-base font-medium block">\n
+                        Modal Awal\n
+                    </span>\n
+                    <div class="text-2xl font-semibold text-slate-700 mt-2">\n
+                        Rp 0\n
+                    </div>\n
+                </div>\n
+                <div class="pt-3 border-t border-slate-100 text-sm text-slate-400">\n
+                    Kas awal sebelum operasional kasir dimulai\n
+                </div>\n
+            </div>\n
+        </div>\n
+\n
+        \n
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">\n
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">\n
+                <h2 class="text-lg font-bold text-slate-800">\n
+                    Riwayat Transaksi Hari Ini\n
+                </h2>\n
+                <span class="text-sm text-slate-500 font-medium">\n
+                    Total: 0 transaksi ditampilkan\n
+                </span>\n
+            </div>\n
+\n
+            <div class="overflow-x-auto">\n
+                <table class="w-full text-left text-base divide-y divide-slate-200">\n
+                    <thead class="bg-slate-50 text-slate-700 font-semibold text-sm">\n
+                        <tr>\n
+                            <th class="py-3.5 px-6 whitespace-nowrap">Waktu</th>\n
+                            <th class="py-3.5 px-6 whitespace-nowrap">No. Transaksi</th>\n
+                            <th class="py-3.5 px-6">Item</th>\n
+                            <th class="py-3.5 px-6 text-right whitespace-nowrap">Total</th>\n
+                            <th class="py-3.5 px-6 text-center whitespace-nowrap">Metode</th>\n
+                        </tr>\n
+                    </thead>\n
+                    <tbody class="divide-y divide-slate-100">\n
+                                            </tbody>\n
+                </table>\n
+            </div>\n
+\n
+            \n
+            <div class="px-6 py-4 bg-white border-t border-slate-200 flex items-center justify-between text-slate-500 text-sm">\n
+                <div>\n
+                    Menampilkan 5 transaksi terakhir kasir\n
+                </div>\n
+                <div class="text-slate-400">\n
+                    Sinkronisasi otomatis dengan bot Telegram Toko Firo\n
+                </div>\n
+            </div>\n
+        </div>\n
+    </main>\n
+\n
+</body>\n
+</html>\n
+\n
+
+
+  To contain: Rp 3.180.000
+
+  at tests\Feature\SaldoKasirTest.php:22
+     18Γûò 
+     19Γûò         $response->assertStatus(200);
+     20Γûò         $response->assertSee('Saldo');
+     21Γûò         $response->assertSee('Saldo Hari Ini');
+  Γ₧£  22Γûò         $response->assertSee('Rp 3.180.000');
+     23Γûò         $response->assertSee('Simpan sebagai PDF');
+     24Γûò         $response->assertSee('Kirim ke Telegram');
+     25Γûò         $response->assertSee('TRX-001');
+     26Γûò         $response->assertSee('Modal Awal');
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\TampilanSkalaTest > skala tampilan semua halaman                                                                                      
+  Expected response status code [200] but received 403.
+Failed asserting that 403 is identical to 200.
+
+  at tests\Feature\TampilanSkalaTest.php:33
+     29Γûò 
+     30Γûò         foreach ($routes as $url) {
+     31Γûò             $response = $this->actingAs($admin)->get($url);
+     32Γûò 
+  Γ₧£  33Γûò             $response->assertStatus(200);
+     34Γûò             $response->assertSee('id="skala-tampilan"', false);
+     35Γûò             $response->assertSee('--skala', false);
+     36Γûò             $response->assertDontSee('font-size: 16px', false);
+     37Γûò             $response->assertDontSee('font-size:16px', false);
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\TelegramWebhookAndExpiredTest > telegram webhook menerima post tanpa csrf                                                             
+  Expected response status code [200] but received 403.
+Failed asserting that 403 is identical to 200.
+
+  at tests\Feature\TelegramWebhookAndExpiredTest.php:53
+     49Γûò                 'text' => '/menu',
+     50Γûò             ],
+     51Γûò         ]);
+     52Γûò 
+  Γ₧£  53Γûò         $response->assertStatus(200);
+     54Γûò         $response->assertJson(['status' => 'ok', 'type' => 'message']);
+     55Γûò     }
+     56Γûò 
+     57Γûò     /**
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\TelegramWebhookAndExpiredTest > telegram webhook menerima callback query                                                              
+  Expected response status code [200] but received 403.
+Failed asserting that 403 is identical to 200.
+
+  at tests\Feature\TelegramWebhookAndExpiredTest.php:72
+     68Γûò                 'data' => 'menu_admin',
+     69Γûò             ],
+     70Γûò         ]);
+     71Γûò 
+  Γ₧£  72Γûò         $response->assertStatus(200);
+     73Γûò         $response->assertJson(['status' => 'ok', 'type' => 'callback_query']);
+     74Γûò     }
+     75Γûò 
+     76Γûò     /**
+
+  ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+   FAILED  Tests\Feature\TelegramWebhookAndExpiredTest > telegram report service menghasilkan pdf valid                                                        
+  Failed asserting that a double is not empty.
+
+  at tests\Feature\TelegramWebhookAndExpiredTest.php:83
+     79Γûò     public function test_telegram_report_service_menghasilkan_pdf_valid(): void
+     80Γûò     {
+     81Γûò         $service = app(TelegramReportService::class);
+     82Γûò         $summary = $service->getSummaryData();
+  Γ₧£  83Γûò         $this->assertNotEmpty($summary['total_penjualan']);
+     84Γûò         $this->assertNotEmpty($summary['saldo_kasir']);
+     85Γûò 
+     86Γûò         $pdfBinary = $service->generateSalesPdfBinary($summary);
+     87Γûò         $this->assertStringStartsWith('%PDF', $pdfBinary);
+
+  1   tests\Feature\TelegramWebhookAndExpiredTest.php:83
+
+
+  Tests:    18 failed, 36 skipped, 155 passed (684 assertions)
+  Duration: 11.15s
+

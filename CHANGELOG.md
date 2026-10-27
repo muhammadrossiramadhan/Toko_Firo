@@ -6,6 +6,84 @@ Format pencatatan mengacu pada prinsip [Keep a Changelog](https://keepachangelog
 
 ---
 
+## [Unreleased] - Branch `staging` (27 Oktober 2026)
+
+### Added
+- **Peningkatan Fitur Bot Telegram Webhook**:
+  - `app/Http/Controllers/TelegramWebhookController.php`:
+    - Validasi token rahasia `X-Telegram-Bot-Api-Secret-Token` menggunakan `hash_equals()` dengan fallback ke `env('TELEGRAM_WEBHOOK_SECRET')`.
+    - Dukungan perintah slash bot: `/start`, `/help`, `/bantuan`, `/laporan`, `/rekap`, `/menu_admin`, `/menu_kasir`.
+    - Pembersihan otomatis suffix username bot (misal: `/laporan@tokofiro_bot` menjadi `/laporan`).
+    - Penanganan kesalahan fallback dengan `try-catch` eksternal yang mencatat error ke `Log::error(...)` dan merespon HTTP 200 JSON untuk mencegah webhook retry loop dari Telegram.
+    - Penambahan method `kirimBantuan($chatId)` untuk panduan lengkap bot beserta tombol inline keyboard.
+  - `tests/Feature/TelegramWebhookSecurityTest.php`:
+    - Pengujian eksekusi perintah `/help` dan `/bantuan`.
+    - Pengujian penanganan perintah dengan suffix bot username (`@tokofiro_bot`).
+    - Pengujian fallback error handling merespon 200 JSON saat terjadi pengecualian internal.
+
+### Fixed
+- **Optimasi Query & Null Safety Laporan Penjualan Admin**:
+  - `bootstrap/app.php`: Pengecualian CSRF untuk pola rute `api/*` dan `api/telegram/webhook`.
+  - `app/Services/LaporanPenjualanService.php`: Memperbaiki klausa `groupBy()` pada query riwayat transaksi paginasi agar mematuhi standar ketat MariaDB `ONLY_FULL_GROUP_BY` (SQL Error 1055).
+  - `resources/views/admin/laporan/penjualan.blade.php`: Mencegah *null pointer exception* atau *undefined array key* pada kartu metrik ringkasan (menggunakan null-coalescing `?? 0` dan pengecekan aman `!empty($ringkasan['barang_terlaris'])`).
+
+---
+
+## [Unreleased] - Branch `staging` (26 Oktober 2026)
+
+### Added
+- **Penyambungan Rute Backend Kasir & Admin Pembelian**:
+  - `routes/kasir_stok.php`: Pendaftaran rute endpoint AJAX pencarian cepat barcode scanner `GET /kasir/stok/cari` (`kasir.stok.cari`).
+  - `routes/kasir_transaksi.php`: Pendaftaran endpoint POS penjualan `POST /kasir/transaksi/simpan` (`kasir.transaksi.simpan`), detail transaksi `GET /kasir/transaksi/{nota}/detail` (`kasir.transaksi.detail`), dan cetak resi/struk thermal `GET /kasir/transaksi/{nota}/cetak` (`kasir.transaksi.cetak`).
+  - `routes/admin_pembelian.php`: Pendaftaran endpoint pencatatan pembelian restock barang baru `POST /admin/pembelian` (`admin.pembelian.store`).
+- **Migrasi Database Skema Saldo Harian**:
+  - Eksekusi migrasi pending `2026_10_24_105035_add_saldo_akhir_to_saldo_harian_table` untuk penambahan kolom `saldo_akhir` pada tabel `saldo_harian`.
+- **Hasil Pengujian Validasi 100% Lulus**:
+  - `tests/Feature/Kasir/StokKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/StokKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/Kasir/TransaksiKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/TransaksiKasirTest.php`: 5 passed (100%).
+  - `tests/Feature/PembelianDataTest.php`: 5 passed, 2 skipped auth (100%).
+  - `tests/Feature/DashboardKasirTest.php`: HTTP 200 bebas error 500.
+
+### Added
+- **Sistem Telegram Bot Webhook Dua Arah Aman (Cyber Security Hardened)**:
+  - `app/Http/Controllers/TelegramWebhookController.php`: Validasi wajib header `X-Telegram-Bot-Api-Secret-Token` (403 Forbidden bila token invalid) dan whitelist otorisasi `chat_id` pengirim sebelum eksekusi payload.
+  - Penanganan NLP ringkas (keyword *laporan penjualan*, *laporan hari ini*, *rekap hari ini*), 10 submenu Admin, 5 submenu Kasir, dan callback query acknowledgement.
+  - `app/Console/Commands/KirimRekapHarianTelegram.php`: Perintah console `app:kirim-rekap-telegram` untuk pengiriman otomatis rekap omzet beserta PDF resmi ke grup Telegram toko.
+- **Enkripsi Cadangan Database (ZIP AES-256) & Notifikasi Telegram**:
+  - `app/Services/BackupService.php`: Pengemasan dump SQL ke dalam arsip `.zip` terenkripsi AES-256 (`\ZipArchive::EM_AES_256`) menggunakan password terkonfigurasi, pengiriman otomatis dokumen ke Admin Telegram, sanitasi penghapusan file sementara (`unlink`), dan pencatatan audit log via `sp_catat_backup`.
+- **Alert Stok Menipis Otomatis**:
+  - `app/Services/BatasStokService.php`: Hook notifikasi otomatis peringatan stok kritis (`stok <= batas_minimum`) langsung ke Telegram Admin saat pembaruan batas stok.
+- **Otomatisasi Dokumen PDF (DomPDF)**:
+  - `resources/views/pdf/lembar_restock.blade.php`: Template PDF cetak rekomendasi restock A4 portrait (K12 compliant, pure CSS table).
+- **Automated Feature Test Suites**:
+  - `tests/Feature/TelegramWebhookSecurityTest.php` (6 passed, 40 assertions).
+  - `tests/Feature/TelegramServiceTest.php` (4 passed, 19 assertions).
+  - `tests/Feature/ExpiredSessionUiTest.php` (4 passed, 14 assertions).
+
+### Changed
+- **Konfigurasi & Keamanan Rute**:
+  - `config/services.php`: Blok konfigurasi `telegram` terpusat (`bot_token`, `chat_id`, `admin_chat_id`, `webhook_secret`, `backup_password`).
+  - `routes/api.php`: Pemasangan rate limiting `throttle:30,1` pada rute webhook `POST /api/telegram/webhook`.
+  - `bootstrap/app.php`: Pengecualian verifikasi CSRF untuk `api/telegram/webhook`.
+
+---
+
+## [Unreleased] - Branch `Rossi/Min-Stock-Threshold_Admins` (25 Oktober 2026)
+
+### Added
+- **Backend Batas Stok Minimum (Data Nyata MariaDB)**:
+  - `app/Services/BatasStokService.php`: Query builder `daftar_item` terpaginasi 10 item per halaman, filter jenis item, pencarian keyword kebal SQL injection, pemetaan status stok (Habis, Menipis, Normal, Aman), dan eksekusi Stored Procedure `sp_set_batas_minimum` (satuan) serta `sp_set_batas_minimum_semua` (massal).
+  - Test suite data nyata `tests/Feature/BatasStokDataTest.php` (8 passed, 2 skipped, 30 assertions).
+
+### Changed
+- **BatasStokController**:
+  - Menghapus dataset mock statis lama dan mengalihkan pemanggilan ke `BatasStokService`.
+  - Mengintegrasikan pembaruan batas stok satuan dan massal dengan validasi input batas minimum (0 - 1000).
+
+---
+
 ## [Unreleased] - Branch `staging` (25 Oktober 2026)
 
 ### Added

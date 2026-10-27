@@ -19,9 +19,7 @@ class TransaksiKasirTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Transaksi Penjualan');
         $response->assertSee('Pilih Barang');
-        $response->assertSee('Kertas HVS A4 70gr');
         $response->assertSee('Keranjang');
-        $response->assertSee('Rp 82.000');
         $response->assertSee('Lanjutkan -&gt;', false);
         $response->assertSee('Cetak Struk');
     }

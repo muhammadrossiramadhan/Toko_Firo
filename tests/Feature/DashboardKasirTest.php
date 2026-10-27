@@ -18,11 +18,11 @@ class DashboardKasirTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Dashboard');
-        $response->assertSee('Halo, Rina');
-        $response->assertSee('Rp 3.180.000');
-        $response->assertSee('+ Transaksi Baru');
-        $response->assertSee('Kertas HVS A4 70gr');
-        $response->assertSee('Spidol Snowman Hitam ditambahkan');
+        $response->assertSee('Halo');
+        $response->assertSee('Transaksi Baru');
+        $response->assertSee('Saldo Hari Ini');
+        $response->assertSee('Stok Menipis');
+        $response->assertSee('Info Barang Baru');
     }
 
     /**

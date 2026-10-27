@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,49 +12,61 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    // Hubungkan ke tabel 'pengguna'
+    protected $table = 'pengguna';
+    protected $primaryKey = 'id_pengguna';
+    public $timestamps = false;
+
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nama',
         'username',
-        'email',
-        'password',
+        'password_hash',
         'role',
+        'status',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atribut yang disembunyikan saat serialisasi.
      *
      * @var list<string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password_hash',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Pemetaan accessor agar kompatibel dengan pemanggilan di LoginController
+    public function getAuthPassword()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->password_hash;
+    }
+
+    public function getPasswordAttribute()
+    {
+        return $this->password_hash;
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->nama;
+    }
+
+    public function getIdAttribute()
+    {
+        return $this->id_pengguna;
     }
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return strtoupper($this->role ?? '') === 'ADMIN';
     }
 
     public function isKasir(): bool
     {
-        return $this->role === 'kasir';
+        return strtoupper($this->role ?? '') === 'KASIR';
     }
 }
