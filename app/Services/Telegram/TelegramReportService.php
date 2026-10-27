@@ -75,6 +75,49 @@ class TelegramReportService
     }
 
     /**
+     * Menghasilkan binary PDF laporan penjualan untuk rentang tanggal tertentu atau data kustom.
+     */
+    public function generatePdfReport(?string $mulai = null, ?string $sampai = null, ?array $data = null): string
+    {
+        if ($data === null) {
+            $mulai = $mulai ?? now()->toDateString();
+            $sampai = $sampai ?? $mulai;
+            $laporanService = app(\App\Services\LaporanPenjualanService::class);
+            $ringkasan = $laporanService->ringkasan($mulai, $sampai);
+            $transaksiList = $laporanService->transaksi($mulai, $sampai, 50);
+
+            $transaksiItems = collect($transaksiList->items())->map(function ($t) {
+                return (object) [
+                    'kode'     => $t->kode_transaksi,
+                    'kasir'    => $t->nama_kasir,
+                    'item'     => ($t->jumlah_item ?? 1) . ' jenis item (' . ($t->total_qty ?? 1) . ' pcs)',
+                    'qty'      => (int) ($t->total_qty ?? 1),
+                    'subtotal' => (float) ($t->subtotal ?? 0),
+                    'metode'   => 'Tunai',
+                    'waktu'    => date('H:i', strtotime($t->tanggal)),
+                ];
+            })->all();
+
+            $tanggalLabel = ($mulai === $sampai)
+                ? Carbon::parse($mulai)->locale('id')->isoFormat('D MMMM Y')
+                : Carbon::parse($mulai)->format('d/m/Y') . ' - ' . Carbon::parse($sampai)->format('d/m/Y');
+
+            $data = [
+                'tanggal'          => $tanggalLabel,
+                'total_penjualan'  => (float) $ringkasan['total_penjualan'],
+                'jumlah_transaksi' => (int) $ringkasan['jumlah_nota'],
+                'barang_terjual'   => (int) $ringkasan['barang_terjual'],
+                'produk_terlaris'  => $ringkasan['barang_terlaris'] ?: '-',
+                'saldo_kasir'      => (float) $ringkasan['total_penjualan'],
+                'modal_awal'       => 0,
+                'transaksi'        => $transaksiItems,
+            ];
+        }
+
+        return $this->generateSalesPdfBinary($data);
+    }
+
+    /**
      * Menghasilkan binary PDF laporan penjualan menggunakan DomPDF.
      */
     public function generateSalesPdfBinary(?array $data = null): string
