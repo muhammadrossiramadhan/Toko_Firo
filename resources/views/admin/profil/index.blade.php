@@ -23,11 +23,6 @@
 </head>
 <body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
-    {{-- Notifikasi Prototype --}}
-    <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
-        Perubahan profil berhasil disimpan (prototype).
-    </div>
-
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
 
@@ -43,28 +38,45 @@
             </p>
         </header>
 
-        <form onsubmit="simpanProfil(event)" class="space-y-6 max-w-4xl">
+        {{-- Flash Message Alerts --}}
+        @if (session('success'))
+            <div class="mb-6 max-w-4xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-xl text-base font-medium">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-6 max-w-4xl bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl text-base font-medium">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <div class="space-y-6 max-w-4xl">
             {{-- Kartu 1: Ringkasan Akun (Header Profil) --}}
             <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex items-center space-x-5">
                 <div class="w-16 h-16 rounded-full bg-emerald-700 text-white font-bold text-2xl flex items-center justify-center shrink-0">
-                    {{ $profil['inisial'] }}
+                    {{ $profil['inisial'] ?? 'AF' }}
                 </div>
                 <div>
                     <h2 class="text-xl font-bold text-gray-900">
-                        {{ $profil['nama'] }}
+                        {{ $profil['nama'] ?? 'Ahmad Firo' }}
                     </h2>
                     <p class="text-slate-500 text-base">
-                        {{ $profil['role'] }}
+                        {{ $profil['role'] ?? 'Admin / Pemilik' }}
                     </p>
                 </div>
             </section>
 
-            {{-- Kartu 2: Edit Profil --}}
+            {{-- Kartu 2: Form Edit Profil --}}
             <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
                     Edit Profil
                 </h2>
-                <div class="space-y-4">
+
+                <form method="POST" action="{{ route('admin.profil.update') }}" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="nama" class="block text-base font-medium text-gray-700 mb-1">
@@ -74,10 +86,15 @@
                                 type="text"
                                 id="nama"
                                 name="nama"
-                                value="{{ $profil['nama'] }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                value="{{ old('nama', $pengguna->nama ?? $profil['nama']) }}"
+                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('nama') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                required
                             >
+                            @error('nama')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
+
                         <div>
                             <label for="username" class="block text-base font-medium text-gray-700 mb-1">
                                 Username
@@ -86,9 +103,13 @@
                                 type="text"
                                 id="username"
                                 name="username"
-                                value="{{ $profil['username'] }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                value="{{ old('username', $pengguna->username ?? $profil['username']) }}"
+                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('username') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                required
                             >
+                            @error('username')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -99,20 +120,36 @@
                         <input
                             type="text"
                             id="telepon"
-                            name="telepon"
-                            value="{{ $profil['telepon'] }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            name="nomor_telepon"
+                            value="{{ old('nomor_telepon', old('telepon', $pengguna->nomor_telepon ?? $pengguna->telepon ?? $profil['telepon'])) }}"
+                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('nomor_telepon') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                         >
+                        @error('nomor_telepon')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                </div>
+
+                    <div class="pt-2">
+                        <button
+                            type="submit"
+                            class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-lg text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
+                        >
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
             </section>
 
-            {{-- Kartu 3: Ganti Password --}}
+            {{-- Kartu 3: Form Ganti Password --}}
             <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
                     Ganti Password
                 </h2>
-                <div class="space-y-4">
+
+                <form method="POST" action="{{ route('admin.profil.password') }}" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
                     <div>
                         <label for="password_lama" class="block text-base font-medium text-gray-700 mb-1">
                             Password Lama
@@ -121,10 +158,13 @@
                             type="password"
                             id="password_lama"
                             name="password_lama"
-                            value="********"
-                            placeholder="••••••••"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            placeholder="Masukkan password saat ini"
+                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('password_lama') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            required
                         >
+                        @error('password_lama')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,54 +176,41 @@
                                 type="password"
                                 id="password_baru"
                                 name="password_baru"
-                                placeholder="Masukkan password baru"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                placeholder="Minimal 6 karakter"
+                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('password_baru') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                required
                             >
+                            @error('password_baru')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
+
                         <div>
-                            <label for="konfirmasi_password" class="block text-base font-medium text-gray-700 mb-1">
+                            <label for="password_baru_confirmation" class="block text-base font-medium text-gray-700 mb-1">
                                 Konfirmasi Password
                             </label>
                             <input
                                 type="password"
-                                id="konfirmasi_password"
-                                name="konfirmasi_password"
+                                id="password_baru_confirmation"
+                                name="password_baru_confirmation"
                                 placeholder="Ulangi password baru"
                                 class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                required
                             >
                         </div>
                     </div>
-                </div>
+
+                    <div class="pt-2">
+                        <button
+                            type="submit"
+                            class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-lg text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
+                        >
+                            Perbarui Password
+                        </button>
+                    </div>
+                </form>
             </section>
-
-            {{-- Tombol Aksi Utama --}}
-            <div>
-                <button
-                    type="submit"
-                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-lg text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
-                >
-                    Simpan Perubahan
-                </button>
-            </div>
-        </form>
+        </div>
     </main>
-
-    {{-- Script Vanilla JavaScript Feedback --}}
-    <script>
-        function tampilkanNotif(pesan) {
-            const notif = document.getElementById('notif-feedback');
-            notif.textContent = pesan;
-            notif.classList.remove('hidden');
-            setTimeout(() => {
-                notif.classList.add('hidden');
-            }, 3000);
-        }
-
-        function simpanProfil(e) {
-            e.preventDefault();
-            tampilkanNotif('Perubahan profil berhasil disimpan (prototype).');
-        }
-    </script>
 </body>
 </html>
-
