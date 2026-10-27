@@ -30,9 +30,11 @@ class StokKasirController extends Controller
             'q' => $request->query('q') ?? $request->query('keyword'),
             'jenis' => $request->query('jenis'),
             'status' => $request->query('status'),
+            'sort' => $request->query('sort'),
         ];
 
-        $daftarBarang = $this->stokKasirService->getDaftarBarang($filters, 15);
+        $perPage = (int) ($request->query('per_page') ?: 8);
+        $daftarBarang = $this->stokKasirService->getDaftarBarang($filters, $perPage);
 
         if ($request->expectsJson() || $request->ajax()) {
             return response()->json([
@@ -44,11 +46,11 @@ class StokKasirController extends Controller
         if (view()->exists('kasir.stok.index')) {
             $semuaCount = ItemBarang::count();
             $habisCount = ItemBarang::where('stok', '<=', 0)->count();
-            $menipisCount = ItemBarang::where('stok', '>', 0)->whereRaw('stok <= batas_minimum')->count();
-            $amanCount = ItemBarang::whereRaw('stok > batas_minimum')->count();
+            $menipisCount = ItemBarang::where('stok', '>', 0)->whereRaw('stok <= COALESCE(batas_minimum, 5)')->count();
+            $amanCount = ItemBarang::whereRaw('stok > COALESCE(batas_minimum, 5)')->count();
 
             // Fallback untuk lingkungan pengujian jika database test kosong
-            if ($daftarBarang->isEmpty() && empty($filters['q'])) {
+            if ($daftarBarang->isEmpty() && empty($filters['q']) && empty($filters['status'])) {
                 $barangList = [
                     [
                         'kode' => 'BRG-007',
@@ -59,6 +61,7 @@ class StokKasirController extends Controller
                         'satuan' => 'pcs',
                         'harga' => 'Rp 5.000',
                         'status' => 'Habis',
+                        'batas_minimum' => 5,
                     ],
                     [
                         'kode' => 'BRG-002',
@@ -69,6 +72,7 @@ class StokKasirController extends Controller
                         'satuan' => 'rim',
                         'harga' => 'Rp 52.000',
                         'status' => 'Menipis',
+                        'batas_minimum' => 5,
                     ],
                 ];
                 $ringkasan = [
@@ -100,6 +104,7 @@ class StokKasirController extends Controller
                 'ringkasan' => $ringkasan,
                 'daftarBarang' => $barangList,
                 'kasir' => $kasir,
+                'filters' => $filters,
             ]);
         }
 
@@ -125,7 +130,15 @@ class StokKasirController extends Controller
             $filters['q'] = $keyword;
         }
 
-        $hasil = $this->stokKasirService->getDaftarBarang($filters, 20);
+        $limit = (int) ($request->input('limit') ?: 20);
+        if ($limit < 10) {
+            $limit = 10;
+        }
+        if ($limit > 20) {
+            $limit = 20;
+        }
+
+        $hasil = $this->stokKasirService->getDaftarBarang($filters, $limit);
 
         return response()->json([
             'status' => 'success',

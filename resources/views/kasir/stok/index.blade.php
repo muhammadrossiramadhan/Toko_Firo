@@ -133,103 +133,123 @@
         </header>
 
         {{-- Baris Tab Filter Status (Pills) --}}
+        @php
+            $statusAktif = strtolower($filters['status'] ?? '');
+        @endphp
         <div class="flex flex-wrap items-center gap-2 mb-6" id="filter-status-pills">
-            {{-- Tab Semua (Aktif) --}}
-            <button
-                type="button"
-                class="touch-target inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-800 font-semibold shadow-sm border border-slate-200 rounded-xl min-h-[2.75rem] text-base transition-colors"
+            {{-- Tab Semua --}}
+            <a
+                href="{{ route('kasir.stok', array_filter(['q' => $filters['q'] ?? null, 'jenis' => $filters['jenis'] ?? null, 'sort' => $filters['sort'] ?? null])) }}"
+                class="touch-target inline-flex items-center gap-2 px-4 py-2 {{ $statusAktif === '' ? 'bg-white text-slate-800 font-semibold shadow-sm border border-slate-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium' }} rounded-xl min-h-[2.75rem] text-base transition-colors"
             >
                 <span>Semua</span>
                 <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded-full">
                     {{ $ringkasan['semua'] ?? 47 }}
                 </span>
-            </button>
+            </a>
 
             {{-- Tab Habis --}}
-            <button
-                type="button"
-                class="touch-target inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl min-h-[2.75rem] text-base transition-colors"
+            <a
+                href="{{ route('kasir.stok', array_filter(['status' => 'habis', 'q' => $filters['q'] ?? null, 'jenis' => $filters['jenis'] ?? null, 'sort' => $filters['sort'] ?? null])) }}"
+                class="touch-target inline-flex items-center gap-2 px-4 py-2 {{ $statusAktif === 'habis' ? 'bg-white text-slate-800 font-semibold shadow-sm border border-slate-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium' }} rounded-xl min-h-[2.75rem] text-base transition-colors"
             >
                 <span>Habis</span>
                 <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">
                     {{ $ringkasan['habis'] ?? 2 }}
                 </span>
-            </button>
+            </a>
 
             {{-- Tab Menipis --}}
-            <button
-                type="button"
-                class="touch-target inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl min-h-[2.75rem] text-base transition-colors"
+            <a
+                href="{{ route('kasir.stok', array_filter(['status' => 'menipis', 'q' => $filters['q'] ?? null, 'jenis' => $filters['jenis'] ?? null, 'sort' => $filters['sort'] ?? null])) }}"
+                class="touch-target inline-flex items-center gap-2 px-4 py-2 {{ $statusAktif === 'menipis' ? 'bg-white text-slate-800 font-semibold shadow-sm border border-slate-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium' }} rounded-xl min-h-[2.75rem] text-base transition-colors"
             >
                 <span>Menipis</span>
                 <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded-full">
                     {{ $ringkasan['menipis'] ?? 5 }}
                 </span>
-            </button>
+            </a>
 
             {{-- Tab Normal --}}
-            <button
-                type="button"
-                class="touch-target inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl min-h-[2.75rem] text-base transition-colors"
+            <a
+                href="{{ route('kasir.stok', array_filter(['status' => 'normal', 'q' => $filters['q'] ?? null, 'jenis' => $filters['jenis'] ?? null, 'sort' => $filters['sort'] ?? null])) }}"
+                class="touch-target inline-flex items-center gap-2 px-4 py-2 {{ $statusAktif === 'normal' ? 'bg-white text-slate-800 font-semibold shadow-sm border border-slate-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium' }} rounded-xl min-h-[2.75rem] text-base transition-colors"
             >
                 <span>Normal</span>
                 <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">
                     {{ $ringkasan['normal'] ?? 28 }}
                 </span>
-            </button>
+            </a>
 
             {{-- Tab Aman --}}
-            <button
-                type="button"
-                class="touch-target inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl min-h-[2.75rem] text-base transition-colors"
+            <a
+                href="{{ route('kasir.stok', array_filter(['status' => 'aman', 'q' => $filters['q'] ?? null, 'jenis' => $filters['jenis'] ?? null, 'sort' => $filters['sort'] ?? null])) }}"
+                class="touch-target inline-flex items-center gap-2 px-4 py-2 {{ $statusAktif === 'aman' ? 'bg-white text-slate-800 font-semibold shadow-sm border border-slate-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium' }} rounded-xl min-h-[2.75rem] text-base transition-colors"
             >
                 <span>Aman</span>
                 <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded-full">
                     {{ $ringkasan['aman'] ?? 12 }}
                 </span>
-            </button>
+            </a>
         </div>
 
         {{-- Bilah Pencarian & Filter Dropdown --}}
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
+        <form method="GET" action="{{ route('kasir.stok') }}" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
+            @if (!empty($filters['status']))
+                <input type="hidden" name="status" value="{{ $filters['status'] }}">
+            @endif
+
             {{-- Input Pencarian Teks Murni (Tanpa Ikon Kaca Pembesar) --}}
-            <div class="flex-1">
+            <div class="flex-1 flex gap-2">
                 <label for="input-cari-stok" class="sr-only">Cari nama atau kode barang...</label>
                 <input
                     type="text"
+                    name="q"
+                    value="{{ $filters['q'] ?? '' }}"
                     id="input-cari-stok"
                     placeholder="Cari nama atau kode barang..."
                     class="touch-target w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
                 >
+                <button
+                    type="submit"
+                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-lg min-h-[2.75rem] text-base transition-colors shrink-0"
+                >
+                    Cari
+                </button>
             </div>
 
             {{-- Dropdown Filter Jenis & Urutkan (Panah Teks ASCII 'v') --}}
             <div class="flex items-center gap-3">
                 <div class="relative">
                     <select
+                        name="jenis"
+                        onchange="this.form.submit()"
                         aria-label="Filter Jenis"
                         class="touch-target appearance-none bg-white border border-slate-300 rounded-lg pl-4 pr-8 py-2.5 text-base font-medium text-slate-700 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem] cursor-pointer"
                     >
                         <option value="">Jenis: Semua v</option>
-                        <option value="atk">Jenis: ATK</option>
-                        <option value="kertas">Jenis: Kertas</option>
-                        <option value="tinta">Jenis: Tinta</option>
+                        <option value="ATK" {{ ($filters['jenis'] ?? '') === 'ATK' ? 'selected' : '' }}>Jenis: ATK</option>
+                        <option value="Kertas" {{ ($filters['jenis'] ?? '') === 'Kertas' ? 'selected' : '' }}>Jenis: Kertas</option>
+                        <option value="Buku" {{ ($filters['jenis'] ?? '') === 'Buku' ? 'selected' : '' }}>Jenis: Buku</option>
+                        <option value="Lainnya" {{ ($filters['jenis'] ?? '') === 'Lainnya' ? 'selected' : '' }}>Jenis: Lainnya</option>
                     </select>
                 </div>
 
                 <div class="relative">
                     <select
+                        name="sort"
+                        onchange="this.form.submit()"
                         aria-label="Urutan Tampilan"
                         class="touch-target appearance-none bg-white border border-slate-300 rounded-lg pl-4 pr-8 py-2.5 text-base font-medium text-slate-700 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem] cursor-pointer"
                     >
-                        <option value="az">Urutkan: A-Z v</option>
-                        <option value="za">Urutkan: Z-A v</option>
-                        <option value="stok_terendah">Stok: Terendah v</option>
-                        <option value="stok_tertinggi">Stok: Tertinggi v</option>
+                        <option value="az" {{ ($filters['sort'] ?? '') === 'az' ? 'selected' : '' }}>Urutkan: A-Z v</option>
+                        <option value="za" {{ ($filters['sort'] ?? '') === 'za' ? 'selected' : '' }}>Urutkan: Z-A v</option>
+                        <option value="stok_terendah" {{ ($filters['sort'] ?? '') === 'stok_terendah' ? 'selected' : '' }}>Stok: Terendah v</option>
+                        <option value="stok_tertinggi" {{ ($filters['sort'] ?? '') === 'stok_tertinggi' ? 'selected' : '' }}>Stok: Tertinggi v</option>
                     </select>
                 </div>
             </div>
-        </div>
+        </form>
 
         {{-- Tabel Data Stok Barang --}}
         <div class="bg-white border border-slate-200 rounded-xl overflow-hidden mt-6 shadow-sm">
@@ -263,7 +283,12 @@
                                     {{ $barang['merek'] }}
                                 </td>
                                 <td class="py-3.5 px-4 text-center font-bold text-slate-900 whitespace-nowrap">
-                                    {{ $barang['stok'] }}
+                                    <span>{{ $barang['stok'] }}</span>
+                                    @if ((int) $barang['stok'] <= (int) ($barang['batas_minimum'] ?? 5))
+                                        <span class="inline-block ml-1 px-1.5 py-0.5 text-xs font-semibold rounded {{ (int) $barang['stok'] <= 0 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800' }}">
+                                            Kritis
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="py-3.5 px-4 text-slate-600 whitespace-nowrap">
                                     {{ $barang['satuan'] }}
@@ -272,11 +297,11 @@
                                     {{ $barang['harga'] }}
                                 </td>
                                 <td class="py-3.5 px-4 text-center whitespace-nowrap">
-                                    @if ($barang['status'] === 'Habis')
+                                    @if ($barang['status'] === 'Habis' || (int) $barang['stok'] <= 0)
                                         <span class="inline-block px-3 py-1 font-semibold text-red-700 bg-red-100 rounded-md text-sm">
                                             Habis
                                         </span>
-                                    @elseif ($barang['status'] === 'Menipis')
+                                    @elseif ($barang['status'] === 'Menipis' || (int) $barang['stok'] <= (int) ($barang['batas_minimum'] ?? 5))
                                         <span class="inline-block px-3 py-1 font-semibold text-amber-800 bg-amber-100 rounded-md text-sm">
                                             Menipis
                                         </span>
@@ -296,14 +321,50 @@
                 </table>
             </div>
 
-            {{-- Footer Keterangan Jumlah Data --}}
-            <div class="px-6 py-4 bg-white border-t border-slate-200 flex items-center justify-between text-slate-500 text-sm">
+            {{-- Footer Keterangan Jumlah Data & Paginasi Dinamis --}}
+            <div class="px-6 py-4 bg-white border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-slate-500 text-sm">
                 <div>
-                    Menampilkan 1-8 dari 47 barang
+                    @if ($daftarBarang instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
+                        Menampilkan {{ $daftarBarang->firstItem() ?? 0 }}-{{ $daftarBarang->lastItem() ?? 0 }} dari {{ $daftarBarang->total() }} barang
+                    @else
+                        Menampilkan 1-8 dari 47 barang
+                    @endif
                 </div>
-                <div class="text-slate-400">
-                    Pembaruan otomatis data inventori Toko Firo
-                </div>
+
+                @if ($daftarBarang instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator && $daftarBarang->hasPages())
+                    <nav class="flex items-center gap-2" aria-label="Navigasi Halaman Stok">
+                        {{-- Tombol Sebelumnya --}}
+                        @if ($daftarBarang->onFirstPage())
+                            <span class="touch-target px-3 py-1.5 bg-slate-100 text-slate-400 rounded-lg text-sm min-h-[2.75rem] inline-flex items-center cursor-not-allowed">
+                                Sebelumnya
+                            </span>
+                        @else
+                            <a href="{{ $daftarBarang->previousPageUrl() }}" class="touch-target px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium rounded-lg text-sm min-h-[2.75rem] inline-flex items-center transition-colors">
+                                Sebelumnya
+                            </a>
+                        @endif
+
+                        {{-- Info Halaman Aktif --}}
+                        <span class="text-sm font-medium text-slate-700 px-2">
+                            Halaman {{ $daftarBarang->currentPage() }} dari {{ $daftarBarang->lastPage() }}
+                        </span>
+
+                        {{-- Tombol Berikutnya --}}
+                        @if ($daftarBarang->hasMorePages())
+                            <a href="{{ $daftarBarang->nextPageUrl() }}" class="touch-target px-3 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium rounded-lg text-sm min-h-[2.75rem] inline-flex items-center transition-colors">
+                                Berikutnya
+                            </a>
+                        @else
+                            <span class="touch-target px-3 py-1.5 bg-slate-100 text-slate-400 rounded-lg text-sm min-h-[2.75rem] inline-flex items-center cursor-not-allowed">
+                                Berikutnya
+                            </span>
+                        @endif
+                    </nav>
+                @else
+                    <div class="text-slate-400">
+                        Pembaruan otomatis data inventori Toko Firo
+                    </div>
+                @endif
             </div>
         </div>
     </main>
