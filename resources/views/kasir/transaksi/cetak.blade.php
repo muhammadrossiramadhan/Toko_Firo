@@ -1,0 +1,2 @@
+@include('kasir.transaksi.struk')
+

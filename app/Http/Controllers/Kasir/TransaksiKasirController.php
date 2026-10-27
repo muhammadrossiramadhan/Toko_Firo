@@ -264,8 +264,14 @@ class TransaksiKasirController extends Controller
             abort(404, 'Transaksi penjualan tidak ditemukan.');
         }
 
+        $pengaturan = app(\App\Services\PengaturanTokoService::class)->getSettings();
+
+        if (view()->exists('kasir.transaksi.struk')) {
+            return view('kasir.transaksi.struk', compact('transaksi', 'pengaturan'));
+        }
+
         if (view()->exists('kasir.transaksi.cetak')) {
-            return view('kasir.transaksi.cetak', compact('transaksi'));
+            return view('kasir.transaksi.cetak', compact('transaksi', 'pengaturan'));
         }
 
         return response($this->renderStrukHtml($transaksi), 200, [
@@ -278,6 +284,15 @@ class TransaksiKasirController extends Controller
      */
     protected function renderStrukHtml(DaftarPenjualan $transaksi): string
     {
+        $tokoService = app(\App\Services\PengaturanTokoService::class);
+        $settings = $tokoService->getSettings();
+
+        $namaToko = htmlspecialchars((string) ($settings['nama_toko'] ?? 'TOKO FIRO'));
+        $headerStruk = htmlspecialchars((string) ($settings['header_struk'] ?? 'Alat Tulis Kantor & Jasa Fotocopy'));
+        $alamatToko = htmlspecialchars((string) ($settings['alamat'] ?? ''));
+        $teleponToko = htmlspecialchars((string) ($settings['telepon'] ?? '081234567890'));
+        $footerStruk = htmlspecialchars((string) ($settings['footer_struk'] ?? 'Terima kasih telah berbelanja!'));
+
         $tanggal = $transaksi->tanggal_transaksi ? date('d/m/Y', strtotime((string) $transaksi->tanggal_transaksi)) : date('d/m/Y');
         $pelanggan = htmlspecialchars((string) ($transaksi->nama_pelanggan ?: 'Umum'));
         $kasirNama = htmlspecialchars((string) ($transaksi->kasir->nama ?? 'Kasir Toko Firo'));
@@ -356,9 +371,10 @@ class TransaksiKasirController extends Controller
 <body>
     <div class="struk-card">
         <div class="header">
-            <h1>TOKO FIRO</h1>
-            <p>Alat Tulis Kantor &amp; Jasa Fotocopy</p>
-            <p>Telepon: 0812-3456-7890</p>
+            <h1>{$namaToko}</h1>
+            <p>{$headerStruk}</p>
+            <p>{$alamatToko}</p>
+            <p>Telepon: {$teleponToko}</p>
         </div>
 
         <div class="divider"></div>
@@ -392,7 +408,7 @@ class TransaksiKasirController extends Controller
         <div class="divider"></div>
 
         <div class="footer">
-            <p>Terima kasih telah berbelanja di Toko Firo!</p>
+            <p>{$footerStruk}</p>
             <p>Barang yang sudah dibeli dapat ditukar maksimal 1x24 jam dengan struk resmi.</p>
         </div>
 
