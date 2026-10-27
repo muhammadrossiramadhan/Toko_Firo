@@ -23,11 +23,6 @@
 </head>
 <body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
-    {{-- Notifikasi Prototype --}}
-    <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
-        Pengaturan toko berhasil disimpan (prototype).
-    </div>
-
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
 
@@ -43,7 +38,23 @@
             </p>
         </header>
 
-        <form onsubmit="simpanPengaturan(event)" class="space-y-6 max-w-4xl">
+        {{-- Flash Message Alerts --}}
+        @if (session('success'))
+            <div class="mb-6 max-w-4xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-xl text-base font-medium">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-6 max-w-4xl bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl text-base font-medium">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('admin.toko.update') }}" class="space-y-6 max-w-4xl">
+            @csrf
+            @method('PUT')
+
             {{-- Kartu 1: Informasi Toko --}}
             <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
@@ -58,9 +69,13 @@
                             type="text"
                             id="nama_toko"
                             name="nama_toko"
-                            value="{{ $infoToko['nama'] }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            value="{{ old('nama_toko', $pengaturan['nama_toko'] ?? $infoToko['nama']) }}"
+                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('nama_toko') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            required
                         >
+                        @error('nama_toko')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -72,9 +87,13 @@
                                 type="text"
                                 id="alamat"
                                 name="alamat"
-                                value="{{ $infoToko['alamat'] }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                value="{{ old('alamat', $pengaturan['alamat'] ?? $infoToko['alamat']) }}"
+                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('alamat') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                required
                             >
+                            @error('alamat')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label for="telepon" class="block text-base font-medium text-gray-700 mb-1">
@@ -84,9 +103,13 @@
                                 type="text"
                                 id="telepon"
                                 name="telepon"
-                                value="{{ $infoToko['telepon'] }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                value="{{ old('telepon', $pengaturan['telepon'] ?? $infoToko['telepon']) }}"
+                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('telepon') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                required
                             >
+                            @error('telepon')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -106,9 +129,12 @@
                             type="text"
                             id="header_struk"
                             name="header_struk"
-                            value="{{ $pengaturanStruk['header'] }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            value="{{ old('header_struk', $pengaturan['header_struk'] ?? $pengaturanStruk['header']) }}"
+                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('header_struk') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                         >
+                        @error('header_struk')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label for="footer_struk" class="block text-base font-medium text-gray-700 mb-1">
@@ -118,30 +144,36 @@
                             type="text"
                             id="footer_struk"
                             name="footer_struk"
-                            value="{{ $pengaturanStruk['footer'] }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            value="{{ old('footer_struk', $pengaturan['footer_struk'] ?? $pengaturanStruk['footer']) }}"
+                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('footer_struk') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                         >
+                        @error('footer_struk')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
             </section>
 
-            {{-- Kartu 3: WhatsApp Bot --}}
+            {{-- Kartu 3: WhatsApp Bot (Status Informatif Bersih) --}}
             <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-lg font-bold text-gray-900">
                         WhatsApp Bot
                     </h2>
-                    <p class="text-base text-slate-700 mt-1">
-                        <span class="text-emerald-600 font-bold">•</span> Bot Aktif — Terhubung ke {{ $whatsappBot['terhubung'] }}
+                    <p class="text-base text-slate-600 mt-1">
+                        Status: <span class="font-semibold text-slate-800">Nonaktif</span> — Integrasi WhatsApp Resmi Belum Dikonfigurasi
+                    </p>
+                    <p class="text-sm text-slate-500 mt-0.5">
+                        Layanan notifikasi otomatis sistem saat ini menggunakan Bot Telegram resmi Toko Firo.
                     </p>
                 </div>
                 <div>
                     <button
                         type="button"
-                        onclick="tampilkanNotif('Status bot WhatsApp berhasil diubah (prototype).')"
-                        class="touch-target px-5 py-2.5 rounded-lg border border-red-300 hover:bg-red-50 text-red-600 font-medium text-base shadow-sm transition-colors cursor-pointer"
+                        disabled
+                        class="touch-target px-5 py-2.5 rounded-lg border border-slate-300 bg-slate-100 text-slate-400 font-medium text-base shadow-none cursor-not-allowed inline-flex items-center justify-center"
                     >
-                        Nonaktifkan
+                        Belum Aktif
                     </button>
                 </div>
             </section>
@@ -157,23 +189,5 @@
             </div>
         </form>
     </main>
-
-    {{-- Script Vanilla JavaScript Feedback --}}
-    <script>
-        function tampilkanNotif(pesan) {
-            const notif = document.getElementById('notif-feedback');
-            notif.textContent = pesan;
-            notif.classList.remove('hidden');
-            setTimeout(() => {
-                notif.classList.add('hidden');
-            }, 3000);
-        }
-
-        function simpanPengaturan(e) {
-            e.preventDefault();
-            tampilkanNotif('Pengaturan toko berhasil disimpan (prototype).');
-        }
-    </script>
 </body>
 </html>
-
