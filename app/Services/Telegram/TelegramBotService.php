@@ -53,6 +53,14 @@ class TelegramBotService
     }
 
     /**
+     * Alias bahasa Indonesia untuk sendMessage.
+     */
+    public function kirimPesanTeks($chatId, string $text, $keyboard = null, string $parseMode = 'HTML')
+    {
+        return $this->sendMessage($chatId, $text, $keyboard, $parseMode);
+    }
+
+    /**
      * Mengirim berkas dokumen (seperti PDF) ke chat Telegram dengan lampiran biner.
      */
     public function sendDocument($chatId, $fileContent, string $filename, ?string $caption = null, $keyboard = null)
