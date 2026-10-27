@@ -42,6 +42,8 @@ class ProfilAdminTest extends TestCase
     public function test_admin_aktif_mendapat_200_dan_memuat_konten_utama(): void
     {
         $admin = Pengguna::factory()->create([
+            'nama' => 'Ahmad Firo',
+            'username' => 'admin_firo',
             'role' => 'ADMIN',
             'status' => 'AKTIF',
         ]);
@@ -65,6 +67,8 @@ class ProfilAdminTest extends TestCase
     public function test_halaman_tidak_memuat_svg(): void
     {
         $admin = Pengguna::factory()->create([
+            'nama' => 'Ahmad Firo',
+            'username' => 'admin_firo',
             'role' => 'ADMIN',
             'status' => 'AKTIF',
         ]);
@@ -81,6 +85,8 @@ class ProfilAdminTest extends TestCase
     public function test_halaman_memuat_partial_skala(): void
     {
         $admin = Pengguna::factory()->create([
+            'nama' => 'Ahmad Firo',
+            'username' => 'admin_firo',
             'role' => 'ADMIN',
             'status' => 'AKTIF',
         ]);
@@ -99,6 +105,8 @@ class ProfilAdminTest extends TestCase
     public function test_kartu_profil_sidebar_memiliki_tautan_ke_profil(): void
     {
         $admin = Pengguna::factory()->create([
+            'nama' => 'Ahmad Firo',
+            'username' => 'admin_firo',
             'role' => 'ADMIN',
             'status' => 'AKTIF',
         ]);
