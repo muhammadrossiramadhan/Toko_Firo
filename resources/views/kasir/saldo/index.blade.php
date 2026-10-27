@@ -140,39 +140,65 @@
         </header>
 
         {{-- Grid Kartu Informasi Saldo --}}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            {{-- Kartu Kiri: Saldo Utama (Lebar 2/3) --}}
-            <div class="lg:col-span-2 p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {{-- Kartu 1: Saldo Hari Ini (Saldo Akhir) --}}
+            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
                 <div>
-                    <span class="text-slate-500 text-base font-medium block">
-                        Saldo Hari Ini — {{ $ringkasan['tanggal'] ?? 'Jumat, 3 Okt 2026' }}
+                    <span class="text-slate-500 text-sm font-medium block">
+                        Saldo Hari Ini
                     </span>
-                    <div class="text-3xl md:text-4xl font-bold text-emerald-600 my-2">
-                        {{ $ringkasan['nominal_saldo'] ?? 'Rp 3.180.000' }}
+                    <div class="text-2xl font-bold text-emerald-600 my-2">
+                        {{ $ringkasan['saldo_akhir'] ?? $ringkasan['nominal_saldo'] }}
                     </div>
                 </div>
-                <div class="pt-3 border-t border-slate-100 flex items-center gap-6 text-slate-600 text-base font-medium">
-                    <div>
-                        Transaksi: <span class="font-bold text-slate-800">{{ $ringkasan['total_transaksi'] ?? 14 }}</span>
-                    </div>
-                    <div>
-                        Rata-rata: <span class="font-bold text-slate-800">{{ $ringkasan['rata_rata'] ?? 'Rp 227.142' }}</span>
-                    </div>
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-slate-500 text-sm">
+                    <span>Transaksi: <strong class="text-slate-800">{{ $ringkasan['total_transaksi'] ?? 0 }}</strong></span>
+                    <span>Rata: <strong class="text-slate-800">{{ $ringkasan['rata_rata'] ?? 'Rp 0' }}</strong></span>
                 </div>
             </div>
 
-            {{-- Kartu Kanan: Modal Awal (Lebar 1/3) --}}
-            <div class="lg:col-span-1 p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+            {{-- Kartu 2: Modal Awal (Saldo Awal) --}}
+            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
                 <div>
-                    <span class="text-slate-500 text-base font-medium block">
+                    <span class="text-slate-500 text-sm font-medium block">
                         Modal Awal
                     </span>
-                    <div class="text-2xl font-semibold text-slate-700 mt-2">
-                        {{ $ringkasan['modal_awal'] ?? 'Rp 500.000' }}
+                    <div class="text-2xl font-semibold text-slate-700 my-2">
+                        {{ $ringkasan['modal_awal'] ?? $ringkasan['saldo_awal'] }}
                     </div>
                 </div>
                 <div class="pt-3 border-t border-slate-100 text-sm text-slate-400">
-                    Kas awal sebelum operasional kasir dimulai
+                    Kas awal sebelum operasional
+                </div>
+            </div>
+
+            {{-- Kartu 3: Total Penjualan Tunai --}}
+            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+                <div>
+                    <span class="text-slate-500 text-sm font-medium block">
+                        Penjualan Tunai
+                    </span>
+                    <div class="text-2xl font-semibold text-emerald-700 my-2">
+                        {{ $ringkasan['total_penjualan_tunai'] ?? 'Rp 0' }}
+                    </div>
+                </div>
+                <div class="pt-3 border-t border-slate-100 text-sm text-slate-400">
+                    Akumulasi penerimaan kas
+                </div>
+            </div>
+
+            {{-- Kartu 4: Kas Keluar / Retur --}}
+            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+                <div>
+                    <span class="text-slate-500 text-sm font-medium block">
+                        Kas Keluar / Retur
+                    </span>
+                    <div class="text-2xl font-semibold text-rose-600 my-2">
+                        {{ $ringkasan['kas_keluar'] ?? 'Rp 0' }}
+                    </div>
+                </div>
+                <div class="pt-3 border-t border-slate-100 text-sm text-slate-400">
+                    Pengembalian barang & kas
                 </div>
             </div>
         </div>
@@ -219,9 +245,13 @@
                                         <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-md text-sm">
                                             Tunai
                                         </span>
-                                    @else
+                                    @elseif ($trx['metode'] === 'QRIS')
                                         <span class="inline-block px-3 py-1 font-semibold text-blue-800 bg-blue-100 rounded-md text-sm">
                                             QRIS
+                                        </span>
+                                    @else
+                                        <span class="inline-block px-3 py-1 font-semibold text-purple-800 bg-purple-100 rounded-md text-sm">
+                                            {{ $trx['metode'] }}
                                         </span>
                                     @endif
                                 </td>

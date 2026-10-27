@@ -51,23 +51,37 @@ class StokKasirService
             });
         }
 
-        // Filter status stok jika diberikan ('aman', 'menipis', 'habis')
+        // Filter status stok jika diberikan ('aman', 'menipis', 'habis', 'normal')
         $statusFilter = strtolower(trim((string) ($filters['status'] ?? $filters['status_stok'] ?? '')));
         if ($statusFilter === 'habis') {
             $query->where('stok', '<=', 0);
         } elseif ($statusFilter === 'menipis') {
-            $query->where('stok', '>', 0)->whereRaw('stok <= batas_minimum');
+            $query->where('stok', '>', 0)->whereRaw('stok <= COALESCE(batas_minimum, 5)');
+        } elseif ($statusFilter === 'normal') {
+            $query->whereRaw('stok > COALESCE(batas_minimum, 5)')->where('stok', '<=', 15);
         } elseif ($statusFilter === 'aman') {
-            $query->whereRaw('stok > batas_minimum');
+            $query->whereRaw('stok > COALESCE(batas_minimum, 5)');
         }
 
         // Filter jenis barang jika disediakan
-        if (!empty($filters['jenis']) && $filters['jenis'] !== 'Semua') {
+        if (!empty($filters['jenis']) && strtolower($filters['jenis']) !== 'semua') {
             $query->where('jenis', $filters['jenis']);
         }
 
-        // Default urutan berdasarkan kode item
-        $query->orderBy('kode_item', 'asc');
+        // Filter pengurutan
+        $sort = strtolower(trim((string) ($filters['sort'] ?? '')));
+        if ($sort === 'za') {
+            $query->orderBy('nama_item', 'desc');
+        } elseif ($sort === 'az') {
+            $query->orderBy('nama_item', 'asc');
+        } elseif ($sort === 'stok_terendah') {
+            $query->orderBy('stok', 'asc');
+        } elseif ($sort === 'stok_tertinggi') {
+            $query->orderBy('stok', 'desc');
+        } else {
+            // Default urutan berdasarkan kode item
+            $query->orderBy('kode_item', 'asc');
+        }
 
         /** @var LengthAwarePaginator $paginator */
         $paginator = $query->paginate($perPage)->withQueryString();
@@ -89,10 +103,19 @@ class StokKasirService
             $item->setAttribute('status_stok', $status);
 
             // Pasang atribut pelengkap tampilan & kompatibilitas view prototype
-            $item->status = ucfirst($status);
+            $nama = ($item->nama_item === 'Pensil 2B') ? 'Pensil 2B Faber' : $item->nama_item;
+            $statusLabel = ucfirst($status);
+            $hargaFormatted = 'Rp ' . number_format((float) $item->harga_jual, 0, ',', '.');
+
+            $item->setAttribute('status', $statusLabel);
+            $item->setAttribute('kode', $item->kode_item);
+            $item->setAttribute('nama', $nama);
+            $item->setAttribute('harga', $hargaFormatted);
+
+            $item->status = $statusLabel;
             $item->kode = $item->kode_item;
-            $item->nama = ($item->nama_item === 'Pensil 2B') ? 'Pensil 2B Faber' : $item->nama_item;
-            $item->harga = 'Rp ' . number_format((float) $item->harga_jual, 0, ',', '.');
+            $item->nama = $nama;
+            $item->harga = $hargaFormatted;
 
             return $item;
         });
