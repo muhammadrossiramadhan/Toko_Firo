@@ -5,14 +5,11 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Rute Modul Kasir: Info Barang Baru (Frontend Prototype Figma Frame P09)
+| Rute Modul Kasir: Info Barang Baru
 |--------------------------------------------------------------------------
-| CATATAN: Untuk kebutuhan prototype frontend independen, middleware auth
-| dan role:KASIR dinonaktifkan sementara. Pulihkan middleware ['auth', 'role:KASIR']
-| sebelum integrasi final.
+| Izin akses diberikan untuk peran kasir, admin, dan pemilik toko.
 */
 
-Route::middleware(['web'])->group(function () {
+Route::middleware(['web', 'auth', 'role:kasir,admin,pemilik'])->group(function () {
     Route::get('/kasir/info-barang', [InfoBarangKasirController::class, 'index'])->name('kasir.info-barang');
 });
-

@@ -57,10 +57,14 @@ class TransaksiKasirController extends Controller
         $totalBelanja = (float) array_sum(array_column($keranjang, 'subtotal'));
 
         $user = auth()->user();
+        $nama = $user ? ($user->nama ?? $user->name ?? 'Kasir') : 'Rina Putri';
+        $role = $user ? ($user->role ?? 'Kasir') : 'Kasir';
+        $roleLabel = in_array(strtoupper($role), ['ADMIN', 'PEMILIK']) ? 'Admin' : 'Kasir';
+
         $kasir = [
-            'nama' => $user ? ($user->name ?? $user->nama ?? 'Kasir') : 'Rina Putri',
-            'inisial' => strtoupper(substr((string) ($user ? ($user->name ?? $user->nama ?? 'Kasir') : 'R'), 0, 1)),
-            'role' => 'Kasir',
+            'nama' => $nama,
+            'inisial' => strtoupper(substr((string) $nama, 0, 1)),
+            'role' => $roleLabel,
         ];
 
         return view('kasir.transaksi.index', compact('katalog', 'keranjang', 'totalBelanja', 'kasir'));

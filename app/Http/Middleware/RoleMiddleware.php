@@ -18,7 +18,7 @@ class RoleMiddleware
     {
         // Jika belum login: redirect ke route login
         if (! Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->guest(route('login'));
         }
 
         /** @var \App\Models\Pengguna $user */
@@ -35,12 +35,34 @@ class RoleMiddleware
             ]);
         }
 
-        // Jika role pengguna tidak ada di $roles: abort(403)
-        if (! in_array($user->role, $roles, true)) {
-            abort(403);
+        $allowedRoles = [];
+        foreach ($roles as $roleParam) {
+            foreach (preg_split('/[,|]/', (string) $roleParam) as $part) {
+                $clean = strtolower(trim($part));
+                if ($clean !== '') {
+                    $allowedRoles[] = $clean;
+                }
+            }
         }
 
-        return $next($request);
+        $userRole = strtolower(trim((string) ($user->peran ?? $user->role ?? '')));
+
+        // Hierarki: admin dan pemilik berhak akses operasional kasir
+        $isKasirFeature = in_array('kasir', $allowedRoles, true);
+        $isAdminOrPemilik = in_array($userRole, ['admin', 'pemilik'], true);
+
+        if ($isAdminOrPemilik && $isKasirFeature) {
+            return $next($request);
+        }
+
+        if (in_array($userRole, $allowedRoles, true)) {
+            return $next($request);
+        }
+
+        if ($userRole === 'pemilik' && in_array('admin', $allowedRoles, true)) {
+            return $next($request);
+        }
+
+        abort(403, 'Akses tidak diizinkan untuk peran akun ini.');
     }
 }
-

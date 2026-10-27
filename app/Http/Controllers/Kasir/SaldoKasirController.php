@@ -14,7 +14,9 @@ class SaldoKasirController extends Controller
     {
         $hariIni = Carbon::today();
         $tanggal = $hariIni->toDateString();
-        $kasirId = auth()->id();
+        $user = auth()->user();
+        $kasirId = auth()->id() ?? $user?->id_pengguna;
+        $isAdminOrPemilik = $user && in_array(strtoupper($user->role ?? ''), ['ADMIN', 'PEMILIK']);
 
         // 1. Ambil data saldo awal hari ini dari saldo_harian (read-only, tanpa mutasi updateOrInsert)
         $saldoHariIni = DB::table('saldo_harian')
@@ -32,10 +34,14 @@ class SaldoKasirController extends Controller
             $saldoAwal = (float) ($saldoSebelumnya ?? 0.0);
         }
 
-        // 2. Ambil transaksi penjualan hari ini untuk kasir bersangkutan
+        // 2. Ambil transaksi penjualan hari ini
         $penjualanQuery = DB::table('daftar_penjualan')
-            ->whereDate('tanggal_transaksi', $tanggal)
-            ->when($kasirId, fn ($q) => $q->where('id_kasir', $kasirId));
+            ->whereDate('tanggal_transaksi', $tanggal);
+
+        // Jika bukan admin/pemilik, batasi hanya transaksi kasir bersangkutan
+        if (!$isAdminOrPemilik && $kasirId) {
+            $penjualanQuery->where('id_kasir', $kasirId);
+        }
 
         $penjualan = (clone $penjualanQuery)
             ->orderByDesc('kode_transaksi')
@@ -111,13 +117,14 @@ class SaldoKasirController extends Controller
             ];
         });
 
-        $user = auth()->user();
-        $nama = $user->name ?? 'Kasir';
+        $nama = $user ? ($user->nama ?? $user->name ?? 'Kasir') : 'Kasir';
+        $role = $user ? ($user->role ?? 'Kasir') : 'Kasir';
+        $roleLabel = in_array(strtoupper($role), ['ADMIN', 'PEMILIK']) ? 'Admin' : 'Kasir';
 
         $kasir = [
             'nama' => $nama,
-            'inisial' => strtoupper(substr($nama, 0, 1)),
-            'role' => 'Kasir',
+            'inisial' => strtoupper(substr((string) $nama, 0, 1)),
+            'role' => $roleLabel,
         ];
 
         return view('kasir.saldo.index', compact(

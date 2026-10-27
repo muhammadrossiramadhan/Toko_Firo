@@ -2,12 +2,21 @@
 
 namespace Tests\Feature;
 
+use App\Models\Pengguna;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class TransaksiKasirTest extends TestCase
 {
     use DatabaseTransactions;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $kasir = Pengguna::factory()->kasir()->create();
+        $this->actingAs($kasir);
+    }
 
     /**
      * Endpoint GET /kasir/transaksi mengembalikan status 200 dan memuat konten utama Figma P06.
