@@ -36,7 +36,7 @@ class PenggunaService
             });
         }
 
-        $query->orderBy('id_pengguna', 'asc');
+        $query->orderBy('id_pengguna', 'desc');
 
         /** @var LengthAwarePaginator $paginator */
         $paginator = $query->paginate($perPage)->withQueryString();
@@ -101,13 +101,59 @@ class PenggunaService
             throw new InvalidArgumentException('Role tidak valid. Pilihan: ADMIN atau KASIR.');
         }
 
-        DB::statement('CALL sp_update_pengguna(?, ?, ?, ?, ?)', [
-            $idPengguna,
-            $nama,
-            $username,
-            $roleUpper,
-            $idPelaku,
-        ]);
+        try {
+            DB::statement('CALL sp_update_pengguna(?, ?, ?, ?, ?)', [
+                $idPengguna,
+                $nama,
+                $username,
+                $roleUpper,
+                $idPelaku,
+            ]);
+        } catch (\Throwable $e) {
+            if (str_contains($e->getMessage(), '1267') || str_contains($e->getMessage(), 'collations')) {
+                $user = DB::table('pengguna')->where('id_pengguna', $idPengguna)->first();
+                if (!$user) {
+                    throw new InvalidArgumentException('Pengguna tidak ditemukan!');
+                }
+
+                $exists = DB::table('pengguna')
+                    ->where('username', $username)
+                    ->where('id_pengguna', '!=', $idPengguna)
+                    ->exists();
+
+                if ($exists) {
+                    throw new InvalidArgumentException('Username sudah dipakai!');
+                }
+
+                DB::table('pengguna')
+                    ->where('id_pengguna', $idPengguna)
+                    ->update([
+                        'nama' => $nama,
+                        'username' => $username,
+                        'role' => $roleUpper,
+                        'diubah_pada' => now(),
+                    ]);
+
+                DB::table('log_aktivitas')->insert([
+                    'waktu' => now(),
+                    'keterangan' => 'Update pengguna: ' . $username,
+                    'tipe_aksi' => 'PENGGUNA_DIUBAH',
+                    'id_pengguna' => $idPelaku,
+                    'data_sebelum' => json_encode([
+                        'nama' => $user->nama,
+                        'username' => $user->username,
+                        'role' => $user->role,
+                    ]),
+                    'data_sesudah' => json_encode([
+                        'nama' => $nama,
+                        'username' => $username,
+                        'role' => $roleUpper,
+                    ]),
+                ]);
+            } else {
+                throw $e;
+            }
+        }
 
         return true;
     }

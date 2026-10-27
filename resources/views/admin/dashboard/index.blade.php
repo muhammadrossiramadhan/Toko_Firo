@@ -45,17 +45,17 @@
                     </span>
                 </button>
 
-                {{-- Profil Topbar (Inisial & Nama, Tanpa Ikon) --}}
+                {{-- Profil Topbar (Inisial & Nama Dinamis, Tanpa Ikon) --}}
                 <div class="flex items-center gap-3 pl-2 border-l border-gray-300">
                     <div class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-base">
-                        J
+                        {{ $inisialUser ?? (auth()->user() ? strtoupper(substr((string) (auth()->user()->nama ?? auth()->user()->username ?? 'A'), 0, 1)) : 'A') }}
                     </div>
                     <div class="hidden md:block text-left">
                         <div class="font-semibold text-gray-900 text-base leading-tight">
-                            Junaidi Saleh
+                            {{ $namaUser ?? auth()->user()->nama ?? auth()->user()->username ?? 'Admin' }}
                         </div>
                         <div class="text-xs text-gray-500 font-medium">
-                            Pemilik Toko
+                            {{ $roleUser ?? (auth()->user() && strtoupper((string) (auth()->user()->role ?? '')) === 'ADMIN' ? 'Pemilik Toko' : 'Staf Kasir') }}
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
         {{-- Greeting & Tanggal --}}
         <section class="mb-6">
             <h2 class="text-2xl font-bold text-gray-900">
-                Halo, Junaidi
+                Halo, {{ $namaPanggilan ?? $namaUser ?? auth()->user()->nama ?? auth()->user()->username ?? 'Admin' }}
             </h2>
             <p class="text-slate-500 text-base mt-1">
                 Jumat, 3 Oktober 2026 · Ringkasan toko hari ini
