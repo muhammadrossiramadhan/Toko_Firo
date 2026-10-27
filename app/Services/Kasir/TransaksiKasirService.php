@@ -96,6 +96,7 @@ class TransaksiKasirService
                     'subtotal' => $subtotalItem,
                     'stok_awal' => $stokTersedia,
                     'batas_minimum' => (int) ($barang->batas_minimum ?? 5),
+                    'satuan' => $barang->satuan ?: 'pcs',
                 ];
             }
 
@@ -158,9 +159,15 @@ class TransaksiKasirService
                 if ($sisaStok <= $detail['batas_minimum']) {
                     if (class_exists(\App\Services\BatasStokService::class)) {
                         try {
-                            app(\App\Services\BatasStokService::class)->kirimPeringatanStokKritis();
+                            app(\App\Services\BatasStokService::class)->kirimPeringatanStokMinimum(
+                                $detail['kode_item'],
+                                $detail['nama_item'],
+                                $sisaStok,
+                                $detail['batas_minimum'],
+                                $detail['satuan'] ?? 'pcs'
+                            );
                         } catch (\Throwable $e) {
-                            // Abaikan error eksternal agar transaksi POS kasir tetap sukses
+                            \Illuminate\Support\Facades\Log::error('Gagal memicu notifikasi stok minimum: ' . $e->getMessage());
                         }
                     }
                 }
