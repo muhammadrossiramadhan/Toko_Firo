@@ -431,32 +431,62 @@ class BackupService
     {
         $notifAktif = true;
         try {
-            $val = DB::table('pengaturan_notifikasi')->where('kunci', 'notif_backup')->value('nilai');
+            $val = DB::table('pengaturan_notifikasi')
+                ->whereIn('kunci', ['backup_selesai', 'notif_backup'])
+                ->orderByRaw("CASE WHEN kunci = 'backup_selesai' THEN 1 ELSE 2 END")
+                ->value('nilai');
+
+            if ($val === null) {
+                $jsonPath = storage_path('app/settings/notifications.json');
+                if (file_exists($jsonPath)) {
+                    $json = json_decode((string) file_get_contents($jsonPath), true);
+                    if (isset($json['backup_selesai'])) {
+                        $val = $json['backup_selesai'] ? '1' : '0';
+                    }
+                }
+            }
+
             if ($val !== null) {
                 $notifAktif = in_array(strtolower((string) $val), ['1', 'true', 'on', 'yes'], true);
             }
         } catch (\Throwable $e) {
-            // Default true
+            $notifAktif = true;
         }
 
         if (!$notifAktif) {
             return;
         }
 
-        try {
-            $chatId = config('services.telegram.admin_chat_id')
-                ?: config('services.telegram.chat_id')
-                ?: env('TELEGRAM_ADMIN_CHAT_ID')
-                ?: env('TELEGRAM_GROUP_CHAT_ID');
+        $chatId = config('services.telegram.admin_chat_id')
+            ?? config('services.telegram.chat_id')
+            ?? (app()->environment('testing') ? null : (env('TELEGRAM_ADMIN_CHAT_ID') ?? env('TELEGRAM_GROUP_CHAT_ID')));
 
-            if (!empty($chatId)) {
-                /** @var TelegramBotService $bot */
-                $bot = app(TelegramBotService::class);
-                $pesan = "Pemberitahuan Sistem: Backup database Toko Firo berhasil dibuat pada {$waktu}. Tipe: {$tipe}. Ukuran file: {$ukuran}.";
-                $bot->kirimPesanTeks($chatId, $pesan);
+        if (empty($chatId)) {
+            Log::warning('Notifikasi backup dibatalkan: Chat ID Telegram belum diatur.');
+            return;
+        }
+
+        $pesan = "Pemberitahuan Sistem Toko Firo\n\n" .
+                 "Backup database berhasil dibuat!\n" .
+                 "Waktu: {$waktu}\n" .
+                 "Tipe: {$tipe}\n" .
+                 "Ukuran: {$ukuran}\n" .
+                 "Status: Aman tersimpan.";
+
+        try {
+            /** @var TelegramBotService $bot */
+            $bot = app(TelegramBotService::class);
+            $res = $bot->kirimPesanTeks($chatId, $pesan);
+
+            if ($res === false) {
+                Log::error("Gagal mengirim notifikasi backup ke Telegram (chatId: {$chatId}).");
+            } else {
+                Log::info("Notifikasi backup database berhasil dikirim ke Telegram (chatId: {$chatId}).");
             }
         } catch (\Throwable $e) {
-            Log::warning('Gagal mengirim notifikasi Telegram backup: ' . $e->getMessage());
+            Log::error('Error saat mengirim notifikasi Telegram backup: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
         }
     }
 

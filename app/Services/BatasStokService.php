@@ -113,6 +113,107 @@ class BatasStokService
     }
 
     /**
+     * Mengirim notifikasi peringatan stok minimum sebuah item ke Telegram.
+     */
+    public function kirimPeringatanStokMinimum(
+        string $kodeItem,
+        ?string $namaBarang = null,
+        ?int $stokSekarang = null,
+        ?int $batasMinimum = null,
+        string $satuan = 'pcs'
+    ): bool {
+        // Cek toggle notifikasi stok_minimum (atau notif_stok_minimum)
+        $notifAktif = true;
+        try {
+            $val = DB::table('pengaturan_notifikasi')
+                ->whereIn('kunci', ['stok_minimum', 'notif_stok_minimum'])
+                ->orderByRaw("CASE WHEN kunci = 'stok_minimum' THEN 1 ELSE 2 END")
+                ->value('nilai');
+
+            if ($val === null) {
+                $jsonPath = storage_path('app/settings/notifications.json');
+                if (file_exists($jsonPath)) {
+                    $json = json_decode((string) file_get_contents($jsonPath), true);
+                    if (isset($json['stok_minimum'])) {
+                        $val = $json['stok_minimum'] ? '1' : '0';
+                    }
+                }
+            }
+
+            if ($val !== null) {
+                $notifAktif = in_array(strtolower((string) $val), ['1', 'true', 'on', 'yes'], true);
+            }
+        } catch (\Throwable $e) {
+            $notifAktif = true;
+        }
+
+        if (!$notifAktif) {
+            return false;
+        }
+
+        $chatId = config('services.telegram.admin_chat_id')
+            ?? config('services.telegram.chat_id')
+            ?? (app()->environment('testing') ? null : (env('TELEGRAM_ADMIN_CHAT_ID') ?? env('TELEGRAM_GROUP_CHAT_ID')));
+
+        if (empty($chatId)) {
+            Log::warning('Peringatan stok minimum dibatalkan: Chat ID Telegram belum diatur.');
+            return false;
+        }
+
+        if ($namaBarang === null || $stokSekarang === null || $batasMinimum === null) {
+            $item = DB::table('daftar_item')->where('kode_item', $kodeItem)->first();
+            if ($item) {
+                $namaBarang = $namaBarang ?? $item->nama_item;
+                $stokSekarang = $stokSekarang ?? (int) $item->stok;
+                $batasMinimum = $batasMinimum ?? (int) ($item->batas_minimum ?? 5);
+                $satuan = $item->satuan ?: $satuan;
+            } else {
+                $namaBarang = $namaBarang ?? $kodeItem;
+                $stokSekarang = $stokSekarang ?? 0;
+                $batasMinimum = $batasMinimum ?? 0;
+            }
+        }
+
+        $pesan = "PERINGATAN STOK MINIMUM\n\n" .
+                 "Barang: {$namaBarang} ({$kodeItem})\n" .
+                 "Sisa Stok: {$stokSekarang} {$satuan}\n" .
+                 "Batas Minimum: {$batasMinimum}\n\n" .
+                 "Harap segera lakukan pengadaan/restock ulang barang ini!";
+
+        try {
+            /** @var TelegramBotService $bot */
+            $bot = app(TelegramBotService::class);
+            $res = $bot->kirimPesanTeks($chatId, $pesan);
+
+            if ($res === false) {
+                Log::error("Gagal mengirim peringatan stok minimum untuk item {$kodeItem} ke Telegram.");
+                return false;
+            }
+
+            Log::info("Peringatan stok minimum berhasil dikirim ke Telegram untuk item {$kodeItem}.");
+            return true;
+        } catch (\Throwable $e) {
+            Log::error('Error saat mengirim peringatan stok minimum ke Telegram: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Alias kompatibilitas untuk kirimPeringatanStokMinimum.
+     */
+    public function kirimPeringatanStokItem(
+        string $kodeItem,
+        ?string $namaBarang = null,
+        ?int $stokSekarang = null,
+        ?int $batasMinimum = null,
+        string $satuan = 'pcs'
+    ): bool {
+        return $this->kirimPeringatanStokMinimum($kodeItem, $namaBarang, $stokSekarang, $batasMinimum, $satuan);
+    }
+
+    /**
      * Memeriksa seluruh item dengan stok kritis dan mengirimkan alert ringkasan ke Telegram.
      */
     public function kirimPeringatanStokKritis(): int

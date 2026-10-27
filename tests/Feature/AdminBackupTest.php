@@ -124,7 +124,9 @@ class AdminBackupTest extends TestCase
             ->once()
             ->withArgs(function ($chatId, $pesan) {
                 return $chatId === '123456789'
-                    && str_contains($pesan, 'Pemberitahuan Sistem: Backup database Toko Firo berhasil dibuat');
+                    && str_contains($pesan, 'Pemberitahuan Sistem Toko Firo')
+                    && str_contains($pesan, 'Backup database berhasil dibuat!')
+                    && str_contains($pesan, 'Status: Aman tersimpan.');
             })
             ->andReturn(true);
 
