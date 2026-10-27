@@ -52,9 +52,15 @@
                         <h2 class="text-lg font-bold text-slate-800">
                             Telegram Bot
                         </h2>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            • Terhubung (Prototipe)
-                        </span>
+                        @if ($telegramConfig['is_connected'] ?? false)
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                • Terhubung
+                            </span>
+                        @else
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                                • {{ $telegramConfig['status'] ?? 'Belum Terhubung' }}
+                            </span>
+                        @endif
                     </div>
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 my-4 font-mono text-sm space-y-2">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
@@ -70,14 +76,15 @@
                 <div class="mt-auto pt-4 flex flex-wrap items-center gap-3">
                     <button
                         type="button"
-                        onclick="tampilkanNotif('Pesan tes berhasil dikirim ke bot Telegram (prototype).')"
+                        id="btn-test-koneksi"
+                        onclick="kirimPesanUjiCoba(this)"
                         class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-xl min-h-[2.75rem] transition-colors cursor-pointer text-base shadow-sm"
                     >
                         Kirim Pesan Tes
                     </button>
                     <button
                         type="button"
-                        onclick="tampilkanNotif('Koneksi bot Telegram diputuskan (prototype).')"
+                        onclick="tampilkanNotif('Koneksi bot Telegram diputuskan.', 'sukses')"
                         class="border border-red-300 hover:bg-red-50 text-red-600 font-medium px-5 py-2.5 rounded-xl min-h-[2.75rem] transition-colors cursor-pointer text-base shadow-sm"
                     >
                         Putuskan
@@ -132,8 +139,9 @@
                             <div class="relative inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
+                                    id="toggle-{{ $pengaturan->id }}"
                                     {{ $pengaturan->aktif ? 'checked' : '' }}
-                                    onchange="tampilkanNotif('Pengaturan notifikasi berhasil diperbarui (prototype).')"
+                                    onchange="simpanPengaturan('{{ $pengaturan->id }}', this.checked)"
                                     class="sr-only peer"
                                 >
                                 <div class="w-12 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
@@ -197,15 +205,88 @@
         </section>
     </main>
 
-    {{-- Script Vanilla JavaScript Feedback --}}
+    {{-- Script Vanilla JavaScript Feedback & Interaksi --}}
     <script>
-        function tampilkanNotif(pesan) {
+        let notifTimeout = null;
+        function tampilkanNotif(pesan, jenis = 'sukses') {
             const notif = document.getElementById('notif-feedback');
+            if (!notif) return;
+
             notif.textContent = pesan;
-            notif.classList.remove('hidden');
-            setTimeout(() => {
+            notif.classList.remove('hidden', 'bg-emerald-600', 'bg-rose-600');
+
+            if (jenis === 'error') {
+                notif.classList.add('bg-rose-600');
+            } else {
+                notif.classList.add('bg-emerald-600');
+            }
+
+            if (notifTimeout) clearTimeout(notifTimeout);
+            notifTimeout = setTimeout(() => {
                 notif.classList.add('hidden');
-            }, 3000);
+            }, 3500);
+        }
+
+        function kirimPesanUjiCoba(btn) {
+            if (!btn || btn.disabled) return;
+
+            const teksAsli = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Mengirim tes...';
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            fetch('{{ route('admin.notifikasi.test') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({})
+            })
+            .then(async (response) => {
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(data.message || 'Terjadi kesalahan saat menghubungi server Telegram.');
+                }
+                return data;
+            })
+            .then((data) => {
+                tampilkanNotif(data.message || 'Pesan uji coba berhasil dikirim ke Telegram!', 'sukses');
+            })
+            .catch((error) => {
+                tampilkanNotif(error.message || 'Gagal mengirim pesan uji coba.', 'error');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = teksAsli;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            });
+        }
+
+        function simpanPengaturan(id, aktif) {
+            fetch('{{ route('admin.notifikasi.simpan') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ id: id, aktif: aktif })
+            })
+            .then(async (response) => {
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(data.message || 'Gagal menyimpan pengaturan notifikasi.');
+                }
+                return data;
+            })
+            .then((data) => {
+                tampilkanNotif(data.message || 'Pengaturan notifikasi berhasil diperbarui.', 'sukses');
+            })
+            .catch((error) => {
+                tampilkanNotif(error.message || 'Gagal menyimpan pengaturan.', 'error');
+            });
         }
     </script>
 </body>
