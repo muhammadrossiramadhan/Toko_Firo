@@ -63,7 +63,7 @@ class BackupService
         }
 
         // Periksa status saklar notifikasi dan kirim pesan Telegram jika aktif
-        $this->kirimNotifikasiSelesai($waktuFormatted, $tipeNormalized, $ukuranFormatted);
+        $this->kirimNotifikasiSelesai($waktuFormatted, $tipeNormalized, $ukuranFormatted, $targetPath);
 
         return $detail;
     }
@@ -425,29 +425,106 @@ class BackupService
     }
 
     /**
+     * Mengambil konfigurasi jadwal pencadangan database otomatis.
+     */
+    public function getJadwalBackup(): array
+    {
+        $settingsPath = storage_path('app/settings/backup_schedule.json');
+        $default = [
+            'aktif' => true,
+            'waktu' => '22:00',
+            'tipe' => 'Harian',
+            'kirim_telegram' => true,
+        ];
+
+        if (file_exists($settingsPath)) {
+            $data = json_decode((string) file_get_contents($settingsPath), true);
+            if (is_array($data)) {
+                return array_merge($default, $data);
+            }
+        }
+
+        return $default;
+    }
+
+    /**
+     * Menyimpan konfigurasi jadwal pencadangan database otomatis ke storage/app/settings/backup_schedule.json.
+     */
+    public function simpanJadwalBackup(array $data): array
+    {
+        $settingsDir = storage_path('app/settings');
+        if (!is_dir($settingsDir)) {
+            @mkdir($settingsDir, 0755, true);
+        }
+
+        $current = $this->getJadwalBackup();
+
+        $aktif = isset($data['aktif'])
+            ? filter_var($data['aktif'], FILTER_VALIDATE_BOOLEAN)
+            : $current['aktif'];
+
+        $waktu = !empty($data['waktu']) && preg_match('/^\d{1,2}:\d{2}$/', (string) $data['waktu'])
+            ? (string) $data['waktu']
+            : $current['waktu'];
+
+        if (strlen($waktu) === 4 && strpos($waktu, ':') === 1) {
+            $waktu = '0' . $waktu;
+        }
+
+        $tipeValid = ['Harian', 'Mingguan', 'Bulanan'];
+        $tipe = isset($data['tipe']) && in_array(ucfirst(strtolower($data['tipe'])), $tipeValid)
+            ? ucfirst(strtolower($data['tipe']))
+            : $current['tipe'];
+
+        $kirimTelegram = isset($data['kirim_telegram'])
+            ? filter_var($data['kirim_telegram'], FILTER_VALIDATE_BOOLEAN)
+            : $current['kirim_telegram'];
+
+        $updated = [
+            'aktif' => $aktif,
+            'waktu' => $waktu,
+            'tipe' => $tipe,
+            'kirim_telegram' => $kirimTelegram,
+        ];
+
+        $settingsPath = $settingsDir . DIRECTORY_SEPARATOR . 'backup_schedule.json';
+        file_put_contents($settingsPath, json_encode($updated, JSON_PRETTY_PRINT));
+
+        return $updated;
+    }
+
+    /**
      * Mengirim notifikasi ke Telegram jika toggle saklar notifikasi backup aktif.
      */
-    protected function kirimNotifikasiSelesai(string $waktu, string $tipe, string $ukuran): void
+    protected function kirimNotifikasiSelesai(string $waktu, string $tipe, string $ukuran, ?string $targetPath = null): void
     {
         $notifAktif = true;
         try {
-            $val = DB::table('pengaturan_notifikasi')
-                ->whereIn('kunci', ['backup_selesai', 'notif_backup'])
-                ->orderByRaw("CASE WHEN kunci = 'backup_selesai' THEN 1 ELSE 2 END")
-                ->value('nilai');
-
-            if ($val === null) {
-                $jsonPath = storage_path('app/settings/notifications.json');
-                if (file_exists($jsonPath)) {
-                    $json = json_decode((string) file_get_contents($jsonPath), true);
-                    if (isset($json['backup_selesai'])) {
-                        $val = $json['backup_selesai'] ? '1' : '0';
-                    }
-                }
+            // Periksa preferensi jadwal backup jika ada
+            $jadwal = $this->getJadwalBackup();
+            if (isset($jadwal['kirim_telegram']) && $jadwal['kirim_telegram'] === false) {
+                $notifAktif = false;
             }
 
-            if ($val !== null) {
-                $notifAktif = in_array(strtolower((string) $val), ['1', 'true', 'on', 'yes'], true);
+            if ($notifAktif) {
+                $val = DB::table('pengaturan_notifikasi')
+                    ->whereIn('kunci', ['backup_selesai', 'notif_backup'])
+                    ->orderByRaw("CASE WHEN kunci = 'backup_selesai' THEN 1 ELSE 2 END")
+                    ->value('nilai');
+
+                if ($val === null) {
+                    $jsonPath = storage_path('app/settings/notifications.json');
+                    if (file_exists($jsonPath)) {
+                        $json = json_decode((string) file_get_contents($jsonPath), true);
+                        if (isset($json['backup_selesai'])) {
+                            $val = $json['backup_selesai'] ? '1' : '0';
+                        }
+                    }
+                }
+
+                if ($val !== null) {
+                    $notifAktif = in_array(strtolower((string) $val), ['1', 'true', 'on', 'yes'], true);
+                }
             }
         } catch (\Throwable $e) {
             $notifAktif = true;
@@ -482,6 +559,18 @@ class BackupService
                 Log::error("Gagal mengirim notifikasi backup ke Telegram (chatId: {$chatId}).");
             } else {
                 Log::info("Notifikasi backup database berhasil dikirim ke Telegram (chatId: {$chatId}).");
+            }
+
+            // Jika ada file hasil backup nyata dan berada di luar lingkungan testing unit, kirimkan dokumen
+            if (!app()->environment('testing') && !empty($targetPath) && file_exists($targetPath)) {
+                try {
+                    $fileContent = file_get_contents($targetPath);
+                    $fileName = basename($targetPath);
+                    $caption = "Salinan Berkas Backup Database Toko Firo ({$ukuran})\nWaktu: {$waktu}";
+                    $bot->sendDocument($chatId, $fileContent, $fileName, $caption);
+                } catch (\Throwable $docErr) {
+                    Log::warning('Gagal melampirkan berkas backup ke Telegram: ' . $docErr->getMessage());
+                }
             }
         } catch (\Throwable $e) {
             Log::error('Error saat mengirim notifikasi Telegram backup: ' . $e->getMessage(), [

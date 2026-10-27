@@ -28,6 +28,7 @@ class BackupController extends Controller
 
         $riwayatPaginator = $this->backupService->getRiwayatBackup(10);
         $riwayatMetadata = $this->backupService->getRiwayat();
+        $jadwalBackup = $this->backupService->getJadwalBackup();
 
         return view('admin.backup.index', [
             'riwayatBackup' => $riwayatPaginator,
@@ -35,6 +36,7 @@ class BackupController extends Controller
             'totalFile'     => $riwayatMetadata['total_file'] ?? $riwayatPaginator->total(),
             'totalUkuran'   => $riwayatMetadata['total_ukuran'] ?? '0 KB',
             'terakhir'      => $riwayatMetadata['terakhir'] ?? '-',
+            'jadwalBackup'  => $jadwalBackup,
         ]);
     }
 
@@ -95,6 +97,39 @@ class BackupController extends Controller
 
         return redirect()->route('admin.backup')
             ->with($sukses ? 'success' : 'error', $sukses ? 'Berkas cadangan berhasil dihapus.' : 'Gagal menghapus berkas cadangan.');
+    }
+
+    /**
+     * Menyimpan pengaturan jadwal backup otomatis.
+     */
+    public function simpanJadwal(Request $request): JsonResponse|RedirectResponse
+    {
+        $validated = $request->validate([
+            'aktif'          => 'sometimes|boolean',
+            'waktu'          => ['required', 'string', 'regex:/^(?:[01]?\d|2[0-3]):[0-5]\d$/'],
+            'tipe'           => 'required|string|in:Harian,Mingguan,Bulanan,harian,mingguan,bulanan',
+            'kirim_telegram' => 'sometimes|boolean',
+        ]);
+
+        $data = [
+            'aktif'          => $request->boolean('aktif'),
+            'waktu'          => (string) $request->input('waktu'),
+            'tipe'           => ucfirst(strtolower((string) $request->input('tipe'))),
+            'kirim_telegram' => $request->boolean('kirim_telegram'),
+        ];
+
+        $hasil = $this->backupService->simpanJadwalBackup($data);
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Jadwal backup otomatis berhasil diperbarui.',
+                'data'    => $hasil,
+            ], 200);
+        }
+
+        return redirect()->route('admin.backup')
+            ->with('success', 'Jadwal backup otomatis berhasil diperbarui.');
     }
 
     /**

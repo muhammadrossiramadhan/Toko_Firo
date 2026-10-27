@@ -144,4 +144,71 @@ class AdminBackupTest extends TestCase
             $this->filesToCleanup[] = storage_path('app/backups/' . $namaFile);
         }
     }
+
+    public function test_admin_dapat_menyimpan_pengaturan_jadwal_backup(): void
+    {
+        $response = $this->actingAs($this->admin)->postJson('/admin/backup/jadwal', [
+            'aktif' => true,
+            'waktu' => '23:30',
+            'tipe' => 'Harian',
+            'kirim_telegram' => true,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'success',
+            'data' => [
+                'aktif' => true,
+                'waktu' => '23:30',
+                'tipe' => 'Harian',
+                'kirim_telegram' => true,
+            ],
+        ]);
+
+        $settingsPath = storage_path('app/settings/backup_schedule.json');
+        $this->assertFileExists($settingsPath);
+        $json = json_decode((string) file_get_contents($settingsPath), true);
+        $this->assertEquals('23:30', $json['waktu']);
+        $this->assertTrue($json['aktif']);
+        $this->assertTrue($json['kirim_telegram']);
+    }
+
+    public function test_halaman_backup_menampilkan_modal_atur_jadwal_dan_waktu_aktif(): void
+    {
+        // Simpan jadwal uji
+        $settingsPath = storage_path('app/settings/backup_schedule.json');
+        file_put_contents($settingsPath, json_encode([
+            'aktif' => true,
+            'waktu' => '22:00',
+            'tipe' => 'Harian',
+            'kirim_telegram' => true,
+        ], JSON_PRETTY_PRINT));
+
+        $response = $this->actingAs($this->admin)->get('/admin/backup');
+
+        $response->assertStatus(200);
+        $response->assertSee('Atur Jadwal Backup Otomatis');
+        $response->assertSee('modal-jadwal-backup');
+        $response->assertSee('22:00');
+        $response->assertSee('Atur Jadwal Backup');
+    }
+
+    public function test_artisan_command_backup_otomatis_berjalan_sukses(): void
+    {
+        Config::set('services.telegram.admin_chat_id', '123456789');
+
+        $mockBot = Mockery::mock(TelegramBotService::class);
+        $mockBot->shouldReceive('kirimPesanTeks')
+            ->andReturn(true);
+        $this->app->instance(TelegramBotService::class, $mockBot);
+
+        $exitCode = \Illuminate\Support\Facades\Artisan::call('backup:otomatis', ['--force' => true]);
+        $this->assertEquals(0, $exitCode);
+
+        // Bersihkan berkas hasil backup yang terbuat jika ada
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        if (preg_match('/(backup_toko_firo_\S+\.sql)/', $output, $matches)) {
+            $this->filesToCleanup[] = storage_path('app/backups/' . $matches[1]);
+        }
+    }
 }
