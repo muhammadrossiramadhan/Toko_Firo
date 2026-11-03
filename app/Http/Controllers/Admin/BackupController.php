@@ -18,14 +18,10 @@ class BackupController extends Controller
 
     /**
      * Menampilkan antarmuka Backup Data (Figma P14/P15).
+     * Murni metode GET hanya untuk membaca data, tidak menangani mutasi/pencadangan (SEC-13).
      */
-    public function index(Request $request): View|RedirectResponse
+    public function index(Request $request): View
     {
-        // Kompatibilitas jika form lama POST ke index
-        if ($request->isMethod('post') || $request->input('action') === 'backup') {
-            return $this->buat($request);
-        }
-
         $riwayatPaginator = $this->backupService->getRiwayatBackup(10);
         $riwayatMetadata = $this->backupService->getRiwayat();
         $jadwalBackup = $this->backupService->getJadwalBackup();
@@ -130,6 +126,14 @@ class BackupController extends Controller
 
         return redirect()->route('admin.backup')
             ->with('success', 'Jadwal backup otomatis berhasil diperbarui.');
+    }
+
+    /**
+     * Endpoint POST /admin/backup/proses untuk pembuatan backup riil terenkripsi (SEC-13).
+     */
+    public function proses(Request $request): JsonResponse|RedirectResponse
+    {
+        return $this->buat($request);
     }
 
     /**

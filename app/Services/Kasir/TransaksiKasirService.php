@@ -138,6 +138,8 @@ class TransaksiKasirService
                 'metode_bayar' => $metodeBayar,
             ]);
 
+            $itemsToNotify = [];
+
             // 4. Kurangi stok dan simpan detail item transaksi (daftar_transaksi)
             foreach ($detailList as $detail) {
                 // Pengurangan stok otomatis pada database riil
@@ -157,22 +159,38 @@ class TransaksiKasirService
                     'tanggal_log' => now(),
                 ]);
 
-                // Hook notifikasi stok menipis jika sisa stok <= batas_minimum
+                // Kumpulkan item menipis jika sisa stok <= batas_minimum
                 if ($sisaStok <= $detail['batas_minimum']) {
+                    $itemsToNotify[] = [
+                        'kode_item' => $detail['kode_item'],
+                        'nama_item' => $detail['nama_item'],
+                        'sisa_stok' => $sisaStok,
+                        'batas_minimum' => $detail['batas_minimum'],
+                        'satuan' => $detail['satuan'] ?? 'pcs',
+                    ];
+                }
+            }
+
+            // Hook notifikasi stok menipis dikirim setelah transaksi sukses di-commit (decouple I/O)
+            if (!empty($itemsToNotify)) {
+                DB::afterCommit(function () use ($itemsToNotify) {
                     if (class_exists(\App\Services\BatasStokService::class)) {
-                        try {
-                            app(\App\Services\BatasStokService::class)->kirimPeringatanStokMinimum(
-                                $detail['kode_item'],
-                                $detail['nama_item'],
-                                $sisaStok,
-                                $detail['batas_minimum'],
-                                $detail['satuan'] ?? 'pcs'
-                            );
-                        } catch (\Throwable $e) {
-                            \Illuminate\Support\Facades\Log::error('Gagal memicu notifikasi stok minimum: ' . $e->getMessage());
+                        $batasService = app(\App\Services\BatasStokService::class);
+                        foreach ($itemsToNotify as $item) {
+                            try {
+                                $batasService->kirimPeringatanStokMinimum(
+                                    $item['kode_item'],
+                                    $item['nama_item'],
+                                    $item['sisa_stok'],
+                                    $item['batas_minimum'],
+                                    $item['satuan']
+                                );
+                            } catch (\Throwable $e) {
+                                \Illuminate\Support\Facades\Log::error('Gagal memicu notifikasi stok minimum post-commit: ' . $e->getMessage());
+                            }
                         }
                     }
-                }
+                });
             }
 
             // 5. Catat / perbarui saldo_harian jika pembayaran adalah TUNAI

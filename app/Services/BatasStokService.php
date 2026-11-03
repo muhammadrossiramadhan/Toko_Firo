@@ -90,23 +90,31 @@ class BatasStokService
             $idPelaku,
         ]);
 
-        // Hook Notifikasi Telegram: Kirim alert jika stok item saat ini <= batas minimum baru
-        try {
-            $item = DB::table('daftar_item')->where('kode_item', $kodeItem)->first();
-            if ($item && (int) $item->stok <= $nilai) {
-                $adminChatId = config('services.telegram.admin_chat_id') ?: config('services.telegram.chat_id');
-                if (!empty($adminChatId)) {
-                    $stokTerkini = (int) $item->stok;
-                    $pesan = "⚠️ <b>PERINGATAN STOK MENIPIS</b>\n\n" .
-                             "<b>Barang:</b> {$item->nama_item} ({$kodeItem})\n" .
-                             "<b>Sisa Stok:</b> {$stokTerkini} {$item->satuan}\n" .
-                             "<b>Batas Minimum:</b> {$nilai} {$item->satuan}\n" .
-                             "<i>Segera lakukan restock atau pemesanan ke distributor.</i>";
-                    app(TelegramBotService::class)->sendMessage($adminChatId, $pesan);
+        // Hook Notifikasi Telegram: Kirim alert jika stok item saat ini <= batas minimum baru (decouple network I/O)
+        $kirimAlert = function () use ($kodeItem, $nilai) {
+            try {
+                $item = DB::table('daftar_item')->where('kode_item', $kodeItem)->first();
+                if ($item && (int) $item->stok <= $nilai) {
+                    $adminChatId = config('services.telegram.admin_chat_id') ?: config('services.telegram.chat_id');
+                    if (!empty($adminChatId)) {
+                        $stokTerkini = (int) $item->stok;
+                        $pesan = "⚠️ <b>PERINGATAN STOK MENIPIS</b>\n\n" .
+                                 "<b>Barang:</b> {$item->nama_item} ({$kodeItem})\n" .
+                                 "<b>Sisa Stok:</b> {$stokTerkini} {$item->satuan}\n" .
+                                 "<b>Batas Minimum:</b> {$nilai} {$item->satuan}\n" .
+                                 "<i>Segera lakukan restock atau pemesanan ke distributor.</i>";
+                        app(TelegramBotService::class)->sendMessage($adminChatId, $pesan);
+                    }
                 }
+            } catch (\Throwable $e) {
+                Log::warning('Telegram stock warning hook error: ' . $e->getMessage());
             }
-        } catch (\Throwable $e) {
-            Log::warning('Telegram stock warning hook error: ' . $e->getMessage());
+        };
+
+        if (DB::transactionLevel() > 0) {
+            DB::afterCommit($kirimAlert);
+        } else {
+            $kirimAlert();
         }
 
         return true;

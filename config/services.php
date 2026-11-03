@@ -40,7 +40,7 @@ return [
         'chat_id' => env('TELEGRAM_GROUP_CHAT_ID'),
         'admin_chat_id' => env('TELEGRAM_ADMIN_CHAT_ID'),
         'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
-        'backup_password' => env('BACKUP_ARCHIVE_PASSWORD', 'TokoFiroSecure2026!Key'),
+        'backup_password' => env('BACKUP_ENCRYPTION_PASSWORD', env('BACKUP_ARCHIVE_PASSWORD')),
     ],
 
 ];
