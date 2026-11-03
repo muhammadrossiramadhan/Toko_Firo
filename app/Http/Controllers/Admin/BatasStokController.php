@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\BatasStokService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class BatasStokController extends Controller
@@ -54,6 +55,7 @@ class BatasStokController extends Controller
             ]);
 
             $this->batasStokService->updateBatasSemua((int) $validated['batas_minimum'], $idPelaku);
+            DB::table('daftar_item')->where('tipe_item', '!=', 'JASA')->update(['batas_minimum' => (int) $validated['batas_minimum']]);
 
             $pesan = 'Batas minimum semua item berhasil diperbarui.';
             if ($request->expectsJson() || $request->ajax()) {
@@ -62,12 +64,48 @@ class BatasStokController extends Controller
             return redirect()->route('admin.batas-stok')->with('success', $pesan);
         }
 
-        // Mode 2: Update per-item dari form batch array items: ['KODE' => nilai]
+        // Mode 2: Update satu item (request langsung kode_item dan batas_minimum)
+        if ($request->filled('kode_item')) {
+            $validated = $request->validate([
+                'kode_item' => ['required', 'string', 'exists:daftar_item,kode_item'],
+                'batas_minimum' => ['required', 'integer', 'min:0', 'max:1000'],
+            ], [
+                'kode_item.required' => 'Kode item wajib diisi.',
+                'kode_item.exists' => 'Item tidak ditemukan.',
+                'batas_minimum.required' => 'Batas minimum wajib diisi.',
+                'batas_minimum.integer' => 'Batas minimum harus berupa angka bulat.',
+                'batas_minimum.min' => 'Batas minimum tidak boleh negatif.',
+                'batas_minimum.max' => 'Batas minimum tidak boleh melebihi 1000.',
+            ]);
+
+            $kodeItem = (string) $validated['kode_item'];
+            $batas = (int) $validated['batas_minimum'];
+
+            $this->batasStokService->updateBatasItem($kodeItem, $batas, $idPelaku);
+            DB::table('daftar_item')->where('kode_item', $kodeItem)->update(['batas_minimum' => $batas]);
+
+            $pesan = 'Batas minimum item berhasil diperbarui.';
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['status' => 'success', 'message' => $pesan, 'kode_item' => $kodeItem, 'batas_minimum' => $batas]);
+            }
+            return redirect()->route('admin.batas-stok')->with('success', $pesan);
+        }
+
+        // Mode 3: Update batch per-item (items: ['BRG-01' => 10] atau items: [['kode_item' => 'BRG-01', 'batas_minimum' => 10]])
         if ($request->has('items') && is_array($request->input('items'))) {
             $items = $request->input('items');
-            foreach ($items as $kode => $batas) {
-                if (is_numeric($batas) && (int) $batas >= 0 && (int) $batas <= 1000) {
-                    $this->batasStokService->updateBatasItem((string) $kode, (int) $batas, $idPelaku);
+            foreach ($items as $key => $val) {
+                if (is_array($val)) {
+                    $kode = (string) ($val['kode_item'] ?? $val['kode'] ?? $key);
+                    $batas = $val['batas_minimum'] ?? $val['batas'] ?? $val['nilai'] ?? null;
+                } else {
+                    $kode = (string) $key;
+                    $batas = $val;
+                }
+
+                if ($kode !== '' && is_numeric($batas) && (int) $batas >= 0 && (int) $batas <= 1000) {
+                    $this->batasStokService->updateBatasItem($kode, (int) $batas, $idPelaku);
+                    DB::table('daftar_item')->where('kode_item', $kode)->update(['batas_minimum' => (int) $batas]);
                 }
             }
 
@@ -78,9 +116,8 @@ class BatasStokController extends Controller
             return redirect()->route('admin.batas-stok')->with('success', $pesan);
         }
 
-        // Mode 3: Update satu item
-        if ($request->filled('kode_item')) {
-            return $this->updateItem($request);
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['status' => 'error', 'message' => 'Format data tidak valid.'], 422);
         }
 
         return redirect()->route('admin.batas-stok');
@@ -89,7 +126,7 @@ class BatasStokController extends Controller
     /**
      * Memperbarui batas stok minimum satu item secara individual.
      */
-    public function updateItem(Request $request): RedirectResponse
+    public function updateItem(Request $request): RedirectResponse|\Illuminate\Http\JsonResponse
     {
         $validated = $request->validate([
             'kode_item' => ['required', 'string', 'exists:daftar_item,kode_item'],
@@ -104,15 +141,23 @@ class BatasStokController extends Controller
         ]);
 
         $idPelaku = auth()->id() ?? 1;
+        $kodeItem = (string) $validated['kode_item'];
+        $batas = (int) $validated['batas_minimum'];
 
         $this->batasStokService->updateBatasItem(
-            $validated['kode_item'],
-            (int) $validated['batas_minimum'],
+            $kodeItem,
+            $batas,
             $idPelaku
         );
+        DB::table('daftar_item')->where('kode_item', $kodeItem)->update(['batas_minimum' => $batas]);
+
+        $pesan = 'Batas minimum item berhasil diperbarui.';
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['status' => 'success', 'message' => $pesan]);
+        }
 
         return redirect()->route('admin.batas-stok')
-            ->with('success', 'Batas minimum item berhasil diperbarui.');
+            ->with('success', $pesan);
     }
 
     /**

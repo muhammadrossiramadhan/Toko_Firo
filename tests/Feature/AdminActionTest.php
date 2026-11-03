@@ -123,12 +123,8 @@ class AdminActionTest extends TestCase
 
         // POST / PATCH to /admin/batas-stok/simpan mutates state legitimately
         $responsePost = $this->actingAs($this->admin)->postJson(route('admin.batas-stok.simpan'), [
-            'items' => [
-                [
-                    'kode_item' => $kodeItem,
-                    'batas_minimum' => 18,
-                ],
-            ],
+            'kode_item' => $kodeItem,
+            'batas_minimum' => 18,
         ]);
 
         $responsePost->assertStatus(200);
