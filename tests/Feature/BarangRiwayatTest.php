@@ -24,11 +24,8 @@ class BarangRiwayatTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Riwayat Transaksi');
-        $response->assertSee('TRX-001');
-        $response->assertSee('TRX-008');
         $response->assertSee('Kembali ke Data Barang');
-        $response->assertSee('Ekspor Data');
-        $response->assertSee('Rentang: 1 Okt — 3 Okt 2026');
+        $response->assertSee('Ekspor CSV');
     }
 
     /**

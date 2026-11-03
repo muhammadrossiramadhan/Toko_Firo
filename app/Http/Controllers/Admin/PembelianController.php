@@ -21,10 +21,12 @@ class PembelianController extends Controller
     {
         $barangRestock = $this->pembelianService->getBarangPerluRestock();
         $riwayatPembelian = $this->pembelianService->getRiwayatPembelian();
+        $semuaBarang = \Illuminate\Support\Facades\DB::table('daftar_item')->orderBy('nama_item')->get();
 
         return view('admin.pembelian.index', [
             'barangRestock' => $barangRestock,
             'riwayatPembelian' => $riwayatPembelian,
+            'semuaBarang' => $semuaBarang,
         ]);
     }
 

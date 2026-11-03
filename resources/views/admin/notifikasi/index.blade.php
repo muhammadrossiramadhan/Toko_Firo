@@ -159,7 +159,7 @@
                     Riwayat Notifikasi Terkirim
                 </h2>
                 <span class="text-sm font-medium text-slate-500">
-                    4 entri terakhir
+                    {{ count($riwayatNotifikasi) > 0 ? count($riwayatNotifikasi) . ' entri terakhir' : '' }}
                 </span>
             </div>
             <div class="overflow-x-auto">
@@ -173,7 +173,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-slate-700">
-                        @foreach ($riwayatNotifikasi as $notif)
+                        @forelse ($riwayatNotifikasi as $notif)
                             <tr class="hover:bg-slate-50/70 transition-colors min-h-[2.75rem]">
                                 <td class="px-6 py-4 font-mono font-medium text-slate-600 whitespace-nowrap">
                                     {{ $notif->waktu }}
@@ -193,12 +193,18 @@
                                         </span>
                                     @else
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-50 text-red-700 border border-red-200">
-                                            Gagal
+                                            {{ $notif->status }}
                                         </span>
                                     @endif
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">
+                                    Belum ada riwayat
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -265,7 +271,7 @@
         }
 
         function simpanPengaturan(id, aktif) {
-            fetch('{{ route('admin.notifikasi.simpan') }}', {
+            fetch('{{ route('admin.notifikasi.toggle') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

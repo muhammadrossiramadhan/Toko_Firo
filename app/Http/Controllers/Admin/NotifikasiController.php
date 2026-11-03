@@ -108,32 +108,39 @@ class NotifikasiController extends Controller
             ],
         ];
 
-        $riwayatNotifikasi = [
-            (object) [
-                'waktu' => '03 Okt 2026, 21:00',
-                'tipe' => 'Rekap Harian',
-                'pesan' => 'Laporan penjualan harian — Total: Rp 2.450.000 (34 nota)',
-                'status' => 'Terkirim',
-            ],
-            (object) [
-                'waktu' => '03 Okt 2026, 15:32',
-                'tipe' => 'Stok Habis',
-                'pesan' => 'Pensil 2B (BRG-008) stok habis — segera restock!',
-                'status' => 'Terkirim',
-            ],
-            (object) [
-                'waktu' => '03 Okt 2026, 10:15',
-                'tipe' => 'Stok Menipis',
-                'pesan' => 'Isi Staples No.10 (BRG-006) tersisa 2 box — batas minimum 3',
-                'status' => 'Terkirim',
-            ],
-            (object) [
-                'waktu' => '02 Okt 2026, 21:00',
-                'tipe' => 'Rekap Harian',
-                'pesan' => 'Laporan penjualan harian — Total: Rp 1.890.000 (28 nota)',
-                'status' => 'Gagal',
-            ],
-        ];
+        $riwayatNotifikasi = DB::table('log_notifikasi')
+            ->orderByDesc('waktu')
+            ->orderByDesc('id_notif')
+            ->limit(10)
+            ->get()
+            ->map(function ($row) {
+                $jenisLabel = match ($row->jenis) {
+                    'LAPORAN' => 'Rekap Harian',
+                    'STOK_MINIMUM' => 'Stok Menipis / Habis',
+                    'ITEM_BARU' => 'Item Baru',
+                    'ITEM_DIUBAH' => 'Perubahan Harga / Item',
+                    'BACKUP' => 'Backup Database',
+                    'OTP' => 'OTP 2FA',
+                    'TES' => 'Tes Koneksi',
+                    default => ucfirst(strtolower((string) $row->jenis)),
+                };
+
+                $statusLabel = match ($row->status) {
+                    'TERKIRIM' => 'Terkirim',
+                    'GAGAL' => 'Gagal',
+                    default => 'Menunggu',
+                };
+
+                return (object) [
+                    'id_notif' => $row->id_notif,
+                    'waktu' => $row->waktu ? date('d M Y, H:i', strtotime($row->waktu)) : '-',
+                    'tipe' => $jenisLabel,
+                    'jenis' => $row->jenis,
+                    'pesan' => $row->isi ?? '-',
+                    'status' => $statusLabel,
+                ];
+            })
+            ->all();
 
         return view('admin.notifikasi.index', [
             'telegramConfig' => $telegramConfig,
@@ -190,10 +197,56 @@ class NotifikasiController extends Controller
     }
 
     /**
+     * Mengubah toggle pengaturan notifikasi dengan pengamanan whitelist ketat (SEC-19).
+     */
+    public function toggle(Request $request): JsonResponse
+    {
+        $whitelist = ['laporan_otomatis', 'notif_stok_minimum', 'notif_item_baru', 'notif_backup', 'notif_otp'];
+        $aliasMapping = [
+            'rekap_harian'   => 'laporan_otomatis',
+            'stok_minimum'   => 'notif_stok_minimum',
+            'perubahan_item' => 'notif_item_baru',
+            'backup_selesai' => 'notif_backup',
+            'otp_2fa'        => 'notif_otp',
+        ];
+
+        $rawKey = (string) ($request->input('key') ?? $request->input('kunci') ?? $request->input('id') ?? '');
+
+        if ($rawKey === '') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kunci notifikasi tidak valid.',
+            ], 422);
+        }
+
+        $dbKey = $aliasMapping[$rawKey] ?? $rawKey;
+
+        if (!in_array($dbKey, $whitelist, true)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kunci notifikasi tidak terdaftar dalam whitelist keamanan.',
+            ], 422);
+        }
+
+        $frontendId = array_search($dbKey, $aliasMapping, true) ?: $rawKey;
+        $aktif = filter_var($request->input('aktif', $request->input('status', true)), FILTER_VALIDATE_BOOLEAN);
+
+        $this->persistToggle($frontendId, $dbKey, $aktif);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Pengaturan notifikasi berhasil diperbarui.',
+            'key' => $dbKey,
+            'aktif' => $aktif,
+        ], 200);
+    }
+
+    /**
      * Menyimpan perubahan toggle pengaturan notifikasi.
      */
     public function simpan(Request $request): JsonResponse
     {
+        $whitelist = ['laporan_otomatis', 'notif_stok_minimum', 'notif_item_baru', 'notif_backup', 'notif_otp'];
         $mapping = [
             'rekap_harian'   => 'laporan_otomatis',
             'stok_minimum'   => 'notif_stok_minimum',
@@ -205,25 +258,26 @@ class NotifikasiController extends Controller
         try {
             $updated = [];
 
-            if ($request->has('id')) {
-                $id = (string) $request->input('id');
-                $aktif = filter_var($request->input('aktif'), FILTER_VALIDATE_BOOLEAN);
+            $rawKey = $request->input('id') ?? $request->input('key') ?? $request->input('kunci');
+            if ($rawKey !== null) {
+                $id = (string) $rawKey;
+                $dbKey = $mapping[$id] ?? $id;
 
-                if (!isset($mapping[$id])) {
+                if (!in_array($dbKey, $whitelist, true)) {
                     return response()->json([
                         'status' => 'error',
                         'message' => 'ID pengaturan notifikasi tidak valid.',
                     ], 422);
                 }
 
-                $dbKey = $mapping[$id];
+                $aktif = filter_var($request->input('aktif', $request->input('status', true)), FILTER_VALIDATE_BOOLEAN);
                 $this->persistToggle($id, $dbKey, $aktif);
                 $updated[$id] = $aktif;
             } elseif ($request->has('toggles')) {
                 $toggles = (array) $request->input('toggles');
                 foreach ($toggles as $id => $aktif) {
-                    if (isset($mapping[$id])) {
-                        $dbKey = $mapping[$id];
+                    $dbKey = $mapping[$id] ?? $id;
+                    if (in_array($dbKey, $whitelist, true)) {
                         $boolVal = filter_var($aktif, FILTER_VALIDATE_BOOLEAN);
                         $this->persistToggle($id, $dbKey, $boolVal);
                         $updated[$id] = $boolVal;

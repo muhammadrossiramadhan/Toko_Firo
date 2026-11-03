@@ -54,9 +54,7 @@ class NotifikasiAdminTest extends TestCase
         $response->assertSee('Kirim Pesan Tes');
         $response->assertSee('WhatsApp Bot');
         $response->assertSee('Riwayat Notifikasi Terkirim');
-        $response->assertSee('03 Okt 2026, 21:00');
-        $response->assertSee('Terkirim');
-        $response->assertSee('Gagal');
+        $response->assertSee('Belum ada riwayat');
         $response->assertSee('Rekap Laporan Penjualan Harian');
         $response->assertSee('Peringatan Stok Minimum & Habis');
     }

@@ -346,87 +346,150 @@ class BarangController extends Controller
     }
 
     /**
-     * Menampilkan riwayat transaksi contoh (Figma frame P12).
+     * Helper query untuk riwayat transaksi barang dari database riil.
      */
-    public function riwayat(): View
+    protected function getRiwayatQuery(Request $request)
     {
-        $transaksi = [
-            (object) [
-                'tanggal' => '03 Okt 2026, 14:20',
-                'no_transaksi' => 'TRX-001',
-                'kasir' => 'Rina',
-                'items' => 'Kertas HVS A4 (2 rim), Pulpen Snowman (3 pcs)',
-                'total' => 125000,
-                'metode' => 'Tunai',
+        $query = DB::table('daftar_penjualan as dp')
+            ->leftJoin('pengguna as p', 'dp.id_kasir', '=', 'p.id_pengguna');
+
+        if ($request->filled('kasir') && $request->input('kasir') !== 'Semua') {
+            $kasir = $request->input('kasir');
+            $query->where(function ($q) use ($kasir) {
+                $q->where('p.nama', $kasir)
+                  ->orWhere('p.username', $kasir)
+                  ->orWhere('dp.id_kasir', $kasir);
+            });
+        }
+
+        if ($request->filled('mulai')) {
+            $query->whereDate('dp.tanggal_transaksi', '>=', $request->input('mulai'));
+        }
+
+        if ($request->filled('sampai')) {
+            $query->whereDate('dp.tanggal_transaksi', '<=', $request->input('sampai'));
+        }
+
+        if ($request->filled('kode_item')) {
+            $kodeItem = $request->input('kode_item');
+            $query->whereExists(function ($sub) use ($kodeItem) {
+                $sub->select(DB::raw(1))
+                    ->from('daftar_transaksi as dt')
+                    ->whereColumn('dt.kode_penjualan', 'dp.kode_transaksi')
+                    ->where('dt.kode_item', $kodeItem);
+            });
+        }
+
+        return $query->orderByDesc('dp.tanggal_transaksi')
+            ->orderByDesc('dp.kode_transaksi')
+            ->select([
+                'dp.kode_transaksi',
+                'dp.tanggal_transaksi',
+                'dp.total_bayar',
+                'dp.metode_bayar',
+                'p.nama as nama_kasir',
+            ]);
+    }
+
+    /**
+     * Menampilkan riwayat transaksi riil dari database (tabel daftar_penjualan & daftar_transaksi).
+     */
+    public function riwayat(Request $request): View
+    {
+        $penjualanList = $this->getRiwayatQuery($request)->paginate(15)->withQueryString();
+
+        $kodeList = $penjualanList->pluck('kode_transaksi');
+        $itemsGrouped = DB::table('daftar_transaksi as dt')
+            ->join('daftar_item as di', 'dt.kode_item', '=', 'di.kode_item')
+            ->whereIn('dt.kode_penjualan', $kodeList)
+            ->select('dt.kode_penjualan', 'di.nama_item', 'dt.item_keluar', 'di.satuan')
+            ->get()
+            ->groupBy('kode_penjualan');
+
+        $transaksi = $penjualanList->getCollection()->map(function ($row) use ($itemsGrouped) {
+            $items = $itemsGrouped->get($row->kode_transaksi, collect([]));
+            $itemStrings = $items->map(function ($it) {
+                $satuan = $it->satuan ?: 'pcs';
+                return "{$it->nama_item} ({$it->item_keluar} {$satuan})";
+            })->implode(', ');
+
+            return (object) [
+                'tanggal' => date('d M Y', strtotime($row->tanggal_transaksi)),
+                'no_transaksi' => $row->kode_transaksi,
+                'kasir' => $row->nama_kasir ?: 'Kasir',
+                'items' => $itemStrings ?: 'Transaksi Penjualan',
+                'total' => (float) $row->total_bayar,
+                'metode' => $row->metode_bayar ?: 'Tunai',
                 'status' => 'Selesai',
-            ],
-            (object) [
-                'tanggal' => '03 Okt 2026, 13:45',
-                'no_transaksi' => 'TRX-002',
-                'kasir' => 'Deni',
-                'items' => 'Buku Tulis Sinar Dunia 38 Lembar (5 pcs)',
-                'total' => 25000,
-                'metode' => 'QRIS',
-                'status' => 'Selesai',
-            ],
-            (object) [
-                'tanggal' => '02 Okt 2026, 16:10',
-                'no_transaksi' => 'TRX-003',
-                'kasir' => 'Siti',
-                'items' => 'Spidol Whiteboard Snowman (2 pcs), Penghapus Papan (1 pcs)',
-                'total' => 32000,
-                'metode' => 'Tunai',
-                'status' => 'Selesai',
-            ],
-            (object) [
-                'tanggal' => '02 Okt 2026, 11:30',
-                'no_transaksi' => 'TRX-004',
-                'kasir' => 'Rina',
-                'items' => 'Map Snellhechter Plastik (10 pcs), Stopmap Folio (5 pcs)',
-                'total' => 45000,
-                'metode' => 'QRIS',
-                'status' => 'Selesai',
-            ],
-            (object) [
-                'tanggal' => '02 Okt 2026, 09:15',
-                'no_transaksi' => 'TRX-005',
-                'kasir' => 'Deni',
-                'items' => 'Fotokopi KTP (20 lbr), Jilid Lakban (2 buku)',
-                'total' => 18000,
-                'metode' => 'Tunai',
-                'status' => 'Selesai',
-            ],
-            (object) [
-                'tanggal' => '01 Okt 2026, 15:50',
-                'no_transaksi' => 'TRX-006',
-                'kasir' => 'Siti',
-                'items' => 'Kertas Buffalo Warna (1 rim), Lem Glukol (1 botol)',
-                'total' => 65000,
-                'metode' => 'Tunai',
-                'status' => 'Selesai',
-            ],
-            (object) [
-                'tanggal' => '01 Okt 2026, 13:05',
-                'no_transaksi' => 'TRX-007',
-                'kasir' => 'Rina',
-                'items' => 'Tinta Stempel Yamura (1 botol), Bantalan Stempel (1 pcs)',
-                'total' => 27500,
-                'metode' => 'QRIS',
-                'status' => 'Selesai',
-            ],
-            (object) [
-                'tanggal' => '01 Okt 2026, 10:00',
-                'no_transaksi' => 'TRX-008',
-                'kasir' => 'Deni',
-                'items' => 'Gunting Joyko Sedang (1 pcs), Penggaris Besi 30cm (1 pcs)',
-                'total' => 22000,
-                'metode' => 'Tunai',
-                'status' => 'Selesai',
-            ],
-        ];
+            ];
+        });
+
+        // Ambil daftar kasir riil dari database
+        $daftarKasir = DB::table('pengguna')
+            ->whereIn('role', ['KASIR', 'ADMIN'])
+            ->orderBy('nama')
+            ->get();
 
         return view('admin.barang.riwayat', [
             'transaksi' => $transaksi,
+            'paginator' => $penjualanList,
+            'daftarKasir' => $daftarKasir,
+            'filterKasir' => $request->query('kasir', 'Semua'),
+            'filterMulai' => $request->query('mulai'),
+            'filterSampai' => $request->query('sampai'),
+        ]);
+    }
+
+    /**
+     * Mengekspor data riwayat transaksi riil ke CSV.
+     */
+    public function eksporRiwayat(Request $request): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $penjualanList = $this->getRiwayatQuery($request)->get();
+        $kodeList = $penjualanList->pluck('kode_transaksi');
+        $itemsGrouped = DB::table('daftar_transaksi as dt')
+            ->join('daftar_item as di', 'dt.kode_item', '=', 'di.kode_item')
+            ->whereIn('dt.kode_penjualan', $kodeList)
+            ->select('dt.kode_penjualan', 'di.nama_item', 'dt.item_keluar', 'di.satuan')
+            ->get()
+            ->groupBy('kode_penjualan');
+
+        $neutralize = function (string $val): string {
+            if ($val !== '' && in_array($val[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+                $val = "'" . $val;
+            }
+            if (str_contains($val, ',') || str_contains($val, '"') || str_contains($val, "\n") || str_contains($val, "\r")) {
+                return '"' . str_replace('"', '""', $val) . '"';
+            }
+            return $val;
+        };
+
+        $lines = ["Tanggal,No. Transaksi,Kasir,Items,Total,Metode,Status"];
+        foreach ($penjualanList as $row) {
+            $items = $itemsGrouped->get($row->kode_transaksi, collect([]));
+            $itemStrings = $items->map(function ($it) {
+                $satuan = $it->satuan ?: 'pcs';
+                return "{$it->nama_item} ({$it->item_keluar} {$satuan})";
+            })->implode('; ');
+
+            $tgl = $neutralize(date('d M Y', strtotime($row->tanggal_transaksi)));
+            $no = $neutralize((string) $row->kode_transaksi);
+            $ksr = $neutralize((string) ($row->nama_kasir ?: 'Kasir'));
+            $itm = $neutralize($itemStrings ?: 'Transaksi Penjualan');
+            $tot = (float) $row->total_bayar;
+            $mtd = $neutralize((string) ($row->metode_bayar ?: 'Tunai'));
+            $sts = 'Selesai';
+
+            $lines[] = "{$tgl},{$no},{$ksr},{$itm},{$tot},{$mtd},{$sts}";
+        }
+
+        $csv = implode("\r\n", $lines) . "\r\n";
+        $filename = 'riwayat-transaksi-barang-' . date('Y-m-d') . '.csv';
+
+        return response()->streamDownload(function () use ($csv) {
+            echo $csv;
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
 }

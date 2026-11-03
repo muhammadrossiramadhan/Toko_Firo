@@ -23,9 +23,9 @@
 </head>
 <body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
-    {{-- Notifikasi Prototype --}}
+    {{-- Notifikasi Sukses --}}
     <div id="notif-sukses" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
-        Perubahan batas minimum berhasil disimpan (prototype).
+        Perubahan batas minimum berhasil disimpan.
     </div>
 
     {{-- Sidebar Navigasi Admin Terpusat --}}
@@ -70,8 +70,9 @@
                     class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                 >
                     <option value="">Semua Jenis</option>
-                    <option value="ATK">ATK</option>
-                    <option value="Fotocopy">Fotocopy</option>
+                    @foreach ($jenisList ?? [] as $j)
+                        <option value="{{ $j }}" {{ ($filterJenis ?? '') === $j ? 'selected' : '' }}>{{ $j }}</option>
+                    @endforeach
                 </select>
             </div>
 
@@ -136,6 +137,8 @@
                                         <input
                                             type="number"
                                             min="0"
+                                            name="items[{{ $item->kode }}]"
+                                            data-kode="{{ $item->kode }}"
                                             value="{{ $item->batas }}"
                                             data-awal="{{ $item->batas }}"
                                             oninput="hitungPerubahan()"
@@ -181,13 +184,13 @@
         </section>
 
         {{-- Floating Bottom Bar (Bilah Simpan Mengambang Sesuai Figma P14) --}}
-        <div id="floating-bar" class="fixed bottom-6 left-72 right-8 bg-white border border-gray-300 shadow-2xl rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-30 transition-all">
+        <div id="floating-bar" class="hidden fixed bottom-6 left-72 right-8 bg-white border border-gray-300 shadow-2xl rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-30 transition-all">
             <div class="flex items-center gap-3">
                 <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-sm rounded-md uppercase tracking-wider">
                     Pemberitahuan
                 </span>
                 <span id="label-perubahan" class="text-base font-medium text-gray-800">
-                    2 perubahan batas minimum belum disimpan.
+                    Belum ada perubahan batas minimum.
                 </span>
             </div>
             <div class="flex items-center gap-3">
@@ -254,9 +257,10 @@
 
             if (jumlahPerubahan > 0) {
                 label.textContent = jumlahPerubahan + ' perubahan batas minimum belum disimpan.';
-                floatingBar.classList.remove('opacity-60');
+                floatingBar.classList.remove('hidden');
             } else {
                 label.textContent = 'Semua perubahan batas minimum sudah tersimpan.';
+                floatingBar.classList.add('hidden');
             }
         }
 
@@ -270,16 +274,56 @@
 
         function simpanPerubahan() {
             const inputs = document.querySelectorAll('.input-batas');
-            inputs.forEach(input => {
-                input.setAttribute('data-awal', input.value);
-            });
-            hitungPerubahan();
+            const items = {};
+            let adaPerubahan = false;
 
-            const notif = document.getElementById('notif-sukses');
-            notif.classList.remove('hidden');
-            setTimeout(() => {
-                notif.classList.add('hidden');
-            }, 3000);
+            inputs.forEach(input => {
+                const kode = input.getAttribute('data-kode');
+                const awal = parseInt(input.getAttribute('data-awal')) || 0;
+                const sekarang = parseInt(input.value) || 0;
+                if (awal !== sekarang && kode) {
+                    items[kode] = sekarang;
+                    adaPerubahan = true;
+                }
+            });
+
+            if (!adaPerubahan) return;
+
+            const btnSimpan = document.getElementById('btn-simpan');
+            btnSimpan.disabled = true;
+            btnSimpan.textContent = 'Menyimpan...';
+
+            fetch('{{ route('admin.batas-stok.simpan') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ items: items })
+            })
+            .then(res => res.json())
+            .then(data => {
+                btnSimpan.disabled = false;
+                btnSimpan.textContent = 'Simpan Perubahan';
+                inputs.forEach(input => {
+                    input.setAttribute('data-awal', input.value);
+                });
+                hitungPerubahan();
+
+                const notif = document.getElementById('notif-sukses');
+                notif.textContent = data.message || 'Perubahan batas minimum berhasil disimpan.';
+                notif.classList.remove('hidden');
+                setTimeout(() => {
+                    notif.classList.add('hidden');
+                }, 3000);
+            })
+            .catch(err => {
+                btnSimpan.disabled = false;
+                btnSimpan.textContent = 'Simpan Perubahan';
+                alert('Gagal menyimpan perubahan. Silakan coba lagi.');
+            });
+        }
         }
 
         function filterTabel() {

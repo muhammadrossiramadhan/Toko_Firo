@@ -33,7 +33,30 @@
             <h1 class="text-2xl font-bold text-gray-900">
                 Pembelian Barang (Restock)
             </h1>
+            <button
+                type="button"
+                onclick="bukaModalRestock()"
+                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+            >
+                Tambah Restock Baru
+            </button>
         </header>
+
+        {{-- Notifikasi Sukses / Error --}}
+        @if (session('sukses') || session('success'))
+            <div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-base font-medium flex items-center justify-between">
+                <span>{{ session('sukses') ?? session('success') }}</span>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-base font-medium">
+                <ul class="list-disc pl-5 space-y-1">
+                    @foreach ($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         {{-- Navigasi Tab (JavaScript Biasa) --}}
         <div class="flex items-center gap-3 mb-6">
@@ -78,10 +101,10 @@
                                 </span>
                             </div>
                             <div>
-                                {{-- TODO: modal pembelian belum ada di Figma --}}
                                 <button
                                     type="button"
-                                    class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors flex items-center justify-center"
+                                    onclick="bukaModalRestock('{{ $item->kode_item }}', '{{ addslashes($item->nama) }}')"
+                                    class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
                                 >
                                     Catat Restock
                                 </button>
@@ -145,7 +168,41 @@
         </div>
     </main>
 
-    {{-- Script Interaktivitas Tab (Vanilla JavaScript) --}}
+    {{-- Modal Catat Restock Pembelian --}}
+    <div id="modalRestock" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-gray-200">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
+                <h3 class="text-xl font-bold text-gray-900">Catat Pembelian Restock</h3>
+                <button type="button" onclick="tutupModalRestock()" class="text-gray-400 hover:text-gray-600 font-bold text-2xl px-2">&times;</button>
+            </div>
+            <form method="POST" action="{{ route('admin.pembelian.store') }}" class="space-y-4">
+                @csrf
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Barang *</label>
+                    <select id="modal_kode_item" name="kode_item" required class="touch-target w-full px-4 py-2 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                        <option value="">-- Pilih Barang --</option>
+                        @foreach ($semuaBarang ?? [] as $b)
+                            <option value="{{ $b->kode_item }}">{{ $b->nama_item }} (Stok saat ini: {{ $b->stok }} {{ $b->satuan }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Supplier / Pemasok *</label>
+                    <input type="text" name="nama_supplier" required placeholder="Contoh: CV Sumber Makmur" class="touch-target w-full px-4 py-2 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Jumlah Masuk (Qty) *</label>
+                    <input type="number" id="modal_jumlah" name="jumlah" min="1" required placeholder="Minimal 1" class="touch-target w-full px-4 py-2 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-gray-200">
+                    <button type="button" onclick="tutupModalRestock()" class="touch-target px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 font-medium cursor-pointer">Batal</button>
+                    <button type="submit" class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg cursor-pointer">Simpan Pembelian</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{-- Script Interaktivitas Tab & Modal (Vanilla JavaScript) --}}
     <script>
         function bukaTab(namaTab) {
             const tabPembelianBaru = document.getElementById('tab-konten-baru');
@@ -164,6 +221,20 @@
                 btnTabBaru.className = 'touch-target px-6 py-2.5 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors';
                 btnTabRiwayat.className = 'touch-target px-6 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors';
             }
+        }
+
+        function bukaModalRestock(kodeItem = '', namaItem = '') {
+            const modal = document.getElementById('modalRestock');
+            const select = document.getElementById('modal_kode_item');
+            if (kodeItem && select) {
+                select.value = kodeItem;
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function tutupModalRestock() {
+            const modal = document.getElementById('modalRestock');
+            modal.classList.add('hidden');
         }
     </script>
 </body>

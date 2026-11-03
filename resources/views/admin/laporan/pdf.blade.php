@@ -134,13 +134,16 @@
     </style>
 </head>
 <body>
+    @php
+        $toko = app(\App\Services\PengaturanTokoService::class)->getSettings();
+    @endphp
     <div class="header">
         <table>
             <tr>
                 <td style="vertical-align: middle;">
-                    <div class="brand-title">TOKO FIRO</div>
-                    <div class="brand-sub">Penyedia ATK, Fotocopy, dan Kebutuhan Kantor</div>
-                    <div class="brand-sub">Jl. Yos Sudarso, Kraksaan, Kab. Probolinggo | WA: 0852-3478-9169</div>
+                    <div class="brand-title">{{ strtoupper($toko['nama_toko'] ?? 'TOKO FIRO') }}</div>
+                    <div class="brand-sub">{{ $toko['header_struk'] ?? 'Penyedia ATK, Fotocopy, dan Kebutuhan Kantor' }}</div>
+                    <div class="brand-sub">{{ $toko['alamat'] ?? 'Jl. Raya Toko Firo, Malang' }} | WA: {{ $toko['telepon'] ?? '081234567890' }}</div>
                 </td>
                 <td class="meta-doc" style="vertical-align: middle;">
                     <div><strong>LAPORAN RESMI</strong></div>

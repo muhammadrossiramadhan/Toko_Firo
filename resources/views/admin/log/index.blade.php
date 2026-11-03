@@ -23,11 +23,6 @@
 </head>
 <body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
-    {{-- Notifikasi Prototype --}}
-    <div id="notif-ekspor" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
-        File log aktivitas (CSV) berhasil diunduh (prototype).
-    </div>
-
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
 
@@ -44,69 +39,79 @@
                 </p>
             </div>
             <div>
-                <button
-                    type="button"
-                    onclick="eksporCsv()"
+                <a
+                    href="{{ route('admin.log', array_merge(request()->query(), ['export' => 'csv'])) }}"
                     class="touch-target bg-white border border-slate-300 text-slate-700 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-50 text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
                 >
                     Ekspor CSV
-                </button>
+                </a>
             </div>
         </header>
 
         {{-- Baris Filter & Pencarian --}}
-        <section class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <form method="GET" action="{{ route('admin.log') }}" class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
             <div class="flex-1 max-w-md">
                 <input
                     type="text"
+                    name="kata_kunci"
                     id="input-cari"
                     placeholder="Cari keterangan..."
-                    onkeyup="filterLog()"
+                    value="{{ request('kata_kunci') ?? request('keyword') ?? request('q') ?? '' }}"
                     class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                 >
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-                {{-- Dropdown Tanggal --}}
-                <select
-                    id="filter-waktu"
-                    onchange="filterLog()"
-                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                >
-                    <option value="">Hari ini</option>
-                    <option value="7hari">7 Hari Terakhir</option>
-                    <option value="bulan">Bulan Ini</option>
-                </select>
-
-                {{-- Dropdown Pengguna --}}
-                <select
-                    id="filter-user"
-                    onchange="filterLog()"
-                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                >
-                    <option value="">User: Semua</option>
-                    <option value="Rina Putri">Rina Putri</option>
-                    <option value="Deni Saputra">Deni Saputra</option>
-                    <option value="Junaidi Saleh">Junaidi Saleh</option>
-                    <option value="Sistem">Sistem</option>
-                </select>
+                {{-- Dropdown Rentang Tanggal --}}
+                <div class="flex items-center gap-2">
+                    <input
+                        type="date"
+                        name="tanggal_mulai"
+                        value="{{ request('tanggal_mulai') ?? request('start_date') ?? '' }}"
+                        aria-label="Tanggal Mulai"
+                        class="touch-target px-3 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                    <span class="text-gray-500 text-sm">s/d</span>
+                    <input
+                        type="date"
+                        name="tanggal_akhir"
+                        value="{{ request('tanggal_akhir') ?? request('end_date') ?? '' }}"
+                        aria-label="Tanggal Akhir"
+                        class="touch-target px-3 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                </div>
 
                 {{-- Dropdown Tipe Aksi --}}
                 <select
+                    name="tipe"
                     id="filter-tipe"
-                    onchange="filterLog()"
                     class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                     <option value="">Tipe: Semua</option>
-                    <option value="Transaksi">Transaksi</option>
-                    <option value="Stok">Stok</option>
-                    <option value="Login">Login</option>
-                    <option value="Barang">Barang</option>
-                    <option value="Harga">Harga</option>
-                    <option value="Modal">Modal</option>
+                    @foreach ($tipeAksiList as $tipeOption)
+                        <option value="{{ $tipeOption }}" {{ (request('tipe') === $tipeOption || ($filter['tipe'] ?? '') === $tipeOption) ? 'selected' : '' }}>
+                            {{ $tipeOption }}
+                        </option>
+                    @endforeach
                 </select>
+
+                <button
+                    type="submit"
+                    class="touch-target px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 text-base shadow-sm transition-colors cursor-pointer"
+                >
+                    Filter
+                </button>
+
+                @if(request()->hasAny(['kata_kunci', 'tipe', 'tanggal_mulai', 'tanggal_akhir', 'keyword', 'q', 'start_date', 'end_date']))
+                    <a
+                        href="{{ route('admin.log') }}"
+                        class="touch-target px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 text-base shadow-sm inline-flex items-center justify-center cursor-pointer"
+                    >
+                        Reset
+                    </a>
+                @endif
             </div>
-        </section>
+        </form>
 
         {{-- Tabel Log Aktivitas --}}
         <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
@@ -121,7 +126,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 text-gray-700">
-                        @foreach ($daftarLog as $log)
+                        @forelse ($daftarLog as $log)
                             <tr class="hover:bg-gray-50/80 transition-colors row-log" data-user="{{ $log->user }}" data-tipe="{{ $log->tipe }}">
                                 <td class="px-6 py-4 font-mono font-medium text-gray-600 whitespace-nowrap">
                                     {{ $log->waktu }}
@@ -160,66 +165,53 @@
                                     {{ $log->detail }}
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-8 text-center text-slate-500">
+                                    Tidak ada log aktivitas ditemukan.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
 
-            {{-- Footer Tabel --}}
-            <div class="p-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between text-base text-gray-600 gap-2">
+            {{-- Footer Tabel & Paginasi --}}
+            <div class="p-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between text-base text-gray-600 gap-4">
                 <div id="info-jumlah-log">
-                    Menampilkan 1-10 dari 48 log
+                    @if($daftarLog->total() > 0)
+                        Menampilkan {{ $daftarLog->firstItem() }}-{{ $daftarLog->lastItem() }} dari {{ $daftarLog->total() }} log
+                    @else
+                        Menampilkan 0 log
+                    @endif
                 </div>
                 <div class="flex items-center gap-2">
-                    <button type="button" class="touch-target px-4 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-500 font-medium text-base hover:bg-gray-100 cursor-not-allowed opacity-60" disabled>
-                        Sebelumnya
-                    </button>
-                    <button type="button" class="touch-target px-4 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100 cursor-pointer">
-                        Berikutnya
-                    </button>
+                    @if ($daftarLog->onFirstPage())
+                        <span class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-400 font-medium text-base cursor-not-allowed opacity-60">
+                            Sebelumnya
+                        </span>
+                    @else
+                        <a href="{{ $daftarLog->previousPageUrl() }}" class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100">
+                            Sebelumnya
+                        </a>
+                    @endif
+
+                    <span class="text-sm font-medium text-gray-700 px-2">
+                        Halaman {{ $daftarLog->currentPage() }} dari {{ $daftarLog->lastPage() ?: 1 }}
+                    </span>
+
+                    @if ($daftarLog->hasMorePages())
+                        <a href="{{ $daftarLog->nextPageUrl() }}" class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100">
+                            Berikutnya
+                        </a>
+                    @else
+                        <span class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-400 font-medium text-base cursor-not-allowed opacity-60">
+                            Berikutnya
+                        </span>
+                    @endif
                 </div>
             </div>
         </section>
     </main>
-
-    {{-- Script Vanilla JavaScript --}}
-    <script>
-        function eksporCsv() {
-            const notif = document.getElementById('notif-ekspor');
-            notif.classList.remove('hidden');
-            setTimeout(() => {
-                notif.classList.add('hidden');
-            }, 3000);
-        }
-
-        function filterLog() {
-            const kataKunci = (document.getElementById('input-cari').value || '').toLowerCase();
-            const filterUser = (document.getElementById('filter-user').value || '').toLowerCase();
-            const filterTipe = (document.getElementById('filter-tipe').value || '').toLowerCase();
-            const rows = document.querySelectorAll('.row-log');
-            let tampak = 0;
-
-            rows.forEach(row => {
-                const user = (row.getAttribute('data-user') || '').toLowerCase();
-                const tipe = (row.getAttribute('data-tipe') || '').toLowerCase();
-                const detail = (row.querySelector('.kol-detail').textContent || '').toLowerCase();
-
-                const cocokKunci = detail.includes(kataKunci) || user.includes(kataKunci);
-                const cocokUser = (filterUser === '') || (user === filterUser);
-                const cocokTipe = (filterTipe === '') || (tipe === filterTipe);
-
-                if (cocokKunci && cocokUser && cocokTipe) {
-                    row.style.display = '';
-                    tampak++;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            const info = document.getElementById('info-jumlah-log');
-            info.textContent = 'Menampilkan 1-' + tampak + ' dari 48 log';
-        }
-    </script>
 </body>
 </html>
-
