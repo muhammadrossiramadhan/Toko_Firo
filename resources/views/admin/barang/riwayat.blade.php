@@ -49,39 +49,74 @@
         </header>
 
         {{-- Bar Filter & Aksi di Atas Tabel --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div class="flex flex-wrap items-center gap-3">
-                {{-- Indikator Rentang Tanggal (Tanpa Ikon Kalender) --}}
-                <div class="touch-target px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-base text-gray-700 font-medium flex items-center">
-                    Rentang: 1 Okt — 3 Okt 2026
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <form method="GET" action="{{ route('admin.barang.riwayat') }}" class="flex flex-wrap items-center gap-3">
+                {{-- Input Rentang Tanggal Dinamis --}}
+                <div class="flex items-center gap-2">
+                    <label for="filter-mulai" class="text-sm text-gray-600 font-medium">Dari:</label>
+                    <input
+                        type="date"
+                        id="filter-mulai"
+                        name="mulai"
+                        value="{{ $filterMulai ?? '' }}"
+                        class="touch-target px-3 py-2 bg-white border border-gray-300 rounded-lg text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
+                </div>
+                <div class="flex items-center gap-2">
+                    <label for="filter-sampai" class="text-sm text-gray-600 font-medium">Sampai:</label>
+                    <input
+                        type="date"
+                        id="filter-sampai"
+                        name="sampai"
+                        value="{{ $filterSampai ?? '' }}"
+                        class="touch-target px-3 py-2 bg-white border border-gray-300 rounded-lg text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    >
                 </div>
 
-                {{-- Dropdown Filter Kasir --}}
+                {{-- Dropdown Filter Kasir Riil dari Database --}}
                 <div class="flex items-center gap-2">
-                    <label for="filter-kasir" class="text-base text-gray-600 font-medium">
+                    <label for="filter-kasir" class="text-sm text-gray-600 font-medium">
                         Kasir:
                     </label>
                     <select
                         id="filter-kasir"
+                        name="kasir"
                         class="touch-target px-4 py-2 bg-white border border-gray-300 rounded-lg text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                         <option value="Semua">Semua</option>
-                        <option value="Rina">Rina</option>
-                        <option value="Deni">Deni</option>
-                        <option value="Siti">Siti</option>
+                        @foreach ($daftarKasir ?? [] as $k)
+                            <option value="{{ $k->nama }}" {{ ($filterKasir ?? '') === $k->nama ? 'selected' : '' }}>
+                                {{ $k->nama }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
-            </div>
 
-            {{-- Tombol Aksi Ekspor (Tanpa Ikon) --}}
-            <div>
                 <button
-                    type="button"
-                    onclick="alert('Fitur ekspor data dalam pengembangan.')"
-                    class="touch-target px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center"
+                    type="submit"
+                    class="touch-target px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors cursor-pointer"
                 >
-                    Ekspor Data
+                    Filter
                 </button>
+
+                @if (!empty($filterMulai) || !empty($filterSampai) || (!empty($filterKasir) && $filterKasir !== 'Semua'))
+                    <a
+                        href="{{ route('admin.barang.riwayat') }}"
+                        class="touch-target px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg text-base transition-colors flex items-center justify-center"
+                    >
+                        Reset
+                    </a>
+                @endif
+            </form>
+
+            {{-- Tombol Aksi Ekspor Riil (Unduh CSV) --}}
+            <div>
+                <a
+                    href="{{ route('admin.barang.riwayat.ekspor', request()->query()) }}"
+                    class="touch-target px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+                >
+                    Ekspor CSV
+                </a>
             </div>
         </div>
 
@@ -137,6 +172,11 @@
                     </tbody>
                 </table>
             </div>
+            @if (isset($paginator) && $paginator->hasPages())
+                <div class="p-4 bg-gray-50 border-t border-gray-200">
+                    {{ $paginator->links() }}
+                </div>
+            @endif
         </div>
     </main>
 </body>

@@ -91,12 +91,13 @@ class LaporanPenjualanService
             ->select([
                 'dp.tanggal_transaksi as tanggal',
                 'dp.kode_transaksi',
+                'dp.metode_bayar as metode',
                 DB::raw("COALESCE(p.nama, '-') as nama_kasir"),
                 DB::raw("COUNT(DISTINCT dt.kode_item) as jumlah_item"),
                 DB::raw("CAST(COALESCE(SUM(CASE WHEN dt.retur_penjualan > 0 THEN dt.retur_penjualan ELSE dt.item_keluar END), 0) AS UNSIGNED) as total_qty"),
                 DB::raw("COALESCE(CASE WHEN SUM(dt.subtotal) != 0 THEN SUM(dt.subtotal) ELSE dp.total_bayar END, 0) as subtotal"),
             ])
-            ->groupBy('dp.kode_transaksi', 'dp.tanggal_transaksi', 'dp.id_kasir', 'p.id_pengguna', 'p.nama', 'dp.total_bayar')
+            ->groupBy('dp.kode_transaksi', 'dp.tanggal_transaksi', 'dp.id_kasir', 'p.id_pengguna', 'p.nama', 'dp.total_bayar', 'dp.metode_bayar')
             ->orderByDesc('dp.tanggal_transaksi')
             ->orderByDesc('dp.kode_transaksi')
             ->paginate($perHalaman)

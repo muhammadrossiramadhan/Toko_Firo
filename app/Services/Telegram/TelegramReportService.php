@@ -51,7 +51,7 @@ class TelegramReportService
                     'item'     => ($t->jumlah_item ?? 1) . ' jenis item (' . ($t->total_qty ?? 1) . ' pcs)',
                     'qty'      => (int) ($t->total_qty ?? 1),
                     'subtotal' => (float) ($t->subtotal ?? 0),
-                    'metode'   => 'Tunai',
+                    'metode'   => !empty($t->metode) ? strtoupper($t->metode) : 'TUNAI',
                     'waktu'    => date('H:i', strtotime($t->tanggal)),
                 ];
             })->all();

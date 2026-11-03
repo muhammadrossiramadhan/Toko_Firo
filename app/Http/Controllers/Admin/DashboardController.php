@@ -38,6 +38,17 @@ class DashboardController extends Controller
         $topBarang = $this->dashboardService->topBarang();
         $aktivitasTerbaru = $this->dashboardService->aktivitasTerbaru();
 
+        // Hitung puncak penjualan mingguan secara dinamis
+        $puncak = collect($penjualanMingguan)->firstWhere('is_puncak', true);
+
+        // Hitung notifikasi belum dibaca / log notifikasi terbaru
+        $notifCount = \Illuminate\Support\Facades\DB::table('log_notifikasi')->where('status', 'MENUNGGU')->count();
+
+        // Format tanggal hari ini dalam bahasa Indonesia
+        $daftarHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $daftarBulan = [1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $tanggalHariIni = $daftarHari[date('w')] . ', ' . date('j') . ' ' . $daftarBulan[(int) date('n')] . ' ' . date('Y');
+
         return view('admin.dashboard.index', [
             'ringkasan' => $ringkasan,
             'penjualanMingguan' => $penjualanMingguan,
@@ -47,6 +58,9 @@ class DashboardController extends Controller
             'namaPanggilan' => $namaPanggilan,
             'inisialUser' => $inisialUser,
             'roleUser' => $roleUser,
+            'puncakPenjualan' => $puncak,
+            'notifCount' => $notifCount,
+            'tanggalHariIni' => $tanggalHariIni,
         ]);
     }
 }

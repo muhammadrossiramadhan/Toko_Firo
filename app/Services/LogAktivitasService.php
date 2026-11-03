@@ -133,7 +133,7 @@ class LogAktivitasService
     }
 
     /**
-     * Menghasilkan string berkas CSV murni sesuai kriteria filter.
+     * Menghasilkan string berkas CSV murni sesuai kriteria filter dengan sanitasi CWE-1236.
      */
     public function eksporCsv(array $filter): string
     {
@@ -141,14 +141,21 @@ class LogAktivitasService
 
         $lines = ["Waktu,Tipe Aksi,Keterangan"];
 
-        foreach ($rows as $row) {
-            $waktu = (string) $row->waktu;
-            $tipe = (string) ($row->tipe_aksi ?? '-');
-            $ket = (string) ($row->keterangan ?? '-');
-
-            if (str_contains($ket, ',') || str_contains($ket, '"') || str_contains($ket, "\n") || str_contains($ket, "\r")) {
-                $ket = '"' . str_replace('"', '""', $ket) . '"';
+        $neutralize = function (?string $val): string {
+            $val = (string) ($val ?? '');
+            if ($val !== '' && in_array($val[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+                $val = "'" . $val;
             }
+            if (str_contains($val, ',') || str_contains($val, '"') || str_contains($val, "\n") || str_contains($val, "\r")) {
+                return '"' . str_replace('"', '""', $val) . '"';
+            }
+            return $val;
+        };
+
+        foreach ($rows as $row) {
+            $waktu = $neutralize($row->waktu);
+            $tipe = $neutralize($row->tipe_aksi ?? '-');
+            $ket = $neutralize($row->keterangan ?? '-');
 
             $lines[] = "{$waktu},{$tipe},{$ket}";
         }

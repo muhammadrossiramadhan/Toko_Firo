@@ -267,7 +267,7 @@
                 Rekap Otomatis
             </h2>
             <p class="text-base text-gray-600">
-                Rekap otomatis belum tersedia.
+                Rekap harian otomatis dijadwalkan setiap hari pukul 21.00 WIB via Bot Telegram.
             </p>
         </div>
     </main>

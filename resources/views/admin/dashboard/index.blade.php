@@ -37,13 +37,15 @@
             </div>
 
             <div class="flex items-center gap-4">
-                {{-- Tombol Notifikasi (Teks & Badge Murni, Tanpa Ikon Lonceng) --}}
-                <button type="button" class="touch-target px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors flex items-center gap-2 cursor-pointer">
+                {{-- Tombol Notifikasi (Teks & Badge Murni, Terhubung ke Rute Notifikasi) --}}
+                <a href="{{ route('admin.notifikasi') }}" class="touch-target px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors flex items-center gap-2 cursor-pointer">
                     <span>Notifikasi</span>
-                    <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                        3 Baru
-                    </span>
-                </button>
+                    @if (($notifCount ?? 0) > 0)
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                            {{ $notifCount }} Baru
+                        </span>
+                    @endif
+                </a>
 
                 {{-- Profil Topbar (Inisial & Nama Dinamis, Tanpa Ikon) --}}
                 <div class="flex items-center gap-3 pl-2 border-l border-gray-300">
@@ -68,7 +70,7 @@
                 Halo, {{ $namaPanggilan ?? $namaUser ?? auth()->user()->nama ?? auth()->user()->username ?? 'Admin' }}
             </h2>
             <p class="text-slate-500 text-base mt-1">
-                Jumat, 3 Oktober 2026 · Ringkasan toko hari ini
+                {{ $tanggalHariIni ?? 'Hari ini' }} · Ringkasan toko hari ini
             </p>
         </section>
 
@@ -148,9 +150,15 @@
                             Volume tren penjualan harian toko (tertutup per hari)
                         </p>
                     </div>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">
-                        Puncak Tertinggi: Jum (Rp 3.180.000)
-                    </span>
+                    @if (!empty($puncakPenjualan) && ($puncakPenjualan['persen'] ?? 0) > 0)
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">
+                            Puncak Tertinggi: {{ $puncakPenjualan['hari'] }} ({{ $puncakPenjualan['nominal'] }})
+                        </span>
+                    @else
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 text-gray-600 border border-gray-200 self-start sm:self-auto">
+                            Volume 7 Hari Terakhir
+                        </span>
+                    @endif
                 </div>
 
                 {{-- Diagram Batang Murni Tailwind CSS (Tanpa Chart.js Eksternal) --}}
@@ -184,7 +192,7 @@
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-sm bg-emerald-600 inline-block"></span>
-                            <span class="text-sm text-gray-600">Hari Ini (Puncak)</span>
+                            <span class="text-sm text-gray-600">Hari Puncak</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-sm bg-emerald-100 inline-block"></span>
