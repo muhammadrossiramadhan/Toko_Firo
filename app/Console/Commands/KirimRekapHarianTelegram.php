@@ -113,7 +113,7 @@ class KirimRekapHarianTelegram extends Command
     }
 
     /**
-     * Memeriksa apakah toggle rekap harian dinonaktifkan di tabel pengaturan_notifikasi.
+     * Memeriksa apakah toggle rekap harian dinonaktifkan di tabel pengaturan_notifikasi atau fallback JSON.
      */
     protected function isRekapDinonaktifkan(): bool
     {
@@ -128,6 +128,22 @@ class KirimRekapHarianTelegram extends Command
             }
         } catch (\Throwable $e) {
             Log::warning('Gagal membaca tabel pengaturan_notifikasi: ' . $e->getMessage());
+        }
+
+        // Fallback membaca berkas JSON konfigurasi storage/app/settings/notifications.json
+        $jsonPath = storage_path('app/settings/notifications.json');
+        if (file_exists($jsonPath)) {
+            try {
+                $json = json_decode((string) file_get_contents($jsonPath), true);
+                if (is_array($json)) {
+                    $setting = $json['laporan_otomatis'] ?? $json['rekap_harian'] ?? null;
+                    if ($setting !== null) {
+                        return $setting === false || in_array(strtolower((string) $setting), ['0', 'false', 'off', 'no', 'nonaktif'], true);
+                    }
+                }
+            } catch (\Throwable $e) {
+                // Abaikan kesalahan parse
+            }
         }
 
         return false;
