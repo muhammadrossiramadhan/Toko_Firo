@@ -27,6 +27,14 @@ class OtpController extends Controller
         if ($result === true) {
             $request->session()->forget('pending_2fa_user_id');
             $user = User::findOrFail($userId);
+
+            // Validasi kembali status keaktifan akun tepat sebelum login (SEC-04)
+            if (strtoupper((string) ($user->status ?? '')) !== 'AKTIF') {
+                return redirect()->route('login')->withErrors([
+                    'login' => 'Akun Anda dinonaktifkan. Silakan hubungi administrator.',
+                ]);
+            }
+
             Auth::login($user);
             $request->session()->regenerate();
 

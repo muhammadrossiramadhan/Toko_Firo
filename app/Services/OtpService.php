@@ -13,9 +13,12 @@ class OtpService
     public function generate(int $userId): string
     {
         $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        Cache::put("otp:login:{$userId}", $code, self::TTL);
+        $hashedCode = hash('sha256', $code);
+
+        Cache::put("otp:login:{$userId}", $hashedCode, self::TTL);
         Cache::put("otp:attempts:{$userId}", 0, self::TTL);
         Cache::put("otp:resent:{$userId}", now()->timestamp, self::RESEND_COOLDOWN);
+
         return $code;
     }
 
@@ -27,13 +30,19 @@ class OtpService
             return 'max_attempts';
         }
 
-        $storedCode = Cache::get("otp:login:{$userId}");
-        if (! $storedCode) {
+        $storedHash = Cache::get("otp:login:{$userId}");
+        if (! $storedHash) {
             return 'expired';
         }
 
-        if (! hash_equals($storedCode, $inputCode)) {
-            Cache::put("otp:attempts:{$userId}", $attempts + 1, self::TTL);
+        $inputHash = hash('sha256', $inputCode);
+
+        if (! hash_equals($storedHash, $inputHash)) {
+            $newAttempts = (int) Cache::increment("otp:attempts:{$userId}");
+            if ($newAttempts >= self::MAX_ATTEMPTS) {
+                $this->invalidate($userId);
+                return 'max_attempts';
+            }
             return 'invalid';
         }
 

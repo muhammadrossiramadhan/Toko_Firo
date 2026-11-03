@@ -3,8 +3,7 @@
 use App\Http\Controllers\Admin\PenggunaController;
 use Illuminate\Support\Facades\Route;
 
-// TODO WAJIB sebelum merge ke staging: pulihkan middleware 'auth' dan 'role:ADMIN'.
-Route::middleware(['web'])->prefix('admin')->group(function () {
+Route::prefix('admin')->group(function () {
     Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
     Route::post('/pengguna', [PenggunaController::class, 'store'])->name('admin.pengguna.store');
     Route::put('/pengguna/{id}', [PenggunaController::class, 'update'])->name('admin.pengguna.update');
