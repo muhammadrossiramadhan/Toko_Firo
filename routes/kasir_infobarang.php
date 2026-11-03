@@ -10,6 +10,4 @@ use Illuminate\Support\Facades\Route;
 | Izin akses diberikan untuk peran kasir, admin, dan pemilik toko.
 */
 
-Route::middleware(['web', 'auth', 'role:kasir,admin,pemilik'])->group(function () {
-    Route::get('/kasir/info-barang', [InfoBarangKasirController::class, 'index'])->name('kasir.info-barang');
-});
+Route::get('/kasir/info-barang', [InfoBarangKasirController::class, 'index'])->name('kasir.info-barang');

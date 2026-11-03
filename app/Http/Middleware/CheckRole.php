@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
@@ -25,6 +26,29 @@ class CheckRole
             }
 
             return redirect()->guest(route('login'));
+        }
+
+        // Periksa status keaktifan akun pengguna di tengah sesi (logout paksa jika NONAKTIF)
+        $userStatus = strtoupper((string) ($user->status ?? ''));
+        if (method_exists($user, 'fresh')) {
+            $freshUser = $user->fresh();
+            if ($freshUser) {
+                $userStatus = strtoupper((string) ($freshUser->status ?? ''));
+            }
+        }
+
+        if ($userStatus !== 'AKTIF') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            if ($request->expectsJson()) {
+                abort(403, 'Akun Anda telah dinonaktifkan.');
+            }
+
+            return redirect()->route('login')->withErrors([
+                'login' => 'Akun Anda dinonaktifkan. Silakan hubungi administrator.',
+            ]);
         }
 
         // Parse dan normalisasi seluruh peran yang diizinkan (mendukung pemisah koma / pipe)

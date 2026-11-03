@@ -105,16 +105,28 @@
                 Akses Kasir
             </div>
             <nav class="space-y-1">
-                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                <a
+                    href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors {{ request()->routeIs('kasir.transaksi*') || request()->is('kasir/transaksi*') ? 'bg-emerald-600 text-white font-semibold text-base shadow-sm' : 'text-emerald-100 hover:text-white hover:bg-emerald-900/60' }}"
+                >
                     Transaksi Penjualan
                 </a>
-                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                <a
+                    href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors {{ request()->routeIs('kasir.stok*') || request()->is('kasir/stok*') ? 'bg-emerald-600 text-white font-semibold text-base shadow-sm' : 'text-emerald-100 hover:text-white hover:bg-emerald-900/60' }}"
+                >
                     Lihat Stok Barang
                 </a>
-                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                <a
+                    href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : url('/kasir/saldo') }}"
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors {{ request()->routeIs('kasir.saldo*') || request()->is('kasir/saldo*') ? 'bg-emerald-600 text-white font-semibold text-base shadow-sm' : 'text-emerald-100 hover:text-white hover:bg-emerald-900/60' }}"
+                >
                     Saldo Harian
                 </a>
-                <a href="#" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                <a
+                    href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : url('/kasir/info-barang') }}"
+                    class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors {{ request()->routeIs('kasir.info-barang*') || request()->is('kasir/info-barang*') ? 'bg-emerald-600 text-white font-semibold text-base shadow-sm' : 'text-emerald-100 hover:text-white hover:bg-emerald-900/60' }}"
+                >
                     Info Barang Baru
                 </a>
             </nav>
@@ -125,15 +137,15 @@
     <div class="pt-4 border-t border-emerald-900/60">
         <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-xl p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">
             <div class="font-medium text-white text-base truncate">
-                {{ Auth::user()?->nama ?? ($profil['nama'] ?? 'Admin / Pemilik') }}
+                {{ Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
             </div>
             <div class="text-sm text-emerald-300">
-                Admin / Pemilik
+                {{ in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']) ? 'Admin / Pemilik' : (Auth::user()?->role ?? 'Admin / Pemilik') }}
             </div>
         </a>
         <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}">
             @csrf
-            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors">
+            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors cursor-pointer">
                 Keluar
             </button>
         </form>

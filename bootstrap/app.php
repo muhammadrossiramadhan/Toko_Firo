@@ -12,19 +12,19 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            // Muat seluruh rute Admin terisolasi
+            // Muat seluruh rute Admin terisolasi dengan proteksi autentikasi dan otorisasi role
             foreach (glob(base_path('routes/admin_*.php')) as $adminRoute) {
-                Route::middleware('web')->group($adminRoute);
+                Route::middleware(['web', 'auth', 'role:ADMIN,PEMILIK'])->group($adminRoute);
             }
 
-            // Muat seluruh rute Kasir terisolasi
+            // Muat seluruh rute Kasir terisolasi dengan proteksi autentikasi dan otorisasi role
             foreach (glob(base_path('routes/kasir_*.php')) as $kasirRoute) {
-                Route::middleware('web')->group($kasirRoute);
+                Route::middleware(['web', 'auth', 'role:KASIR,ADMIN,PEMILIK'])->group($kasirRoute);
             }
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-	$middleware->trustProxies(at: '*');
+        $middleware->trustProxies(at: ['127.0.0.1']);
         $middleware->validateCsrfTokens(except: [
             'api/telegram/webhook',
             'telegram/webhook',

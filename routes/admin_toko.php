@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\TokoController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['web'])->prefix('admin')->group(function () {
+Route::prefix('admin')->group(function () {
     Route::get('/pengaturan-toko', [TokoController::class, 'index'])->name('admin.toko.index');
     Route::match(['put', 'post'], '/pengaturan-toko', [TokoController::class, 'update'])->name('admin.toko.update');
 

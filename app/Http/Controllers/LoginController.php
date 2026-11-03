@@ -44,6 +44,20 @@ class LoginController extends Controller
             ])->onlyInput('username');
         }
 
+        // Validasi status akun (SEC-04)
+        if (strtoupper((string) ($user->status ?? '')) !== 'AKTIF') {
+            return back()->withErrors([
+                'login' => 'Akun Anda dinonaktifkan. Silakan hubungi administrator.',
+            ])->onlyInput('username');
+        }
+
+        // Validasi cooldown kirim ulang OTP 90 detik (SEC-11)
+        if (! $otp->canResend($user->id)) {
+            return back()->withErrors([
+                'login' => 'Tunggu 90 detik sebelum meminta kode baru.',
+            ])->onlyInput('username');
+        }
+
         // Step 1 passed — generate OTP, DON'T login yet
         $code = $otp->generate($user->id);
         $request->session()->put('pending_2fa_user_id', $user->id);

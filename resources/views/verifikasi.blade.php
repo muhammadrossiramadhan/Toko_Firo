@@ -11,7 +11,7 @@
     </div>
 
     <h2 class="font-heading font-bold text-[24px] leading-[30px] text-ink mt-6">Verifikasi Kode</h2>
-    <p class="text-text-muted mt-4 text-sm max-w-[300px] mx-auto">Masukkan kode 6 digit yang dikirim ke grup Telegram untuk <span class="font-medium text-ink">@{{ $username }}</span></p>
+    <p class="text-text-muted mt-4 text-sm max-w-[300px] mx-auto">Masukkan kode 6 digit yang dikirim ke grup Telegram untuk <span class="font-medium text-ink">{{ $username }}</span></p>
 
     @if (session('telegram_warning'))
         <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm rounded-lg">
