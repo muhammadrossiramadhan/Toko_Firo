@@ -106,8 +106,10 @@ class TransaksiKasirService
             $bayar = (float) ($dataTransaksi['nominal_bayar'] ?? $dataTransaksi['bayar'] ?? 0);
 
             $metodeBayar = strtoupper((string) ($dataTransaksi['metode_bayar'] ?? 'TUNAI'));
-            if (!in_array($metodeBayar, ['TUNAI', 'QRIS', 'TRANSFER'], true)) {
-                $metodeBayar = 'TUNAI';
+            if (!in_array($metodeBayar, ['TUNAI', 'QRIS'], true)) {
+                throw ValidationException::withMessages([
+                    'metode_bayar' => ["Metode pembayaran '{$metodeBayar}' tidak valid. Hanya mendukung TUNAI atau QRIS."],
+                ]);
             }
 
             // Untuk non-tunai jika nominal tidak diisi, otomatis dianggap uang pas

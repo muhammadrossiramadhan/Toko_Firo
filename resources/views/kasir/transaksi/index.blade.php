@@ -93,11 +93,11 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
                 <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? 'R' }}
+                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? 'Rina Putri' }}
+                        {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
                     </div>
                     <div class="text-sm text-emerald-300">
                         {{ $kasir['role'] ?? 'Kasir' }}
@@ -128,10 +128,10 @@
             </div>
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
-                    {{ $kasir['inisial'] ?? 'R' }}
+                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">
-                    {{ $kasir['nama'] ?? 'Rina Putri' }}
+                    {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
                 </span>
             </div>
         </header>
@@ -201,8 +201,12 @@
                                     </div>
                                     <button
                                         type="button"
-                                        onclick="tambahItemKeranjang('{{ $item['kode'] }}', '{{ addslashes($item['nama']) }}', {{ $item['harga'] }}, {{ $item['stok'] }}, '{{ $item['satuan'] }}')"
-                                        class="touch-target px-3 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                                        class="btn-tambah-keranjang touch-target px-3 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                                        data-kode="{{ $item['kode'] }}"
+                                        data-nama="{{ e($item['nama']) }}"
+                                        data-harga="{{ $item['harga'] }}"
+                                        data-stok="{{ $item['stok'] }}"
+                                        data-satuan="{{ e($item['satuan']) }}"
                                     >
                                         + Tambah
                                     </button>
@@ -323,7 +327,7 @@
                 {{-- Pilihan Metode Pembayaran --}}
                 <div>
                     <label class="block text-slate-700 font-medium text-base mb-2">Metode Pembayaran</label>
-                    <div class="grid grid-cols-3 gap-3">
+                    <div class="grid grid-cols-2 gap-3">
                         <button
                             type="button"
                             id="btn-metode-tunai"
@@ -339,14 +343,6 @@
                             class="touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
                         >
                             QRIS
-                        </button>
-                        <button
-                            type="button"
-                            id="btn-metode-transfer"
-                            onclick="pilihMetode('TRANSFER')"
-                            class="touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
-                        >
-                            Transfer
                         </button>
                     </div>
                 </div>
@@ -506,9 +502,12 @@
             <div class="bg-white rounded-2xl max-w-[380px] w-full p-6 shadow-2xl relative font-mono text-sm leading-relaxed text-slate-800 border border-slate-200" onclick="event.stopPropagation()">
                 {{-- Header Struk --}}
                 <div class="text-center pb-3 border-b border-dashed border-slate-300">
-                    <div class="text-xl font-bold font-sans text-slate-900">TOKO FIRO</div>
-                    <div class="text-xs text-slate-500">Penyedia ATK &amp; Kebutuhan Kantor</div>
-                    <div class="text-xs text-slate-500">Jl. Yos Sudarso, Kraksaan, Probolinggo</div>
+                    <div class="text-xl font-bold font-sans text-slate-900">{{ $toko['nama_toko'] ?? 'TOKO FIRO' }}</div>
+                    <div class="text-xs text-slate-500">{{ $toko['header_struk'] ?? 'Penyedia ATK & Kebutuhan Kantor' }}</div>
+                    <div class="text-xs text-slate-500">{{ $toko['alamat'] ?? 'Jl. Raya Toko Firo, Malang' }}</div>
+                    @if(!empty($toko['telepon']))
+                        <div class="text-xs text-slate-500">Telp: {{ $toko['telepon'] }}</div>
+                    @endif
                 </div>
 
                 {{-- Metadata Transaksi --}}
@@ -550,7 +549,7 @@
 
                 {{-- Footer Struk --}}
                 <div class="pt-3 text-center text-xs text-slate-500">
-                    <div>Terima kasih telah berbelanja!</div>
+                    <div>{{ $toko['footer_struk'] ?? 'Terima kasih telah berbelanja!' }}</div>
                     <div class="text-[10px] text-slate-400 mt-1">Barang yang sudah dibeli dapat ditukar maksimal 1x24 jam</div>
                 </div>
 
@@ -835,21 +834,19 @@
         }
 
         function pilihMetode(metode) {
-            metodeBayar = metode;
+            metodeBayar = (metode === 'QRIS') ? 'QRIS' : 'TUNAI';
             const btnTunai = document.getElementById('btn-metode-tunai');
             const btnQris = document.getElementById('btn-metode-qris');
-            const btnTransfer = document.getElementById('btn-metode-transfer');
             const seksiTunai = document.getElementById('seksi-tunai');
             const seksiQris = document.getElementById('seksi-qris');
 
             const btnActive = 'touch-target p-3 rounded-xl border border-emerald-600 bg-emerald-600 text-white font-semibold text-base min-h-[2.75rem] transition-colors cursor-pointer';
             const btnInactive = 'touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer';
 
-            btnTunai.className = metode === 'TUNAI' ? btnActive : btnInactive;
-            btnQris.className = metode === 'QRIS' ? btnActive : btnInactive;
-            if (btnTransfer) btnTransfer.className = metode === 'TRANSFER' ? btnActive : btnInactive;
+            if (btnTunai) btnTunai.className = metodeBayar === 'TUNAI' ? btnActive : btnInactive;
+            if (btnQris) btnQris.className = metodeBayar === 'QRIS' ? btnActive : btnInactive;
 
-            if (metode === 'TUNAI') {
+            if (metodeBayar === 'TUNAI') {
                 if (seksiTunai) seksiTunai.classList.remove('hidden');
                 if (seksiQris) seksiQris.classList.add('hidden');
             } else {
@@ -858,9 +855,7 @@
                     seksiQris.classList.remove('hidden');
                     const textP = seksiQris.querySelector('p');
                     if (textP) {
-                        textP.textContent = metode === 'QRIS'
-                            ? 'Pastikan pembayaran QRIS telah terverifikasi sukses pada layar mesin scanner/EDC sebelum menyelesaikan transaksi.'
-                            : 'Pastikan bukti transfer bank pelanggan telah dicek dan dana efektif masuk ke rekening toko.';
+                        textP.textContent = 'Pastikan pembayaran QRIS telah terverifikasi sukses pada layar mesin scanner/EDC sebelum menyelesaikan transaksi.';
                     }
                 }
                 // Non-tunai otomatis set uang pas
@@ -1094,6 +1089,18 @@
                 }
             });
         }
+
+        // Event delegation terpusat untuk tombol + Tambah katalog barang (SEC-05)
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('.btn-tambah-keranjang');
+            if (!btn) return;
+            const kode = btn.getAttribute('data-kode');
+            const nama = btn.getAttribute('data-nama');
+            const harga = parseFloat(btn.getAttribute('data-harga') || '0');
+            const stok = parseInt(btn.getAttribute('data-stok') || '0', 10);
+            const satuan = btn.getAttribute('data-satuan') || 'pcs';
+            tambahItemKeranjang(kode, nama, harga, stok, satuan);
+        });
 
         // Tutup modal struk jika area luar diklik
         document.getElementById('modal-struk')?.addEventListener('click', function (e) {

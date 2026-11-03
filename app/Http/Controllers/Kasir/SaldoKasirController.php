@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Kasir;
 
 use App\Http\Controllers\Controller;
+use App\Services\Telegram\TelegramBotService;
+use App\Services\Telegram\TelegramReportService;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Carbon\Carbon;
 
 class SaldoKasirController extends Controller
 {
@@ -117,7 +123,7 @@ class SaldoKasirController extends Controller
             ];
         });
 
-        $nama = $user ? ($user->nama ?? $user->name ?? 'Kasir') : 'Kasir';
+        $nama = $user ? ($user->nama ?? $user->username ?? 'Kasir') : 'Kasir';
         $role = $user ? ($user->role ?? 'Kasir') : 'Kasir';
         $roleLabel = in_array(strtoupper($role), ['ADMIN', 'PEMILIK']) ? 'Admin' : 'Kasir';
 
@@ -132,5 +138,55 @@ class SaldoKasirController extends Controller
             'riwayatTransaksi',
             'kasir'
         ));
+    }
+
+    /**
+     * Ekspor rekap saldo kasir hari ini sebagai dokumen PDF resmi.
+     */
+    public function exportPdf(Request $request): Response
+    {
+        $today = date('Y-m-d');
+        /** @var TelegramReportService $reportService */
+        $reportService = app(TelegramReportService::class);
+        $pdfBinary = $reportService->generatePdfReport($today, $today);
+        $filename = 'Rekap_Saldo_Kasir_' . $today . '.pdf';
+
+        return response($pdfBinary, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+
+    /**
+     * Mengirim rekap saldo kasir hari ini ke bot Telegram Admin / Group.
+     */
+    public function kirimTelegram(Request $request): JsonResponse|RedirectResponse
+    {
+        $today = date('Y-m-d');
+        /** @var TelegramReportService $reportService */
+        $reportService = app(TelegramReportService::class);
+        /** @var TelegramBotService $botService */
+        $botService = app(TelegramBotService::class);
+
+        $chatId = config('services.telegram.admin_chat_id') ?: config('services.telegram.chat_id');
+        if (empty($chatId)) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['status' => 'error', 'message' => 'Chat ID Telegram belum dikonfigurasi.'], 400);
+            }
+            return redirect()->back()->with('error', 'Chat ID Telegram belum dikonfigurasi.');
+        }
+
+        $pdfBinary = $reportService->generatePdfReport($today, $today);
+        $summary = $reportService->getSummaryData();
+        $caption = $reportService->buildSalesCaption($summary);
+        $filename = 'Rekap_Saldo_Kasir_' . $today . '.pdf';
+
+        $res = $botService->sendDocument($chatId, $pdfBinary, $filename, $caption);
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['status' => 'success', 'message' => 'Rekap saldo kasir berhasil dikirim ke Telegram!']);
+        }
+
+        return redirect()->back()->with('success', 'Rekap saldo kasir berhasil dikirim ke Telegram!');
     }
 }

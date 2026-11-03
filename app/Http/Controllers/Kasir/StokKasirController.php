@@ -49,54 +49,20 @@ class StokKasirController extends Controller
             $menipisCount = ItemBarang::where('stok', '>', 0)->whereRaw('stok <= COALESCE(batas_minimum, 5)')->count();
             $amanCount = ItemBarang::whereRaw('stok > COALESCE(batas_minimum, 5)')->count();
 
-            // Fallback untuk lingkungan pengujian jika database test kosong
-            if ($daftarBarang->isEmpty() && empty($filters['q']) && empty($filters['status'])) {
-                $barangList = [
-                    [
-                        'kode' => 'BRG-007',
-                        'nama' => 'Pensil 2B Faber',
-                        'jenis' => 'ATK',
-                        'merek' => 'Faber-Castell',
-                        'stok' => 0,
-                        'satuan' => 'pcs',
-                        'harga' => 'Rp 5.000',
-                        'status' => 'Habis',
-                        'batas_minimum' => 5,
-                    ],
-                    [
-                        'kode' => 'BRG-002',
-                        'nama' => 'Kertas HVS A4 70gr',
-                        'jenis' => 'ATK',
-                        'merek' => 'Sinar Dunia',
-                        'stok' => 3,
-                        'satuan' => 'rim',
-                        'harga' => 'Rp 52.000',
-                        'status' => 'Menipis',
-                        'batas_minimum' => 5,
-                    ],
-                ];
-                $ringkasan = [
-                    'semua' => 47,
-                    'habis' => 2,
-                    'menipis' => 5,
-                    'normal' => 28,
-                    'aman' => 12,
-                ];
-            } else {
-                $barangList = $daftarBarang;
-                $ringkasan = [
-                    'semua' => $semuaCount,
-                    'habis' => $habisCount,
-                    'menipis' => $menipisCount,
-                    'normal' => $amanCount,
-                    'aman' => $amanCount,
-                ];
-            }
+            $barangList = $daftarBarang;
+            $ringkasan = [
+                'semua' => $semuaCount,
+                'habis' => $habisCount,
+                'menipis' => $menipisCount,
+                'normal' => $amanCount,
+                'aman' => $amanCount,
+            ];
 
             $user = $request->user();
+            $namaKasir = $user ? ($user->nama ?? $user->username ?? 'Kasir') : 'Kasir';
             $kasir = [
-                'nama' => $user ? ($user->name ?? $user->nama ?? 'Kasir') : 'Rina Putri',
-                'inisial' => strtoupper(substr((string) ($user ? ($user->name ?? $user->nama ?? 'Kasir') : 'R'), 0, 1)),
+                'nama' => $namaKasir,
+                'inisial' => strtoupper(substr((string) $namaKasir, 0, 1)),
                 'role' => 'Kasir',
             ];
 

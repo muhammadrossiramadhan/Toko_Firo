@@ -57,7 +57,7 @@ class TransaksiKasirController extends Controller
         $totalBelanja = (float) array_sum(array_column($keranjang, 'subtotal'));
 
         $user = auth()->user();
-        $nama = $user ? ($user->nama ?? $user->name ?? 'Kasir') : 'Rina Putri';
+        $nama = $user ? ($user->nama ?? $user->username ?? 'Kasir') : 'Kasir';
         $role = $user ? ($user->role ?? 'Kasir') : 'Kasir';
         $roleLabel = in_array(strtoupper($role), ['ADMIN', 'PEMILIK']) ? 'Admin' : 'Kasir';
 
@@ -67,7 +67,10 @@ class TransaksiKasirController extends Controller
             'role' => $roleLabel,
         ];
 
-        return view('kasir.transaksi.index', compact('katalog', 'keranjang', 'totalBelanja', 'kasir'));
+        $tokoService = app(\App\Services\PengaturanTokoService::class);
+        $toko = $tokoService->getSettings();
+
+        return view('kasir.transaksi.index', compact('katalog', 'keranjang', 'totalBelanja', 'kasir', 'toko'));
     }
 
     /**
@@ -287,21 +290,22 @@ class TransaksiKasirController extends Controller
         $tokoService = app(\App\Services\PengaturanTokoService::class);
         $settings = $tokoService->getSettings();
 
-        $namaToko = htmlspecialchars((string) ($settings['nama_toko'] ?? 'TOKO FIRO'));
-        $headerStruk = htmlspecialchars((string) ($settings['header_struk'] ?? 'Alat Tulis Kantor & Jasa Fotocopy'));
-        $alamatToko = htmlspecialchars((string) ($settings['alamat'] ?? ''));
-        $teleponToko = htmlspecialchars((string) ($settings['telepon'] ?? '081234567890'));
-        $footerStruk = htmlspecialchars((string) ($settings['footer_struk'] ?? 'Terima kasih telah berbelanja!'));
+        $namaToko = htmlspecialchars((string) ($settings['nama_toko'] ?? 'TOKO FIRO'), ENT_QUOTES, 'UTF-8');
+        $headerStruk = htmlspecialchars((string) ($settings['header_struk'] ?? 'Alat Tulis Kantor & Jasa Fotocopy'), ENT_QUOTES, 'UTF-8');
+        $alamatToko = htmlspecialchars((string) ($settings['alamat'] ?? ''), ENT_QUOTES, 'UTF-8');
+        $teleponToko = htmlspecialchars((string) ($settings['telepon'] ?? '081234567890'), ENT_QUOTES, 'UTF-8');
+        $footerStruk = htmlspecialchars((string) ($settings['footer_struk'] ?? 'Terima kasih telah berbelanja!'), ENT_QUOTES, 'UTF-8');
 
+        $kodeTransaksi = htmlspecialchars((string) $transaksi->kode_transaksi, ENT_QUOTES, 'UTF-8');
         $tanggal = $transaksi->tanggal_transaksi ? date('d/m/Y', strtotime((string) $transaksi->tanggal_transaksi)) : date('d/m/Y');
-        $pelanggan = htmlspecialchars((string) ($transaksi->nama_pelanggan ?: 'Umum'));
-        $kasirNama = htmlspecialchars((string) ($transaksi->kasir->nama ?? 'Kasir Toko Firo'));
+        $pelanggan = htmlspecialchars((string) ($transaksi->nama_pelanggan ?: 'Umum'), ENT_QUOTES, 'UTF-8');
+        $kasirNama = htmlspecialchars((string) ($transaksi->kasir->nama ?? 'Kasir Toko Firo'), ENT_QUOTES, 'UTF-8');
         $totalBayar = number_format((float) $transaksi->total_bayar, 0, ',', '.');
-        $metode = htmlspecialchars((string) ($transaksi->metode_bayar ?: 'TUNAI'));
+        $metode = htmlspecialchars((string) ($transaksi->metode_bayar ?: 'TUNAI'), ENT_QUOTES, 'UTF-8');
 
         $itemRows = '';
         foreach ($transaksi->transaksi as $detail) {
-            $namaItem = htmlspecialchars((string) ($detail->item->nama_item ?? $detail->kode_item));
+            $namaItem = htmlspecialchars((string) ($detail->item->nama_item ?? $detail->kode_item), ENT_QUOTES, 'UTF-8');
             $qty = (int) ($detail->item_keluar ?: $detail->jumlah_item ?: 1);
             $subtotal = number_format((float) $detail->subtotal, 0, ',', '.');
             $hargaSatuan = $qty > 0 ? number_format((float) $detail->subtotal / $qty, 0, ',', '.') : $subtotal;
@@ -323,7 +327,7 @@ class TransaksiKasirController extends Controller
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Struk Pembelian - {$transaksi->kode_transaksi}</title>
+    <title>Struk Pembelian - {$kodeTransaksi}</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -380,7 +384,7 @@ class TransaksiKasirController extends Controller
         <div class="divider"></div>
 
         <table class="info-table">
-            <tr><td>Nota:</td><td class="text-right"><strong>{$transaksi->kode_transaksi}</strong></td></tr>
+            <tr><td>Nota:</td><td class="text-right"><strong>{$kodeTransaksi}</strong></td></tr>
             <tr><td>Tanggal:</td><td class="text-right">{$tanggal}</td></tr>
             <tr><td>Kasir:</td><td class="text-right">{$kasirNama}</td></tr>
             <tr><td>Pelanggan:</td><td class="text-right">{$pelanggan}</td></tr>
