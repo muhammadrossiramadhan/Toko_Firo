@@ -89,11 +89,11 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
                 <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? 'R' }}
+                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? 'Rina Putri' }}
+                        {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
                     </div>
                     <div class="text-sm text-emerald-300">
                         {{ $kasir['role'] ?? 'Kasir' }}
@@ -124,18 +124,22 @@
             </div>
             <div class="flex items-center gap-3">
                 {{-- Tombol Aksi Teks Murni (Bebas Emoji) --}}
-                <button
-                    type="button"
+                <a
+                    href="{{ route('kasir.saldo.pdf') }}"
+                    target="_blank"
                     class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Simpan sebagai PDF
-                </button>
-                <button
-                    type="button"
-                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
-                >
-                    Kirim ke Telegram
-                </button>
+                </a>
+                <form action="{{ route('kasir.saldo.telegram') }}" method="POST" class="inline">
+                    @csrf
+                    <button
+                        type="submit"
+                        class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
+                    >
+                        Kirim ke Telegram
+                    </button>
+                </form>
             </div>
         </header>
 
@@ -264,7 +268,7 @@
             {{-- Footer Tabel --}}
             <div class="px-6 py-4 bg-white border-t border-slate-200 flex items-center justify-between text-slate-500 text-sm">
                 <div>
-                    Menampilkan 5 transaksi terakhir kasir
+                    Menampilkan {{ count($riwayatTransaksi) }} transaksi kasir hari ini
                 </div>
                 <div class="text-slate-400">
                     Sinkronisasi otomatis dengan bot Telegram Toko Firo

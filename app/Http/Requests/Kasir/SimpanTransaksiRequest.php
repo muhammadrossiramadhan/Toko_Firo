@@ -101,7 +101,7 @@ class SimpanTransaksiRequest extends FormRequest
             'nominal_bayar' => ['nullable', 'numeric', 'min:0'],
             'bayar' => ['nullable', 'numeric', 'min:0'],
             'diskon' => ['nullable', 'numeric', 'min:0'],
-            'metode_bayar' => ['nullable', 'string', 'in:TUNAI,QRIS,TRANSFER,tunai,qris,transfer'],
+            'metode_bayar' => ['nullable', 'string', 'in:TUNAI,QRIS,tunai,qris'],
             'nama_pelanggan' => ['nullable', 'string', 'max:100'],
         ];
     }

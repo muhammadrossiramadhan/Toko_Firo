@@ -89,11 +89,11 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
                 <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? 'R' }}
+                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? 'Rina Putri' }}
+                        {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
                     </div>
                     <div class="text-sm text-emerald-300">
                         {{ $kasir['role'] ?? 'Kasir' }}
@@ -124,10 +124,10 @@
             </div>
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
-                    {{ $kasir['inisial'] ?? 'R' }}
+                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">
-                    {{ $kasir['nama'] ?? 'Rina Putri' }}
+                    {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
                 </span>
             </div>
         </header>

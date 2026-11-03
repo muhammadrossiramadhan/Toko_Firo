@@ -11,3 +11,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/kasir/saldo', [SaldoKasirController::class, 'index'])->name('kasir.saldo');
+Route::get('/kasir/saldo/pdf', [SaldoKasirController::class, 'exportPdf'])->name('kasir.saldo.pdf');
+Route::post('/kasir/saldo/telegram', [SaldoKasirController::class, 'kirimTelegram'])->name('kasir.saldo.telegram');

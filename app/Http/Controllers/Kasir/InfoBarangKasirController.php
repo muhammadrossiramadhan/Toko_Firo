@@ -31,17 +31,19 @@ class InfoBarangKasirController extends Controller
             $tipe = null;
         }
 
-        $log = DB::table('v_info_barang')
+        $log = DB::table('v_info_barang as vib')
+            ->leftJoin('pengguna as p', 'vib.id_pengguna', '=', 'p.id_pengguna')
+            ->select('vib.*', 'p.nama as nama_pelaku', 'p.role as role_pelaku')
             ->when($tipe, function ($query) use ($tipe) {
                 if ($tipe === 'baru') {
-                    $query->where('tipe_aksi', 'ITEM_BARU');
+                    $query->where('vib.tipe_aksi', 'ITEM_BARU');
                 } elseif ($tipe === 'harga') {
-                    $query->where('tipe_aksi', 'HARGA_DIUBAH');
+                    $query->where('vib.tipe_aksi', 'HARGA_DIUBAH');
                 } elseif ($tipe === 'stok') {
-                    $query->whereIn('tipe_aksi', ['ITEM_DIUBAH', 'STOK_DIUBAH']);
+                    $query->whereIn('vib.tipe_aksi', ['ITEM_DIUBAH', 'STOK_DIUBAH']);
                 }
             })
-            ->orderByDesc('waktu')
+            ->orderByDesc('vib.waktu')
             ->limit(50)
             ->get();
 
@@ -53,6 +55,22 @@ class InfoBarangKasirController extends Controller
                 'inisial' => 'INFO',
                 'ket' => 'Informasi produk diperbarui',
             ];
+
+            $rolePelaku = strtoupper((string) ($row->role_pelaku ?? ''));
+            $pelakuLabel = match ($rolePelaku) {
+                'KASIR' => 'Kasir',
+                'PEMILIK' => 'Pemilik',
+                default => 'Admin',
+            };
+
+            // Berikan deskripsi peran pelaku secara akurat
+            if ($aksiKey === 'ITEM_BARU') {
+                $ket = "Ditambahkan ke katalog oleh {$pelakuLabel}";
+            } elseif ($aksiKey === 'HARGA_DIUBAH') {
+                $ket = "Harga diperbarui oleh {$pelakuLabel}";
+            } else {
+                $ket = "Stok diperbarui oleh {$pelakuLabel}";
+            }
 
             // keterangan berformat "Awalan: KODE - Nama" atau teks langsung
             $rawKet = (string) ($row->keterangan ?? '');
@@ -105,21 +123,22 @@ class InfoBarangKasirController extends Controller
                 'badge'      => $p['badge'],
                 'inisial'    => $p['inisial'],
                 'nama'       => $nama !== '' ? $nama : 'Item Produk',
-                'keterangan' => $p['ket'],
+                'keterangan' => $ket,
                 'detail'     => $detail,
                 'waktu'      => $waktuFormatted,
                 'id_pengguna'=> $row->id_pengguna ?? null,
                 'tipe_aksi'  => $row->tipe_aksi ?? null,
+                'pelaku'     => $pelakuLabel,
             ];
         });
 
         $kategori = ['Semua', 'Barang Baru', 'Perubahan Harga', 'Stok Diperbarui'];
 
         $user = auth()->user();
-        $namaUser = $user->name ?? $user->nama ?? 'Kasir';
+        $namaUser = $user ? ($user->nama ?? $user->username ?? 'Kasir') : 'Kasir';
         $kasir = [
             'nama'    => $namaUser,
-            'inisial' => strtoupper(substr($namaUser, 0, 1)),
+            'inisial' => strtoupper(substr((string) $namaUser, 0, 1)),
             'role'    => 'Kasir',
         ];
 

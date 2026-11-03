@@ -23,6 +23,31 @@ class StokKasirTest extends TestCase
      */
     public function test_halaman_stok_kasir_dapat_diakses_dan_memuat_konten(): void
     {
+        \Illuminate\Support\Facades\DB::table('daftar_item')->insert([
+            [
+                'kode_item' => 'BRG-007',
+                'nama_item' => 'Pensil 2B Faber',
+                'jenis' => 'ATK',
+                'merek' => 'Faber-Castell',
+                'stok' => 0,
+                'satuan' => 'pcs',
+                'harga_pokok' => 4000,
+                'harga_jual' => 5000,
+                'batas_minimum' => 5,
+            ],
+            [
+                'kode_item' => 'BRG-002',
+                'nama_item' => 'Kertas HVS A4 70gr',
+                'jenis' => 'ATK',
+                'merek' => 'Sinar Dunia',
+                'stok' => 3,
+                'satuan' => 'rim',
+                'harga_pokok' => 45000,
+                'harga_jual' => 52000,
+                'batas_minimum' => 5,
+            ],
+        ]);
+
         $response = $this->get(route('kasir.stok'));
 
         $response->assertStatus(200);
