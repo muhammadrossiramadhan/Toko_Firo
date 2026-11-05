@@ -39,7 +39,7 @@
             <div class="flex items-center gap-3">
                 <a
                     href="{{ Route::has('admin.barang.riwayat') ? route('admin.barang.riwayat') : '#' }}"
-                    class="touch-target px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center whitespace-nowrap"
+                    class="touch-target px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-none text-base shadow-sm transition-colors flex items-center justify-center whitespace-nowrap"
                 >
                     Riwayat Transaksi
                 </a>
@@ -47,7 +47,7 @@
                     type="button"
                     id="btn-tambah-barang"
                     onclick="bukaModalTambah()"
-                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors whitespace-nowrap"
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors whitespace-nowrap"
                 >
                     Tambah Barang Baru
                 </button>
@@ -56,19 +56,19 @@
 
         {{-- Kotak Pesan Sukses dan Pesan Error --}}
         @if (session('sukses'))
-            <div class="mb-4 p-4 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-base font-medium">
+            <div class="mb-4 p-4 rounded-none bg-emerald-100 border border-emerald-300 text-emerald-900 text-base font-medium">
                 {{ session('sukses') }}
             </div>
         @endif
 
         @if (session('error'))
-            <div class="mb-4 p-4 rounded-xl bg-red-100 border border-red-300 text-red-900 text-base font-medium">
+            <div class="mb-4 p-4 rounded-none bg-red-100 border border-red-300 text-red-900 text-base font-medium">
                 {{ session('error') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="mb-4 p-4 rounded-xl bg-red-100 border border-red-300 text-red-900 text-base">
+            <div class="mb-4 p-4 rounded-none bg-red-100 border border-red-300 text-red-900 text-base">
                 <div class="font-bold mb-1">Periksa kembali isian formulir:</div>
                 <ul class="list-disc list-inside space-y-1">
                     @foreach ($errors->all() as $error)
@@ -85,11 +85,11 @@
                 name="q"
                 value="{{ $q }}"
                 placeholder="Cari nama atau kode barang..."
-                class="touch-target flex-1 w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target flex-1 w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
             <select
                 name="jenis"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[9.375rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[9.375rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="Semua" {{ $jenis === 'Semua' ? 'selected' : '' }}>Jenis: Semua</option>
                 @foreach ($daftarJenis as $itemJenis)
@@ -100,7 +100,7 @@
             </select>
             <select
                 name="urut"
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[10.625rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
+                class="touch-target bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm min-w-[10.625rem] focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent"
             >
                 <option value="terbaru" {{ $urut === 'terbaru' ? 'selected' : '' }}>Urutkan: Terbaru</option>
                 <option value="nama" {{ $urut === 'nama' ? 'selected' : '' }}>Urutkan: Nama A-Z</option>
@@ -108,14 +108,14 @@
             </select>
             <button
                 type="submit"
-                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors"
+                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors"
             >
                 Cari
             </button>
         </form>
 
         {{-- Kartu Tabel Utama --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-none shadow-sm border border-gray-200 overflow-hidden">
             {{-- Wrapper scroll horizontal untuk layar kecil --}}
             <div class="overflow-x-auto w-full">
                 <table class="w-full border-collapse text-left text-base">
@@ -180,15 +180,15 @@
                                 </td>
                                 <td class="py-3 px-3 whitespace-nowrap">
                                     @if ($item->status_stok === 'Aman')
-                                        <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-full text-base">
+                                        <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-none text-base">
                                             Aman
                                         </span>
                                     @elseif ($item->status_stok === 'Menipis')
-                                        <span class="inline-block px-3 py-1 font-semibold text-amber-800 bg-amber-100 rounded-full text-base">
+                                        <span class="inline-block px-3 py-1 font-semibold text-amber-800 bg-amber-100 rounded-none text-base">
                                             Menipis
                                         </span>
                                     @else
-                                        <span class="inline-block px-3 py-1 font-semibold text-red-800 bg-red-100 rounded-full text-base">
+                                        <span class="inline-block px-3 py-1 font-semibold text-red-800 bg-red-100 rounded-none text-base">
                                             Habis
                                         </span>
                                     @endif

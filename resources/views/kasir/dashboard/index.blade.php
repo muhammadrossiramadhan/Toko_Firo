@@ -25,13 +25,13 @@
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
-            <div class="rounded-xl p-2 flex items-center justify-center">
+            <div class="rounded-none p-2 flex items-center justify-center">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
             </div>
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -46,7 +46,7 @@
                     {{-- 1. Dashboard Kasir (Aktif) --}}
                     <a
                         href="{{ route('kasir.dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
                     >
                         Dashboard
                     </a>
@@ -54,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Transaksi Penjualan
                     </a>
@@ -62,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Lihat Stok Barang
                     </a>
@@ -70,7 +70,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Saldo
                     </a>
@@ -78,7 +78,7 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Info Barang Baru
                     </a>
@@ -86,7 +86,7 @@
                     {{-- 6. Pengembalian Barang --}}
                     <a
                         href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Pengembalian Barang
                     </a>
@@ -96,8 +96,8 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
+                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <div class="min-w-0 flex-1">
@@ -113,7 +113,7 @@
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
                 >
                     Keluar
                 </button>
@@ -131,7 +131,7 @@
                 </h1>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
+                <div class="w-9 h-9 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">
@@ -153,7 +153,7 @@
             <div>
                 <a
                     href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : '#' }}"
-                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg min-h-[2.75rem] inline-flex items-center justify-center text-base shadow-sm transition-colors whitespace-nowrap"
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none min-h-[2.75rem] inline-flex items-center justify-center text-base shadow-sm transition-colors whitespace-nowrap"
                 >
                     + Transaksi Baru
                 </a>
@@ -165,9 +165,9 @@
             {{-- Kartu 1: Transaksi Penjualan --}}
             <a
                 href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : '#' }}"
-                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
             >
-                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
                     PENJUALAN
                 </span>
                 <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">
@@ -181,9 +181,9 @@
             {{-- Kartu 2: Lihat Stok Barang --}}
             <a
                 href="{{ Route::has('kasir.stok') ? route('kasir.stok') : '#' }}"
-                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
             >
-                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800 mb-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-blue-100 text-blue-800 mb-2">
                     INVENTORI
                 </span>
                 <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">
@@ -197,9 +197,9 @@
             {{-- Kartu 3: Saldo --}}
             <a
                 href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : '#' }}"
-                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
             >
-                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-100 text-amber-800 mb-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-amber-100 text-amber-800 mb-2">
                     KEUANGAN
                 </span>
                 <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">
@@ -213,9 +213,9 @@
             {{-- Kartu 4: Info Barang Baru --}}
             <a
                 href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                class="bg-white border border-slate-200 rounded-xl p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
             >
-                <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-800 mb-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-purple-100 text-purple-800 mb-2">
                     KATALOG
                 </span>
                 <h3 class="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">
@@ -230,7 +230,7 @@
         {{-- Baris Widget Bawah (Grid 3 Kolom Desktop, 1 Kolom Tablet) --}}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Widget 1: Saldo Hari Ini --}}
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-base font-medium block">
                         Saldo Hari Ini
@@ -250,7 +250,7 @@
             </div>
 
             {{-- Widget 2: Stok Menipis --}}
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800 mb-3">
                         Stok Menipis
@@ -266,7 +266,7 @@
                                         Sisa {{ $itemStok['sisa'] }}
                                     </div>
                                 </div>
-                                <span class="bg-amber-100 text-amber-800 text-sm font-semibold px-2.5 py-1 rounded-md">
+                                <span class="bg-amber-100 text-amber-800 text-sm font-semibold px-2.5 py-1 rounded-none">
                                     {{ $itemStok['status'] }}
                                 </span>
                             </div>
@@ -284,7 +284,7 @@
             </div>
 
             {{-- Widget 3: Info Barang Baru --}}
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800 mb-3">
                         Info Barang Baru
@@ -294,7 +294,7 @@
                             <div class="py-2.5 flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-2.5 min-w-0">
                                     {{-- Titik indikator lingkaran CSS murni --}}
-                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 inline-block"></span>
+                                    <span class="w-2.5 h-2.5 rounded-none bg-emerald-500 shrink-0 inline-block"></span>
                                     <span class="text-slate-800 text-base font-medium truncate">
                                         {{ $info['deskripsi'] }}
                                     </span>

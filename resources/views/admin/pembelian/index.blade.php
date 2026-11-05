@@ -36,7 +36,7 @@
             <button
                 type="button"
                 onclick="bukaModalRestock()"
-                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+                class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
             >
                 Tambah Restock Baru
             </button>
@@ -44,12 +44,12 @@
 
         {{-- Notifikasi Sukses / Error --}}
         @if (session('sukses') || session('success'))
-            <div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-base font-medium flex items-center justify-between">
+            <div class="mb-6 p-4 rounded-none bg-emerald-50 border border-emerald-200 text-emerald-800 text-base font-medium flex items-center justify-between">
                 <span>{{ session('sukses') ?? session('success') }}</span>
             </div>
         @endif
         @if ($errors->any())
-            <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-base font-medium">
+            <div class="mb-6 p-4 rounded-none bg-red-50 border border-red-200 text-red-800 text-base font-medium">
                 <ul class="list-disc pl-5 space-y-1">
                     @foreach ($errors->all() as $err)
                         <li>{{ $err }}</li>
@@ -64,7 +64,7 @@
                 type="button"
                 id="btn-tab-baru"
                 onclick="bukaTab('baru')"
-                class="touch-target px-6 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors"
+                class="touch-target px-6 py-2.5 rounded-none bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors"
             >
                 Pembelian Baru
             </button>
@@ -72,7 +72,7 @@
                 type="button"
                 id="btn-tab-riwayat"
                 onclick="bukaTab('riwayat')"
-                class="touch-target px-6 py-2.5 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors"
+                class="touch-target px-6 py-2.5 rounded-none bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors"
             >
                 Riwayat Pembelian
             </button>
@@ -81,7 +81,7 @@
         {{-- Konten Tab 1: Pembelian Baru --}}
         <div id="tab-konten-baru" class="space-y-6">
             {{-- Kartu Perlu Segera Restock --}}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="bg-white rounded-none shadow-sm border border-gray-200 p-6">
                 <h2 class="text-xl font-bold text-gray-900 mb-2">
                     Perlu Segera Restock
                 </h2>
@@ -91,7 +91,7 @@
 
                 <div class="space-y-3">
                     @forelse ($barangRestock as $item)
-                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div class="bg-amber-50 border border-amber-200 rounded-none p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                                 <span class="font-bold text-gray-900 text-base">
                                     {{ $item->nama }}
@@ -104,7 +104,7 @@
                                 <button
                                     type="button"
                                     onclick="bukaModalRestock('{{ $item->kode_item }}', '{{ addslashes($item->nama) }}')"
-                                    class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+                                    class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
                                 >
                                     Catat Restock
                                 </button>
@@ -122,7 +122,7 @@
         {{-- Konten Tab 2: Riwayat Pembelian --}}
         {{-- TODO: desain tab ini belum ada di Figma --}}
         <div id="tab-konten-riwayat" class="space-y-6 hidden">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white rounded-none shadow-sm border border-gray-200 overflow-hidden">
                 <div class="p-6 border-b border-gray-200">
                     <h2 class="text-xl font-bold text-gray-900">
                         Riwayat Pembelian
@@ -149,7 +149,7 @@
                                     <td class="py-3 px-4">{{ $riwayat->jumlah }}</td>
                                     <td class="py-3 px-4 font-medium">Rp {{ number_format($riwayat->total, 0, ',', '.') }}</td>
                                     <td class="py-3 px-4">
-                                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                                        <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-none text-sm font-semibold">
                                             {{ $riwayat->status }}
                                         </span>
                                     </td>
@@ -170,7 +170,7 @@
 
     {{-- Modal Catat Restock Pembelian --}}
     <div id="modalRestock" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-gray-200">
+        <div class="bg-white rounded-none max-w-lg w-full p-6 shadow-xl border border-gray-200">
             <div class="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
                 <h3 class="text-xl font-bold text-gray-900">Catat Pembelian Restock</h3>
                 <button type="button" onclick="tutupModalRestock()" class="text-gray-400 hover:text-gray-600 font-bold text-2xl px-2">&times;</button>
@@ -179,7 +179,7 @@
                 @csrf
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Barang *</label>
-                    <select id="modal_kode_item" name="kode_item" required class="touch-target w-full px-4 py-2 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                    <select id="modal_kode_item" name="kode_item" required class="touch-target w-full px-4 py-2 border border-gray-300 rounded-none text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
                         <option value="">-- Pilih Barang --</option>
                         @foreach ($semuaBarang ?? [] as $b)
                             <option value="{{ $b->kode_item }}">{{ $b->nama_item }} (Stok saat ini: {{ $b->stok }} {{ $b->satuan }})</option>
@@ -188,15 +188,15 @@
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Supplier / Pemasok *</label>
-                    <input type="text" name="nama_supplier" required placeholder="Contoh: CV Sumber Makmur" class="touch-target w-full px-4 py-2 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <input type="text" name="nama_supplier" required placeholder="Contoh: CV Sumber Makmur" class="touch-target w-full px-4 py-2 border border-gray-300 rounded-none text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Jumlah Masuk (Qty) *</label>
-                    <input type="number" id="modal_jumlah" name="jumlah" min="1" required placeholder="Minimal 1" class="touch-target w-full px-4 py-2 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <input type="number" id="modal_jumlah" name="jumlah" min="1" required placeholder="Minimal 1" class="touch-target w-full px-4 py-2 border border-gray-300 rounded-none text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div class="pt-4 flex items-center justify-end gap-3 border-t border-gray-200">
-                    <button type="button" onclick="tutupModalRestock()" class="touch-target px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 font-medium cursor-pointer">Batal</button>
-                    <button type="submit" class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg cursor-pointer">Simpan Pembelian</button>
+                    <button type="button" onclick="tutupModalRestock()" class="touch-target px-4 py-2 rounded-none border border-gray-300 text-gray-700 hover:bg-gray-100 font-medium cursor-pointer">Batal</button>
+                    <button type="submit" class="touch-target px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none cursor-pointer">Simpan Pembelian</button>
                 </div>
             </form>
         </div>
@@ -213,13 +213,13 @@
             if (namaTab === 'baru') {
                 tabPembelianBaru.classList.remove('hidden');
                 tabRiwayat.classList.add('hidden');
-                btnTabBaru.className = 'touch-target px-6 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors';
-                btnTabRiwayat.className = 'touch-target px-6 py-2.5 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors';
+                btnTabBaru.className = 'touch-target px-6 py-2.5 rounded-none bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors';
+                btnTabRiwayat.className = 'touch-target px-6 py-2.5 rounded-none bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors';
             } else {
                 tabPembelianBaru.classList.add('hidden');
                 tabRiwayat.classList.remove('hidden');
-                btnTabBaru.className = 'touch-target px-6 py-2.5 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors';
-                btnTabRiwayat.className = 'touch-target px-6 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors';
+                btnTabBaru.className = 'touch-target px-6 py-2.5 rounded-none bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-base transition-colors';
+                btnTabRiwayat.className = 'touch-target px-6 py-2.5 rounded-none bg-emerald-600 text-white font-semibold text-base shadow-sm transition-colors';
             }
         }
 

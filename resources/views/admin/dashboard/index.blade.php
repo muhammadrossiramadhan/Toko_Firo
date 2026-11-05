@@ -38,10 +38,10 @@
 
             <div class="flex items-center gap-4">
                 {{-- Tombol Notifikasi (Teks & Badge Murni, Terhubung ke Rute Notifikasi) --}}
-                <a href="{{ route('admin.notifikasi') }}" class="touch-target px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors flex items-center gap-2 cursor-pointer">
+                <a href="{{ route('admin.notifikasi') }}" class="touch-target px-4 py-2 rounded-none border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors flex items-center gap-2 cursor-pointer">
                     <span>Notifikasi</span>
                     @if (($notifCount ?? 0) > 0)
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-none text-xs font-bold bg-emerald-100 text-emerald-800">
                             {{ $notifCount }} Baru
                         </span>
                     @endif
@@ -49,7 +49,7 @@
 
                 {{-- Profil Topbar (Inisial & Nama Dinamis, Tanpa Ikon) --}}
                 <div class="flex items-center gap-3 pl-2 border-l border-gray-300">
-                    <div class="w-10 h-10 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-base">
+                    <div class="w-10 h-10 rounded-none bg-emerald-700 text-white font-bold flex items-center justify-center text-base">
                         {{ $inisialUser ?? (auth()->user() ? strtoupper(substr((string) (auth()->user()->nama ?? auth()->user()->username ?? 'A'), 0, 1)) : 'A') }}
                     </div>
                     <div class="hidden md:block text-left">
@@ -77,12 +77,12 @@
         {{-- Baris 4 Kartu Metrik Ringkasan --}}
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {{-- Kartu 1: Penjualan Hari Ini --}}
-            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['penjualan_hari_ini']['label'] }}
                     </span>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold bg-emerald-100 text-emerald-800">
                         {{ $ringkasan['penjualan_hari_ini']['badge'] }}
                     </span>
                 </div>
@@ -92,12 +92,12 @@
             </div>
 
             {{-- Kartu 2: Jumlah Transaksi --}}
-            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['jumlah_transaksi']['label'] }}
                     </span>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold bg-emerald-100 text-emerald-800">
                         {{ $ringkasan['jumlah_transaksi']['badge'] }}
                     </span>
                 </div>
@@ -107,12 +107,12 @@
             </div>
 
             {{-- Kartu 3: Stok Menipis --}}
-            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['stok_menipis']['label'] }}
                     </span>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold bg-amber-100 text-amber-800">
                         {{ $ringkasan['stok_menipis']['subteks'] }}
                     </span>
                 </div>
@@ -122,12 +122,12 @@
             </div>
 
             {{-- Kartu 4: Laba Hari Ini --}}
-            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['laba_hari_ini']['label'] }}
                     </span>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-bold bg-emerald-100 text-emerald-800">
                         {{ $ringkasan['laba_hari_ini']['badge'] }}
                     </span>
                 </div>
@@ -140,7 +140,7 @@
         {{-- Area Utama Grid (2 Kolom) --}}
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Kolom Kiri (Lebar): Diagram Batang "Penjualan 7 Hari Terakhir" --}}
-            <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col justify-between">
+            <div class="lg:col-span-2 bg-white rounded-none border border-gray-200 p-6 shadow-sm flex flex-col justify-between">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
                     <div>
                         <h3 class="text-lg font-bold text-gray-900">
@@ -151,11 +151,11 @@
                         </p>
                     </div>
                     @if (!empty($puncakPenjualan) && ($puncakPenjualan['persen'] ?? 0) > 0)
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">
+                        <span class="inline-flex items-center px-3 py-1 rounded-none text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">
                             Puncak Tertinggi: {{ $puncakPenjualan['hari'] }} ({{ $puncakPenjualan['nominal'] }})
                         </span>
                     @else
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 text-gray-600 border border-gray-200 self-start sm:self-auto">
+                        <span class="inline-flex items-center px-3 py-1 rounded-none text-xs font-semibold bg-gray-50 text-gray-600 border border-gray-200 self-start sm:self-auto">
                             Volume 7 Hari Terakhir
                         </span>
                     @endif
@@ -173,7 +173,7 @@
                             {{-- Batang diagram --}}
                             <div class="w-full max-w-[48px] flex items-end justify-center h-full">
                                 <div
-                                    class="w-full rounded-t-md transition-all duration-300 {{ $item['is_puncak'] ? 'bg-emerald-600 shadow-sm' : 'bg-emerald-100 group-hover:bg-emerald-200' }}"
+                                    class="w-full rounded-none transition-all duration-300 {{ $item['is_puncak'] ? 'bg-emerald-600 shadow-sm' : 'bg-emerald-100 group-hover:bg-emerald-200' }}"
                                     style="height: {{ $item['persen'] }}%;"
                                     title="{{ $item['hari'] }}: {{ $item['nominal'] }}"
                                 ></div>
@@ -191,11 +191,11 @@
                 <div class="flex items-center justify-between text-xs text-gray-500 mt-4 px-2">
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-sm bg-emerald-600 inline-block"></span>
+                            <span class="w-3 h-3 rounded-none bg-emerald-600 inline-block"></span>
                             <span class="text-sm text-gray-600">Hari Puncak</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-sm bg-emerald-100 inline-block"></span>
+                            <span class="w-3 h-3 rounded-none bg-emerald-100 inline-block"></span>
                             <span class="text-sm text-gray-600">Hari Sebelumnya</span>
                         </div>
                     </div>
@@ -206,15 +206,15 @@
             {{-- Kolom Kanan (Lebih Ramping): Top Barang & Aktivitas Terbaru --}}
             <div class="lg:col-span-1 space-y-6">
                 {{-- Kartu 1: Top Barang Hari Ini --}}
-                <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">
                         Top Barang Hari Ini
                     </h3>
                     <div class="space-y-3">
                         @foreach ($topBarang as $barang)
-                            <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-emerald-50/40 transition-colors">
+                            <div class="flex items-center justify-between p-3 rounded-none bg-gray-50 hover:bg-emerald-50/40 transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-base">
+                                    <div class="w-8 h-8 rounded-none bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-base">
                                         {{ $barang->nomor }}
                                     </div>
                                     <div>
@@ -226,7 +226,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">
+                                <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-none">
                                     {{ $barang->terjual }}
                                 </span>
                             </div>
@@ -235,7 +235,7 @@
                 </div>
 
                 {{-- Kartu 2: Aktivitas Terbaru --}}
-                <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">
                         Aktivitas Terbaru
                     </h3>
@@ -243,7 +243,7 @@
                         @foreach ($aktivitasTerbaru as $akt)
                             <div class="flex items-start justify-between gap-3 pb-3 border-b border-gray-100 last:border-b-0 last:pb-0">
                                 <div class="flex items-start gap-2.5">
-                                    <span class="w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 {{ $akt->tipe === 'peringatan' ? 'bg-amber-500' : 'bg-emerald-500' }}"></span>
+                                    <span class="w-2.5 h-2.5 rounded-none mt-1.5 shrink-0 {{ $akt->tipe === 'peringatan' ? 'bg-amber-500' : 'bg-emerald-500' }}"></span>
                                     <p class="text-base text-gray-800 leading-snug">
                                         {{ $akt->keterangan }}
                                     </p>

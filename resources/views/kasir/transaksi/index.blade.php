@@ -23,19 +23,19 @@
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
     {{-- Notifikasi Toast Mengambang K12 --}}
-    <div id="toast-notif" class="fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-xl shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700"></div>
+    <div id="toast-notif" class="fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700"></div>
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
-            <div class="rounded-xl p-2 flex items-center justify-center">
+            <div class="rounded-none p-2 flex items-center justify-center">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
             </div>
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -50,7 +50,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Dashboard
                     </a>
@@ -58,7 +58,7 @@
                     {{-- 2. Transaksi Penjualan (Aktif) --}}
                     <a
                         href="{{ route('kasir.transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
                     >
                         Transaksi Penjualan
                     </a>
@@ -66,7 +66,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Lihat Stok Barang
                     </a>
@@ -74,7 +74,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : url('/kasir/saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Saldo
                     </a>
@@ -82,7 +82,7 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : url('/kasir/info-barang') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Info Barang Baru
                     </a>
@@ -90,7 +90,7 @@
                     {{-- 6. Pengembalian Barang --}}
                     <a
                         href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Pengembalian Barang
                     </a>
@@ -100,8 +100,8 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
+                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <div class="min-w-0 flex-1">
@@ -117,7 +117,7 @@
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
                 >
                     Keluar
                 </button>
@@ -136,7 +136,7 @@
                 <p class="text-slate-500 text-base mt-0.5">Catat pesanan barang dan proses pembayaran belanja kasir.</p>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
+                <div class="w-9 h-9 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">
@@ -146,18 +146,18 @@
         </header>
 
         {{-- Stepper Bar Navigasi 4 Langkah --}}
-        <div class="bg-white border border-slate-200 rounded-xl p-3 mb-6 shadow-sm">
+        <div class="bg-white border border-slate-200 rounded-none p-3 mb-6 shadow-sm">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-base font-semibold" id="stepper-bar">
-                <div id="step-tab-1" class="step-tab py-2.5 px-4 rounded-lg bg-emerald-600 text-white shadow-sm transition-colors cursor-pointer" onclick="setStep(1)">
+                <div id="step-tab-1" class="step-tab py-2.5 px-4 rounded-none bg-emerald-600 text-white shadow-sm transition-colors cursor-pointer" onclick="setStep(1)">
                     1. Pilih Barang
                 </div>
-                <div id="step-tab-2" class="step-tab py-2.5 px-4 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" onclick="lanjutKeReview()">
+                <div id="step-tab-2" class="step-tab py-2.5 px-4 rounded-none bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" onclick="lanjutKeReview()">
                     2. Review
                 </div>
-                <div id="step-tab-3" class="step-tab py-2.5 px-4 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" onclick="lanjutKeBayar()">
+                <div id="step-tab-3" class="step-tab py-2.5 px-4 rounded-none bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer" onclick="lanjutKeBayar()">
                     3. Bayar
                 </div>
-                <div id="step-tab-4" class="step-tab py-2.5 px-4 rounded-lg bg-slate-100 text-slate-600 transition-colors opacity-70 cursor-not-allowed">
+                <div id="step-tab-4" class="step-tab py-2.5 px-4 rounded-none bg-slate-100 text-slate-600 transition-colors opacity-70 cursor-not-allowed">
                     4. Selesai
                 </div>
             </div>
@@ -171,7 +171,7 @@
                 {{-- Sisi Kiri: Katalog Produk (2 Kolom Layout) --}}
                 <div class="lg:col-span-2 space-y-4">
                     {{-- Input Pencarian Barcode / Barang --}}
-                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                    <div class="bg-white border border-slate-200 rounded-none p-4 shadow-sm">
                         <label for="input-cari-barang" class="block text-slate-700 font-medium text-base mb-1.5">
                             Cari Barang / Barcode
                         </label>
@@ -181,7 +181,7 @@
                                 id="input-cari-barang"
                                 placeholder="Cari nama barang atau scan barcode..."
                                 autocomplete="off"
-                                class="touch-target w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
+                                class="touch-target w-full bg-white border border-slate-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
                             >
                             <span id="indikator-cari" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-medium">
                                 Mencari...
@@ -195,7 +195,7 @@
 
                     {{-- Container Hasil Pencarian Dinamis --}}
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="kontainer-hasil-cari">
-                        <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-400 text-base">
+                        <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-400 text-base">
                             Memuat katalog barang...
                         </div>
                     </div>
@@ -203,13 +203,13 @@
 
                 {{-- Sisi Kanan: Keranjang Belanja Reaktif --}}
                 <div class="lg:col-span-1">
-                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between min-h-[500px]">
+                    <div class="bg-white border border-slate-200 rounded-none p-5 shadow-sm flex flex-col justify-between min-h-[500px]">
                         <div>
                             <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
                                 <h2 class="text-xl font-bold text-slate-800">
                                     Keranjang (<span id="jumlah-item-badge">0</span>)
                                 </h2>
-                                <span id="total-item-badge" class="text-xs uppercase tracking-wider font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded">
+                                <span id="total-item-badge" class="text-xs uppercase tracking-wider font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-none">
                                     0 Item Terpilih
                                 </span>
                             </div>
@@ -229,7 +229,7 @@
                             <button
                                 type="button"
                                 onclick="lanjutKeReview()"
-                                class="touch-target w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg min-h-[2.75rem] text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+                                class="touch-target w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-none min-h-[2.75rem] text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
                             >
                                 Lanjutkan -&gt;
                             </button>
@@ -243,14 +243,14 @@
         {{-- STEP 2: Review Pesanan                                                    --}}
         {{-- ========================================================================= --}}
         <section id="step-container-2" class="step-container hidden">
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm max-w-4xl mx-auto space-y-6">
+            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm max-w-4xl mx-auto space-y-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900">Review Ringkasan Pesanan</h2>
                     <p class="text-slate-500 text-base mt-1">Periksa kembali daftar barang belanjaan pelanggan sebelum proses pembayaran.</p>
                 </div>
 
                 {{-- Tabel Rincian --}}
-                <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                <div class="overflow-x-auto border border-slate-200 rounded-none">
                     <table class="w-full text-left text-base divide-y divide-slate-200">
                         <thead class="bg-slate-50 text-slate-700 font-semibold">
                             <tr>
@@ -277,14 +277,14 @@
                     <button
                         type="button"
                         onclick="setStep(1)"
-                        class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-6 py-2.5 rounded-lg min-h-[2.75rem] text-base transition-colors cursor-pointer"
+                        class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-6 py-2.5 rounded-none min-h-[2.75rem] text-base transition-colors cursor-pointer"
                     >
                         &lt;- Kembali
                     </button>
                     <button
                         type="button"
                         onclick="lanjutKeBayar()"
-                        class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-lg min-h-[2.75rem] text-base shadow-sm transition-colors cursor-pointer"
+                        class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-2.5 rounded-none min-h-[2.75rem] text-base shadow-sm transition-colors cursor-pointer"
                     >
                         Lanjut ke Pembayaran -&gt;
                     </button>
@@ -296,9 +296,9 @@
         {{-- STEP 3: Pembayaran & Kembalian                                            --}}
         {{-- ========================================================================= --}}
         <section id="step-container-3" class="step-container hidden">
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm max-w-2xl mx-auto space-y-6">
+            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm max-w-2xl mx-auto space-y-6">
                 {{-- Total Tagihan --}}
-                <div class="text-center p-6 bg-slate-50 border border-slate-200 rounded-xl">
+                <div class="text-center p-6 bg-slate-50 border border-slate-200 rounded-none">
                     <span class="text-slate-500 text-base font-medium block">Total yang harus dibayar</span>
                     <div id="total-tagihan-step3" class="text-3xl md:text-4xl font-bold text-slate-900 my-1">
                         Rp 0
@@ -313,7 +313,7 @@
                             type="button"
                             id="btn-metode-tunai"
                             onclick="pilihMetode('TUNAI')"
-                            class="touch-target p-3 rounded-xl border border-emerald-600 bg-emerald-600 text-white font-semibold text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                            class="touch-target p-3 rounded-none border border-emerald-600 bg-emerald-600 text-white font-semibold text-base min-h-[2.75rem] transition-colors cursor-pointer"
                         >
                             Tunai
                         </button>
@@ -321,7 +321,7 @@
                             type="button"
                             id="btn-metode-qris"
                             onclick="pilihMetode('QRIS')"
-                            class="touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                            class="touch-target p-3 rounded-none border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
                         >
                             QRIS
                         </button>
@@ -329,7 +329,7 @@
                             type="button"
                             id="btn-metode-transfer"
                             onclick="pilihMetode('TRANSFER')"
-                            class="touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                            class="touch-target p-3 rounded-none border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
                         >
                             Transfer
                         </button>
@@ -347,7 +347,7 @@
                             id="input-uang-diterima"
                             value="Rp 0"
                             oninput="onInputUang(this.value)"
-                            class="touch-target w-full bg-white border border-slate-300 rounded-lg px-4 py-3 text-xl font-bold text-slate-900 min-h-[2.75rem] shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                            class="touch-target w-full bg-white border border-slate-300 rounded-none px-4 py-3 text-xl font-bold text-slate-900 min-h-[2.75rem] shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none"
                         >
                     </div>
 
@@ -358,28 +358,28 @@
                             <button
                                 type="button"
                                 onclick="isiUangPas()"
-                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                             >
                                 Uang Pas
                             </button>
                             <button
                                 type="button"
                                 onclick="isiUangCepat(50000)"
-                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                             >
                                 Rp 50.000
                             </button>
                             <button
                                 type="button"
                                 onclick="isiUangCepat(100000)"
-                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                             >
                                 Rp 100.000
                             </button>
                             <button
                                 type="button"
                                 onclick="isiUangCepat(200000)"
-                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                                class="touch-target px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                             >
                                 Rp 200.000
                             </button>
@@ -387,7 +387,7 @@
                     </div>
 
                     {{-- Banner Kembalian --}}
-                    <div id="kotak-kembalian" class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
+                    <div id="kotak-kembalian" class="p-4 bg-emerald-50 border border-emerald-200 rounded-none text-center">
                         <span id="label-kembalian" class="text-sm font-medium text-emerald-800 block">Kembalian</span>
                         <div id="teks-kembalian" class="text-2xl font-bold text-emerald-800 mt-1">
                             Kembalian Rp 0
@@ -396,7 +396,7 @@
                 </div>
 
                 {{-- Banner Informasi QRIS --}}
-                <div id="seksi-qris" class="hidden p-4 bg-slate-50 border border-slate-200 rounded-xl text-center">
+                <div id="seksi-qris" class="hidden p-4 bg-slate-50 border border-slate-200 rounded-none text-center">
                     <p class="text-slate-700 text-base">
                         Pastikan pembayaran QRIS telah terverifikasi sukses pada layar mesin scanner/EDC sebelum menyelesaikan transaksi.
                     </p>
@@ -407,7 +407,7 @@
                     <button
                         type="button"
                         onclick="setStep(2)"
-                        class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-6 py-2.5 rounded-lg min-h-[2.75rem] text-base transition-colors cursor-pointer"
+                        class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-6 py-2.5 rounded-none min-h-[2.75rem] text-base transition-colors cursor-pointer"
                     >
                         &lt;- Kembali
                     </button>
@@ -415,7 +415,7 @@
                         type="button"
                         id="btn-selesai-transaksi"
                         onclick="prosesBayarTransaksi()"
-                        class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-2.5 rounded-lg min-h-[2.75rem] text-base shadow-sm transition-colors cursor-pointer"
+                        class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-2.5 rounded-none min-h-[2.75rem] text-base shadow-sm transition-colors cursor-pointer"
                     >
                         Selesaikan Transaksi
                     </button>
@@ -427,8 +427,8 @@
         {{-- STEP 4: Dialog Transaksi Berhasil                                         --}}
         {{-- ========================================================================= --}}
         <div id="step-container-4" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl relative" onclick="event.stopPropagation()">
-                <div class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wider uppercase mb-4">
+            <div class="bg-white rounded-none max-w-md w-full p-6 text-center shadow-2xl relative" onclick="event.stopPropagation()">
+                <div class="inline-flex items-center justify-center px-4 py-2 rounded-none bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wider uppercase mb-4">
                     BERHASIL
                 </div>
 
@@ -440,17 +440,17 @@
                 </p>
 
                 {{-- Checklist Sistem --}}
-                <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 text-left space-y-2 mb-6">
+                <div class="bg-slate-50 border border-slate-100 rounded-none p-4 text-left space-y-2 mb-6">
                     <div class="flex items-center gap-2 text-base text-slate-700">
-                        <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
+                        <span class="w-2 h-2 rounded-none bg-emerald-600 shrink-0"></span>
                         <span>Saldo kasir diperbarui</span>
                     </div>
                     <div class="flex items-center gap-2 text-base text-slate-700">
-                        <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
+                        <span class="w-2 h-2 rounded-none bg-emerald-600 shrink-0"></span>
                         <span>Stok barang otomatis dikurangi</span>
                     </div>
                     <div class="flex items-center gap-2 text-base text-slate-700">
-                        <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
+                        <span class="w-2 h-2 rounded-none bg-emerald-600 shrink-0"></span>
                         <span>Riwayat transaksi tersimpan permanen</span>
                     </div>
                 </div>
@@ -460,14 +460,14 @@
                     <button
                         type="button"
                         onclick="bukaModalStruk()"
-                        class="touch-target w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg text-base min-h-[2.75rem] shadow-sm transition-colors cursor-pointer"
+                        class="touch-target w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-none text-base min-h-[2.75rem] shadow-sm transition-colors cursor-pointer"
                     >
                         Cetak Struk
                     </button>
                     <button
                         type="button"
                         onclick="resetTransaksi()"
-                        class="touch-target w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-2.5 rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                        class="touch-target w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-2.5 rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                     >
                         Transaksi Baru -&gt;
                     </button>
@@ -487,7 +487,7 @@
         {{-- MODAL STRUK TERMAL 80mm                                                   --}}
         {{-- ========================================================================= --}}
         <div id="modal-struk" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-            <div class="bg-white rounded-2xl max-w-[380px] w-full p-6 shadow-2xl relative font-mono text-sm leading-relaxed text-slate-800 border border-slate-200" onclick="event.stopPropagation()">
+            <div class="bg-white rounded-none max-w-[380px] w-full p-6 shadow-2xl relative font-mono text-sm leading-relaxed text-slate-800 border border-slate-200" onclick="event.stopPropagation()">
                 {{-- Header Struk --}}
                 <div class="text-center pb-3 border-b border-dashed border-slate-300">
                     <div class="text-xl font-bold font-sans text-slate-900">TOKO FIRO</div>
@@ -544,14 +544,14 @@
                         type="button"
                         data-turbo="false"
                         onclick="cetakResiFisik()"
-                        class="touch-target w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                        class="touch-target w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                     >
                         Cetak Resi
                     </button>
                     <button
                         type="button"
                         onclick="tutupModalStruk()"
-                        class="touch-target w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                        class="touch-target w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                     >
                         Tutup Struk
                     </button>
@@ -602,13 +602,13 @@
 
             toast.textContent = pesan;
             if (tipe === 'success') {
-                toast.className = 'fixed top-6 right-6 z-50 bg-emerald-600 text-white font-medium px-5 py-3 rounded-xl shadow-xl transition-all duration-300 opacity-100 text-base border border-emerald-500';
+                toast.className = 'fixed top-6 right-6 z-50 bg-emerald-600 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-100 text-base border border-emerald-500';
             } else {
-                toast.className = 'fixed top-6 right-6 z-50 bg-red-600 text-white font-medium px-5 py-3 rounded-xl shadow-xl transition-all duration-300 opacity-100 text-base border border-red-500';
+                toast.className = 'fixed top-6 right-6 z-50 bg-red-600 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-100 text-base border border-red-500';
             }
 
             setTimeout(() => {
-                toast.className = 'fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-xl shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700';
+                toast.className = 'fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700';
             }, 3500);
         }
 
@@ -656,13 +656,13 @@
                                 <button
                                     type="button"
                                     onclick="ubahQty('${kodeParam}', -1)"
-                                    class="touch-target w-11 h-11 bg-slate-100 hover:bg-slate-200 rounded-lg text-base font-bold text-slate-700 flex items-center justify-center cursor-pointer"
+                                    class="touch-target w-11 h-11 bg-slate-100 hover:bg-slate-200 rounded-none text-base font-bold text-slate-700 flex items-center justify-center cursor-pointer"
                                 >-</button>
                                 <span class="w-8 text-center font-semibold text-base text-slate-900">${item.qty}</span>
                                 <button
                                     type="button"
                                     onclick="ubahQty('${kodeParam}', 1)"
-                                    class="touch-target w-11 h-11 bg-slate-100 hover:bg-slate-200 rounded-lg text-base font-bold text-slate-700 flex items-center justify-center cursor-pointer"
+                                    class="touch-target w-11 h-11 bg-slate-100 hover:bg-slate-200 rounded-none text-base font-bold text-slate-700 flex items-center justify-center cursor-pointer"
                                 >+</button>
                             </div>
                         </div>
@@ -812,11 +812,11 @@
                 const tab = document.getElementById('step-tab-' + i);
                 if (tab) {
                     if (i === step) {
-                        tab.className = 'step-tab py-2.5 px-4 rounded-lg bg-emerald-600 text-white shadow-sm transition-colors cursor-pointer';
+                        tab.className = 'step-tab py-2.5 px-4 rounded-none bg-emerald-600 text-white shadow-sm transition-colors cursor-pointer';
                     } else if (i < step) {
-                        tab.className = 'step-tab py-2.5 px-4 rounded-lg bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200 transition-colors cursor-pointer';
+                        tab.className = 'step-tab py-2.5 px-4 rounded-none bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200 transition-colors cursor-pointer';
                     } else {
-                        tab.className = 'step-tab py-2.5 px-4 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer';
+                        tab.className = 'step-tab py-2.5 px-4 rounded-none bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer';
                     }
                 }
             }
@@ -839,8 +839,8 @@
             const seksiTunai = document.getElementById('seksi-tunai');
             const seksiQris = document.getElementById('seksi-qris');
 
-            const btnActive = 'touch-target p-3 rounded-xl border border-emerald-600 bg-emerald-600 text-white font-semibold text-base min-h-[2.75rem] transition-colors cursor-pointer';
-            const btnInactive = 'touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer';
+            const btnActive = 'touch-target p-3 rounded-none border border-emerald-600 bg-emerald-600 text-white font-semibold text-base min-h-[2.75rem] transition-colors cursor-pointer';
+            const btnInactive = 'touch-target p-3 rounded-none border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer';
 
             btnTunai.className = metode === 'TUNAI' ? btnActive : btnInactive;
             btnQris.className = metode === 'QRIS' ? btnActive : btnInactive;
@@ -899,12 +899,12 @@
             if (!el || !kotak) return;
 
             if (kembalian >= 0) {
-                kotak.className = 'p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center';
+                kotak.className = 'p-4 bg-emerald-50 border border-emerald-200 rounded-none text-center';
                 if (label) label.textContent = 'Kembalian';
                 el.className = 'text-2xl font-bold text-emerald-800 mt-1';
                 el.textContent = 'Kembalian Rp ' + formatRupiah(kembalian);
             } else {
-                kotak.className = 'p-4 bg-red-50 border border-red-200 rounded-xl text-center';
+                kotak.className = 'p-4 bg-red-50 border border-red-200 rounded-none text-center';
                 if (label) label.textContent = 'Uang Kurang';
                 el.className = 'text-2xl font-bold text-red-700 mt-1';
                 el.textContent = 'Kurang Rp ' + formatRupiah(Math.abs(kembalian));
@@ -1077,7 +1077,7 @@
                     const kontainer = document.getElementById('kontainer-hasil-cari');
                     if (kontainer) {
                         kontainer.innerHTML = `
-                            <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-400 text-base">
+                            <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-400 text-base">
                                 Ketik minimal 2 karakter untuk mencari nama barang atau kode item...
                             </div>
                         `;
@@ -1153,7 +1153,7 @@
                 const kontainer = document.getElementById('kontainer-hasil-cari');
                 if (kontainer) {
                     kontainer.innerHTML = `
-                        <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500">
+                        <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500">
                             Silakan ketik nama barang atau scan barcode untuk memilih produk.
                         </div>
                     `;
@@ -1217,7 +1217,7 @@
 
             if (!items || items.length === 0) {
                 kontainer.innerHTML = `
-                    <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500 text-base">
+                    <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500 text-base">
                         Tidak ada barang aktif yang cocok dengan pencarian.
                     </div>
                 `;
@@ -1239,13 +1239,13 @@
 
                 html += `
                     <div
-                        class="kartu-produk bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-between hover:border-emerald-500 transition-colors"
+                        class="kartu-produk bg-white border border-slate-200 rounded-none p-4 shadow-sm flex flex-col justify-between hover:border-emerald-500 transition-colors"
                         data-kode="${kode.toLowerCase()}"
                         data-nama="${nama.toLowerCase()}"
                     >
                         <div>
                             <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono">
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded-none bg-slate-100 text-slate-700 font-mono">
                                     ${kode}
                                 </span>
                                 <span class="text-sm ${stokClass}">
@@ -1263,7 +1263,7 @@
                             <button
                                 type="button"
                                 onclick="tambahItemKeranjang('${kodeParam}', '${namaParam}', ${harga}, ${stok}, '${satuanParam}')"
-                                class="touch-target px-3 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                                class="touch-target px-3 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-medium rounded-none text-base min-h-[2.75rem] transition-colors cursor-pointer"
                             >
                                 + Tambah
                             </button>

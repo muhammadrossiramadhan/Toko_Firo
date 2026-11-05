@@ -41,7 +41,7 @@
             <div>
                 <a
                     href="{{ route('admin.barang') }}"
-                    class="touch-target px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center"
+                    class="touch-target px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-none text-base shadow-sm transition-colors flex items-center justify-center"
                 >
                     Kembali ke Data Barang
                 </a>
@@ -49,7 +49,7 @@
         </header>
 
         {{-- Bar Filter & Aksi di Atas Tabel --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="bg-white rounded-none shadow-sm border border-gray-200 p-4 mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <form method="GET" action="{{ route('admin.barang.riwayat') }}" class="flex flex-wrap items-center gap-3">
                 {{-- Input Rentang Tanggal Dinamis --}}
                 <div class="flex items-center gap-2">
@@ -59,7 +59,7 @@
                         id="filter-mulai"
                         name="mulai"
                         value="{{ $filterMulai ?? '' }}"
-                        class="touch-target px-3 py-2 bg-white border border-gray-300 rounded-lg text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="touch-target px-3 py-2 bg-white border border-gray-300 rounded-none text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                 </div>
                 <div class="flex items-center gap-2">
@@ -69,7 +69,7 @@
                         id="filter-sampai"
                         name="sampai"
                         value="{{ $filterSampai ?? '' }}"
-                        class="touch-target px-3 py-2 bg-white border border-gray-300 rounded-lg text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="touch-target px-3 py-2 bg-white border border-gray-300 rounded-none text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                 </div>
 
@@ -81,7 +81,7 @@
                     <select
                         id="filter-kasir"
                         name="kasir"
-                        class="touch-target px-4 py-2 bg-white border border-gray-300 rounded-lg text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="touch-target px-4 py-2 bg-white border border-gray-300 rounded-none text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                         <option value="Semua">Semua</option>
                         @foreach ($daftarKasir ?? [] as $k)
@@ -94,7 +94,7 @@
 
                 <button
                     type="submit"
-                    class="touch-target px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Filter
                 </button>
@@ -102,7 +102,7 @@
                 @if (!empty($filterMulai) || !empty($filterSampai) || (!empty($filterKasir) && $filterKasir !== 'Semua'))
                     <a
                         href="{{ route('admin.barang.riwayat') }}"
-                        class="touch-target px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg text-base transition-colors flex items-center justify-center"
+                        class="touch-target px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-none text-base transition-colors flex items-center justify-center"
                     >
                         Reset
                     </a>
@@ -113,7 +113,7 @@
             <div>
                 <a
                     href="{{ route('admin.barang.riwayat.ekspor', request()->query()) }}"
-                    class="touch-target px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
+                    class="touch-target px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-none text-base shadow-sm transition-colors flex items-center justify-center cursor-pointer"
                 >
                     Ekspor CSV
                 </a>
@@ -121,7 +121,7 @@
         </div>
 
         {{-- Tabel Data Transaksi --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-none shadow-sm border border-gray-200 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-base">
                     <thead>
@@ -157,7 +157,7 @@
                                     {{ $item->metode }}
                                 </td>
                                 <td class="py-3 px-4 whitespace-nowrap">
-                                    <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-semibold text-sm">
+                                    <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-none font-semibold text-sm">
                                         {{ $item->status }}
                                     </span>
                                 </td>

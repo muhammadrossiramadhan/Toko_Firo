@@ -74,6 +74,28 @@ class AdminAksesKasirTest extends TestCase
     }
 
     /**
+     * Admin berhasil mengakses GET /kasir/pengembalian (HTTP 200).
+     */
+    public function test_admin_berhasil_mengakses_kasir_pengembalian(): void
+    {
+        $response = $this->actingAs($this->admin)->get('/kasir/pengembalian');
+
+        $response->assertStatus(200);
+        $response->assertSee('Pengembalian Barang');
+    }
+
+    /**
+     * Sidebar admin memuat tautan menuju menu Pengembalian Barang (Kasir Retur).
+     */
+    public function test_sidebar_admin_memuat_tautan_pengembalian_barang(): void
+    {
+        $response = $this->actingAs($this->admin)->get('/admin/dashboard');
+
+        $response->assertStatus(200);
+        $response->assertSee(route('kasir.pengembalian'));
+    }
+
+    /**
      * e. User role kasir tetap memiliki akses normal (HTTP 200).
      */
     public function test_kasir_tetap_memiliki_akses_normal_ke_semua_modul(): void
@@ -83,6 +105,7 @@ class AdminAksesKasirTest extends TestCase
         $this->actingAs($this->kasir)->get('/kasir/stok')->assertStatus(200);
         $this->actingAs($this->kasir)->get('/kasir/saldo')->assertStatus(200);
         $this->actingAs($this->kasir)->get('/kasir/info-barang')->assertStatus(200);
+        $this->actingAs($this->kasir)->get('/kasir/pengembalian')->assertStatus(200);
     }
 
     /**
@@ -96,6 +119,7 @@ class AdminAksesKasirTest extends TestCase
             '/kasir/stok',
             '/kasir/saldo',
             '/kasir/info-barang',
+            '/kasir/pengembalian',
         ];
 
         foreach ($endpoints as $endpoint) {

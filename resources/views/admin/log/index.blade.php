@@ -41,7 +41,7 @@
             <div>
                 <a
                     href="{{ route('admin.log', array_merge(request()->query(), ['export' => 'csv'])) }}"
-                    class="touch-target bg-white border border-slate-300 text-slate-700 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-50 text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
+                    class="touch-target bg-white border border-slate-300 text-slate-700 px-5 py-2.5 rounded-none font-medium hover:bg-slate-50 text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
                 >
                     Ekspor CSV
                 </a>
@@ -49,7 +49,7 @@
         </header>
 
         {{-- Baris Filter & Pencarian --}}
-        <form method="GET" action="{{ route('admin.log') }}" class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <form method="GET" action="{{ route('admin.log') }}" class="bg-white rounded-none border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
             <div class="flex-1 max-w-md">
                 <input
                     type="text"
@@ -57,7 +57,7 @@
                     id="input-cari"
                     placeholder="Cari keterangan..."
                     value="{{ request('kata_kunci') ?? request('keyword') ?? request('q') ?? '' }}"
-                    class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                    class="touch-target w-full px-4 py-2 text-base rounded-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                 >
             </div>
 
@@ -69,7 +69,7 @@
                         name="tanggal_mulai"
                         value="{{ request('tanggal_mulai') ?? request('start_date') ?? '' }}"
                         aria-label="Tanggal Mulai"
-                        class="touch-target px-3 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="touch-target px-3 py-2 text-base rounded-none border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                     <span class="text-gray-500 text-sm">s/d</span>
                     <input
@@ -77,7 +77,7 @@
                         name="tanggal_akhir"
                         value="{{ request('tanggal_akhir') ?? request('end_date') ?? '' }}"
                         aria-label="Tanggal Akhir"
-                        class="touch-target px-3 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        class="touch-target px-3 py-2 text-base rounded-none border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                 </div>
 
@@ -85,7 +85,7 @@
                 <select
                     name="tipe"
                     id="filter-tipe"
-                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    class="touch-target px-4 py-2 text-base rounded-none border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                     <option value="">Tipe: Semua</option>
                     @foreach ($tipeAksiList as $tipeOption)
@@ -97,7 +97,7 @@
 
                 <button
                     type="submit"
-                    class="touch-target px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-5 py-2.5 rounded-none bg-emerald-600 text-white font-medium hover:bg-emerald-700 text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Filter
                 </button>
@@ -105,7 +105,7 @@
                 @if(request()->hasAny(['kata_kunci', 'tipe', 'tanggal_mulai', 'tanggal_akhir', 'keyword', 'q', 'start_date', 'end_date']))
                     <a
                         href="{{ route('admin.log') }}"
-                        class="touch-target px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 text-base shadow-sm inline-flex items-center justify-center cursor-pointer"
+                        class="touch-target px-4 py-2.5 rounded-none border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 text-base shadow-sm inline-flex items-center justify-center cursor-pointer"
                     >
                         Reset
                     </a>
@@ -114,7 +114,7 @@
         </form>
 
         {{-- Tabel Log Aktivitas --}}
-        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
+        <section class="bg-white rounded-none border border-gray-200 shadow-sm overflow-hidden mb-6">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-base" id="tabel-log">
                     <thead>
@@ -136,27 +136,27 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($log->tipe === 'Transaksi')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-blue-100 text-blue-800">
                                             Transaksi
                                         </span>
                                     @elseif ($log->tipe === 'Stok')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-amber-100 text-amber-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-amber-100 text-amber-800">
                                             Stok
                                         </span>
                                     @elseif ($log->tipe === 'Login')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-emerald-100 text-emerald-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-emerald-100 text-emerald-800">
                                             Login
                                         </span>
                                     @elseif ($log->tipe === 'Barang')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-purple-100 text-purple-800">
                                             Barang
                                         </span>
                                     @elseif ($log->tipe === 'Harga')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-yellow-100 text-yellow-800">
                                             Harga
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-slate-200 text-slate-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-slate-200 text-slate-800">
                                             Modal
                                         </span>
                                     @endif
@@ -187,11 +187,11 @@
                 </div>
                 <div class="flex items-center gap-2">
                     @if ($daftarLog->onFirstPage())
-                        <span class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-400 font-medium text-base cursor-not-allowed opacity-60">
+                        <span class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-none border border-gray-300 bg-white text-gray-400 font-medium text-base cursor-not-allowed opacity-60">
                             Sebelumnya
                         </span>
                     @else
-                        <a href="{{ $daftarLog->previousPageUrl() }}" class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100">
+                        <a href="{{ $daftarLog->previousPageUrl() }}" class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-none border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100">
                             Sebelumnya
                         </a>
                     @endif
@@ -201,11 +201,11 @@
                     </span>
 
                     @if ($daftarLog->hasMorePages())
-                        <a href="{{ $daftarLog->nextPageUrl() }}" class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100">
+                        <a href="{{ $daftarLog->nextPageUrl() }}" class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-none border border-gray-300 bg-white text-gray-700 font-medium text-base hover:bg-gray-100">
                             Berikutnya
                         </a>
                     @else
-                        <span class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-400 font-medium text-base cursor-not-allowed opacity-60">
+                        <span class="touch-target inline-flex items-center justify-center px-4 py-2 rounded-none border border-gray-300 bg-white text-gray-400 font-medium text-base cursor-not-allowed opacity-60">
                             Berikutnya
                         </span>
                     @endif

@@ -40,21 +40,21 @@
 
         {{-- Flash Message Alerts --}}
         @if (session('success'))
-            <div class="mb-6 max-w-4xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-xl text-base font-medium">
+            <div class="mb-6 max-w-4xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-none text-base font-medium">
                 {{ session('success') }}
             </div>
         @endif
 
         @if (session('error'))
-            <div class="mb-6 max-w-4xl bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl text-base font-medium">
+            <div class="mb-6 max-w-4xl bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-none text-base font-medium">
                 {{ session('error') }}
             </div>
         @endif
 
         <div class="space-y-6 max-w-4xl">
             {{-- Kartu 1: Ringkasan Akun (Header Profil) --}}
-            <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex items-center space-x-5">
-                <div class="w-16 h-16 rounded-full bg-emerald-700 text-white font-bold text-2xl flex items-center justify-center shrink-0">
+            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex items-center space-x-5">
+                <div class="w-16 h-16 rounded-none bg-emerald-700 text-white font-bold text-2xl flex items-center justify-center shrink-0">
                     {{ $profil['inisial'] ?? 'AF' }}
                 </div>
                 <div>
@@ -68,7 +68,7 @@
             </section>
 
             {{-- Kartu 2: Form Edit Profil --}}
-            <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
                     Edit Profil
                 </h2>
@@ -87,7 +87,7 @@
                                 id="nama"
                                 name="nama"
                                 value="{{ old('nama', $pengguna->nama ?? $profil['nama']) }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('nama') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                class="touch-target w-full px-4 py-2 text-base rounded-none border @error('nama') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                                 required
                             >
                             @error('nama')
@@ -104,7 +104,7 @@
                                 id="username"
                                 name="username"
                                 value="{{ old('username', $pengguna->username ?? $profil['username']) }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('username') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                class="touch-target w-full px-4 py-2 text-base rounded-none border @error('username') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                                 required
                             >
                             @error('username')
@@ -122,7 +122,7 @@
                             id="telepon"
                             name="nomor_telepon"
                             value="{{ old('nomor_telepon', old('telepon', $pengguna->nomor_telepon ?? $pengguna->telepon ?? $profil['telepon'])) }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('nomor_telepon') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            class="touch-target w-full px-4 py-2 text-base rounded-none border @error('nomor_telepon') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                         >
                         @error('nomor_telepon')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -132,7 +132,7 @@
                     <div class="pt-2">
                         <button
                             type="submit"
-                            class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-lg text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
+                            class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-none text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
                         >
                             Simpan Perubahan
                         </button>
@@ -141,7 +141,7 @@
             </section>
 
             {{-- Kartu 3: Form Ganti Password --}}
-            <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
                     Ganti Password
                 </h2>
@@ -159,7 +159,7 @@
                             id="password_lama"
                             name="password_lama"
                             placeholder="Masukkan password saat ini"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('password_lama') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            class="touch-target w-full px-4 py-2 text-base rounded-none border @error('password_lama') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                             required
                         >
                         @error('password_lama')
@@ -177,7 +177,7 @@
                                 id="password_baru"
                                 name="password_baru"
                                 placeholder="Minimal 6 karakter"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('password_baru') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                class="touch-target w-full px-4 py-2 text-base rounded-none border @error('password_baru') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                                 required
                             >
                             @error('password_baru')
@@ -194,7 +194,7 @@
                                 id="password_baru_confirmation"
                                 name="password_baru_confirmation"
                                 placeholder="Ulangi password baru"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                class="touch-target w-full px-4 py-2 text-base rounded-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                                 required
                             >
                         </div>
@@ -203,7 +203,7 @@
                     <div class="pt-2">
                         <button
                             type="submit"
-                            class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-lg text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
+                            class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-none text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
                         >
                             Perbarui Password
                         </button>

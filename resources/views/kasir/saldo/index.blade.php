@@ -25,13 +25,13 @@
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
-            <div class="rounded-xl p-2 flex items-center justify-center">
+            <div class="rounded-none p-2 flex items-center justify-center">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
             </div>
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -46,7 +46,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Dashboard
                     </a>
@@ -54,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Transaksi Penjualan
                     </a>
@@ -62,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Lihat Stok Barang
                     </a>
@@ -70,7 +70,7 @@
                     {{-- 4. Saldo (Aktif) --}}
                     <a
                         href="{{ route('kasir.saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
                     >
                         Saldo
                     </a>
@@ -78,7 +78,7 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Info Barang Baru
                     </a>
@@ -86,7 +86,7 @@
                     {{-- 6. Pengembalian Barang --}}
                     <a
                         href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Pengembalian Barang
                     </a>
@@ -96,8 +96,8 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
+                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <div class="min-w-0 flex-1">
@@ -113,7 +113,7 @@
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
                 >
                     Keluar
                 </button>
@@ -135,13 +135,13 @@
                 {{-- Tombol Aksi Teks Murni (Bebas Emoji) --}}
                 <button
                     type="button"
-                    class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
+                    class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Simpan sebagai PDF
                 </button>
                 <button
                     type="button"
-                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
+                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Kirim ke Telegram
                 </button>
@@ -151,7 +151,7 @@
         {{-- Grid Kartu Informasi Saldo --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {{-- Kartu 1: Saldo Hari Ini (Saldo Akhir) --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Saldo Hari Ini
@@ -167,7 +167,7 @@
             </div>
 
             {{-- Kartu 2: Modal Awal (Saldo Awal) --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Modal Awal
@@ -182,7 +182,7 @@
             </div>
 
             {{-- Kartu 3: Total Penjualan Tunai --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Penjualan Tunai
@@ -197,7 +197,7 @@
             </div>
 
             {{-- Kartu 4: Kas Keluar / Retur --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Kas Keluar / Retur
@@ -213,7 +213,7 @@
         </div>
 
         {{-- Tabel Riwayat Saldo Transaksi --}}
-        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <div class="bg-white border border-slate-200 rounded-none overflow-hidden shadow-sm">
             <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-slate-800">
                     Riwayat Transaksi Hari Ini
@@ -251,15 +251,15 @@
                                 </td>
                                 <td class="py-3.5 px-6 text-center whitespace-nowrap">
                                     @if ($trx['metode'] === 'Tunai')
-                                        <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-md text-sm">
+                                        <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-none text-sm">
                                             Tunai
                                         </span>
                                     @elseif ($trx['metode'] === 'QRIS')
-                                        <span class="inline-block px-3 py-1 font-semibold text-blue-800 bg-blue-100 rounded-md text-sm">
+                                        <span class="inline-block px-3 py-1 font-semibold text-blue-800 bg-blue-100 rounded-none text-sm">
                                             QRIS
                                         </span>
                                     @else
-                                        <span class="inline-block px-3 py-1 font-semibold text-purple-800 bg-purple-100 rounded-md text-sm">
+                                        <span class="inline-block px-3 py-1 font-semibold text-purple-800 bg-purple-100 rounded-none text-sm">
                                             {{ $trx['metode'] }}
                                         </span>
                                     @endif

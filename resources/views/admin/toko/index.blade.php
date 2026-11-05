@@ -40,13 +40,13 @@
 
         {{-- Flash Message Alerts --}}
         @if (session('success'))
-            <div class="mb-6 max-w-4xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-xl text-base font-medium">
+            <div class="mb-6 max-w-4xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-none text-base font-medium">
                 {{ session('success') }}
             </div>
         @endif
 
         @if (session('error'))
-            <div class="mb-6 max-w-4xl bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl text-base font-medium">
+            <div class="mb-6 max-w-4xl bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-none text-base font-medium">
                 {{ session('error') }}
             </div>
         @endif
@@ -56,7 +56,7 @@
             @method('PUT')
 
             {{-- Kartu 1: Informasi Toko --}}
-            <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
                     Informasi Toko
                 </h2>
@@ -70,7 +70,7 @@
                             id="nama_toko"
                             name="nama_toko"
                             value="{{ old('nama_toko', $pengaturan['nama_toko'] ?? $infoToko['nama']) }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('nama_toko') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            class="touch-target w-full px-4 py-2 text-base rounded-none border @error('nama_toko') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                             required
                         >
                         @error('nama_toko')
@@ -88,7 +88,7 @@
                                 id="alamat"
                                 name="alamat"
                                 value="{{ old('alamat', $pengaturan['alamat'] ?? $infoToko['alamat']) }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('alamat') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                class="touch-target w-full px-4 py-2 text-base rounded-none border @error('alamat') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                                 required
                             >
                             @error('alamat')
@@ -104,7 +104,7 @@
                                 id="telepon"
                                 name="telepon"
                                 value="{{ old('telepon', $pengaturan['telepon'] ?? $infoToko['telepon']) }}"
-                                class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('telepon') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                                class="touch-target w-full px-4 py-2 text-base rounded-none border @error('telepon') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                                 required
                             >
                             @error('telepon')
@@ -116,7 +116,7 @@
             </section>
 
             {{-- Kartu 2: Pengaturan Struk --}}
-            <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
                     Pengaturan Struk
                 </h2>
@@ -130,7 +130,7 @@
                             id="header_struk"
                             name="header_struk"
                             value="{{ old('header_struk', $pengaturan['header_struk'] ?? $pengaturanStruk['header']) }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('header_struk') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            class="touch-target w-full px-4 py-2 text-base rounded-none border @error('header_struk') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                         >
                         @error('header_struk')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -145,7 +145,7 @@
                             id="footer_struk"
                             name="footer_struk"
                             value="{{ old('footer_struk', $pengaturan['footer_struk'] ?? $pengaturanStruk['footer']) }}"
-                            class="touch-target w-full px-4 py-2 text-base rounded-lg border @error('footer_struk') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                            class="touch-target w-full px-4 py-2 text-base rounded-none border @error('footer_struk') border-red-500 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                         >
                         @error('footer_struk')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -155,7 +155,7 @@
             </section>
 
             {{-- Kartu 3: WhatsApp Bot (Status Informatif Bersih) --}}
-            <section class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-lg font-bold text-gray-900">
                         WhatsApp Bot
@@ -171,7 +171,7 @@
                     <button
                         type="button"
                         disabled
-                        class="touch-target px-5 py-2.5 rounded-lg border border-slate-300 bg-slate-100 text-slate-400 font-medium text-base shadow-none cursor-not-allowed inline-flex items-center justify-center"
+                        class="touch-target px-5 py-2.5 rounded-none border border-slate-300 bg-slate-100 text-slate-400 font-medium text-base shadow-none cursor-not-allowed inline-flex items-center justify-center"
                     >
                         Belum Aktif
                     </button>
@@ -182,7 +182,7 @@
             <div>
                 <button
                     type="submit"
-                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-lg text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
+                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-none text-base shadow-sm transition-colors inline-flex items-center justify-center cursor-pointer"
                 >
                     Simpan Perubahan
                 </button>

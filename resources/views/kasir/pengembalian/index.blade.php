@@ -25,13 +25,13 @@
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo --}}
-            <div class="rounded-xl p-2 flex items-center justify-center">
+            <div class="rounded-none p-2 flex items-center justify-center">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
             </div>
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
                     Kembali ke Menu Admin
                 </a>
             </div>
@@ -46,7 +46,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Dashboard
                     </a>
@@ -54,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Transaksi Penjualan
                     </a>
@@ -62,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Lihat Stok Barang
                     </a>
@@ -70,7 +70,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Saldo
                     </a>
@@ -78,7 +78,7 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Info Barang Baru
                     </a>
@@ -86,7 +86,7 @@
                     {{-- 6. Pengembalian Barang (Aktif) --}}
                     <a
                         href="{{ route('kasir.pengembalian') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
                     >
                         Pengembalian Barang
                     </a>
@@ -96,8 +96,8 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
+                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <div class="min-w-0 flex-1">
@@ -113,7 +113,7 @@
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
                 >
                     Keluar
                 </button>
@@ -132,17 +132,17 @@
         </header>
 
         {{-- Toast Notification --}}
-        <div id="toast-notif" class="fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-xl shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700"></div>
+        <div id="toast-notif" class="fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700"></div>
 
         {{-- Stepper Bar --}}
         <div class="grid grid-cols-3 gap-2 mb-6">
-            <div id="stepper-1" class="text-center py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors bg-emerald-600 text-white">
+            <div id="stepper-1" class="text-center py-2.5 px-3 rounded-none text-sm font-semibold transition-colors bg-emerald-600 text-white">
                 1. Cari Transaksi
             </div>
-            <div id="stepper-2" class="text-center py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors bg-slate-100 text-slate-600">
+            <div id="stepper-2" class="text-center py-2.5 px-3 rounded-none text-sm font-semibold transition-colors bg-slate-100 text-slate-600">
                 2. Detail & Pilih Barang
             </div>
-            <div id="stepper-3" class="text-center py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors bg-slate-100 text-slate-600">
+            <div id="stepper-3" class="text-center py-2.5 px-3 rounded-none text-sm font-semibold transition-colors bg-slate-100 text-slate-600">
                 3. Konfirmasi & Hasil
             </div>
         </div>
@@ -152,19 +152,19 @@
         {{-- ============================================================ --}}
         <div id="step-1">
             {{-- Pencarian Transaksi --}}
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">Cari Transaksi</h2>
                 <div class="flex gap-3">
                     <input
                         type="text"
                         id="input-cari"
                         placeholder="Cari kode transaksi (contoh: PJ-20261101-0001)"
-                        class="touch-target flex-1 border border-slate-300 rounded-xl px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"
+                        class="touch-target flex-1 border border-slate-300 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"
                     >
                     <button
                         type="button"
                         id="btn-cari"
-                        class="touch-target px-6 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors text-base font-semibold min-h-[2.75rem]"
+                        class="touch-target px-6 py-2.5 bg-emerald-600 text-white rounded-none hover:bg-emerald-700 transition-colors text-base font-semibold min-h-[2.75rem]"
                     >
                         Cari
                     </button>
@@ -172,7 +172,7 @@
             </div>
 
             {{-- Tabel Transaksi Terbaru --}}
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200">
                     <h2 class="text-lg font-semibold text-gray-800" id="label-tabel-transaksi">Transaksi Terbaru</h2>
                 </div>
@@ -196,7 +196,7 @@
                                 <td class="px-6 py-3 text-slate-700">{{ $trx->nama_pelanggan ?: 'Umum' }}</td>
                                 <td class="px-6 py-3 text-right font-medium">Rp {{ number_format($trx->total_bayar ?? 0, 0, ',', '.') }}</td>
                                 <td class="px-6 py-3">
-                                    <span class="inline-block px-2.5 py-1 rounded-full text-xs font-medium {{ ($trx->metode_bayar ?? '') === 'TUNAI' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
+                                    <span class="inline-block px-2.5 py-1 rounded-none text-xs font-medium {{ ($trx->metode_bayar ?? '') === 'TUNAI' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
                                         {{ $trx->metode_bayar ?? '-' }}
                                     </span>
                                 </td>
@@ -204,7 +204,7 @@
                                     <button
                                         type="button"
                                         onclick="pilihTransaksi('{{ $trx->kode_transaksi }}')"
-                                        class="touch-target px-4 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors font-medium min-h-[2.75rem]"
+                                        class="touch-target px-4 py-1.5 bg-emerald-600 text-white text-sm rounded-none hover:bg-emerald-700 transition-colors font-medium min-h-[2.75rem]"
                                     >
                                         Pilih
                                     </button>
@@ -228,7 +228,7 @@
         {{-- ============================================================ --}}
         <div id="step-2" class="hidden">
             {{-- Header Transaksi --}}
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">Detail Transaksi</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                     <div>
@@ -259,7 +259,7 @@
             </div>
 
             {{-- Tabel Item Returnable --}}
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+            <div class="bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden mb-6">
                 <div class="px-6 py-4 border-b border-slate-200">
                     <h2 class="text-lg font-semibold text-gray-800">Pilih Barang yang Dikembalikan</h2>
                 </div>
@@ -284,14 +284,14 @@
             </div>
 
             {{-- Alasan & Total Refund --}}
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
                 <div class="mb-4">
                     <label for="input-alasan" class="block text-sm font-semibold text-slate-700 mb-2">Alasan Pengembalian (opsional)</label>
                     <textarea
                         id="input-alasan"
                         rows="3"
                         placeholder="Contoh: Barang rusak, salah kirim, dll."
-                        class="touch-target w-full border border-slate-300 rounded-xl px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none resize-none min-h-[2.75rem]"
+                        class="touch-target w-full border border-slate-300 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none resize-none min-h-[2.75rem]"
                     ></textarea>
                 </div>
                 <div class="flex items-center justify-between border-t border-slate-200 pt-4">
@@ -305,14 +305,14 @@
                 <button
                     type="button"
                     id="btn-kembali-step1"
-                    class="touch-target px-6 py-2.5 border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium rounded-xl transition-colors text-base min-h-[2.75rem]"
+                    class="touch-target px-6 py-2.5 border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium rounded-none transition-colors text-base min-h-[2.75rem]"
                 >
                     Kembali
                 </button>
                 <button
                     type="button"
                     id="btn-proses"
-                    class="touch-target px-6 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors text-base font-semibold min-h-[2.75rem]"
+                    class="touch-target px-6 py-2.5 bg-emerald-600 text-white rounded-none hover:bg-emerald-700 transition-colors text-base font-semibold min-h-[2.75rem]"
                 >
                     Proses Pengembalian
                 </button>
@@ -323,12 +323,12 @@
         {{-- STEP 3: Konfirmasi & Hasil --}}
         {{-- ============================================================ --}}
         <div id="step-3" class="hidden">
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
-                <div class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wider uppercase mb-4">BERHASIL</div>
+            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-8 text-center">
+                <div class="inline-flex items-center justify-center px-4 py-2 rounded-none bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wider uppercase mb-4">BERHASIL</div>
                 <h2 class="text-xl font-bold text-gray-800 mb-2">Pengembalian Berhasil</h2>
                 <p class="text-slate-500 mb-6" id="hasil-pesan">Pengembalian barang berhasil diproses.</p>
 
-                <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 text-left max-w-lg mx-auto mb-6">
+                <div class="bg-slate-50 rounded-none border border-slate-200 p-6 text-left max-w-lg mx-auto mb-6">
                     <div class="mb-3">
                         <span class="text-sm text-slate-500">Nota:</span>
                         <span class="font-semibold text-slate-800 font-mono ml-2" id="hasil-nota">-</span>
@@ -346,7 +346,7 @@
                 <button
                     type="button"
                     id="btn-retur-lagi"
-                    class="touch-target px-6 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors text-base font-semibold min-h-[2.75rem]"
+                    class="touch-target px-6 py-2.5 bg-emerald-600 text-white rounded-none hover:bg-emerald-700 transition-colors text-base font-semibold min-h-[2.75rem]"
                 >
                     Retur Lagi
                 </button>
@@ -356,7 +356,7 @@
         {{-- ============================================================ --}}
         {{-- Riwayat Retur (selalu tampil) --}}
         {{-- ============================================================ --}}
-        <div class="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="mt-8 bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200">
                 <h2 class="text-lg font-semibold text-gray-800">Riwayat Pengembalian</h2>
             </div>
@@ -452,11 +452,11 @@
                 const el = document.getElementById('stepper-' + i);
                 if (!el) continue;
                 if (i < active) {
-                    el.className = 'text-center py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors bg-emerald-100 text-emerald-800';
+                    el.className = 'text-center py-2.5 px-3 rounded-none text-sm font-semibold transition-colors bg-emerald-100 text-emerald-800';
                 } else if (i === active) {
-                    el.className = 'text-center py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors bg-emerald-600 text-white';
+                    el.className = 'text-center py-2.5 px-3 rounded-none text-sm font-semibold transition-colors bg-emerald-600 text-white';
                 } else {
-                    el.className = 'text-center py-2.5 px-3 rounded-xl text-sm font-semibold transition-colors bg-slate-100 text-slate-600';
+                    el.className = 'text-center py-2.5 px-3 rounded-none text-sm font-semibold transition-colors bg-slate-100 text-slate-600';
                 }
             }
         }
@@ -532,8 +532,8 @@
                 html += '<td class="px-6 py-3 text-slate-600">' + escapeHtml(tanggal) + '</td>';
                 html += '<td class="px-6 py-3 text-slate-700">' + pelanggan + '</td>';
                 html += '<td class="px-6 py-3 text-right font-medium">' + total + '</td>';
-                html += '<td class="px-6 py-3"><span class="inline-block px-2.5 py-1 rounded-full text-xs font-medium ' + metodeCls + '">' + metode + '</span></td>';
-                html += '<td class="px-6 py-3 text-center"><button type="button" onclick="pilihTransaksi(\'' + escapeHtml(trx.kode_transaksi || '') + '\')" class="touch-target px-4 py-1.5 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors font-medium min-h-[2.75rem]">Pilih</button></td>';
+                html += '<td class="px-6 py-3"><span class="inline-block px-2.5 py-1 rounded-none text-xs font-medium ' + metodeCls + '">' + metode + '</span></td>';
+                html += '<td class="px-6 py-3 text-center"><button type="button" onclick="pilihTransaksi(\'' + escapeHtml(trx.kode_transaksi || '') + '\')" class="touch-target px-4 py-1.5 bg-emerald-600 text-white text-sm rounded-none hover:bg-emerald-700 transition-colors font-medium min-h-[2.75rem]">Pilih</button></td>';
                 html += '</tr>';
             });
 
@@ -603,7 +603,7 @@
                 html += '<input type="number" min="0" max="' + (item.bisa_diretur || 0) + '" value="0"';
                 html += ' data-kode="' + escapeHtml(item.kode_item || '') + '"';
                 html += ' data-harga="' + (item.harga_jual || 0) + '"';
-                html += ' class="retur-qty touch-target w-20 border border-slate-300 rounded-lg px-2 py-1.5 text-center text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"';
+                html += ' class="retur-qty touch-target w-20 border border-slate-300 rounded-none px-2 py-1.5 text-center text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"';
                 html += '>';
                 html += '</td>';
                 html += '</tr>';

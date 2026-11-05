@@ -25,7 +25,7 @@
 <body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
     {{-- Notifikasi Feedback Interaktif --}}
-    <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
+    <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-none shadow-lg text-base font-medium z-50 transition-opacity">
         Aksi backup berhasil dijalankan.
     </div>
 
@@ -46,11 +46,11 @@
 
         {{-- Pesan Flash Notifikasi jika ada --}}
         @if (session('success'))
-            <div class="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-base font-medium">
+            <div class="mb-6 p-4 rounded-none bg-emerald-50 border border-emerald-300 text-emerald-900 text-base font-medium">
                 {{ session('success') }}
             </div>
         @elseif (session('error'))
-            <div class="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-base font-medium">
+            <div class="mb-6 p-4 rounded-none bg-rose-50 border border-rose-300 text-rose-900 text-base font-medium">
                 {{ session('error') }}
             </div>
         @endif
@@ -58,13 +58,13 @@
         {{-- Kartu Pengaturan Backup (Grid 2 Kolom Sesuai Figma P14/P15) --}}
         <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {{-- Kartu Kiri: Backup Manual --}}
-            <div class="border-2 border-emerald-500 bg-white p-6 rounded-xl shadow-sm flex flex-col justify-between">
+            <div class="border-2 border-emerald-500 bg-white p-6 rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="text-xl font-bold text-gray-900">
                             Backup Manual
                         </h2>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-semibold bg-emerald-100 text-emerald-800">
                             Tersedia
                         </span>
                     </div>
@@ -77,7 +77,7 @@
                         type="button"
                         id="btn-buat-backup"
                         onclick="jalankanBackup(this)"
-                        class="touch-target w-full sm:w-auto px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors text-center cursor-pointer"
+                        class="touch-target w-full sm:w-auto px-6 py-2.5 rounded-none bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors text-center cursor-pointer"
                     >
                         Jalankan Backup Sekarang
                     </button>
@@ -85,18 +85,18 @@
             </div>
 
             {{-- Kartu Kanan: Backup Otomatis --}}
-            <div class="border border-slate-200 bg-white p-6 rounded-xl shadow-sm flex flex-col justify-between">
+            <div class="border border-slate-200 bg-white p-6 rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="text-xl font-bold text-gray-900">
                             Backup Otomatis
                         </h2>
                         @if ($jadwalBackup['aktif'] ?? true)
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-semibold bg-blue-100 text-blue-800">
                                 Aktif
                             </span>
                         @else
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-none text-xs font-semibold bg-gray-100 text-gray-700">
                                 Nonaktif
                             </span>
                         @endif
@@ -119,7 +119,7 @@
                         type="button"
                         id="btn-atur-jadwal"
                         onclick="bukaModalJadwal()"
-                        class="touch-target inline-block w-full sm:w-auto px-6 py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base shadow-sm transition-colors text-center cursor-pointer"
+                        class="touch-target inline-block w-full sm:w-auto px-6 py-2.5 rounded-none border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base shadow-sm transition-colors text-center cursor-pointer"
                     >
                         Atur Jadwal Backup
                     </button>
@@ -128,7 +128,7 @@
         </section>
 
         {{-- Tabel Riwayat Backup --}}
-        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
+        <section class="bg-white rounded-none border border-gray-200 shadow-sm overflow-hidden mb-6">
             <div class="p-5 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <h3 class="text-lg font-bold text-gray-900">
                     Riwayat Backup Tersimpan
@@ -155,7 +155,7 @@
                                     {{ $item->waktu }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-md bg-gray-100 text-gray-700">
+                                    <span class="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-none bg-gray-100 text-gray-700">
                                         {{ $item->tipe }}
                                     </span>
                                 </td>
@@ -163,7 +163,7 @@
                                     {{ $item->ukuran }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-emerald-100 text-emerald-800">
+                                    <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-emerald-100 text-emerald-800">
                                         {{ $item->status }}
                                     </span>
                                 </td>
@@ -202,7 +202,7 @@
         </section>
 
         {{-- Kotak Peringatan Bawah --}}
-        <section class="bg-blue-50 border border-blue-200 text-blue-900 rounded-lg p-4 text-base mt-2">
+        <section class="bg-blue-50 border border-blue-200 text-blue-900 rounded-none p-4 text-base mt-2">
             <div>
                 <span class="font-bold">Pemberitahuan:</span>
                 Backup disimpan di server lokal. Untuk keamanan tambahan, unduh file backup secara berkala ke perangkat terpisah.
@@ -212,11 +212,11 @@
 
     {{-- Modal Popup Atur Jadwal Backup --}}
     <div id="modal-jadwal-backup" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity" role="dialog" aria-modal="true" aria-labelledby="modal-jadwal-title">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200 overflow-hidden transform transition-all">
+        <div class="bg-white rounded-none shadow-2xl w-full max-w-lg border border-slate-200 overflow-hidden transform transition-all">
             {{-- Header Modal --}}
             <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div class="flex items-center space-x-3">
-                    <span class="w-2.5 h-6 bg-emerald-600 rounded-full inline-block"></span>
+                    <span class="w-2.5 h-6 bg-emerald-600 rounded-none inline-block"></span>
                     <h3 id="modal-jadwal-title" class="text-lg font-bold text-gray-900">
                         Atur Jadwal Backup Otomatis
                     </h3>
@@ -225,7 +225,7 @@
                     type="button"
                     onclick="tutupModalJadwal()"
                     aria-label="Tutup modal"
-                    class="touch-target text-slate-400 hover:text-slate-600 text-2xl font-light leading-none p-2 rounded-lg hover:bg-slate-100 cursor-pointer"
+                    class="touch-target text-slate-400 hover:text-slate-600 text-2xl font-light leading-none p-2 rounded-none hover:bg-slate-100 cursor-pointer"
                 >
                     &times;
                 </button>
@@ -236,7 +236,7 @@
                 @csrf
 
                 {{-- Saklar Status Backup Otomatis --}}
-                <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="flex items-center justify-between p-3.5 rounded-none bg-slate-50 border border-slate-200">
                     <div>
                         <label for="jadwal-aktif" class="font-semibold text-gray-900 block cursor-pointer text-base">
                             Pencadangan Otomatis
@@ -254,7 +254,7 @@
                             class="sr-only peer"
                             {{ ($jadwalBackup['aktif'] ?? true) ? 'checked' : '' }}
                         >
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-none peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-none after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
                     </label>
                 </div>
 
@@ -269,7 +269,7 @@
                         name="waktu"
                         value="{{ $jadwalBackup['waktu'] ?? '22:00' }}"
                         required
-                        class="touch-target w-full px-4 py-2.5 rounded-lg border border-slate-300 text-gray-900 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-xs"
+                        class="touch-target w-full px-4 py-2.5 rounded-none border border-slate-300 text-gray-900 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-xs"
                     >
                     <p class="text-xs text-slate-500 mt-1">
                         Pencadangan dilakukan setiap hari pada jam ini (waktu server WIB).
@@ -285,7 +285,7 @@
                         id="jadwal-tipe"
                         name="tipe"
                         required
-                        class="touch-target w-full px-4 py-2.5 rounded-lg border border-slate-300 text-gray-900 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-xs cursor-pointer"
+                        class="touch-target w-full px-4 py-2.5 rounded-none border border-slate-300 text-gray-900 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-xs cursor-pointer"
                     >
                         <option value="Harian" {{ ($jadwalBackup['tipe'] ?? 'Harian') === 'Harian' ? 'selected' : '' }}>Setiap Hari (Harian)</option>
                         <option value="Mingguan" {{ ($jadwalBackup['tipe'] ?? '') === 'Mingguan' ? 'selected' : '' }}>Setiap Minggu (Senin)</option>
@@ -294,7 +294,7 @@
                 </div>
 
                 {{-- Saklar Kirim Notifikasi Telegram --}}
-                <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="flex items-center justify-between p-3.5 rounded-none bg-slate-50 border border-slate-200">
                     <div>
                         <label for="jadwal-telegram" class="font-semibold text-gray-900 block cursor-pointer text-base">
                             Notifikasi Bot Telegram
@@ -312,7 +312,7 @@
                             class="sr-only peer"
                             {{ ($jadwalBackup['kirim_telegram'] ?? true) ? 'checked' : '' }}
                         >
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-none peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-none after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
                     </label>
                 </div>
 
@@ -321,14 +321,14 @@
                     <button
                         type="button"
                         onclick="tutupModalJadwal()"
-                        class="touch-target px-5 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-medium text-base hover:bg-slate-100 transition-colors cursor-pointer"
+                        class="touch-target px-5 py-2.5 rounded-none border border-slate-300 text-slate-700 font-medium text-base hover:bg-slate-100 transition-colors cursor-pointer"
                     >
                         Batal
                     </button>
                     <button
                         type="submit"
                         id="btn-simpan-jadwal"
-                        class="touch-target px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors cursor-pointer"
+                        class="touch-target px-6 py-2.5 rounded-none bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors cursor-pointer"
                     >
                         Simpan Pengaturan
                     </button>

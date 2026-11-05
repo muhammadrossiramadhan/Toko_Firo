@@ -220,4 +220,43 @@ class BatasStokDataTest extends TestCase
         $response->assertStatus(200);
         $response->assertDontSee('<svg', false);
     }
+
+    public function test_ajax_simpan_batas_stok_satuan_instan(): void
+    {
+        $admin = Pengguna::factory()->create(['role' => 'ADMIN', 'status' => 'AKTIF']);
+
+        $response = $this->actingAs($admin)->postJson('/admin/batas-stok/simpan', [
+            'kode_item' => $this->itemUji1,
+            'batas_minimum' => 12,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'success',
+            'kode_item' => $this->itemUji1,
+            'batas_minimum' => 12,
+        ]);
+
+        $this->assertEquals(12, (int) DB::table('daftar_item')->where('kode_item', $this->itemUji1)->value('batas_minimum'));
+    }
+
+    public function test_ajax_simpan_batas_stok_batch_aksi_cepat(): void
+    {
+        $admin = Pengguna::factory()->create(['role' => 'ADMIN', 'status' => 'AKTIF']);
+
+        $response = $this->actingAs($admin)->postJson('/admin/batas-stok/simpan', [
+            'items' => [
+                $this->itemUji1 => 3,
+                $this->itemUji2 => 3,
+            ],
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'success',
+        ]);
+
+        $this->assertEquals(3, (int) DB::table('daftar_item')->where('kode_item', $this->itemUji1)->value('batas_minimum'));
+        $this->assertEquals(3, (int) DB::table('daftar_item')->where('kode_item', $this->itemUji2)->value('batas_minimum'));
+    }
 }

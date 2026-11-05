@@ -25,13 +25,13 @@
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
-            <div class="rounded-xl p-2 flex items-center justify-center">
+            <div class="rounded-none p-2 flex items-center justify-center">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
             </div>
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -46,7 +46,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Dashboard
                     </a>
@@ -54,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Transaksi Penjualan
                     </a>
@@ -62,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Lihat Stok Barang
                     </a>
@@ -70,7 +70,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : url('/kasir/saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Saldo
                     </a>
@@ -78,7 +78,7 @@
                     {{-- 5. Info Barang Baru (Aktif) --}}
                     <a
                         href="{{ route('kasir.info-barang') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
                     >
                         Info Barang Baru
                     </a>
@@ -86,7 +86,7 @@
                     {{-- 6. Pengembalian Barang --}}
                     <a
                         href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Pengembalian Barang
                     </a>
@@ -96,8 +96,8 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
+                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <div class="min-w-0 flex-1">
@@ -113,7 +113,7 @@
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-lg text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
                 >
                     Keluar
                 </button>
@@ -132,7 +132,7 @@
                 <p class="text-slate-500 text-base mt-0.5">Pembaruan produk baru, penyesuaian harga jual, dan status stok masuk dari Admin.</p>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
+                <div class="w-9 h-9 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">
@@ -156,7 +156,7 @@
             @foreach ($tabs as $key => $label)
                 <a
                     href="{{ route('kasir.info-barang', $key !== '' ? ['tipe' => $key] : []) }}"
-                    class="touch-target font-medium px-5 py-2.5 rounded-full min-h-[2.75rem] inline-flex items-center text-base transition-colors
+                    class="touch-target font-medium px-5 py-2.5 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors
                         {{ $tipeAktif === $key
                             ? 'bg-emerald-700 text-white shadow-sm'
                             : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' }}"
@@ -169,11 +169,11 @@
         {{-- Daftar Kartu Riwayat Pembaruan --}}
         <div class="space-y-4">
             @forelse ($daftarPembaruan as $item)
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 flex items-center justify-between shadow-sm hover:border-emerald-300 transition-colors">
+                <div class="bg-white border border-slate-200 rounded-none p-5 flex items-center justify-between shadow-sm hover:border-emerald-300 transition-colors">
                     {{-- Sisi Kiri: Badge Inisial Teks Murni & Informasi Produk --}}
                     <div class="flex items-center min-w-0">
                         {{-- Kotak lencana visual teks murni (Kepatuhan K12) --}}
-                        <div class="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 mr-4 flex-shrink-0 text-base">
+                        <div class="w-12 h-12 rounded-none bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 mr-4 flex-shrink-0 text-base">
                             {{ $item['inisial'] }}
                         </div>
 
@@ -185,15 +185,15 @@
                                 </span>
 
                                 @if ($item['badge'] === 'Baru')
-                                    <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                    <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-none">
                                         Baru
                                     </span>
                                 @elseif ($item['badge'] === 'Harga')
-                                    <span class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                    <span class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-none">
                                         Harga
                                     </span>
                                 @else
-                                    <span class="bg-slate-100 text-slate-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                    <span class="bg-slate-100 text-slate-800 text-xs font-semibold px-2.5 py-0.5 rounded-none">
                                         Update
                                     </span>
                                 @endif
@@ -213,7 +213,7 @@
                     </div>
                 </div>
             @empty
-                <div class="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 text-base">
+                <div class="bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500 text-base">
                     Belum ada pembaruan untuk kategori ini.
                 </div>
             @endforelse

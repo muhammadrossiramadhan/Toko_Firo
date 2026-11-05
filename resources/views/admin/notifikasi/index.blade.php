@@ -24,7 +24,7 @@
 <body class="min-h-screen flex bg-slate-50 text-slate-800 text-base antialiased">
 
     {{-- Notifikasi Feedback Prototype --}}
-    <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
+    <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-none shadow-lg text-base font-medium z-50 transition-opacity">
         Pemberitahuan berhasil diproses (prototype).
     </div>
 
@@ -46,23 +46,23 @@
         {{-- Grid Konfigurasi Bot (Telegram & WhatsApp) --}}
         <section class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch mb-6">
             {{-- Kartu Kiri: Telegram Bot --}}
-            <div class="border border-slate-200 rounded-2xl bg-white p-6 shadow-sm flex flex-col justify-between">
+            <div class="border border-slate-200 rounded-none bg-white p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="text-lg font-bold text-slate-800">
                             Telegram Bot
                         </h2>
                         @if ($telegramConfig['is_connected'] ?? false)
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <span class="inline-flex items-center px-3 py-1 rounded-none text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
                                 • Terhubung
                             </span>
                         @else
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                            <span class="inline-flex items-center px-3 py-1 rounded-none text-sm font-medium bg-amber-50 text-amber-700 border border-amber-200">
                                 • {{ $telegramConfig['status'] ?? 'Belum Terhubung' }}
                             </span>
                         @endif
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 my-4 font-mono text-sm space-y-2">
+                    <div class="bg-slate-50 border border-slate-200 rounded-none p-4 my-4 font-mono text-sm space-y-2">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                             <span class="text-slate-500 font-sans font-medium text-xs uppercase tracking-wider">Bot Token:</span>
                             <span class="text-slate-800 font-medium select-all break-all">{{ $telegramConfig['bot_token'] }}</span>
@@ -78,14 +78,14 @@
                         type="button"
                         id="btn-test-koneksi"
                         onclick="kirimPesanUjiCoba(this)"
-                        class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-xl min-h-[2.75rem] transition-colors cursor-pointer text-base shadow-sm"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-none min-h-[2.75rem] transition-colors cursor-pointer text-base shadow-sm"
                     >
                         Kirim Pesan Tes
                     </button>
                     <button
                         type="button"
                         onclick="tampilkanNotif('Koneksi bot Telegram diputuskan.', 'sukses')"
-                        class="border border-red-300 hover:bg-red-50 text-red-600 font-medium px-5 py-2.5 rounded-xl min-h-[2.75rem] transition-colors cursor-pointer text-base shadow-sm"
+                        class="border border-red-300 hover:bg-red-50 text-red-600 font-medium px-5 py-2.5 rounded-none min-h-[2.75rem] transition-colors cursor-pointer text-base shadow-sm"
                     >
                         Putuskan
                     </button>
@@ -93,13 +93,13 @@
             </div>
 
             {{-- Kartu Kanan: WhatsApp Bot --}}
-            <div class="border border-slate-200 rounded-2xl bg-white p-6 shadow-sm flex flex-col justify-between">
+            <div class="border border-slate-200 rounded-none bg-white p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="text-lg font-bold text-slate-800">
                             WhatsApp Bot
                         </h2>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-500 border border-slate-200">
+                        <span class="inline-flex items-center px-3 py-1 rounded-none text-sm font-medium bg-slate-100 text-slate-500 border border-slate-200">
                             Segera Hadir
                         </span>
                     </div>
@@ -116,7 +116,7 @@
                     <button
                         type="button"
                         disabled
-                        class="border border-slate-200 bg-slate-100 text-slate-400 font-medium px-5 py-2.5 rounded-xl min-h-[2.75rem] cursor-not-allowed text-base"
+                        class="border border-slate-200 bg-slate-100 text-slate-400 font-medium px-5 py-2.5 rounded-none min-h-[2.75rem] cursor-not-allowed text-base"
                     >
                         Hubungkan WhatsApp
                     </button>
@@ -125,13 +125,13 @@
         </section>
 
         {{-- Kartu Pengaturan: Jenis Notifikasi yang Dikirim --}}
-        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-6">
+        <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm mb-6">
             <h2 class="text-lg font-bold text-slate-800 mb-4">
                 Jenis Notifikasi yang Dikirim
             </h2>
             <div class="divide-y divide-slate-100">
                 @foreach ($daftarPengaturan as $pengaturan)
-                    <label class="py-4 px-3 flex items-center justify-between hover:bg-slate-50/70 rounded-xl transition-colors min-h-[2.75rem] cursor-pointer">
+                    <label class="py-4 px-3 flex items-center justify-between hover:bg-slate-50/70 rounded-none transition-colors min-h-[2.75rem] cursor-pointer">
                         <span class="text-base font-medium text-slate-800 pr-4">
                             {{ $pengaturan->label }}
                         </span>
@@ -144,7 +144,7 @@
                                     onchange="simpanPengaturan('{{ $pengaturan->id }}', this.checked)"
                                     class="sr-only peer"
                                 >
-                                <div class="w-12 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                <div class="w-12 h-6 bg-slate-200 peer-focus:outline-none rounded-none peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-none after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
                             </div>
                         </div>
                     </label>
@@ -153,7 +153,7 @@
         </section>
 
         {{-- Tabel Riwayat Notifikasi Terkirim --}}
-        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-6">
+        <section class="bg-white border border-slate-200 rounded-none shadow-sm overflow-hidden mb-6">
             <div class="p-6 border-b border-slate-100 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-slate-800">
                     Riwayat Notifikasi Terkirim
@@ -179,7 +179,7 @@
                                     {{ $notif->waktu }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                                    <span class="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-none bg-slate-100 text-slate-700 border border-slate-200">
                                         {{ $notif->tipe }}
                                     </span>
                                 </td>
@@ -188,11 +188,11 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($notif->status === 'Terkirim')
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-none text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
                                             Terkirim
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-50 text-red-700 border border-red-200">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-none text-sm font-medium bg-red-50 text-red-700 border border-red-200">
                                             {{ $notif->status }}
                                         </span>
                                     @endif

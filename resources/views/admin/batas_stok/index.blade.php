@@ -24,7 +24,7 @@
 <body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
 
     {{-- Notifikasi Sukses --}}
-    <div id="notif-sukses" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg text-base font-medium z-50 transition-opacity">
+    <div id="notif-sukses" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-none shadow-lg text-base font-medium z-50 transition-opacity">
         Perubahan batas minimum berhasil disimpan.
     </div>
 
@@ -44,30 +44,30 @@
         </header>
 
         {{-- Banner Telegram --}}
-        <section class="bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-4 text-base mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <section class="bg-amber-50 border border-amber-200 text-amber-900 rounded-none p-4 text-base mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
                 <span class="font-bold">Pengingat Telegram Aktif:</span>
                 Sistem akan otomatis mengirimkan pesan peringatan saat stok barang mencapai atau di bawah batas minimum yang ditentukan.
             </div>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-200/80 text-amber-900 shrink-0">
+            <span class="inline-flex items-center px-3 py-1 rounded-none text-xs font-semibold bg-amber-200/80 text-amber-900 shrink-0">
                 Bot Terhubung
             </span>
         </section>
 
         {{-- Filter Bar & Quick Actions --}}
-        <section class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <section class="bg-white rounded-none border border-gray-200 p-4 shadow-sm mb-6 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <input
                     type="text"
                     id="input-cari"
                     placeholder="Cari nama atau kode barang..."
                     onkeyup="filterTabel()"
-                    class="touch-target w-full sm:w-72 px-4 py-2 text-base rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                    class="touch-target w-full sm:w-72 px-4 py-2 text-base rounded-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                 >
                 <select
                     id="filter-jenis"
                     onchange="filterTabel()"
-                    class="touch-target px-4 py-2 text-base rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
+                    class="touch-target px-4 py-2 text-base rounded-none border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-800"
                 >
                     <option value="">Semua Jenis</option>
                     @foreach ($jenisList ?? [] as $j)
@@ -81,14 +81,14 @@
                 <button
                     type="button"
                     onclick="aturSemua(3)"
-                    class="touch-target px-4 py-2.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-4 py-2.5 rounded-none border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Atur semua ke 3 pcs
                 </button>
                 <button
                     type="button"
                     onclick="aturSemua(5)"
-                    class="touch-target px-4 py-2.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-4 py-2.5 rounded-none border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Atur semua ke 5 pcs
                 </button>
@@ -96,7 +96,7 @@
         </section>
 
         {{-- Tabel Batas Stok --}}
-        <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
+        <section class="bg-white rounded-none border border-gray-200 shadow-sm overflow-hidden mb-6">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-base" id="tabel-batas-stok">
                     <thead>
@@ -121,7 +121,7 @@
                                 <td class="px-6 py-4 text-gray-600 kol-jenis">
                                     {{ $item->jenis }}
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900">
+                                <td class="px-6 py-4 font-medium text-gray-900 kol-stok">
                                     {{ $item->stok }} {{ $item->satuan }}
                                 </td>
                                 <td class="px-6 py-4">
@@ -129,7 +129,7 @@
                                         <button
                                             type="button"
                                             onclick="kurangiBatas(this)"
-                                            class="touch-target min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 text-lg font-bold text-gray-700 select-none cursor-pointer"
+                                            class="touch-target min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-gray-100 border border-gray-300 rounded-none hover:bg-gray-200 text-lg font-bold text-gray-700 select-none cursor-pointer"
                                             aria-label="Kurangi batas minimum"
                                         >
                                             -
@@ -139,15 +139,16 @@
                                             min="0"
                                             name="items[{{ $item->kode }}]"
                                             data-kode="{{ $item->kode }}"
+                                            data-stok="{{ $item->stok }}"
                                             value="{{ $item->batas }}"
                                             data-awal="{{ $item->batas }}"
-                                            oninput="hitungPerubahan()"
-                                            class="input-batas w-16 min-h-[2.75rem] text-center border-y border-gray-300 text-base font-semibold text-gray-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                            oninput="onInputKetik(this)"
+                                            class="input-batas w-16 min-h-[2.75rem] text-center border-y border-gray-300 rounded-none text-base font-semibold text-gray-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                                         >
                                         <button
                                             type="button"
                                             onclick="tambahBatas(this)"
-                                            class="touch-target min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-gray-100 border border-gray-300 rounded-r-lg hover:bg-gray-200 text-lg font-bold text-gray-700 select-none cursor-pointer"
+                                            class="touch-target min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-gray-100 border border-gray-300 rounded-none hover:bg-gray-200 text-lg font-bold text-gray-700 select-none cursor-pointer"
                                             aria-label="Tambah batas minimum"
                                         >
                                             +
@@ -159,19 +160,19 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     @if ($item->status === 'Habis')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-700">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-red-100 text-red-700">
                                             Habis
                                         </span>
                                     @elseif ($item->status === 'Menipis')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-amber-100 text-amber-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-amber-100 text-amber-800">
                                             Menipis
                                         </span>
                                     @elseif ($item->status === 'Normal')
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-700">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-blue-100 text-blue-700">
                                             Normal
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full bg-emerald-100 text-emerald-800">
+                                        <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-emerald-100 text-emerald-800">
                                             Aman
                                         </span>
                                     @endif
@@ -184,9 +185,9 @@
         </section>
 
         {{-- Floating Bottom Bar (Bilah Simpan Mengambang Sesuai Figma P14) --}}
-        <div id="floating-bar" class="hidden fixed bottom-6 left-72 right-8 bg-white border border-gray-300 shadow-2xl rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-30 transition-all">
+        <div id="floating-bar" class="hidden fixed bottom-6 left-72 right-8 bg-white border border-gray-300 shadow-2xl rounded-none p-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-30 transition-all">
             <div class="flex items-center gap-3">
-                <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-sm rounded-md uppercase tracking-wider">
+                <span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-sm rounded-none uppercase tracking-wider">
                     Pemberitahuan
                 </span>
                 <span id="label-perubahan" class="text-base font-medium text-gray-800">
@@ -198,7 +199,7 @@
                     type="button"
                     id="btn-batalkan"
                     onclick="batalkanPerubahan()"
-                    class="touch-target px-5 py-2.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-5 py-2.5 rounded-none border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 font-medium text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Batalkan
                 </button>
@@ -206,7 +207,7 @@
                     type="button"
                     id="btn-simpan"
                     onclick="simpanPerubahan()"
-                    class="touch-target px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-6 py-2.5 rounded-none bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Simpan Perubahan
                 </button>
@@ -216,28 +217,142 @@
 
     {{-- Script Vanilla JavaScript (Tanpa Library Eksternal) --}}
     <script>
+        let debounceTimers = {};
+
+        function tampilkanNotifikasi(pesan, tipe = 'sukses') {
+            const notif = document.getElementById('notif-sukses');
+            if (!notif) return;
+            notif.textContent = pesan;
+            if (tipe === 'error') {
+                notif.className = 'fixed top-6 right-8 bg-red-600 text-white px-6 py-3 rounded-none shadow-lg text-base font-medium z-50 transition-opacity';
+            } else {
+                notif.className = 'fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-none shadow-lg text-base font-medium z-50 transition-opacity';
+            }
+            notif.classList.remove('hidden');
+            clearTimeout(window.notifTimeout);
+            window.notifTimeout = setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 2500);
+        }
+
+        function perbaruiStatusBadge(input, batas) {
+            const row = input.closest('tr');
+            if (!row) return;
+            const stok = parseInt(input.getAttribute('data-stok')) || 0;
+            const badgeCol = row.querySelector('td:last-child');
+            if (!badgeCol) return;
+
+            let statusText = 'Aman';
+            let badgeClass = 'inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-emerald-100 text-emerald-800';
+
+            if (stok <= 0) {
+                statusText = 'Habis';
+                badgeClass = 'inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-red-100 text-red-700';
+            } else if (stok <= batas) {
+                statusText = 'Menipis';
+                badgeClass = 'inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-amber-100 text-amber-800';
+            } else if (stok <= batas * 2) {
+                statusText = 'Normal';
+                badgeClass = 'inline-flex items-center px-3 py-1 text-sm font-semibold rounded-none bg-blue-100 text-blue-700';
+            }
+
+            badgeCol.innerHTML = `<span class="${badgeClass}">${statusText}</span>`;
+        }
+
+        function kirimPembaruanInstan(kode, batas, input) {
+            if (!kode) return;
+            fetch('{{ route('admin.batas-stok.simpan') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    kode_item: kode,
+                    batas_minimum: batas
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (input) {
+                    input.setAttribute('data-awal', batas);
+                    perbaruiStatusBadge(input, batas);
+                }
+                hitungPerubahan();
+                tampilkanNotifikasi(data.message || 'Batas minimum berhasil diperbarui.');
+            })
+            .catch(err => {
+                console.error('Gagal memperbarui batas:', err);
+                tampilkanNotifikasi('Gagal menyimpan perubahan batas.', 'error');
+            });
+        }
+
         function kurangiBatas(btn) {
             const input = btn.parentElement.querySelector('.input-batas');
             let val = parseInt(input.value) || 0;
             if (val > 0) {
-                input.value = val - 1;
-                hitungPerubahan();
+                val -= 1;
+                input.value = val;
+                kirimPembaruanInstan(input.getAttribute('data-kode'), val, input);
             }
         }
 
         function tambahBatas(btn) {
             const input = btn.parentElement.querySelector('.input-batas');
             let val = parseInt(input.value) || 0;
-            input.value = val + 1;
+            val += 1;
+            input.value = val;
+            kirimPembaruanInstan(input.getAttribute('data-kode'), val, input);
+        }
+
+        function onInputKetik(input) {
+            const kode = input.getAttribute('data-kode');
+            let val = parseInt(input.value);
+            if (isNaN(val) || val < 0) {
+                val = 0;
+                input.value = 0;
+            }
             hitungPerubahan();
+            clearTimeout(debounceTimers[kode]);
+            debounceTimers[kode] = setTimeout(() => {
+                kirimPembaruanInstan(kode, val, input);
+            }, 500);
         }
 
         function aturSemua(angka) {
             const inputs = document.querySelectorAll('.input-batas');
+            const items = {};
             inputs.forEach(input => {
                 input.value = angka;
+                const kode = input.getAttribute('data-kode');
+                if (kode) {
+                    items[kode] = angka;
+                }
             });
-            hitungPerubahan();
+
+            fetch('{{ route('admin.batas-stok.simpan') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ items: items })
+            })
+            .then(res => res.json())
+            .then(data => {
+                inputs.forEach(input => {
+                    input.setAttribute('data-awal', angka);
+                    perbaruiStatusBadge(input, angka);
+                });
+                hitungPerubahan();
+                tampilkanNotifikasi(data.message || ('Semua batas minimum berhasil diatur ke ' + angka + ' pcs.'));
+            })
+            .catch(err => {
+                console.error('Gagal mengatur semua batas:', err);
+                tampilkanNotifikasi('Gagal memperbarui batas secara massal.', 'error');
+            });
         }
 
         function hitungPerubahan() {
@@ -255,12 +370,14 @@
             const label = document.getElementById('label-perubahan');
             const floatingBar = document.getElementById('floating-bar');
 
-            if (jumlahPerubahan > 0) {
-                label.textContent = jumlahPerubahan + ' perubahan batas minimum belum disimpan.';
-                floatingBar.classList.remove('hidden');
-            } else {
-                label.textContent = 'Semua perubahan batas minimum sudah tersimpan.';
-                floatingBar.classList.add('hidden');
+            if (floatingBar && label) {
+                if (jumlahPerubahan > 0) {
+                    label.textContent = jumlahPerubahan + ' perubahan batas minimum belum tersimpan.';
+                    floatingBar.classList.remove('hidden');
+                } else {
+                    label.textContent = 'Semua perubahan batas minimum sudah tersimpan.';
+                    floatingBar.classList.add('hidden');
+                }
             }
         }
 
@@ -268,6 +385,7 @@
             const inputs = document.querySelectorAll('.input-batas');
             inputs.forEach(input => {
                 input.value = input.getAttribute('data-awal') || 0;
+                perbaruiStatusBadge(input, parseInt(input.value) || 0);
             });
             hitungPerubahan();
         }
@@ -290,8 +408,10 @@
             if (!adaPerubahan) return;
 
             const btnSimpan = document.getElementById('btn-simpan');
-            btnSimpan.disabled = true;
-            btnSimpan.textContent = 'Menyimpan...';
+            if (btnSimpan) {
+                btnSimpan.disabled = true;
+                btnSimpan.textContent = 'Menyimpan...';
+            }
 
             fetch('{{ route('admin.batas-stok.simpan') }}', {
                 method: 'POST',
@@ -304,26 +424,24 @@
             })
             .then(res => res.json())
             .then(data => {
-                btnSimpan.disabled = false;
-                btnSimpan.textContent = 'Simpan Perubahan';
+                if (btnSimpan) {
+                    btnSimpan.disabled = false;
+                    btnSimpan.textContent = 'Simpan Perubahan';
+                }
                 inputs.forEach(input => {
                     input.setAttribute('data-awal', input.value);
+                    perbaruiStatusBadge(input, parseInt(input.value) || 0);
                 });
                 hitungPerubahan();
-
-                const notif = document.getElementById('notif-sukses');
-                notif.textContent = data.message || 'Perubahan batas minimum berhasil disimpan.';
-                notif.classList.remove('hidden');
-                setTimeout(() => {
-                    notif.classList.add('hidden');
-                }, 3000);
+                tampilkanNotifikasi(data.message || 'Perubahan batas minimum berhasil disimpan.');
             })
             .catch(err => {
-                btnSimpan.disabled = false;
-                btnSimpan.textContent = 'Simpan Perubahan';
-                alert('Gagal menyimpan perubahan. Silakan coba lagi.');
+                if (btnSimpan) {
+                    btnSimpan.disabled = false;
+                    btnSimpan.textContent = 'Simpan Perubahan';
+                }
+                tampilkanNotifikasi('Gagal menyimpan perubahan. Silakan coba lagi.', 'error');
             });
-        }
         }
 
         function filterTabel() {
@@ -349,4 +467,3 @@
     </script>
 </body>
 </html>
-

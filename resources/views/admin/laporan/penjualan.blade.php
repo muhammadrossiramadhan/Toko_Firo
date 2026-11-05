@@ -49,7 +49,7 @@
                 <button
                     type="button"
                     onclick="window.print()"
-                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Simpan sebagai PDF
                 </button>
@@ -57,7 +57,7 @@
                     type="button"
                     id="btn-kirim-telegram"
                     onclick="kirimLaporanTelegram(this)"
-                    class="touch-target px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-medium rounded-xl text-base shadow-sm transition-colors cursor-pointer"
+                    class="touch-target px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Kirim ke Telegram
                 </button>
@@ -65,11 +65,11 @@
         </header>
 
         {{-- Alert Notifikasi Dinamis Telegram --}}
-        <div id="telegram-alert" class="hidden mb-6 p-4 rounded-xl text-base font-medium"></div>
+        <div id="telegram-alert" class="hidden mb-6 p-4 rounded-none text-base font-medium"></div>
 
         {{-- Pesan Notifikasi jika ada --}}
         @if (session('pesan') || $pesan)
-            <div class="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-base font-medium">
+            <div class="mb-6 p-4 rounded-none bg-amber-50 border border-amber-300 text-amber-900 text-base font-medium">
                 {{ session('pesan') ?? $pesan }}
             </div>
         @endif
@@ -82,17 +82,16 @@
             >
                 Penjualan
             </button>
-            <button
-                type="button"
-                disabled
-                class="touch-target px-4 py-2 text-gray-400 font-medium text-base cursor-not-allowed"
+            <a
+                href="{{ route('admin.laporan.pembelian') }}"
+                class="touch-target px-4 py-2 text-gray-600 hover:text-emerald-700 font-medium text-base"
             >
                 Pembelian
-            </button>
+            </a>
         </div>
 
         {{-- Baris Filter Tanggal & Tautan Cepat --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+        <div class="bg-white rounded-none shadow-sm border border-gray-200 p-4 mb-6">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 {{-- Form Filter Kustom --}}
                 <form method="GET" action="{{ route('admin.laporan.penjualan') }}" class="flex flex-wrap items-center gap-3">
@@ -105,7 +104,7 @@
                             id="mulai"
                             name="mulai"
                             value="{{ $filter['mulai'] }}"
-                            class="touch-target bg-white border border-gray-300 rounded-lg px-3 py-2 text-base text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                            class="touch-target bg-white border border-gray-300 rounded-none px-3 py-2 text-base text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
                         >
                     </div>
 
@@ -116,13 +115,13 @@
                             id="sampai"
                             name="sampai"
                             value="{{ $filter['sampai'] }}"
-                            class="touch-target bg-white border border-gray-300 rounded-lg px-3 py-2 text-base text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                            class="touch-target bg-white border border-gray-300 rounded-none px-3 py-2 text-base text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
                         >
                     </div>
 
                     <button
                         type="submit"
-                        class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-base shadow-sm transition-colors"
+                        class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors"
                     >
                         Terapkan
                     </button>
@@ -132,19 +131,19 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <a
                         href="{{ route('admin.laporan.penjualan', ['rentang' => 'hari-ini']) }}"
-                        class="touch-target flex items-center justify-center px-4 py-2 rounded-lg text-base font-medium border transition-colors {{ $filter['rentang'] === 'hari-ini' ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}"
+                        class="touch-target flex items-center justify-center px-4 py-2 rounded-none text-base font-medium border transition-colors {{ $filter['rentang'] === 'hari-ini' ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}"
                     >
                         Hari ini
                     </a>
                     <a
                         href="{{ route('admin.laporan.penjualan', ['rentang' => '7-hari']) }}"
-                        class="touch-target flex items-center justify-center px-4 py-2 rounded-lg text-base font-medium border transition-colors {{ $filter['rentang'] === '7-hari' ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}"
+                        class="touch-target flex items-center justify-center px-4 py-2 rounded-none text-base font-medium border transition-colors {{ $filter['rentang'] === '7-hari' ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}"
                     >
                         7 hari
                     </a>
                     <a
                         href="{{ route('admin.laporan.penjualan', ['rentang' => 'bulan-ini']) }}"
-                        class="touch-target flex items-center justify-center px-4 py-2 rounded-lg text-base font-medium border transition-colors {{ $filter['rentang'] === 'bulan-ini' ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}"
+                        class="touch-target flex items-center justify-center px-4 py-2 rounded-none text-base font-medium border transition-colors {{ $filter['rentang'] === 'bulan-ini' ? 'bg-emerald-100 text-emerald-800 border-emerald-300 font-semibold' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}"
                     >
                         Bulan ini
                     </a>
@@ -155,7 +154,7 @@
         {{-- Tiga Kartu Ringkasan --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {{-- Kartu 1: Total Penjualan --}}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="bg-white rounded-none shadow-sm border border-gray-200 p-6">
                 <div class="text-sm uppercase tracking-wider text-gray-500 font-medium mb-1">
                     Total Penjualan
                 </div>
@@ -168,7 +167,7 @@
             </div>
 
             {{-- Kartu 2: Jumlah Nota --}}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="bg-white rounded-none shadow-sm border border-gray-200 p-6">
                 <div class="text-sm uppercase tracking-wider text-gray-500 font-medium mb-1">
                     Jumlah Nota
                 </div>
@@ -181,7 +180,7 @@
             </div>
 
             {{-- Kartu 3: Barang Terjual --}}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="bg-white rounded-none shadow-sm border border-gray-200 p-6">
                 <div class="text-sm uppercase tracking-wider text-gray-500 font-medium mb-1">
                     Barang Terjual
                 </div>
@@ -195,7 +194,7 @@
         </div>
 
         {{-- Kartu Riwayat Transaksi --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+        <div class="bg-white rounded-none shadow-sm border border-gray-200 overflow-hidden mb-8">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-lg font-bold text-gray-900">
                     Riwayat Transaksi
@@ -262,7 +261,7 @@
         </div>
 
         {{-- Kartu Rekap Otomatis --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="bg-white rounded-none shadow-sm border border-gray-200 p-6">
             <h2 class="text-lg font-bold text-gray-900 mb-2">
                 Rekap Otomatis
             </h2>
@@ -311,7 +310,7 @@
             })
             .then((data) => {
                 if (alertBox) {
-                    alertBox.className = 'mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-base font-medium';
+                    alertBox.className = 'mb-6 p-4 rounded-none bg-emerald-50 border border-emerald-300 text-emerald-900 text-base font-medium';
                     alertBox.innerText = data.message || 'Laporan penjualan berhasil dikirim ke Telegram!';
                     alertBox.classList.remove('hidden');
                 } else {
@@ -320,7 +319,7 @@
             })
             .catch((error) => {
                 if (alertBox) {
-                    alertBox.className = 'mb-6 p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-base font-medium';
+                    alertBox.className = 'mb-6 p-4 rounded-none bg-rose-50 border border-rose-300 text-rose-900 text-base font-medium';
                     alertBox.innerText = error.message || 'Gagal mengirim laporan ke Telegram.';
                     alertBox.classList.remove('hidden');
                 } else {
