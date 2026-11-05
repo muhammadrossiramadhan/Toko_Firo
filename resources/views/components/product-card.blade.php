@@ -1,18 +1,18 @@
 @props(['item'])
 
-<div class="border border-border rounded-lg overflow-hidden bg-surface">
+<div class="border border-border overflow-hidden bg-surface">
     <!-- Image area -->
     <div class="h-40 bg-[#F0F1F0] flex items-center justify-center relative">
-        <span class="text-4xl text-text-disabled select-none">📦</span>
+        <span class="text-xs uppercase tracking-wider font-semibold text-text-disabled select-none">Toko Firo</span>
 
         @if(($item->tipe_item ?? '') === 'JASA')
-            <span class="absolute top-3 left-3 px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-800">✓ Tersedia</span>
+            <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-green-50 text-green-800">Tersedia</span>
         @elseif($item->stok > 10)
-            <span class="absolute top-3 left-3 px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-800">✓ Aman</span>
+            <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-green-50 text-green-800">Aman</span>
         @elseif($item->stok > 0 && $item->stok <= 10)
-            <span class="absolute top-3 left-3 px-2 py-0.5 rounded text-xs font-medium bg-yellow-50 text-[#92700C]">⚠ Menipis</span>
+            <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-yellow-50 text-[#92700C]">Menipis</span>
         @else
-            <span class="absolute top-3 left-3 px-2 py-0.5 rounded text-xs font-medium bg-danger-50 text-danger">✕ Habis</span>
+            <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-danger-50 text-danger">Habis</span>
         @endif
     </div>
 

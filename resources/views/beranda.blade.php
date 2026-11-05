@@ -16,10 +16,10 @@
                         Langsung cek stok dan harga dari sini. Diperbarui tiap hari, jadi nggak perlu nanya dulu ke toko.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-3 mt-8">
-                        <a href="/katalog" class="bg-green-700 text-white font-medium px-7 py-3 rounded-lg hover:bg-green-800 transition inline-block text-center">
+                        <a href="/katalog" class="bg-green-700 text-white font-medium px-7 py-3 hover:bg-green-800 transition inline-block text-center">
                             Lihat Katalog
                         </a>
-                        <a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" class="border border-green-700 text-green-700 font-medium px-7 py-3.5 rounded-lg hover:bg-green-50 transition inline-block text-center">
+                        <a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" data-turbo="false" class="border border-green-700 text-green-700 font-medium px-7 py-3.5 hover:bg-green-50 transition inline-block text-center">
                             Hubungi Toko
                         </a>
                     </div>
@@ -27,8 +27,8 @@
 
                 {{-- Right Column --}}
                 <div class="hidden sm:flex items-center justify-center">
-                    <div class="w-full max-w-[440px] h-[300px] md:h-[340px] lg:h-[400px] rounded-2xl overflow-hidden">
-                        <img src="/foto1.jpeg" alt="Toko Firo" class="w-full h-full object-cover">
+                    <div class="w-full max-w-[440px] h-[300px] md:h-[340px] lg:h-[400px] overflow-hidden">
+                        <img src="/foto-atk.webp" alt="Toko Firo - Alat Tulis Kantor" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-10 lg:gap-16 items-center">
                 {{-- Left Column (Image Placeholder) --}}
                 <div class="flex justify-center md:justify-start">
-                    <div class="w-full max-w-[400px] h-[260px] md:h-[280px] lg:h-[320px] rounded-xl overflow-hidden">
-                        <img src="/foto2.jpeg" alt="Foto Toko Firo" class="w-full h-full object-cover">
+                    <div class="w-full max-w-[400px] h-[260px] md:h-[280px] lg:h-[320px] overflow-hidden">
+                        <img src="/foto-nulis.webp" alt="Foto Toko Firo" class="w-full h-full object-cover">
                     </div>
                 </div>
 
@@ -55,20 +55,20 @@
                         Toko ATK & fotocopy langganan warga Kraksaan
                     </h2>
                     <p class="text-text-muted leading-relaxed mt-4 max-w-[440px]">
-                        Didirikan Bapak Junaidi Saleh di Jl. Yos Sudarso, Kraksaan. Kami jual alat tulis, perlengkapan sekolah, kantor, dan terima fotocopy. Harga pas, pelayanan cepat.
+                        Didirikan Bapak Junaidi Saleh di Jl. Yos Sudarso, Kraksaan. Kami menjual alat tulis, perlengkapan sekolah, kantor, dan jasa fotocopy. Harga pas, pelayanan cepat.
                     </p>
-                    <div class="flex gap-8 mt-8">
-                        <div>
-                            <div class="font-heading font-bold text-2xl text-ink">100+</div>
-                            <div class="text-sm text-text-muted mt-1">Jenis barang</div>
+                    <div class="flex flex-row gap-8 mt-8">
+                        <div class="text-center">
+                            <div class="text-sm text-text-muted">Jenis barang</div>
+                            <div class="font-heading font-bold text-2xl text-ink mt-1">100+</div>
                         </div>
-                        <div>
-                            <div class="font-heading font-bold text-2xl text-ink">Setiap hari</div>
-                            <div class="text-sm text-text-muted mt-1">Buka</div>
+                        <div class="text-center">
+                            <div class="text-sm text-text-muted">Buka</div>
+                            <div class="font-heading font-bold text-2xl text-ink mt-1">Setiap hari</div>
                         </div>
-                        <div>
-                            <div class="font-heading font-bold text-2xl text-ink">Cepat</div>
-                            <div class="text-sm text-text-muted mt-1">Fotocopy</div>
+                        <div class="text-center">
+                            <div class="text-sm text-text-muted">Fotocopy</div>
+                            <div class="font-heading font-bold text-2xl text-ink mt-1">Cepat</div>
                         </div>
                     </div>
                 </div>
@@ -80,20 +80,18 @@
     <section id="layanan" class="bg-bg py-16 md:py-18 lg:py-20">
         <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
             <div class="text-center max-w-[640px] mx-auto">
-                <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] text-center block">
+                <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] block">
                     LAYANAN
                 </span>
-                <h2 class="font-heading font-bold text-3xl lg:text-[32px] text-ink mt-3 text-center">
+                <h2 class="font-heading font-bold text-3xl lg:text-[32px] text-ink mt-3">
                     Yang kami jual dan layani
                 </h2>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-10 md:mt-12 max-w-[1000px] mx-auto">
                 {{-- Card 1 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 shadow-sm flex items-start gap-4">
-                    <div class="w-11 h-11 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 shadow-sm flex items-start gap-4">
+                    <div class="w-11 h-11 bg-green-50 flex items-center justify-center text-green-700 font-bold text-base shrink-0">
+                        1
                     </div>
                     <div>
                         <h3 class="font-heading font-bold text-base text-ink">
@@ -106,11 +104,9 @@
                 </div>
 
                 {{-- Card 2 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 shadow-sm flex items-start gap-4">
-                    <div class="w-11 h-11 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 shadow-sm flex items-start gap-4">
+                    <div class="w-11 h-11 bg-green-50 flex items-center justify-center text-green-700 font-bold text-base shrink-0">
+                        2
                     </div>
                     <div>
                         <h3 class="font-heading font-bold text-base text-ink">
@@ -123,11 +119,9 @@
                 </div>
 
                 {{-- Card 3 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 shadow-sm flex items-start gap-4">
-                    <div class="w-11 h-11 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 shadow-sm flex items-start gap-4">
+                    <div class="w-11 h-11 bg-green-50 flex items-center justify-center text-green-700 font-bold text-base shrink-0">
+                        3
                     </div>
                     <div>
                         <h3 class="font-heading font-bold text-base text-ink">
@@ -140,11 +134,9 @@
                 </div>
 
                 {{-- Card 4 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 shadow-sm flex items-start gap-4">
-                    <div class="w-11 h-11 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 shadow-sm flex items-start gap-4">
+                    <div class="w-11 h-11 bg-green-50 flex items-center justify-center text-green-700 font-bold text-base shrink-0">
+                        4
                     </div>
                     <div>
                         <h3 class="font-heading font-bold text-base text-ink">
@@ -172,70 +164,61 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-12 max-w-[1200px] mx-auto">
                 {{-- Feature 1 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 flex items-start gap-4">
-                    <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-green-50 flex items-center justify-center text-green-700 font-bold text-sm shrink-0">
+                        A
                     </div>
                     <div>
                         <h3 class="font-medium text-ink">
-                            Stok langsung keliatan
+                            Informasi Stok Terbarukan
                         </h3>
                         <p class="text-sm text-text-muted mt-1 leading-relaxed">
-                            Stok langsung berubah tiap ada transaksi masuk.
+                            Pantau stok produk dengan informasi yang selalu diperbarui.
                         </p>
                     </div>
                 </div>
 
                 {{-- Feature 2 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 flex items-start gap-4">
-                    <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.386a11.025 11.025 0 003.882-3.882c.486-.827.313-1.908-.386-2.607L9.76 3.659A2.25 2.25 0 009.568 3z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-green-50 flex items-center justify-center text-green-700 font-bold text-sm shrink-0">
+                        B
                     </div>
                     <div>
                         <h3 class="font-medium text-ink">
-                            Harga transparan
+                            Harga Jelas dan Transparan
                         </h3>
                         <p class="text-sm text-text-muted mt-1 leading-relaxed">
-                            Harga yang tertulis di katalog ya segitu, nggak ada tambahan.
+                            Nikmati kemudahan berbelanja dengan informasi harga yang jelas.
                         </p>
                     </div>
                 </div>
 
                 {{-- Feature 3 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 flex items-start gap-4">
-                    <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-green-50 flex items-center justify-center text-green-700 font-bold text-sm shrink-0">
+                        C
                     </div>
                     <div>
                         <h3 class="font-medium text-ink">
-                            Barang baru rutin masuk
+                            Ketersediaan Produk Terjaga
                         </h3>
                         <p class="text-sm text-text-muted mt-1 leading-relaxed">
-                            Kami restok rutin, apalagi barang yang sering dicari.
+                            Temukan beragam produk ATK dan fotokopi sesuai kebutuhan Anda.
                         </p>
                     </div>
                 </div>
 
                 {{-- Feature 4 --}}
-                <div class="bg-surface border border-border rounded-xl p-6 flex items-start gap-4">
-                    <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-700 shrink-0">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                        </svg>
+                <div class="bg-surface border border-border p-6 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-green-50 flex items-center justify-center text-green-700 font-bold text-sm shrink-0">
+                        D
                     </div>
                     <div>
                         <h3 class="font-medium text-ink">
-                            Pelayanan cepat
+                            Pelayanan Cepat dan Responsif
                         </h3>
                         <p class="text-sm text-text-muted mt-1 leading-relaxed">
-                            Nggak usah nunggu lama, langsung kami siapin.
+                            Dapatkan pelayanan yang cepat, ramah, dan responsif.
                         </p>
                     </div>
                 </div>
@@ -250,7 +233,7 @@
                 <span class="text-xs font-medium text-text-muted uppercase tracking-[0.15em] block">ULASAN PELANGGAN</span>
                 <h2 class="font-heading font-bold text-3xl lg:text-[32px] text-ink mt-3">Kata mereka tentang Toko Firo</h2>
                 <div class="flex items-center justify-center gap-1.5 mt-3">
-                    <svg class="w-5 h-5 text-[#FFEE10]" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <span class="px-2 py-0.5 bg-yellow text-ink font-bold text-xs uppercase">Google</span>
                     <span class="text-sm font-semibold text-ink">5.0</span>
                     <span class="text-sm text-text-muted">dari 5 ulasan di Google</span>
                 </div>
@@ -262,52 +245,32 @@
                     <div id="review-track" class="flex transition-transform duration-500 ease-in-out">
 
                         <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
-                            <div class="bg-surface rounded-xl p-5 h-full border border-border">
-                                <p class="text-sm text-ink leading-relaxed">Pelayanannya oke, dan lengkap. Toko ATK yang sangat lengkap dengan pelayanan yang memuaskan. Tersedia layanan fotokopi dan print dengan hasil rapi. Prosesnya cepat, harga terjangkau, pelayanannya ramah.</p>
-                                <div class="mt-4 pt-3 border-t border-border">
-                                    <div class="text-sm font-medium text-ink">Bryan Kurniawan</div>
-                                    <div class="text-xs text-text-muted">3 bulan lalu</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
-                            <div class="bg-surface rounded-xl p-5 h-full border border-border">
-                                <p class="text-sm text-ink leading-relaxed">Pelayanannya oke banget, sabar banget. Pulpen dicoba-coba pun gapapa.</p>
-                                <div class="mt-4 pt-3 border-t border-border">
-                                    <div class="text-sm font-medium text-ink">Nana Eyyoo</div>
-                                    <div class="text-xs text-text-muted">3 tahun lalu</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
-                            <div class="bg-surface rounded-xl p-5 h-full border border-border">
+                            <div class="border border-border bg-surface p-6 h-full flex flex-col justify-between">
                                 <p class="text-sm text-ink leading-relaxed">Terlengkap di daerah Kalibuntu Kraksaan. Mulai dari pengetikan sampai pasang parabola dan CCTV wifi.</p>
-                                <div class="mt-4 pt-3 border-t border-border">
-                                    <div class="text-sm font-medium text-ink">Jefril Abdul Ro'uf</div>
-                                    <div class="text-xs text-text-muted">4 tahun lalu</div>
-                                </div>
                             </div>
                         </div>
 
                         <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
-                            <div class="bg-surface rounded-xl p-5 h-full border border-border">
+                            <div class="border border-border bg-surface p-6 h-full flex flex-col justify-between">
                                 <p class="text-sm text-ink leading-relaxed">Tempatnya bagus, semua kebutuhan kantor tersedia. Mantap pokoknya.</p>
-                                <div class="mt-4 pt-3 border-t border-border">
-                                    <div class="text-sm font-medium text-ink">Andry Syahrizal</div>
-                                    <div class="text-xs text-text-muted">7 tahun lalu</div>
-                                </div>
                             </div>
                         </div>
 
                         <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
-                            <div class="bg-surface rounded-xl p-5 h-full border border-border">
+                            <div class="border border-border bg-surface p-6 h-full flex flex-col justify-between">
                                 <p class="text-sm text-ink leading-relaxed">Pelayanannya baik.</p>
-                                <div class="mt-4 pt-3 border-t border-border">
-                                    <div class="text-sm font-medium text-ink">Sulaiman Rhosyid</div>
-                                    <div class="text-xs text-text-muted">3 tahun lalu</div>
-                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
+                            <div class="border border-border bg-surface p-6 h-full flex flex-col justify-between">
+                                <p class="text-sm text-ink leading-relaxed">Pelayanannya oke, dan lengkap. Toko ATK yang sangat lengkap dengan pelayanan yang memuaskan. Tersedia layanan fotokopi dan print dengan hasil rapi. Prosesnya cepat, harga terjangkau, pelayanannya ramah.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3">
+                            <div class="border border-border bg-surface p-6 h-full flex flex-col justify-between">
+                                <p class="text-sm text-ink leading-relaxed">Pelayanannya oke banget, sabar banget. Pulpen dicoba-coba pun gapapa.</p>
                             </div>
                         </div>
 
@@ -338,7 +301,7 @@
                                 Alamat
                             </div>
                             <div class="text-text-muted mt-1">
-                                <a href="https://maps.app.goo.gl/XH8QjJezgEqBwtkm9" target="_blank" rel="noopener noreferrer" class="hover:text-green-700 transition">
+                                <a href="https://maps.app.goo.gl/XH8QjJezgEqBwtkm9" target="_blank" rel="noopener noreferrer" data-turbo="false" class="hover:text-green-700 transition">
                                     Jl. Yos Sudarso No.BA-9, Krajan, Sidopekso, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282, Indonesia
                                 </a>
                             </div>
@@ -348,7 +311,7 @@
                                 Telepon
                             </div>
                             <div class="mt-1">
-                                <a href="tel:+6285234789169" class="text-text-muted hover:text-green-700 transition">
+                                <a href="tel:+6285234789169" data-turbo="false" class="text-text-muted hover:text-green-700 transition">
                                     +62 852-3478-9169
                                 </a>
                             </div>
@@ -361,7 +324,7 @@
                         </div>
                     </div>
                     <div class="mt-6">
-                        <a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-900 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition font-medium">
+                        <a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" data-turbo="false" class="inline-block bg-green-900 text-white px-6 py-3 hover:bg-green-800 transition font-medium">
                             Hubungi Toko
                         </a>
                     </div>
@@ -369,7 +332,7 @@
 
                 {{-- Right Column (Map Placeholder) --}}
                 <div class="flex justify-center md:justify-end">
-                    <div class="w-full max-w-[520px] h-[320px] md:h-[360px] lg:h-[400px] rounded-xl overflow-hidden border border-border">
+                    <div class="w-full max-w-[520px] h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden border border-border">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.37389456605!2d113.42310361182076!3d-7.7501081768125655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd700fee90c7771%3A0x4b6bdcea4e8fe1f5!2sTOKO%20FIRO!5e0!3m2!1sen!2sus!4v1791613296253!5m2!1sen!2sus"
                             width="100%"
@@ -398,7 +361,7 @@
                     </p>
                 </div>
                 <div>
-                    <a href="/katalog" class="bg-green-700 text-white font-medium px-7 py-3 rounded-lg hover:bg-green-800 transition shrink-0 inline-block text-center">
+                    <a href="/katalog" class="bg-green-700 text-white font-medium px-7 py-3 hover:bg-green-800 transition shrink-0 inline-block text-center">
                         Lihat Katalog
                     </a>
                 </div>
@@ -430,9 +393,9 @@
         if (!dotsContainer) return;
         Array.from(dotsContainer.children).forEach((dot, idx) => {
             if (idx === realIdx) {
-                dot.className = 'w-6 h-2 rounded-full bg-green-700 transition-all duration-300';
+                dot.className = 'w-6 h-2 bg-green-700 transition-all duration-300';
             } else {
-                dot.className = 'w-2 h-2 rounded-full bg-green-700/30 hover:bg-green-700/50 transition-all duration-300';
+                dot.className = 'w-2 h-2 bg-green-700/30 hover:bg-green-700/50 transition-all duration-300';
             }
         });
     }
@@ -442,7 +405,7 @@
         for (let d = 0; d < total; d++) {
             const dot = document.createElement('button');
             dot.type = 'button';
-            dot.className = 'w-2 h-2 rounded-full bg-green-700/30 hover:bg-green-700/50 transition-all duration-300';
+            dot.className = 'w-2 h-2 bg-green-700/30 hover:bg-green-700/50 transition-all duration-300';
             dot.setAttribute('aria-label', `Ulasan ${d + 1}`);
             dot.addEventListener('click', () => {
                 slideTo(3 + d);

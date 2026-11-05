@@ -9,7 +9,7 @@
             margin: 15mm 15mm 15mm 15mm;
         }
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 10pt;
             color: #1e293b;
             line-height: 1.4;

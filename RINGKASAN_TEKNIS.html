@@ -1,0 +1,977 @@
+<title>Ringkasan Teknis Toko Firo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+  /* Layout: single-column document with anchored nav, max-width prose */
+  :root {
+    --bg: #fafaf9;
+    --bg-card: #ffffff;
+    --bg-nav: rgba(250,250,249,0.92);
+    --fg: #1c1917;
+    --fg-muted: #57534e;
+    --fg-faint: #a8a29e;
+    --accent: #166534;
+    --accent-soft: #dcfce7;
+    --accent-fg: #14532d;
+    --border: #e7e5e4;
+    --border-strong: #d6d3d1;
+    --code-bg: #f5f5f4;
+    --badge-admin: #dbeafe;
+    --badge-admin-fg: #1e40af;
+    --badge-kasir: #fef3c7;
+    --badge-kasir-fg: #92400e;
+    --badge-db: #ede9fe;
+    --badge-db-fg: #5b21b6;
+    --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a1a1a;
+      --bg-card: #262626;
+      --bg-nav: rgba(26,26,26,0.92);
+      --fg: #e7e5e4;
+      --fg-muted: #a8a29e;
+      --fg-faint: #78716c;
+      --accent: #4ade80;
+      --accent-soft: #14532d;
+      --accent-fg: #bbf7d0;
+      --border: #3a3a3a;
+      --border-strong: #525252;
+      --code-bg: #2a2a2a;
+      --badge-admin: #1e3a5f;
+      --badge-admin-fg: #93c5fd;
+      --badge-kasir: #422006;
+      --badge-kasir-fg: #fcd34d;
+      --badge-db: #2e1065;
+      --badge-db-fg: #c4b5fd;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a1a1a;
+    --bg-card: #262626;
+    --bg-nav: rgba(26,26,26,0.92);
+    --fg: #e7e5e4;
+    --fg-muted: #a8a29e;
+    --fg-faint: #78716c;
+    --accent: #4ade80;
+    --accent-soft: #14532d;
+    --accent-fg: #bbf7d0;
+    --border: #3a3a3a;
+    --border-strong: #525252;
+    --code-bg: #2a2a2a;
+    --badge-admin: #1e3a5f;
+    --badge-admin-fg: #93c5fd;
+    --badge-kasir: #422006;
+    --badge-kasir-fg: #fcd34d;
+    --badge-db: #2e1065;
+    --badge-db-fg: #c4b5fd;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-display);
+    font-size: 15px;
+    line-height: 1.65;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: var(--bg);
+  }
+
+  .wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding-block: 2rem 4rem;
+  }
+
+  /* Sticky nav */
+  .toc-bar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 9;
+    background: var(--bg-nav);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    margin-inline: -16px;
+    padding: 10px 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    gap: 4px;
+    scrollbar-width: none;
+  }
+  .toc-bar::-webkit-scrollbar { display: none; }
+  .toc-bar a {
+    display: inline-block;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--fg-muted);
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+  }
+  .toc-bar a:hover { background: var(--accent-soft); color: var(--accent-fg); }
+
+  /* Header */
+  .page-header { margin-bottom: 2.5rem; }
+  .page-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin: 0 0 6px;
+  }
+  .page-header .subtitle {
+    font-size: 15px;
+    color: var(--fg-muted);
+    margin: 0;
+  }
+
+  /* Stat row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin: 1.5rem 0 2.5rem;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .stat-card .stat-val {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-card .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-faint);
+    margin-top: 2px;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 2.5rem;
+    scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 52px);
+  }
+  .section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section h2 .section-num {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .section > p {
+    color: var(--fg-muted);
+    font-size: 13px;
+    margin: 0 0 1rem;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 1.5rem 0 0.5rem;
+    color: var(--fg);
+  }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
+    margin-bottom: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  thead { background: var(--code-bg); }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-faint);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    min-width: 0;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--code-bg); }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .badge-admin { background: var(--badge-admin); color: var(--badge-admin-fg); }
+  .badge-kasir { background: var(--badge-kasir); color: var(--badge-kasir-fg); }
+  .badge-db { background: var(--badge-db); color: var(--badge-db-fg); }
+  .badge-accent { background: var(--accent-soft); color: var(--accent-fg); }
+
+  /* Code */
+  code, .mono {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--code-bg);
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+  td code { background: none; padding: 0; }
+
+  /* Compact list */
+  .compact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .compact-list li {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .compact-list .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  /* Version grid */
+  .ver-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .ver-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ver-item .ver-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .ver-item .ver-val {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  /* Controller detail */
+  .ctrl-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .ctrl-block .ctrl-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 2px;
+    word-break: break-all;
+  }
+  .ctrl-block .ctrl-path {
+    font-size: 11px;
+    color: var(--fg-faint);
+    margin-bottom: 8px;
+  }
+  .ctrl-block .ctrl-methods {
+    display: grid;
+    gap: 4px;
+  }
+  .ctrl-block .ctrl-method {
+    font-size: 13px;
+    line-height: 1.45;
+    display: flex;
+    gap: 6px;
+  }
+  .ctrl-block .ctrl-method .mname {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--fg);
+    flex-shrink: 0;
+  }
+  .ctrl-block .ctrl-method .mdesc {
+    color: var(--fg-muted);
+    font-size: 12px;
+  }
+
+  /* Route table */
+  .route-method {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .rm-get { background: var(--accent-soft); color: var(--accent-fg); }
+  .rm-post { background: var(--badge-admin); color: var(--badge-admin-fg); }
+  .rm-put { background: var(--badge-kasir); color: var(--badge-kasir-fg); }
+  .rm-patch { background: var(--badge-db); color: var(--badge-db-fg); }
+  .rm-delete { background: #fee2e2; color: #991b1b; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .rm-delete { background: #450a0a; color: #fca5a5; }
+  }
+  :root[data-theme="dark"] .rm-delete { background: #450a0a; color: #fca5a5; }
+
+  /* Divider */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 600px) {
+    .page-header h1 { font-size: 22px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .ver-grid { grid-template-columns: 1fr; }
+    .toc-bar { margin-inline: -16px; padding: 8px 16px; }
+  }
+</style>
+
+<div class="wrapper">
+
+  <header class="page-header">
+    <h1>Ringkasan Teknis Toko Firo</h1>
+    <p class="subtitle">Audit arsitektur, dependensi, dan struktur kode — Laravel 12 POS System</p>
+  </header>
+
+  <nav class="toc-bar">
+    <a href="#stack">Stack</a>
+    <a href="#database">Database</a>
+    <a href="#controllers">Controllers</a>
+    <a href="#models">Models</a>
+    <a href="#services">Services</a>
+    <a href="#middleware">Middleware</a>
+    <a href="#jobs">Jobs &amp; Commands</a>
+    <a href="#routes">Routes</a>
+    <a href="#tests">Tests</a>
+  </nav>
+
+  <!-- Stats overview -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val">24</div>
+      <div class="stat-label">Controllers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">15</div>
+      <div class="stat-label">Services</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">8</div>
+      <div class="stat-label">Models</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">39</div>
+      <div class="stat-label">Stored Procedures</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">54</div>
+      <div class="stat-label">Routes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">144</div>
+      <div class="stat-label">Tests Passed</div>
+    </div>
+  </div>
+
+  <!-- 1. TECH STACK -->
+  <section class="section" id="stack">
+    <h2><span class="section-num">01</span> Tech Stack &amp; Versi</h2>
+    <p>Lingkungan runtime dan seluruh dependensi utama proyek.</p>
+
+    <h3>Runtime &amp; Server</h3>
+    <div class="ver-grid">
+      <div class="ver-item"><span class="ver-name">PHP</span><span class="ver-val">8.4.7</span></div>
+      <div class="ver-item"><span class="ver-name">Laravel</span><span class="ver-val">12.69.2</span></div>
+      <div class="ver-item"><span class="ver-name">MariaDB</span><span class="ver-val">11.8.2</span></div>
+      <div class="ver-item"><span class="ver-name">Node.js</span><span class="ver-val">22.15.0</span></div>
+      <div class="ver-item"><span class="ver-name">NPM</span><span class="ver-val">10.9.2</span></div>
+    </div>
+
+    <h3>Paket PHP (Composer)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Paket</th><th>Batasan</th><th>Terpasang</th></tr></thead>
+        <tbody>
+          <tr><td><code>laravel/framework</code></td><td>^12.0</td><td>v12.69.2</td></tr>
+          <tr><td><code>barryvdh/laravel-dompdf</code></td><td>^3.1</td><td>v3.1.2</td></tr>
+          <tr><td><code>laravel/tinker</code></td><td>^2.10.1</td><td>v2.11.1</td></tr>
+          <tr><td><code>phpunit/phpunit</code></td><td>^11.5.50</td><td>11.5.56</td></tr>
+          <tr><td><code>fakerphp/faker</code></td><td>^1.23</td><td>v1.24.1</td></tr>
+          <tr><td><code>laravel/pint</code></td><td>^1.24</td><td>v1.30.4</td></tr>
+          <tr><td><code>mockery/mockery</code></td><td>^1.6</td><td>1.6.15</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Paket Frontend (NPM)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Paket</th><th>Batasan</th><th>Terpasang</th></tr></thead>
+        <tbody>
+          <tr><td><code>@hotwired/turbo</code></td><td>^8.0.23</td><td>8.0.23</td></tr>
+          <tr><td><code>vite</code></td><td>^7.0.7</td><td>7.3.7</td></tr>
+          <tr><td><code>tailwindcss</code></td><td>^4.0.0</td><td>4.3.3</td></tr>
+          <tr><td><code>@tailwindcss/vite</code></td><td>^4.0.0</td><td>4.3.3</td></tr>
+          <tr><td><code>laravel-vite-plugin</code></td><td>^2.0.0</td><td>2.1.0</td></tr>
+          <tr><td><code>axios</code></td><td>^1.11.0</td><td>1.20.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 2. DATABASE -->
+  <section class="section" id="database">
+    <h2><span class="section-num">02</span> Database Layer</h2>
+    <p>Skema MariaDB <code>toko_firo</code> — 21 tabel, 5 view, 39 stored procedure, 2 trigger.</p>
+
+    <div class="stats-row" style="margin-top:1rem">
+      <div class="stat-card"><div class="stat-val">21</div><div class="stat-label">Tabel</div></div>
+      <div class="stat-card"><div class="stat-val">5</div><div class="stat-label">Views</div></div>
+      <div class="stat-card"><div class="stat-val">39</div><div class="stat-label">Stored Proc</div></div>
+      <div class="stat-card"><div class="stat-val">2</div><div class="stat-label">Triggers</div></div>
+    </div>
+
+    <h3>Daftar Tabel</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tabel</th><th>Fungsi</th></tr></thead>
+        <tbody>
+          <tr><td><code>daftar_item</code></td><td>Master barang: stok, harga pokok, harga jual, tipe, batas minimum</td></tr>
+          <tr><td><code>daftar_pembelian</code></td><td>Transaksi pengadaan barang dari supplier</td></tr>
+          <tr><td><code>daftar_penjualan</code></td><td>Master nota penjualan POS</td></tr>
+          <tr><td><code>daftar_transaksi</code></td><td>Detail rincian item keluar/masuk dan retur</td></tr>
+          <tr><td><code>pengguna</code></td><td>Akun autentikasi admin &amp; kasir</td></tr>
+          <tr><td><code>otp_2fa</code></td><td>Token OTP verifikasi login 2FA</td></tr>
+          <tr><td><code>saldo_harian</code></td><td>Saldo awal dan akhir kasir per tanggal</td></tr>
+          <tr><td><code>log_aktivitas</code></td><td>Audit trail aktivitas sistem (immutable)</td></tr>
+          <tr><td><code>log_notifikasi</code></td><td>Riwayat pengiriman notifikasi Telegram</td></tr>
+          <tr><td><code>pengaturan_notifikasi</code></td><td>Konfigurasi key-value bot &amp; toggle otomatisasi</td></tr>
+          <tr><td><code>riwayat_backup</code></td><td>Catatan arsip cadangan database</td></tr>
+          <tr><td><code>notifikasi_dibaca</code></td><td>Status keterbacaan notifikasi</td></tr>
+          <tr><td><code>sessions</code></td><td>Sesi pengguna berbasis database</td></tr>
+          <tr><td><code>cache</code> / <code>cache_locks</code></td><td>Session/cache framework</td></tr>
+          <tr><td><code>jobs</code> / <code>job_batches</code> / <code>failed_jobs</code></td><td>Antrean queue latar belakang</td></tr>
+          <tr><td><code>migrations</code></td><td>Riwayat migrasi skema Laravel</td></tr>
+          <tr><td><code>password_reset_tokens</code></td><td>Token reset kata sandi</td></tr>
+          <tr><td><code>users</code></td><td>User bawaan framework</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Views</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>View</th><th>Fungsi</th></tr></thead>
+        <tbody>
+          <tr><td><code>v_barang_terlaris</code></td><td>Item barang dengan penjualan terbanyak</td></tr>
+          <tr><td><code>v_info_barang</code></td><td>Pembaruan item, harga, dan stok baru</td></tr>
+          <tr><td><code>v_katalog_publik</code></td><td>Daftar katalog produk untuk publik</td></tr>
+          <tr><td><code>v_stok_item</code></td><td>Agregasi kondisi stok item</td></tr>
+          <tr><td><code>v_stok_menipis</code></td><td>Filter item di bawah batas minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Stored Procedures (39 total)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Kategori</th><th>Procedures</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-accent">Barang &amp; Harga</span></td>
+            <td><code>sp_create_item</code>, <code>sp_update_item</code>, <code>sp_update_item_v2</code>, <code>sp_update_harga</code>, <code>sp_delete_item</code>, <code>sp_delete_item_v2</code>, <code>sp_cari_item</code>, <code>sp_get_info_barang</code>, <code>sp_set_batas_minimum</code>, <code>sp_set_batas_minimum_semua</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-accent">Transaksi &amp; Stok</span></td>
+            <td><code>sp_create_penjualan</code>, <code>sp_tambah_item_penjualan</code>, <code>sp_retur_penjualan</code>, <code>sp_create_pembelian</code>, <code>sp_tambah_item_pembelian</code>, <code>sp_retur_pembelian</code>, <code>sp_item_kritis_dari_nota</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-accent">Pengguna &amp; Auth</span></td>
+            <td><code>sp_create_pengguna</code>, <code>sp_update_pengguna</code>, <code>sp_delete_pengguna</code>, <code>sp_set_status_pengguna</code>, <code>sp_reset_password</code>, <code>sp_catat_login</code>, <code>sp_get_pengguna_login</code>, <code>sp_buat_otp</code>, <code>sp_verifikasi_otp</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-accent">Laporan &amp; Dashboard</span></td>
+            <td><code>sp_ringkasan_dashboard</code>, <code>sp_barang_terlaris</code>, <code>sp_get_laporan_penjualan</code>, <code>sp_get_saldo_harian</code>, <code>sp_set_saldo_awal</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-accent">Audit &amp; Notifikasi</span></td>
+            <td><code>sp_get_log</code>, <code>sp_catat_backup</code>, <code>sp_catat_notifikasi</code>, <code>sp_get_log_notifikasi</code>, <code>sp_tandai_dibaca</code>, <code>sp_update_status_notifikasi</code>, <code>sp_get_setting</code>, <code>sp_set_setting</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Triggers (Immutable Audit)</h3>
+    <ul class="compact-list">
+      <li><span class="dot"></span><code>trg_log_aktivitas_cegah_update</code> — Menolak perubahan data log yang sudah tercatat</li>
+      <li><span class="dot"></span><code>trg_log_aktivitas_cegah_delete</code> — Menolak penghapusan rekaman pada log audit (append-only)</li>
+    </ul>
+  </section>
+
+  <hr>
+
+  <!-- 3. CONTROLLERS -->
+  <section class="section" id="controllers">
+    <h2><span class="section-num">03</span> Controllers</h2>
+    <p>24 controller class — 9 root/publik, 12 admin, 5 kasir.</p>
+
+    <h3><span class="badge badge-accent">Publik &amp; Auth</span></h3>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">BerandaController</div>
+      <div class="ctrl-path">app/Http/Controllers/BerandaController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Halaman landing page publik</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">KatalogController</div>
+      <div class="ctrl-path">app/Http/Controllers/KatalogController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Katalog produk publik dengan filter, pencarian, paginasi 12 item</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">LoginController</div>
+      <div class="ctrl-path">app/Http/Controllers/LoginController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">showLoginForm()</span><span class="mdesc">Form login /masuk</span></div>
+        <div class="ctrl-method"><span class="mname">authenticate()</span><span class="mdesc">Validasi kredensial, generate OTP 6 digit, kirim ke Telegram</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">OtpController</div>
+      <div class="ctrl-path">app/Http/Controllers/OtpController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">showVerifyForm()</span><span class="mdesc">Antarmuka input kode OTP 2FA</span></div>
+        <div class="ctrl-method"><span class="mname">verify()</span><span class="mdesc">Verifikasi OTP, panggil sp_catat_login, login session</span></div>
+        <div class="ctrl-method"><span class="mname">resend()</span><span class="mdesc">Kirim ulang OTP dengan cooldown 90 detik</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">LogoutController</div>
+      <div class="ctrl-path">app/Http/Controllers/LogoutController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">__invoke()</span><span class="mdesc">Logout, notifikasi keluar staf via Telegram</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">TelegramWebhookController</div>
+      <div class="ctrl-path">app/Http/Controllers/TelegramWebhookController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">handle()</span><span class="mdesc">Terima webhook Telegram, validasi secret, eksekusi command (/start, /help, /laporan)</span></div>
+      </div>
+    </div>
+
+    <h3><span class="badge badge-admin">Admin</span> Controllers</h3>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">DashboardController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/DashboardController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Ringkasan omzet, laba kotor, grafik 7 hari, top 5 terlaris, log aktivitas</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">BarangController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/BarangController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Master data barang, paginasi 7 item, filter, sort, search</span></div>
+        <div class="ctrl-method"><span class="mname">store()</span><span class="mdesc">Tambah barang via sp_create_item</span></div>
+        <div class="ctrl-method"><span class="mname">update()</span><span class="mdesc">Update data umum via sp_update_item_v2</span></div>
+        <div class="ctrl-method"><span class="mname">updateHarga()</span><span class="mdesc">Update harga pokok/jual via sp_update_harga</span></div>
+        <div class="ctrl-method"><span class="mname">destroy()</span><span class="mdesc">Hapus item via sp_delete_item_v2</span></div>
+        <div class="ctrl-method"><span class="mname">riwayat()</span><span class="mdesc">Riwayat transaksi item</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">PenggunaController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/PenggunaController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Manajemen akun pengguna, paginasi 10 baris</span></div>
+        <div class="ctrl-method"><span class="mname">store()</span><span class="mdesc">Buat akun baru dengan enkripsi password</span></div>
+        <div class="ctrl-method"><span class="mname">update()</span><span class="mdesc">Update nama, username, role</span></div>
+        <div class="ctrl-method"><span class="mname">toggleStatus()</span><span class="mdesc">Ubah status AKTIF/NONAKTIF</span></div>
+        <div class="ctrl-method"><span class="mname">resetPassword()</span><span class="mdesc">Reset password staf</span></div>
+        <div class="ctrl-method"><span class="mname">destroy()</span><span class="mdesc">Hapus akun (cegah hapus diri sendiri)</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">ProfilController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/ProfilController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Profil admin dari Auth::user()</span></div>
+        <div class="ctrl-method"><span class="mname">update()</span><span class="mdesc">Update nama dan username</span></div>
+        <div class="ctrl-method"><span class="mname">updatePassword()</span><span class="mdesc">Ganti password dengan verifikasi password lama</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">PembelianController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/PembelianController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Daftar barang perlu restock + formulir pengadaan</span></div>
+        <div class="ctrl-method"><span class="mname">store()</span><span class="mdesc">Simpan transaksi restock dari supplier, tambah stok</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">LaporanPenjualanController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/LaporanPenjualanController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Laporan penjualan: filter tanggal, rekapitulasi, paginasi 5 nota</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">LaporanPembelianController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/LaporanPembelianController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Laporan pembelian restock: filter rentang waktu, paginasi 5 nota</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">NotifikasiController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/NotifikasiController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Konfigurasi bot Telegram termasker, toggle otomatisasi, riwayat notifikasi</span></div>
+        <div class="ctrl-method"><span class="mname">updateTelegram()</span><span class="mdesc">Update token bot &amp; chat ID via sp_set_setting</span></div>
+        <div class="ctrl-method"><span class="mname">toggle()</span><span class="mdesc">Aktifkan/nonaktifkan jenis notifikasi (AJAX)</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">BatasStokController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/BatasStokController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Antarmuka batas stok minimum</span></div>
+        <div class="ctrl-method"><span class="mname">updateItem()</span><span class="mdesc">Update ambang minimum satu item</span></div>
+        <div class="ctrl-method"><span class="mname">updateSemua()</span><span class="mdesc">Update batas minimum seluruh item fisik</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">LogAktivitasController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/LogAktivitasController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Audit log aktivitas, paginasi 10, filter aksi</span></div>
+        <div class="ctrl-method"><span class="mname">ekspor()</span><span class="mdesc">Download audit log ke CSV streaming</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">BackupController</div>
+      <div class="ctrl-path">app/Http/Controllers/Admin/BackupController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Antarmuka riwayat backup</span></div>
+        <div class="ctrl-method"><span class="mname">store()</span><span class="mdesc">Eksekusi backup terenkripsi AES-256</span></div>
+      </div>
+    </div>
+
+    <h3><span class="badge badge-kasir">Kasir</span> Controllers</h3>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">DashboardKasirController</div>
+      <div class="ctrl-path">app/Http/Controllers/Kasir/DashboardKasirController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Ringkasan shift kasir, saldo hari ini, stok menipis, barang baru</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">TransaksiKasirController</div>
+      <div class="ctrl-path">app/Http/Controllers/Kasir/TransaksiKasirController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Antarmuka POS kasir dan keranjang belanja</span></div>
+        <div class="ctrl-method"><span class="mname">cariItem()</span><span class="mdesc">API katalog saat kasir mengetik/scan</span></div>
+        <div class="ctrl-method"><span class="mname">updateKeranjang()</span><span class="mdesc">Kelola tambah/kurang/kosongkan keranjang</span></div>
+        <div class="ctrl-method"><span class="mname">simpan()</span><span class="mdesc">Proses pembayaran, validasi stok, catat penjualan</span></div>
+        <div class="ctrl-method"><span class="mname">detail()</span><span class="mdesc">Rincian penjualan dari nomor nota</span></div>
+        <div class="ctrl-method"><span class="mname">cetakStruk()</span><span class="mdesc">Render struk thermal printer</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">StokKasirController</div>
+      <div class="ctrl-path">app/Http/Controllers/Kasir/StokKasirController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Daftar stok barang dengan status aman/menipis/habis</span></div>
+        <div class="ctrl-method"><span class="mname">cariAjax()</span><span class="mdesc">Pencarian barcode scanner cepat (async)</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">SaldoKasirController</div>
+      <div class="ctrl-path">app/Http/Controllers/Kasir/SaldoKasirController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Saldo kas kasir: awal, tunai, QRIS, kas keluar, saldo akhir</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">InfoBarangKasirController</div>
+      <div class="ctrl-path">app/Http/Controllers/Kasir/InfoBarangKasirController.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">index()</span><span class="mdesc">Info pembaruan barang baru dan perubahan harga dari v_info_barang</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 4. MODELS -->
+  <section class="section" id="models">
+    <h2><span class="section-num">04</span> Eloquent Models</h2>
+    <p>8 model di <code>app/Models/</code>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Model</th><th>Tabel</th><th>Primary Key</th><th>Relasi &amp; Keterangan</th></tr></thead>
+        <tbody>
+          <tr><td><code>DaftarItem</code></td><td>daftar_item</td><td>kode_item (string)</td><td>hasMany DaftarTransaksi</td></tr>
+          <tr><td><code>DaftarPembelian</code></td><td>daftar_pembelian</td><td>kode_transaksi (string)</td><td>hasMany DaftarTransaksi</td></tr>
+          <tr><td><code>DaftarPenjualan</code></td><td>daftar_penjualan</td><td>kode_transaksi (string)</td><td>hasMany DaftarTransaksi</td></tr>
+          <tr><td><code>DaftarTransaksi</code></td><td>daftar_transaksi</td><td>id_detail (int)</td><td>belongsTo Item, Pembelian, Penjualan</td></tr>
+          <tr><td><code>ItemBarang</code></td><td>daftar_item</td><td>kode_item (string)</td><td>Accessor status_stok (Habis/Menipis/Aman)</td></tr>
+          <tr><td><code>LogAktivitas</code></td><td>log_aktivitas</td><td>id_log (int)</td><td>Audit trail (waktu, keterangan, tipe_aksi)</td></tr>
+          <tr><td><code>Pengguna</code></td><td>pengguna</td><td>id_pengguna (int)</td><td>Authenticatable, kolom password_hash</td></tr>
+          <tr><td><code>User</code></td><td>pengguna</td><td>id_pengguna (int)</td><td>Auth adapter untuk login &amp; 2FA OTP</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5. SERVICES -->
+  <section class="section" id="services">
+    <h2><span class="section-num">05</span> Service Layer</h2>
+    <p>15 service class memisahkan logika bisnis dari controllers.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Fungsi</th></tr></thead>
+        <tbody>
+          <tr><td><code>DashboardService</code></td><td>Metrik omzet, laba kotor, grafik 7 hari, top 5 terlaris</td></tr>
+          <tr><td><code>DashboardKasirService</code></td><td>Ringkasan shift kasir, saldo hari ini, stok menipis</td></tr>
+          <tr><td><code>TransaksiKasirService</code></td><td>Alur transaksi POS: nomor nota, validasi stok, kembalian, penyimpanan</td></tr>
+          <tr><td><code>StokKasirService</code></td><td>Pencarian barang, paginasi stok, filter status, cek ketersediaan</td></tr>
+          <tr><td><code>LaporanPenjualanService</code></td><td>Ringkasan statistik penjualan dan daftar transaksi terfilter</td></tr>
+          <tr><td><code>LaporanPembelianService</code></td><td>Ringkasan pengadaan barang dan daftar transaksi restock</td></tr>
+          <tr><td><code>PembelianService</code></td><td>Identifikasi barang perlu restock, catat transaksi dari supplier</td></tr>
+          <tr><td><code>PenggunaService</code></td><td>CRUD akun: tambah, ubah, status, reset password, hapus</td></tr>
+          <tr><td><code>BatasStokService</code></td><td>Batas minimum stok, peringatan stok kritis, notifikasi Telegram</td></tr>
+          <tr><td><code>LogAktivitasService</code></td><td>Audit log dengan paginasi, filter, dan ekspor CSV</td></tr>
+          <tr><td><code>BackupService</code></td><td>Backup database terenkripsi AES-256, riwayat backup</td></tr>
+          <tr><td><code>OtpService</code></td><td>Siklus OTP 2FA: generate 6 digit, validasi 5 menit, maks 3x salah</td></tr>
+          <tr><td><code>TelegramService</code></td><td>Kirim pesan teks notifikasi ke Bot Telegram</td></tr>
+          <tr><td><code>TelegramBotService</code></td><td>Komunikasi lengkap Bot API: pesan, dokumen PDF, callback, commands</td></tr>
+          <tr><td><code>TelegramReportService</code></td><td>Agregasi data harian, generate laporan PDF via DomPDF, kirim ke Telegram</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 6. MIDDLEWARE -->
+  <section class="section" id="middleware">
+    <h2><span class="section-num">06</span> Custom Middleware</h2>
+    <p>3 middleware kustom mengatur kontrol akses dan alur keamanan.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Middleware</th><th>Alias</th><th>Fungsi</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>CheckRole</code></td>
+            <td><code>role</code></td>
+            <td>Validasi peran pengguna. ADMIN = superuser (bypass semua). Non-match = 403.</td>
+          </tr>
+          <tr>
+            <td><code>EnsurePending2fa</code></td>
+            <td><code>pending2fa</code></td>
+            <td>Pastikan user punya session pending_2fa_user_id sebelum akses /verifikasi</td>
+          </tr>
+          <tr>
+            <td><code>RoleMiddleware</code></td>
+            <td>—</td>
+            <td>Cek autentikasi, validasi status AKTIF (paksa logout jika NONAKTIF), validasi role</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 7. JOBS & COMMANDS -->
+  <section class="section" id="jobs">
+    <h2><span class="section-num">07</span> Jobs &amp; Artisan Commands</h2>
+
+    <h3>Queue Jobs</h3>
+    <div class="ctrl-block">
+      <div class="ctrl-name">KirimPeringatanStokJob</div>
+      <div class="ctrl-path">app/Jobs/KirimPeringatanStokJob.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mdesc">Job antrean (ShouldQueue) — kirim peringatan stok kritis ke Telegram. Tries: 3, backoff: 5s. Debounce 24 jam per item via Cache.</span></div>
+      </div>
+    </div>
+
+    <h3>Console Commands</h3>
+    <div class="ctrl-block">
+      <div class="ctrl-name">KirimRekapHarianTelegram</div>
+      <div class="ctrl-path">app/Console/Commands/KirimRekapHarianTelegram.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">app:kirim-rekap-telegram</span><span class="mdesc">Rekap omzet harian, generate PDF, kirim ke Telegram. Dijadwalkan 21:00 WIB.</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl-block">
+      <div class="ctrl-name">SetTelegramCommands</div>
+      <div class="ctrl-path">app/Console/Commands/SetTelegramCommands.php</div>
+      <div class="ctrl-methods">
+        <div class="ctrl-method"><span class="mname">telegram:set-commands</span><span class="mdesc">Daftarkan command navigasi bot (/start, /menu, /laporan) ke Telegram API</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 8. ROUTES -->
+  <section class="section" id="routes">
+    <h2><span class="section-num">08</span> Routes Summary</h2>
+    <p>54 route total, tersebar di 19 file modular. Dimuat via <code>glob()</code> di <code>bootstrap/app.php</code>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>File Route</th><th>Jumlah</th><th>Prefix</th><th>Middleware</th></tr></thead>
+        <tbody>
+          <tr><td><code>web.php</code></td><td>10</td><td>/</td><td>Bervariasi (guest, pending2fa, auth)</td></tr>
+          <tr><td><code>api.php</code></td><td>1</td><td>/api</td><td>api, throttle:30,1</td></tr>
+          <tr><td><code>admin_dashboard.php</code></td><td>1</td><td>admin</td><td>web</td></tr>
+          <tr><td><code>admin_barang.php</code></td><td>6</td><td>admin/barang</td><td>web</td></tr>
+          <tr><td><code>admin_batas_stok.php</code></td><td>1</td><td>admin</td><td>web</td></tr>
+          <tr><td><code>admin_laporan.php</code></td><td>2</td><td>admin</td><td>web, auth, role:ADMIN</td></tr>
+          <tr><td><code>admin_pembelian.php</code></td><td>2</td><td>admin</td><td>web</td></tr>
+          <tr><td><code>admin_pengguna.php</code></td><td>6</td><td>admin</td><td>web, auth, role:ADMIN</td></tr>
+          <tr><td><code>admin_log.php</code></td><td>1</td><td>admin</td><td>web</td></tr>
+          <tr><td><code>admin_backup.php</code></td><td>1</td><td>admin</td><td>web</td></tr>
+          <tr><td><code>admin_notifikasi.php</code></td><td>3</td><td>admin</td><td>web, auth, role:ADMIN</td></tr>
+          <tr><td><code>admin_profil.php</code></td><td>3</td><td>admin</td><td>web, auth, role:ADMIN</td></tr>
+          <tr><td><code>admin_toko.php</code></td><td>1</td><td>admin</td><td>web</td></tr>
+          <tr><td><code>kasir_dashboard.php</code></td><td>1</td><td>/kasir</td><td>web</td></tr>
+          <tr><td><code>kasir_transaksi.php</code></td><td>7</td><td>/kasir/transaksi</td><td>web (simpan/bayar: auth)</td></tr>
+          <tr><td><code>kasir_stok.php</code></td><td>2</td><td>/kasir/stok</td><td>web</td></tr>
+          <tr><td><code>kasir_saldo.php</code></td><td>1</td><td>/kasir/saldo</td><td>web</td></tr>
+          <tr><td><code>kasir_infobarang.php</code></td><td>1</td><td>/kasir/info-barang</td><td>web</td></tr>
+          <tr><td><code>console.php</code></td><td>—</td><td>CLI</td><td>Schedule: 21:00 WIB</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 9. TESTS -->
+  <section class="section" id="tests">
+    <h2><span class="section-num">09</span> Test Coverage</h2>
+    <p>Hasil <code>php artisan test</code> terakhir.</p>
+
+    <div class="stats-row" style="margin-top:1rem">
+      <div class="stat-card"><div class="stat-val">170</div><div class="stat-label">Total Tests</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:var(--accent)">144</div><div class="stat-label">Passed</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:var(--fg-faint)">26</div><div class="stat-label">Skipped</div></div>
+      <div class="stat-card"><div class="stat-val">627</div><div class="stat-label">Assertions</div></div>
+    </div>
+
+    <p style="font-size:13px;color:var(--fg-muted);margin-top:0.5rem">
+      26 test di-skip karena middleware auth sengaja dinonaktifkan untuk pengujian prototipe independen.
+      Database test menggunakan <code>toko_firo_test</code> dengan <code>DatabaseTransactions</code> (auto-rollback).
+    </p>
+  </section>
+
+</div>

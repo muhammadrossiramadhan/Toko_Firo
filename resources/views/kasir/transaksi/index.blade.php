@@ -6,8 +6,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Transaksi Penjualan - Toko Firo</title>
 
-    {{-- Tailwind CSS CDN untuk preview mandiri tanpa build step, fallback jika Vite belum dijalankan --}}
-    <script src="https://cdn.tailwindcss.com"></script>
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -31,14 +29,17 @@
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
-            <div class="bg-white rounded-xl p-3 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">
-                    F
-                </div>
-                <div class="font-bold text-gray-900 text-lg">
-                    Toko Firo
-                </div>
+            <div class="rounded-xl p-2 flex items-center justify-center">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
             </div>
+
+            @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
+            <div class="mb-2">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                    &larr; Kembali ke Menu Admin
+                </a>
+            </div>
+            @endif
 
             {{-- Menu Navigasi Kasir --}}
             <div>
@@ -49,7 +50,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Dashboard
                     </a>
@@ -57,7 +58,7 @@
                     {{-- 2. Transaksi Penjualan (Aktif) --}}
                     <a
                         href="{{ route('kasir.transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
                     >
                         Transaksi Penjualan
                     </a>
@@ -65,7 +66,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Lihat Stok Barang
                     </a>
@@ -73,7 +74,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : url('/kasir/saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Saldo
                     </a>
@@ -81,9 +82,17 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : url('/kasir/info-barang') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Info Barang Baru
+                    </a>
+
+                    {{-- 6. Pengembalian Barang --}}
+                    <a
+                        href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                    >
+                        Pengembalian Barang
                     </a>
                 </nav>
             </div>
@@ -93,18 +102,18 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
                 <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
+                    {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
+                        {{ $kasir['nama'] ?? 'Kasir' }}
                     </div>
                     <div class="text-sm text-emerald-300">
                         {{ $kasir['role'] ?? 'Kasir' }}
                     </div>
                 </div>
             </div>
-            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}">
+            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" data-turbo="false">
                 @csrf
                 <button
                     type="submit"
@@ -128,10 +137,10 @@
             </div>
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
-                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
+                    {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">
-                    {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
+                    {{ $kasir['nama'] ?? 'Kasir' }}
                 </span>
             </div>
         </header>
@@ -166,57 +175,29 @@
                         <label for="input-cari-barang" class="block text-slate-700 font-medium text-base mb-1.5">
                             Cari Barang / Barcode
                         </label>
-                        <input
-                            type="text"
-                            id="input-cari-barang"
-                            placeholder="Cari nama barang atau scan barcode..."
-                            class="touch-target w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
-                        >
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="input-cari-barang"
+                                placeholder="Cari nama barang atau scan barcode..."
+                                autocomplete="off"
+                                class="touch-target w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
+                            >
+                            <span id="indikator-cari" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-medium">
+                                Mencari...
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-slate-500 mt-2 px-0.5">
+                            <span>Ketik minimal 2 karakter untuk mencari</span>
+                            <span>Scan barcode atau tekan Enter untuk input cepat</span>
+                        </div>
                     </div>
 
-                    {{-- Grid Kartu Produk --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="grid-katalog">
-                        @forelse ($katalog as $item)
-                            <div
-                                class="kartu-produk bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-between hover:border-emerald-500 transition-colors"
-                                data-kode="{{ strtolower($item['kode']) }}"
-                                data-nama="{{ strtolower($item['nama']) }}"
-                            >
-                                <div>
-                                    <div class="flex items-center justify-between mb-1.5">
-                                        <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono">
-                                            {{ $item['kode'] }}
-                                        </span>
-                                        <span class="text-sm {{ $item['stok'] <= 5 ? 'text-amber-700 font-semibold' : 'text-slate-500' }}">
-                                            Stok: {{ $item['stok'] }} {{ $item['satuan'] }}
-                                        </span>
-                                    </div>
-                                    <h3 class="font-bold text-slate-800 text-base leading-snug line-clamp-2">
-                                        {{ $item['nama'] }}
-                                    </h3>
-                                </div>
-                                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                                    <div class="font-bold text-emerald-700 text-lg">
-                                        Rp {{ number_format($item['harga'], 0, ',', '.') }}
-                                    </div>
-                                    <button
-                                        type="button"
-                                        class="btn-tambah-keranjang touch-target px-3 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
-                                        data-kode="{{ $item['kode'] }}"
-                                        data-nama="{{ e($item['nama']) }}"
-                                        data-harga="{{ $item['harga'] }}"
-                                        data-stok="{{ $item['stok'] }}"
-                                        data-satuan="{{ e($item['satuan']) }}"
-                                    >
-                                        + Tambah
-                                    </button>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500">
-                                Belum ada barang aktif dengan ketersediaan stok di inventori.
-                            </div>
-                        @endforelse
+                    {{-- Container Hasil Pencarian Dinamis --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="kontainer-hasil-cari">
+                        <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-400 text-base">
+                            Memuat katalog barang...
+                        </div>
                     </div>
                 </div>
 
@@ -327,7 +308,7 @@
                 {{-- Pilihan Metode Pembayaran --}}
                 <div>
                     <label class="block text-slate-700 font-medium text-base mb-2">Metode Pembayaran</label>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-3 gap-3">
                         <button
                             type="button"
                             id="btn-metode-tunai"
@@ -343,6 +324,14 @@
                             class="touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
                         >
                             QRIS
+                        </button>
+                        <button
+                            type="button"
+                            id="btn-metode-transfer"
+                            onclick="pilihMetode('TRANSFER')"
+                            class="touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                        >
+                            Transfer
                         </button>
                     </div>
                 </div>
@@ -428,7 +417,7 @@
                         onclick="prosesBayarTransaksi()"
                         class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-2.5 rounded-lg min-h-[2.75rem] text-base shadow-sm transition-colors cursor-pointer"
                     >
-                        ✓ Selesaikan Transaksi
+                        Selesaikan Transaksi
                     </button>
                 </div>
             </div>
@@ -439,9 +428,8 @@
         {{-- ========================================================================= --}}
         <div id="step-container-4" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl relative" onclick="event.stopPropagation()">
-                {{-- Lingkaran Hijau Centang CSS Murni (Kepatuhan K12: Bebas SVG) --}}
-                <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 font-bold text-3xl flex items-center justify-center mx-auto mb-4">
-                    ✓
+                <div class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wider uppercase mb-4">
+                    BERHASIL
                 </div>
 
                 <h2 class="text-2xl font-bold text-slate-900 mb-1">
@@ -454,15 +442,15 @@
                 {{-- Checklist Sistem --}}
                 <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 text-left space-y-2 mb-6">
                     <div class="flex items-center gap-2 text-base text-slate-700">
-                        <span class="text-emerald-600 font-bold">✓</span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
                         <span>Saldo kasir diperbarui</span>
                     </div>
                     <div class="flex items-center gap-2 text-base text-slate-700">
-                        <span class="text-emerald-600 font-bold">✓</span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
                         <span>Stok barang otomatis dikurangi</span>
                     </div>
                     <div class="flex items-center gap-2 text-base text-slate-700">
-                        <span class="text-emerald-600 font-bold">✓</span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
                         <span>Riwayat transaksi tersimpan permanen</span>
                     </div>
                 </div>
@@ -502,12 +490,9 @@
             <div class="bg-white rounded-2xl max-w-[380px] w-full p-6 shadow-2xl relative font-mono text-sm leading-relaxed text-slate-800 border border-slate-200" onclick="event.stopPropagation()">
                 {{-- Header Struk --}}
                 <div class="text-center pb-3 border-b border-dashed border-slate-300">
-                    <div class="text-xl font-bold font-sans text-slate-900">{{ $toko['nama_toko'] ?? 'TOKO FIRO' }}</div>
-                    <div class="text-xs text-slate-500">{{ $toko['header_struk'] ?? 'Penyedia ATK & Kebutuhan Kantor' }}</div>
-                    <div class="text-xs text-slate-500">{{ $toko['alamat'] ?? 'Jl. Raya Toko Firo, Malang' }}</div>
-                    @if(!empty($toko['telepon']))
-                        <div class="text-xs text-slate-500">Telp: {{ $toko['telepon'] }}</div>
-                    @endif
+                    <div class="text-xl font-bold font-sans text-slate-900">TOKO FIRO</div>
+                    <div class="text-xs text-slate-500">Penyedia ATK &amp; Kebutuhan Kantor</div>
+                    <div class="text-xs text-slate-500">Jl. Yos Sudarso, Kraksaan, Probolinggo</div>
                 </div>
 
                 {{-- Metadata Transaksi --}}
@@ -549,7 +534,7 @@
 
                 {{-- Footer Struk --}}
                 <div class="pt-3 text-center text-xs text-slate-500">
-                    <div>{{ $toko['footer_struk'] ?? 'Terima kasih telah berbelanja!' }}</div>
+                    <div>Terima kasih telah berbelanja!</div>
                     <div class="text-[10px] text-slate-400 mt-1">Barang yang sudah dibeli dapat ditukar maksimal 1x24 jam</div>
                 </div>
 
@@ -557,6 +542,7 @@
                 <div class="mt-5 pt-3 border-t border-slate-100 font-sans space-y-2">
                     <button
                         type="button"
+                        data-turbo="false"
                         onclick="cetakResiFisik()"
                         class="touch-target w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
                     >
@@ -584,11 +570,18 @@
         let lastTransaksi = null;
         let lastCartSnapshot = [];
 
-        // Inisialisasi awal keranjang saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', function () {
+        // Cache Map() sisi klien untuk hasil pencarian katalog barang
+        const cacheKatalog = new Map();
+        let debounceTimerCari = null;
+        const searchEndpoint = '{{ Route::has("kasir.transaksi.cari-item") ? route("kasir.transaksi.cari-item") : url("/kasir/transaksi/cari-item") }}';
+
+        // Inisialisasi awal keranjang dan pencarian AJAX saat halaman dimuat
+        function initKasirTransaksi() {
             renderCart();
-            setupSearchFilter();
-        });
+            setupSearchAjax();
+        }
+        document.addEventListener('DOMContentLoaded', initKasirTransaksi);
+        document.addEventListener('turbo:load', initKasirTransaksi);
 
         function formatRupiah(angka) {
             const num = Math.round(Number(angka) || 0);
@@ -646,6 +639,7 @@
 
             let html = '';
             cart.forEach(item => {
+                const kodeParam = escapeHtmlAttr(item.kode || '');
                 html += `
                     <div class="pt-3 flex flex-col gap-2">
                         <div class="flex items-start justify-between">
@@ -661,13 +655,13 @@
                             <div class="flex items-center gap-2">
                                 <button
                                     type="button"
-                                    onclick="ubahQty('${item.kode}', -1)"
+                                    onclick="ubahQty('${kodeParam}', -1)"
                                     class="touch-target w-11 h-11 bg-slate-100 hover:bg-slate-200 rounded-lg text-base font-bold text-slate-700 flex items-center justify-center cursor-pointer"
                                 >-</button>
                                 <span class="w-8 text-center font-semibold text-base text-slate-900">${item.qty}</span>
                                 <button
                                     type="button"
-                                    onclick="ubahQty('${item.kode}', 1)"
+                                    onclick="ubahQty('${kodeParam}', 1)"
                                     class="touch-target w-11 h-11 bg-slate-100 hover:bg-slate-200 rounded-lg text-base font-bold text-slate-700 flex items-center justify-center cursor-pointer"
                                 >+</button>
                             </div>
@@ -683,6 +677,10 @@
             const div = document.createElement('div');
             div.textContent = text || '';
             return div.innerHTML;
+        }
+
+        function escapeHtmlAttr(str) {
+            return (str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
         function tambahItemKeranjang(kode, nama, harga, stok, satuan) {
@@ -834,19 +832,21 @@
         }
 
         function pilihMetode(metode) {
-            metodeBayar = (metode === 'QRIS') ? 'QRIS' : 'TUNAI';
+            metodeBayar = metode;
             const btnTunai = document.getElementById('btn-metode-tunai');
             const btnQris = document.getElementById('btn-metode-qris');
+            const btnTransfer = document.getElementById('btn-metode-transfer');
             const seksiTunai = document.getElementById('seksi-tunai');
             const seksiQris = document.getElementById('seksi-qris');
 
             const btnActive = 'touch-target p-3 rounded-xl border border-emerald-600 bg-emerald-600 text-white font-semibold text-base min-h-[2.75rem] transition-colors cursor-pointer';
             const btnInactive = 'touch-target p-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium text-base min-h-[2.75rem] transition-colors cursor-pointer';
 
-            if (btnTunai) btnTunai.className = metodeBayar === 'TUNAI' ? btnActive : btnInactive;
-            if (btnQris) btnQris.className = metodeBayar === 'QRIS' ? btnActive : btnInactive;
+            btnTunai.className = metode === 'TUNAI' ? btnActive : btnInactive;
+            btnQris.className = metode === 'QRIS' ? btnActive : btnInactive;
+            if (btnTransfer) btnTransfer.className = metode === 'TRANSFER' ? btnActive : btnInactive;
 
-            if (metodeBayar === 'TUNAI') {
+            if (metode === 'TUNAI') {
                 if (seksiTunai) seksiTunai.classList.remove('hidden');
                 if (seksiQris) seksiQris.classList.add('hidden');
             } else {
@@ -855,7 +855,9 @@
                     seksiQris.classList.remove('hidden');
                     const textP = seksiQris.querySelector('p');
                     if (textP) {
-                        textP.textContent = 'Pastikan pembayaran QRIS telah terverifikasi sukses pada layar mesin scanner/EDC sebelum menyelesaikan transaksi.';
+                        textP.textContent = metode === 'QRIS'
+                            ? 'Pastikan pembayaran QRIS telah terverifikasi sukses pada layar mesin scanner/EDC sebelum menyelesaikan transaksi.'
+                            : 'Pastikan bukti transfer bank pelanggan telah dicek dan dana efektif masuk ke rekening toko.';
                     }
                 }
                 // Non-tunai otomatis set uang pas
@@ -959,7 +961,7 @@
             .then(res => {
                 if (btnSelesai) {
                     btnSelesai.disabled = false;
-                    btnSelesai.textContent = '✓ Selesaikan Transaksi';
+                    btnSelesai.textContent = 'Selesaikan Transaksi';
                 }
 
                 if (!res.ok || res.data.status === 'error') {
@@ -992,7 +994,7 @@
             .catch(err => {
                 if (btnSelesai) {
                     btnSelesai.disabled = false;
-                    btnSelesai.textContent = '✓ Selesaikan Transaksi';
+                    btnSelesai.textContent = 'Selesaikan Transaksi';
                 }
                 alertToast('Terjadi kendala jaringan saat menghubungi server.');
             });
@@ -1049,58 +1051,229 @@
             const searchInput = document.getElementById('input-cari-barang');
             if (searchInput) {
                 searchInput.value = '';
-                setupSearchFilter();
+                muatKatalogAwal();
             }
             setStep(1);
         }
 
-        function setupSearchFilter() {
+        function setupSearchAjax() {
             const searchInput = document.getElementById('input-cari-barang');
             if (!searchInput) return;
 
+            // Muat katalog awal on-demand saat pertama kali halaman terbuka
+            muatKatalogAwal();
+
+            // Kasir mengetik: jika >= 2 karakter -> debounce 250ms -> fetch dari API -> render kartu
             searchInput.addEventListener('input', function () {
-                const q = this.value.toLowerCase().trim();
-                const cards = document.querySelectorAll('.kartu-produk');
-                cards.forEach(card => {
-                    const kode = card.getAttribute('data-kode') || '';
-                    const nama = card.getAttribute('data-nama') || '';
-                    if (q === '' || kode.includes(q) || nama.includes(q)) {
-                        card.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
+                const keyword = this.value.trim();
+                clearTimeout(debounceTimerCari);
+
+                if (keyword.length === 0) {
+                    muatKatalogAwal();
+                    return;
+                }
+
+                if (keyword.length < 2) {
+                    const kontainer = document.getElementById('kontainer-hasil-cari');
+                    if (kontainer) {
+                        kontainer.innerHTML = `
+                            <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-400 text-base">
+                                Ketik minimal 2 karakter untuk mencari nama barang atau kode item...
+                            </div>
+                        `;
                     }
-                });
+                    return;
+                }
+
+                debounceTimerCari = setTimeout(() => {
+                    cariItemAjax(keyword);
+                }, 250);
             });
 
-            // Tekan ENTER pada scanner: jika cocok persis 1 barang, tambahkan otomatis
+            // Kasir scan barcode (diakhiri Enter) -> instant fetch -> tambah ke keranjang
             searchInput.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    const q = this.value.toLowerCase().trim();
-                    if (!q) return;
+                    clearTimeout(debounceTimerCari);
+                    const keyword = this.value.trim();
+                    if (!keyword) return;
 
-                    const visibleCards = Array.from(document.querySelectorAll('.kartu-produk:not(.hidden)'));
-                    if (visibleCards.length === 1) {
-                        const btn = visibleCards[0].querySelector('button');
-                        if (btn) btn.click();
-                        this.value = '';
-                        setupSearchFilter();
-                    }
+                    handleBarcodeScan(keyword);
                 }
             });
         }
 
-        // Event delegation terpusat untuk tombol + Tambah katalog barang (SEC-05)
-        document.addEventListener('click', function (e) {
-            const btn = e.target.closest('.btn-tambah-keranjang');
-            if (!btn) return;
-            const kode = btn.getAttribute('data-kode');
-            const nama = btn.getAttribute('data-nama');
-            const harga = parseFloat(btn.getAttribute('data-harga') || '0');
-            const stok = parseInt(btn.getAttribute('data-stok') || '0', 10);
-            const satuan = btn.getAttribute('data-satuan') || 'pcs';
-            tambahItemKeranjang(kode, nama, harga, stok, satuan);
-        });
+        async function cariItemAjax(keyword) {
+            const indikator = document.getElementById('indikator-cari');
+            const cacheKey = keyword.toLowerCase();
+
+            // Cek cache Map() terlebih dahulu untuk respons instan tanpa network
+            if (cacheKatalog.has(cacheKey)) {
+                renderKartuBarang(cacheKatalog.get(cacheKey));
+                return;
+            }
+
+            if (indikator) indikator.classList.remove('hidden');
+
+            try {
+                const res = await fetch(`${searchEndpoint}?q=${encodeURIComponent(keyword)}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const json = await res.json();
+                const items = (json && json.data) ? json.data : [];
+
+                // Simpan ke cache Map()
+                cacheKatalog.set(cacheKey, items);
+
+                renderKartuBarang(items);
+            } catch (err) {
+                alertToast('Terjadi kesalahan jaringan saat mencari barang.');
+            } finally {
+                if (indikator) indikator.classList.add('hidden');
+            }
+        }
+
+        async function muatKatalogAwal() {
+            const cacheKey = '__awal__';
+            if (cacheKatalog.has(cacheKey)) {
+                renderKartuBarang(cacheKatalog.get(cacheKey));
+                return;
+            }
+
+            try {
+                const res = await fetch(`${searchEndpoint}?q=`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const json = await res.json();
+                const items = (json && json.data) ? json.data : [];
+                cacheKatalog.set(cacheKey, items);
+                cacheKatalog.set('', items);
+                renderKartuBarang(items);
+            } catch (err) {
+                const kontainer = document.getElementById('kontainer-hasil-cari');
+                if (kontainer) {
+                    kontainer.innerHTML = `
+                        <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500">
+                            Silakan ketik nama barang atau scan barcode untuk memilih produk.
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        async function handleBarcodeScan(keyword) {
+            const inputCari = document.getElementById('input-cari-barang');
+            const cacheKey = keyword.toLowerCase();
+            let items = null;
+
+            // Cek cache atau fetch instan tanpa delay debounce
+            if (cacheKatalog.has(cacheKey)) {
+                items = cacheKatalog.get(cacheKey);
+            } else {
+                try {
+                    const res = await fetch(`${searchEndpoint}?q=${encodeURIComponent(keyword)}`, {
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    const json = await res.json();
+                    items = (json && json.data) ? json.data : [];
+                    cacheKatalog.set(cacheKey, items);
+                } catch (err) {
+                    alertToast('Gagal memproses pemindaian barcode.');
+                    return;
+                }
+            }
+
+            if (!items || items.length === 0) {
+                alertToast(`Barang "${keyword}" tidak ditemukan.`);
+                renderKartuBarang([]);
+                return;
+            }
+
+            // Cari jika ada item yang kode_item atau nama_item cocok persis, atau hanya ada 1 hasil
+            const matchPersis = items.find(it => (it.kode_item || '').toLowerCase() === cacheKey) ||
+                                (items.length === 1 ? items[0] : null);
+
+            if (matchPersis) {
+                tambahItemKeranjang(
+                    matchPersis.kode_item,
+                    matchPersis.nama_item,
+                    matchPersis.harga_jual,
+                    matchPersis.stok,
+                    matchPersis.satuan
+                );
+                if (inputCari) {
+                    inputCari.value = '';
+                }
+                muatKatalogAwal();
+            } else {
+                // Tampilkan opsi jika terdapat beberapa item yang serupa
+                renderKartuBarang(items);
+            }
+        }
+
+        function renderKartuBarang(items) {
+            const kontainer = document.getElementById('kontainer-hasil-cari');
+            if (!kontainer) return;
+
+            if (!items || items.length === 0) {
+                kontainer.innerHTML = `
+                    <div class="col-span-full bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500 text-base">
+                        Tidak ada barang aktif yang cocok dengan pencarian.
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            items.forEach(item => {
+                const kode = escapeHtml(item.kode_item || '');
+                const nama = escapeHtml(item.nama_item || '');
+                const satuan = escapeHtml(item.satuan || 'pcs');
+                const harga = Number(item.harga_jual) || 0;
+                const stok = Number(item.stok) || 0;
+                const stokClass = stok <= 5 ? 'text-amber-700 font-semibold' : 'text-slate-500';
+
+                const namaParam = escapeHtmlAttr(item.nama_item || '');
+                const kodeParam = escapeHtmlAttr(item.kode_item || '');
+                const satuanParam = escapeHtmlAttr(item.satuan || 'pcs');
+
+                html += `
+                    <div
+                        class="kartu-produk bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-between hover:border-emerald-500 transition-colors"
+                        data-kode="${kode.toLowerCase()}"
+                        data-nama="${nama.toLowerCase()}"
+                    >
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono">
+                                    ${kode}
+                                </span>
+                                <span class="text-sm ${stokClass}">
+                                    Stok: ${stok} ${satuan}
+                                </span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-base leading-snug line-clamp-2">
+                                ${nama}
+                            </h3>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                            <div class="font-bold text-emerald-700 text-lg">
+                                Rp ${formatRupiah(harga)}
+                            </div>
+                            <button
+                                type="button"
+                                onclick="tambahItemKeranjang('${kodeParam}', '${namaParam}', ${harga}, ${stok}, '${satuanParam}')"
+                                class="touch-target px-3 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-medium rounded-lg text-base min-h-[2.75rem] transition-colors cursor-pointer"
+                            >
+                                + Tambah
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            kontainer.innerHTML = html;
+        }
 
         // Tutup modal struk jika area luar diklik
         document.getElementById('modal-struk')?.addEventListener('click', function (e) {

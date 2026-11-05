@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Saldo Harian - Toko Firo</title>
 
-    {{-- Tailwind CSS CDN untuk preview mandiri tanpa build step, fallback jika Vite belum dijalankan --}}
-    <script src="https://cdn.tailwindcss.com"></script>
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -27,14 +25,17 @@
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
-            <div class="bg-white rounded-xl p-3 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">
-                    F
-                </div>
-                <div class="font-bold text-gray-900 text-lg">
-                    Toko Firo
-                </div>
+            <div class="rounded-xl p-2 flex items-center justify-center">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
             </div>
+
+            @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
+            <div class="mb-2">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                    &larr; Kembali ke Menu Admin
+                </a>
+            </div>
+            @endif
 
             {{-- Menu Navigasi Kasir --}}
             <div>
@@ -45,7 +46,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Dashboard
                     </a>
@@ -53,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Transaksi Penjualan
                     </a>
@@ -61,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Lihat Stok Barang
                     </a>
@@ -69,7 +70,7 @@
                     {{-- 4. Saldo (Aktif) --}}
                     <a
                         href="{{ route('kasir.saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
                     >
                         Saldo
                     </a>
@@ -77,9 +78,17 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-lg text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
                     >
                         Info Barang Baru
+                    </a>
+
+                    {{-- 6. Pengembalian Barang --}}
+                    <a
+                        href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-xl text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                    >
+                        Pengembalian Barang
                     </a>
                 </nav>
             </div>
@@ -89,18 +98,18 @@
         <div class="pt-4 border-t border-emerald-900/60">
             <div class="bg-[#052314] rounded-xl p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
                 <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? strtoupper(substr((string)(auth()->user()->nama ?? auth()->user()->username ?? 'K'), 0, 1)) }}
+                    {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? (auth()->user()->nama ?? auth()->user()->username ?? 'Kasir') }}
+                        {{ $kasir['nama'] ?? 'Kasir' }}
                     </div>
                     <div class="text-sm text-emerald-300">
                         {{ $kasir['role'] ?? 'Kasir' }}
                     </div>
                 </div>
             </div>
-            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}">
+            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" data-turbo="false">
                 @csrf
                 <button
                     type="submit"
@@ -124,22 +133,18 @@
             </div>
             <div class="flex items-center gap-3">
                 {{-- Tombol Aksi Teks Murni (Bebas Emoji) --}}
-                <a
-                    href="{{ route('kasir.saldo.pdf') }}"
-                    target="_blank"
+                <button
+                    type="button"
                     class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Simpan sebagai PDF
-                </a>
-                <form action="{{ route('kasir.saldo.telegram') }}" method="POST" class="inline">
-                    @csrf
-                    <button
-                        type="submit"
-                        class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
-                    >
-                        Kirim ke Telegram
-                    </button>
-                </form>
+                </button>
+                <button
+                    type="button"
+                    class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
+                >
+                    Kirim ke Telegram
+                </button>
             </div>
         </header>
 
@@ -268,7 +273,7 @@
             {{-- Footer Tabel --}}
             <div class="px-6 py-4 bg-white border-t border-slate-200 flex items-center justify-between text-slate-500 text-sm">
                 <div>
-                    Menampilkan {{ count($riwayatTransaksi) }} transaksi kasir hari ini
+                    Menampilkan 5 transaksi terakhir kasir
                 </div>
                 <div class="text-slate-400">
                     Sinkronisasi otomatis dengan bot Telegram Toko Firo
