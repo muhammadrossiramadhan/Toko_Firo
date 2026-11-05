@@ -165,7 +165,7 @@ class ChatbotController extends Controller
         }
         $settings = app(PengaturanTokoService::class)->getSettings();
         $namaToko = $tokoInfo->nama_toko ?? $settings['nama_toko'] ?? 'Toko Firo';
-        $alamatToko = $tokoInfo->alamat ?? $settings['alamat'] ?? 'Jl. Raya Toko Firo, Malang';
+        $alamatToko = $tokoInfo->alamat ?? 'Jl. Yos Sudarso No.BA-9, Krajan, Sidopekso, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282';
         $teleponToko = $tokoInfo->no_telepon ?? $tokoInfo->telepon ?? $settings['telepon'] ?? '081234567890';
 
         // Pertanyaan alamat / lokasi
