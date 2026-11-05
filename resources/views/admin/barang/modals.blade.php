@@ -121,6 +121,35 @@
                     <label for="tambah-keterangan" class="block text-base font-medium text-gray-700 mb-1">Keterangan</label>
                     <textarea name="keterangan" id="tambah-keterangan" rows="2" maxlength="1000" class="w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">{{ old('keterangan') }}</textarea>
                 </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{-- 13. Link Shopee / Marketplace --}}
+                    <div>
+                        <label for="tambah-link-shopee" class="block text-base font-medium text-gray-700 mb-1">Link Shopee / Marketplace</label>
+                        <input type="url" name="link_shopee" id="tambah-link-shopee" value="{{ old('link_shopee') }}" maxlength="255" placeholder="https://shopee.co.id/..." class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        @error('link_shopee')
+                            <span class="text-sm text-red-600 mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- 14. URL Gambar Produk --}}
+                    <div>
+                        <label for="tambah-gambar-url" class="block text-base font-medium text-gray-700 mb-1">URL Gambar Produk</label>
+                        <input type="url" name="gambar_url" id="tambah-gambar-url" value="{{ old('gambar_url') }}" maxlength="255" placeholder="https://.../gambar.jpg" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                        @error('gambar_url')
+                            <span class="text-sm text-red-600 mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                {{-- 15. Deskripsi Produk --}}
+                <div>
+                    <label for="tambah-deskripsi-produk" class="block text-base font-medium text-gray-700 mb-1">Deskripsi Produk (Katalog Publik)</label>
+                    <textarea name="deskripsi_produk" id="tambah-deskripsi-produk" rows="3" placeholder="Deskripsi ringkas produk untuk katalog publik..." class="w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">{{ old('deskripsi_produk') }}</textarea>
+                    @error('deskripsi_produk')
+                        <span class="text-sm text-red-600 mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
             {{-- Footer modal sticky --}}
@@ -204,6 +233,26 @@
                 <div>
                     <label for="ubah-keterangan" class="block text-base font-medium text-gray-700 mb-1">Keterangan</label>
                     <textarea name="keterangan" id="ubah-keterangan" rows="2" maxlength="1000" class="w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{-- Link Shopee / Marketplace --}}
+                    <div>
+                        <label for="ubah-link-shopee" class="block text-base font-medium text-gray-700 mb-1">Link Shopee / Marketplace</label>
+                        <input type="url" name="link_shopee" id="ubah-link-shopee" maxlength="255" placeholder="https://shopee.co.id/..." class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                    </div>
+
+                    {{-- URL Gambar Produk --}}
+                    <div>
+                        <label for="ubah-gambar-url" class="block text-base font-medium text-gray-700 mb-1">URL Gambar Produk</label>
+                        <input type="url" name="gambar_url" id="ubah-gambar-url" maxlength="255" placeholder="https://.../gambar.jpg" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                    </div>
+                </div>
+
+                {{-- Deskripsi Produk --}}
+                <div>
+                    <label for="ubah-deskripsi-produk" class="block text-base font-medium text-gray-700 mb-1">Deskripsi Produk (Katalog Publik)</label>
+                    <textarea name="deskripsi_produk" id="ubah-deskripsi-produk" rows="3" placeholder="Deskripsi ringkas produk untuk katalog publik..." class="w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none"></textarea>
                 </div>
             </div>
 

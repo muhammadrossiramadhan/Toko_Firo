@@ -149,6 +149,9 @@
                                 data-stok="{{ $item->stok }}"
                                 data-keterangan="{{ $item->keterangan }}"
                                 data-batas-minimum="{{ $item->batas_minimum ?? 5 }}"
+                                data-link-shopee="{{ $item->link_shopee }}"
+                                data-gambar-url="{{ $item->gambar_url }}"
+                                data-deskripsi-produk="{{ $item->deskripsi_produk }}"
                                 class="baris-barang hover:bg-gray-50/70 transition-colors cursor-pointer"
                             >
                                 <td class="py-3 px-3 font-semibold text-gray-900 whitespace-nowrap">
@@ -355,6 +358,9 @@
 
             document.getElementById('ubah-batas').value = tr.dataset.batasMinimum || 5;
             document.getElementById('ubah-keterangan').value = tr.dataset.keterangan || '';
+            document.getElementById('ubah-link-shopee').value = tr.dataset.linkShopee || '';
+            document.getElementById('ubah-gambar-url').value = tr.dataset.gambarUrl || '';
+            document.getElementById('ubah-deskripsi-produk').value = tr.dataset.deskripsiProduk || '';
 
             bukaModal('modal-ubah');
         }

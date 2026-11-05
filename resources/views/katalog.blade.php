@@ -53,33 +53,46 @@
                             $isMenipis = $stok > 0 && $stok < 10;
                             $satuan = $item->satuan ?: 'pcs';
                             $harga = number_format($item->harga_jual, 0, ',', '.');
+                            $gambarUrl = $item->gambar_url ?: ($item->foto ?: '/items/default.svg');
                         @endphp
-                        <div class="bg-surface border border-border overflow-hidden {{ $isHabis ? 'opacity-50' : '' }}">
-                            <div class="aspect-square bg-bg flex items-center justify-center relative overflow-hidden">
-                                <img src="{{ $item->foto ?: '/items/default.svg' }}" alt="{{ $item->nama_item }}" class="w-full h-full object-cover">
-                                @if($isHabis)
-                                    <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-0.5 bg-danger-50 text-[11px] font-semibold text-danger">Stok Habis</span>
-                                @elseif($isMenipis)
-                                    <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-0.5 bg-[#FFEE10] text-[11px] font-semibold text-ink">Menipis</span>
-                                @else
-                                    <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-0.5 bg-green-50 text-[11px] font-semibold text-green-700">Aman</span>
-                                @endif
-                            </div>
-                            <div class="p-2.5 lg:p-3.5 space-y-0.5 lg:space-y-1">
-                                @if($item->jenis)
-                                    <div class="text-[11px] font-medium text-text-muted">{{ $item->jenis }}</div>
-                                @endif
-                                <h3 class="text-[13px] lg:text-sm font-semibold text-ink line-clamp-2">{{ $item->nama_item }}</h3>
-                                <div class="flex flex-wrap items-center gap-1 lg:gap-2 pt-1">
-                                    <span class="font-heading font-bold text-[13px] lg:text-[15px] text-ink">Rp {{ $harga }}</span>
-                                    <span class="hidden lg:block w-px h-3 bg-border"></span>
+                        <div class="bg-surface border border-border overflow-hidden rounded-none flex flex-col justify-between {{ $isHabis ? 'opacity-50' : '' }}">
+                            <div>
+                                <div class="aspect-square bg-bg flex items-center justify-center relative overflow-hidden rounded-none">
+                                    <img src="{{ $gambarUrl }}" alt="{{ $item->nama_item }}" class="w-full h-full object-cover rounded-none" onerror="this.onerror=null; this.src='/items/default.svg';">
                                     @if($isHabis)
-                                        <span class="text-xs font-medium text-danger">Stok habis</span>
+                                        <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-0.5 bg-danger-50 text-[11px] font-semibold text-danger rounded-none">Stok Habis</span>
+                                    @elseif($isMenipis)
+                                        <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-0.5 bg-[#FFEE10] text-[11px] font-semibold text-ink rounded-none">Menipis</span>
                                     @else
-                                        <span class="text-[11px] lg:text-xs font-medium {{ $isMenipis ? 'text-ink' : 'text-text-muted' }}">Sisa {{ $stok }} {{ $satuan }}</span>
+                                        <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-0.5 bg-green-50 text-[11px] font-semibold text-green-700 rounded-none">Aman</span>
                                     @endif
                                 </div>
+                                <div class="p-2.5 lg:p-3.5 space-y-1">
+                                    @if($item->jenis)
+                                        <div class="text-[11px] font-medium text-text-muted">{{ $item->jenis }}</div>
+                                    @endif
+                                    <h3 class="text-[13px] lg:text-sm font-semibold text-ink line-clamp-2">{{ $item->nama_item }}</h3>
+                                    @if($item->deskripsi_produk)
+                                        <p class="text-xs text-text-muted line-clamp-2 mt-1">{{ $item->deskripsi_produk }}</p>
+                                    @endif
+                                    <div class="flex flex-wrap items-center gap-1 lg:gap-2 pt-1">
+                                        <span class="font-heading font-bold text-[13px] lg:text-[15px] text-ink">Rp {{ $harga }}</span>
+                                        <span class="hidden lg:block w-px h-3 bg-border"></span>
+                                        @if($isHabis)
+                                            <span class="text-xs font-medium text-danger">Stok habis</span>
+                                        @else
+                                            <span class="text-[11px] lg:text-xs font-medium {{ $isMenipis ? 'text-ink' : 'text-text-muted' }}">Sisa {{ $stok }} {{ $satuan }}</span>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
+                            @if($item->link_shopee)
+                                <div class="p-2.5 lg:p-3.5 pt-0">
+                                    <a href="{{ $item->link_shopee }}" target="_blank" rel="noopener noreferrer" class="touch-target w-full min-h-[44px] inline-flex items-center justify-center bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold px-3 py-2 rounded-none transition-colors">
+                                        Beli di Shopee
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>

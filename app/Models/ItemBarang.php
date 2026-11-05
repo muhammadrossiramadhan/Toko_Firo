@@ -67,7 +67,11 @@ class ItemBarang extends Model
         'harga_jual',
         'stok',
         'keterangan',
+        'foto',
         'batas_minimum',
+        'link_shopee',
+        'deskripsi_produk',
+        'gambar_url',
         'dibuat_pada',
         'diubah_pada',
     ];

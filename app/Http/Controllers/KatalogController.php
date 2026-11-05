@@ -17,9 +17,13 @@ class KatalogController extends Controller
             $query->where('jenis', $request->jenis);
         }
 
-        // Search by name
+        // Search by name or code
         if ($request->filled('cari')) {
-            $query->where('nama_item', 'like', '%' . $request->cari . '%');
+            $cari = $request->cari;
+            $query->where(function ($q) use ($cari) {
+                $q->where('nama_item', 'like', '%' . $cari . '%')
+                  ->orWhere('kode_item', 'like', '%' . $cari . '%');
+            });
         }
 
         // Order: in-stock first, then by name

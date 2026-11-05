@@ -31,6 +31,9 @@ class UpdateBarangRequest extends FormRequest
             'tipe_item' => ['required', 'string', 'in:Barang,Jasa,BARANG,JASA'],
             'keterangan' => ['nullable', 'string', 'max:1000'],
             'batas_minimum' => ['nullable', 'integer', 'min:0'],
+            'link_shopee' => ['nullable', 'string', 'max:255'],
+            'deskripsi_produk' => ['nullable', 'string'],
+            'gambar_url' => ['nullable', 'string', 'max:255'],
         ];
     }
 

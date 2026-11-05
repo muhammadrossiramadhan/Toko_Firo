@@ -47,6 +47,9 @@ class StoreBarangRequest extends FormRequest
             'harga_jual' => ['required', 'numeric', 'min:0', 'max:999999999'],
             'batas_minimum' => ['nullable', 'integer', 'min:0'],
             'keterangan' => ['nullable', 'string', 'max:1000'],
+            'link_shopee' => ['nullable', 'string', 'max:255'],
+            'deskripsi_produk' => ['nullable', 'string'],
+            'gambar_url' => ['nullable', 'string', 'max:255'],
         ];
     }
 

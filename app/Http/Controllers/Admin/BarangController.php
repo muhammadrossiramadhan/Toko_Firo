@@ -131,6 +131,9 @@ class BarangController extends Controller
                     'stok' => $stokTersimpan,
                     'keterangan' => $request->validated('keterangan'),
                     'batas_minimum' => $batas,
+                    'link_shopee' => $request->validated('link_shopee'),
+                    'deskripsi_produk' => $request->validated('deskripsi_produk'),
+                    'gambar_url' => $request->validated('gambar_url'),
                     'dibuat_pada' => now(),
                     'diubah_pada' => now(),
                 ]);
@@ -150,6 +153,12 @@ class BarangController extends Controller
                     ->with('open_modal', 'tambah');
             }
         }
+
+        ItemBarang::where('kode_item', $kode)->update([
+            'link_shopee' => $request->validated('link_shopee'),
+            'deskripsi_produk' => $request->validated('deskripsi_produk'),
+            'gambar_url' => $request->validated('gambar_url'),
+        ]);
 
         return redirect()->route('admin.barang')->with('sukses', 'Barang berhasil ditambahkan.');
     }
@@ -213,6 +222,12 @@ class BarangController extends Controller
                     ->with('error', $this->terjemahkanError($e));
             }
         }
+
+        ItemBarang::where('kode_item', $kode)->update([
+            'link_shopee' => $request->validated('link_shopee'),
+            'deskripsi_produk' => $request->validated('deskripsi_produk'),
+            'gambar_url' => $request->validated('gambar_url'),
+        ]);
 
         return redirect()->route('admin.barang')->with('sukses', 'Data barang berhasil diubah.');
     }

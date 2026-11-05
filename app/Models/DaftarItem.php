@@ -33,6 +33,10 @@ class DaftarItem extends Model
         'stok',
         'keterangan',
         'foto',
+        'batas_minimum',
+        'link_shopee',
+        'deskripsi_produk',
+        'gambar_url',
     ];
 
     protected function casts(): array

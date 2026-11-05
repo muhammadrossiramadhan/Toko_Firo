@@ -10,7 +10,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('saldo_harian', function (Blueprint $table) {
-        $table->decimal('saldo_akhir', 15, 2)->default(0);
+            if (!Schema::hasColumn('saldo_harian', 'saldo_akhir')) {
+                $table->decimal('saldo_akhir', 15, 2)->default(0);
+            }
         });
     }
     public function down(): void
