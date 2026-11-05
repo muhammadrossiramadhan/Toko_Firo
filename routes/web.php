@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\DemoBarangController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
@@ -39,3 +40,10 @@ Route::post('/logout', LogoutController::class)->name('logout')->middleware('aut
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/demo/barang', [DemoBarangController::class, 'index'])->name('demo.barang');
 });
+
+// Chatbot AI Pelanggan
+Route::post('/api/chatbot/tanya', [ChatbotController::class, 'tanya'])
+    ->middleware('throttle:10,1')
+    ->name('chatbot.tanya');
+
+

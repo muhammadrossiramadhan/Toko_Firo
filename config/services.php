@@ -43,4 +43,8 @@ return [
         'backup_password' => env('BACKUP_ENCRYPTION_PASSWORD', env('BACKUP_ARCHIVE_PASSWORD')),
     ],
 
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+    ],
+
 ];
