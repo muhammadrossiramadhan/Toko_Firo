@@ -47,16 +47,12 @@ class PenggunaDataTest extends TestCase
 
     public function test_tamu_diarahkan_ke_login(): void
     {
-        $this->markTestSkipped('Middleware auth dinonaktifkan sementara.');
-
         $response = $this->get('/admin/pengguna');
         $response->assertRedirect(route('login'));
     }
 
     public function test_kasir_aktif_mendapat_403(): void
     {
-        $this->markTestSkipped('Middleware check role dinonaktifkan sementara.');
-
         $kasir = Pengguna::factory()->kasir()->create();
         $response = $this->actingAs($kasir)->get('/admin/pengguna');
         $response->assertStatus(403);

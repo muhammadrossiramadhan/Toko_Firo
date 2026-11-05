@@ -15,8 +15,6 @@ class ProfilAdminTest extends TestCase
      */
     public function test_tamu_diarahkan_ke_login(): void
     {
-        $this->markTestSkipped('Auth dinonaktifkan sementara untuk pengujian independen prototype.');
-
         $response = $this->get('/admin/profil');
 
         $response->assertRedirect(route('login'));
@@ -27,8 +25,6 @@ class ProfilAdminTest extends TestCase
      */
     public function test_kasir_aktif_mendapat_403(): void
     {
-        $this->markTestSkipped('Auth dinonaktifkan sementara untuk pengujian independen prototype.');
-
         $kasir = Pengguna::factory()->kasir()->create();
 
         $response = $this->actingAs($kasir)->get('/admin/profil');
