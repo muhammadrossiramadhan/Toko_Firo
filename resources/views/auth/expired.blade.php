@@ -25,19 +25,17 @@
 </head>
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex items-center justify-center p-4">
 
-    <main class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
+    <main class="w-full max-w-md bg-white rounded-none shadow-sm border border-gray-200 p-8 text-center">
         {{-- Header Identitas (Tanpa Ikon Grafis atau Emoji Sesuai Aturan K12) --}}
-        <div class="mb-5">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-600 text-white font-bold text-xl mb-3">
-                F
-            </div>
+        <div class="mb-5 flex flex-col items-center">
+            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo Logo" class="h-10 w-auto mb-3">
             <div class="text-2xl font-bold text-gray-900">
                 Toko Firo
             </div>
         </div>
 
         {{-- Badge Status Teks Murni --}}
-        <div class="inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-semibold bg-amber-50 text-amber-800 border border-amber-200 mb-4">
+        <div class="inline-flex items-center px-3.5 py-1.5 rounded-none text-sm font-semibold bg-amber-50 text-amber-800 border border-amber-200 mb-4">
             Sesi Telah Berakhir
         </div>
 
@@ -55,14 +53,14 @@
         <div class="space-y-3">
             <a
                 href="{{ route('login') }}"
-                class="touch-target flex items-center justify-center w-full px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-base shadow-sm transition-colors text-center"
+                class="touch-target flex items-center justify-center w-full px-5 py-3 rounded-none bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-base shadow-sm transition-colors text-center"
             >
                 Masuk Kembali
             </a>
 
             <a
                 href="{{ url('/') }}"
-                class="touch-target flex items-center justify-center w-full px-5 py-3 rounded-xl border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium text-base transition-colors text-center"
+                class="touch-target flex items-center justify-center w-full px-5 py-3 rounded-none border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium text-base transition-colors text-center"
             >
                 Kembali ke Beranda
             </a>

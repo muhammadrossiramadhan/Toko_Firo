@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-[460px] w-full px-6 lg:px-10 text-center">
-    <div class="inline-flex items-center justify-center px-4 py-2 mx-auto bg-green-50 text-green-800 font-bold text-sm tracking-wider uppercase rounded-xl border border-green-200">
+    <div class="inline-flex items-center justify-center px-4 py-2 mx-auto bg-green-50 text-green-800 font-bold text-sm tracking-wider uppercase rounded-none border border-green-200">
         Keamanan 2FA
     </div>
 
@@ -12,19 +12,19 @@
     <p class="text-text-muted mt-4 text-sm max-w-[300px] mx-auto">Masukkan kode 6 digit yang dikirim ke grup Telegram untuk <span class="font-medium text-ink">{{ $username }}</span></p>
 
     @if (session('telegram_warning'))
-        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm rounded-lg">
+        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm rounded-none">
             {{ session('telegram_warning') }}
         </div>
     @endif
 
     @if (session('resent'))
-        <div class="mt-4 p-3 bg-green-50 border border-green-700/20 text-green-800 text-sm rounded-lg">
+        <div class="mt-4 p-3 bg-green-50 border border-green-700/20 text-green-800 text-sm rounded-none">
             {{ session('resent') }}
         </div>
     @endif
 
     @if ($errors->has('code'))
-        <div class="mt-4 p-3 bg-danger-50 border border-danger/20 text-danger text-sm rounded-lg">
+        <div class="mt-4 p-3 bg-danger-50 border border-danger/20 text-danger text-sm rounded-none">
             {{ $errors->first('code') }}
         </div>
     @endif
@@ -43,7 +43,7 @@
                     pattern="[0-9]"
                     autocomplete="one-time-code"
                     required
-                    class="w-12 h-14 border border-border rounded-lg text-center font-heading font-bold text-2xl text-ink focus:outline-none focus:border-green-700 focus:ring-2 focus:ring-green-50 transition"
+                    class="w-12 h-14 border border-border rounded-none text-center font-heading font-bold text-2xl text-ink focus:outline-none focus:border-green-700 focus:ring-2 focus:ring-green-50 transition"
                 >
             @endfor
         </div>
@@ -52,7 +52,7 @@
 
         <button
             type="submit"
-            class="w-full max-w-[378px] mx-auto mt-6 h-[47px] bg-green-700 text-white font-medium rounded-lg hover:bg-green-800 transition block cursor-pointer"
+            class="w-full max-w-[378px] mx-auto mt-6 h-[47px] bg-green-700 text-white font-medium rounded-none hover:bg-green-800 transition block cursor-pointer"
         >
             Verifikasi
         </button>

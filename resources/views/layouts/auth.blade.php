@@ -17,7 +17,7 @@
             <div>
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <img src="/logo.png" alt="Toko Firo" class="h-8 w-auto object-contain">
+                    <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-8 w-auto object-contain">
                 </div>
 
                 <!-- Headline -->
@@ -26,15 +26,15 @@
                 <!-- Feature List -->
                 <div class="flex flex-col gap-4 mt-12">
                     <div class="flex items-center gap-3 text-white/80">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+                        <span class="w-2 h-2 rounded-none bg-emerald-400 shrink-0"></span>
                         Stok terpantau otomatis
                     </div>
                     <div class="flex items-center gap-3 text-white/80">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+                        <span class="w-2 h-2 rounded-none bg-emerald-400 shrink-0"></span>
                         Saldo harian tercatat rapi
                     </div>
                     <div class="flex items-center gap-3 text-white/80">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+                        <span class="w-2 h-2 rounded-none bg-emerald-400 shrink-0"></span>
                         Notifikasi stok via Telegram
                     </div>
                 </div>

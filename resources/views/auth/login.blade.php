@@ -23,12 +23,10 @@
 </head>
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex items-center justify-center p-4">
 
-    <main class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+    <main class="w-full max-w-md bg-white rounded-none shadow-sm border border-gray-200 p-8">
         {{-- Header Identitas (Tanpa Ikon atau Emoji) --}}
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-600 text-white font-bold text-xl mb-3">
-                F
-            </div>
+        <div class="text-center mb-8 flex flex-col items-center">
+            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo Logo" class="h-10 w-auto mb-3">
             <h1 class="text-2xl font-bold text-gray-900">
                 Toko Firo
             </h1>
@@ -39,7 +37,7 @@
 
         {{-- Pesan Error Global / Autentikasi --}}
         @if ($errors->has('login'))
-            <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-base" role="alert">
+            <div class="mb-6 p-4 rounded-none bg-red-50 border border-red-200 text-red-700 text-base" role="alert">
                 {{ $errors->first('login') }}
             </div>
         @endif
@@ -60,7 +58,7 @@
                     required
                     autofocus
                     autocomplete="username"
-                    class="touch-target w-full px-4 py-2 text-base rounded-xl border @error('username') border-red-300 bg-red-50 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600"
+                    class="touch-target w-full px-4 py-2 text-base rounded-none border @error('username') border-red-300 bg-red-50 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600"
                 >
                 @error('username')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -77,7 +75,7 @@
                     id="password"
                     required
                     autocomplete="current-password"
-                    class="touch-target w-full px-4 py-2 text-base rounded-xl border @error('password') border-red-300 bg-red-50 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600"
+                    class="touch-target w-full px-4 py-2 text-base rounded-none border @error('password') border-red-300 bg-red-50 @else border-gray-300 @enderror focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600"
                 >
                 @error('password')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -87,7 +85,7 @@
             <div class="pt-2">
                 <button
                     type="submit"
-                    class="touch-target w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-base transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+                    class="touch-target w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
                 >
                     Masuk
                 </button>

@@ -25,10 +25,8 @@
     <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
         <div class="space-y-6">
             {{-- Brand Card Toko Firo (Tanpa Ikon) --}}
-            <div class="bg-white rounded-xl p-3 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-lg">
-                    F
-                </div>
+            <div class="bg-white rounded-none p-3 flex items-center gap-3">
+                <img src="{{ asset('images/logo.png') }}" alt="Toko Firo Logo" class="h-10 w-auto">
                 <div class="font-bold text-gray-900 text-lg">
                     Toko Firo
                 </div>
@@ -40,31 +38,31 @@
                     Menu Admin
                 </div>
                 <nav class="space-y-1">
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Dashboard
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Laporan Penjualan
                     </a>
-                    <a href="{{ route('demo.barang') }}" class="touch-target flex items-center px-3 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-base shadow-sm">
+                    <a href="{{ route('demo.barang') }}" class="touch-target flex items-center px-3 py-2.5 rounded-none bg-emerald-600 text-white font-semibold text-base shadow-sm">
                         Kelola Data Barang
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Pembelian Barang
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Kelola Akun Pengguna
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Batas Stok Minimum
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Backup Data
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Log Aktivitas
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Pengaturan Notifikasi
                     </a>
                 </nav>
@@ -76,16 +74,16 @@
                     Akses Kasir
                 </div>
                 <nav class="space-y-1">
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Transaksi Penjualan
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Lihat Stok Barang
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Saldo Harian
                     </a>
-                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-lg text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
+                    <a href="#" class="touch-target flex items-center px-3 py-2.5 rounded-none text-emerald-100 hover:text-white hover:bg-emerald-900/60 text-base">
                         Info Barang Baru
                     </a>
                 </nav>
@@ -94,12 +92,12 @@
 
         {{-- Profil Pengguna di Bawah Sidebar (Tanpa Avatar / Ikon) --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-xl p-3 mb-2">
+            <div class="bg-[#052314] rounded-none p-3 mb-2">
                 <div class="font-medium text-white text-base">
                     Admin
                 </div>
             </div>
-            <button type="button" disabled class="touch-target flex items-center px-3 py-2 rounded-lg text-red-300 text-base cursor-not-allowed">
+            <button type="button" disabled class="touch-target flex items-center px-3 py-2 rounded-none text-red-300 text-base cursor-not-allowed">
                 Keluar
             </button>
         </div>
@@ -120,24 +118,24 @@
                 type="text"
                 disabled
                 placeholder="Cari nama atau kode barang..."
-                class="touch-target flex-1 w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm"
+                class="touch-target flex-1 w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm"
             >
             <select
                 disabled
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[9.375rem]"
+                class="touch-target bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[9.375rem]"
             >
                 <option>Jenis: Semua</option>
             </select>
             <select
                 disabled
-                class="touch-target bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[10.625rem]"
+                class="touch-target bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-400 cursor-not-allowed shadow-sm min-w-[10.625rem]"
             >
                 <option>Urutkan: Terbaru</option>
             </select>
         </div>
 
         {{-- Kartu Tabel Utama --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-none shadow-sm border border-gray-200 overflow-hidden">
             {{-- Wrapper scroll horizontal untuk layar kecil --}}
             <div class="overflow-x-auto w-full">
                 <table class="w-full min-w-[65.625rem] border-collapse text-left text-base">
@@ -188,15 +186,15 @@
                                 </td>
                                 <td class="py-3.5 px-4 whitespace-nowrap">
                                     @if ($item['status'] === 'Aman')
-                                        <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-full text-base">
+                                        <span class="inline-block px-3 py-1 font-semibold text-emerald-800 bg-emerald-100 rounded-none text-base">
                                             Aman
                                         </span>
                                     @elseif ($item['status'] === 'Menipis')
-                                        <span class="inline-block px-3 py-1 font-semibold text-amber-800 bg-amber-100 rounded-full text-base">
+                                        <span class="inline-block px-3 py-1 font-semibold text-amber-800 bg-amber-100 rounded-none text-base">
                                             Menipis
                                         </span>
                                     @else
-                                        <span class="inline-block px-3 py-1 font-semibold text-red-800 bg-red-100 rounded-full text-base">
+                                        <span class="inline-block px-3 py-1 font-semibold text-red-800 bg-red-100 rounded-none text-base">
                                             Habis
                                         </span>
                                     @endif
@@ -245,7 +243,7 @@
                     @if ($currentPage > 1)
                         <a
                             href="{{ route('demo.barang', ['page' => $currentPage - 1]) }}"
-                            class="touch-target flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            class="touch-target flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-none text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                         >
                             Sebelumnya
                         </a>
@@ -253,7 +251,7 @@
                         <button
                             type="button"
                             disabled
-                            class="touch-target flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-base font-medium text-gray-400 cursor-not-allowed"
+                            class="touch-target flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-200 rounded-none text-base font-medium text-gray-400 cursor-not-allowed"
                         >
                             Sebelumnya
                         </button>
@@ -266,13 +264,13 @@
                                 ...
                             </span>
                         @elseif ($elem === $currentPage)
-                            <span class="touch-target flex items-center justify-center px-4 py-2 bg-emerald-600 border border-emerald-600 rounded-lg text-base font-bold text-white shadow-sm">
+                            <span class="touch-target flex items-center justify-center px-4 py-2 bg-emerald-600 border border-emerald-600 rounded-none text-base font-bold text-white shadow-sm">
                                 {{ $elem }}
                             </span>
                         @else
                             <a
                                 href="{{ route('demo.barang', ['page' => $elem]) }}"
-                                class="touch-target flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                class="touch-target flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-none text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                             >
                                 {{ $elem }}
                             </a>
@@ -283,7 +281,7 @@
                     @if ($currentPage < $totalPages)
                         <a
                             href="{{ route('demo.barang', ['page' => $currentPage + 1]) }}"
-                            class="touch-target flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                            class="touch-target flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-none text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                         >
                             Selanjutnya
                         </a>
@@ -291,7 +289,7 @@
                         <button
                             type="button"
                             disabled
-                            class="touch-target flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-base font-medium text-gray-400 cursor-not-allowed"
+                            class="touch-target flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-200 rounded-none text-base font-medium text-gray-400 cursor-not-allowed"
                         >
                             Selanjutnya
                         </button>
