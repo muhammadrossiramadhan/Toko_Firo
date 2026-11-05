@@ -20,167 +20,94 @@
 
     @include('components.footer-publik')
 
-    {{-- Floating AI Chatbot Button & Modal (Standar K12: 0 SVG, 0 Emoji, rounded-none) --}}
-    <button id="btn-toggle-chatbot" type="button" aria-label="Buka Chatbot Asisten AI" class="fixed bottom-6 right-6 z-40 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-3 border border-emerald-900 shadow-lg min-h-[44px] min-w-[44px] flex items-center justify-center rounded-none text-sm tracking-wide">
-        Tanya Asisten (AI)
-    </button>
+    @stack('scripts')
 
-    <div id="modal-chatbot" class="fixed bottom-20 right-6 z-50 w-80 sm:w-96 bg-white border border-slate-300 shadow-2xl flex flex-col rounded-none hidden">
-        {{-- Header Chat --}}
-        <div class="bg-emerald-800 text-white px-4 py-2 flex items-center justify-between border-b border-emerald-900">
-            <div class="flex items-center space-x-2">
-                <span class="inline-block w-2.5 h-2.5 bg-emerald-400 rounded-none"></span>
-                <span class="font-bold text-sm tracking-wide">Asisten Toko Firo</span>
-            </div>
-            <button id="btn-close-chatbot" type="button" class="text-white hover:text-red-300 font-bold min-h-[44px] min-w-[44px] flex items-center justify-center text-sm rounded-none focus:outline-none" aria-label="Tutup Chat">[X]</button>
-        </div>
+<!-- Chatbot UI -->
+<button id="ai-trigger" class="fixed bottom-6 right-6 bg-emerald-700 text-white font-bold px-5 py-3 shadow-lg z-50 min-h-[2.75rem] min-w-[2.75rem] rounded-none hover:bg-emerald-800 transition-colors">
+    Tanya AI
+</button>
 
-        {{-- Area Riwayat Pesan --}}
-        <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-3 bg-slate-50 text-sm">
-            <div class="flex flex-col items-start">
-                <div class="bg-white border border-slate-200 p-2.5 max-w-[85%] text-slate-800 shadow-sm rounded-none">
-                    Halo! Saya Asisten Virtual Toko Firo. Ada yang bisa saya bantu terkait produk atau layanan kami?
-                </div>
-                <span class="text-[10px] text-slate-400 mt-1 uppercase font-semibold">Asisten</span>
-            </div>
-        </div>
-
-        {{-- Status Sedang Mengetik --}}
-        <div id="chat-typing" class="px-4 py-1 text-xs text-slate-500 italic bg-slate-50 hidden border-t border-slate-100">
-            Asisten sedang mengetik...
-        </div>
-
-        {{-- Form Input Chat --}}
-        <div class="p-3 bg-white border-t border-slate-200">
-            <form id="form-chatbot" class="flex gap-2" onsubmit="return false;">
-                <input type="text" id="chat-input" placeholder="Tanyakan stok, harga, dll..." maxlength="500" class="border border-slate-300 px-3 py-2 text-sm flex-1 rounded-none focus:outline-none focus:border-emerald-700">
-                <button id="btn-kirim-chat" type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 text-sm font-semibold min-h-[44px] min-w-[44px] rounded-none">Kirim</button>
-            </form>
+<div id="ai-modal" class="fixed bottom-20 right-6 w-80 bg-white border border-gray-300 shadow-2xl z-50 hidden flex-col rounded-none">
+    <div class="bg-emerald-800 text-white p-3 font-bold text-center rounded-none tracking-wide">
+        Asisten Toko Firo
+    </div>
+    <div id="ai-history" class="p-3 h-64 overflow-y-auto flex flex-col gap-3 bg-gray-50 text-sm">
+        <div class="bg-gray-200 text-gray-800 p-3 self-start rounded-none border border-gray-300">
+            Halo! Ada yang bisa saya bantu terkait stok atau katalog Toko Firo?
         </div>
     </div>
+    <div class="border-t border-gray-300 p-2 flex bg-white">
+        <input type="text" id="ai-input" class="flex-1 border border-gray-400 p-2 rounded-none focus:outline-none focus:border-emerald-700 text-gray-800" placeholder="Ketik pesan...">
+        <button id="ai-send" class="bg-emerald-700 text-white px-4 py-2 ml-2 rounded-none font-bold min-h-[2.75rem] hover:bg-emerald-800 transition-colors">
+            Kirim
+        </button>
+    </div>
+</div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggleBtn = document.getElementById('btn-toggle-chatbot');
-        const closeBtn = document.getElementById('btn-close-chatbot');
-        const modal = document.getElementById('modal-chatbot');
-        const chatForm = document.getElementById('form-chatbot');
-        const chatInput = document.getElementById('chat-input');
-        const chatMessages = document.getElementById('chat-messages');
-        const typingIndicator = document.getElementById('chat-typing');
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+<script>
+    const trigger = document.getElementById('ai-trigger');
+    const modal = document.getElementById('ai-modal');
+    const input = document.getElementById('ai-input');
+    const send = document.getElementById('ai-send');
+    const history = document.getElementById('ai-history');
 
-        function toggleChat(show) {
-            if (show === undefined) {
-                modal.classList.toggle('hidden');
-            } else if (show) {
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-
-            if (!modal.classList.contains('hidden')) {
-                chatInput.focus();
-                scrollToBottom();
-            }
-        }
-
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', function () {
-                toggleChat();
-            });
-        }
-
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function () {
-                toggleChat(false);
-            });
-        }
-
-        function scrollToBottom() {
-            if (chatMessages) {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-        }
-
-        function appendMessage(sender, text) {
-            const wrapper = document.createElement('div');
-            wrapper.className = sender === 'user' ? 'flex flex-col items-end' : 'flex flex-col items-start';
-
-            const bubble = document.createElement('div');
-            if (sender === 'user') {
-                bubble.className = 'bg-emerald-700 text-white p-2.5 max-w-[85%] shadow-sm rounded-none text-sm';
-            } else {
-                bubble.className = 'bg-white border border-slate-200 p-2.5 max-w-[85%] text-slate-800 shadow-sm rounded-none text-sm';
-            }
-            bubble.textContent = text;
-
-            const label = document.createElement('span');
-            label.className = 'text-[10px] text-slate-400 mt-1 uppercase font-semibold';
-            label.textContent = sender === 'user' ? 'Anda' : 'Asisten';
-
-            wrapper.appendChild(bubble);
-            wrapper.appendChild(label);
-            chatMessages.appendChild(wrapper);
-            scrollToBottom();
-        }
-
-        async function sendMessage() {
-            const text = (chatInput.value || '').trim();
-            if (!text) return;
-
-            appendMessage('user', text);
-            chatInput.value = '';
-            chatInput.disabled = true;
-
-            if (typingIndicator) {
-                typingIndicator.classList.remove('hidden');
-                scrollToBottom();
-            }
-
-            try {
-                const response = await fetch('/api/chatbot/tanya', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ pesan: text })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.jawaban) {
-                    appendMessage('bot', data.jawaban);
-                } else if (response.status === 429) {
-                    appendMessage('bot', 'Terlalu banyak pertanyaan dalam waktu singkat. Mohon tunggu beberapa saat sebelum bertanya kembali.');
-                } else if (data.message) {
-                    appendMessage('bot', data.message);
-                } else {
-                    appendMessage('bot', 'Maaf, terjadi kesalahan saat memproses pertanyaan Anda.');
-                }
-            } catch (err) {
-                appendMessage('bot', 'Maaf, terjadi gangguan jaringan. Silakan coba lagi.');
-            } finally {
-                if (typingIndicator) {
-                    typingIndicator.classList.add('hidden');
-                }
-                chatInput.disabled = false;
-                chatInput.focus();
-                scrollToBottom();
-            }
-        }
-
-        if (chatForm) {
-            chatForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                sendMessage();
-            });
-        }
+    // Toggle Modal
+    trigger.addEventListener('click', () => {
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+        if(!modal.classList.contains('hidden')) input.focus();
     });
-    </script>
 
-    @stack('scripts')
+    // Tambah Balon Chat
+    function appendMessage(text, isUser) {
+        const div = document.createElement('div');
+        div.className = isUser 
+            ? 'bg-emerald-100 text-emerald-900 p-3 self-end rounded-none border border-emerald-300 max-w-[85%]'
+            : 'bg-gray-200 text-gray-800 p-3 self-start rounded-none border border-gray-300 max-w-[85%]';
+        div.textContent = text; // Mencegah XSS
+        history.appendChild(div);
+        history.scrollTop = history.scrollHeight;
+    }
+
+    // Kirim Pesan
+    async function sendMessage() {
+        const text = input.value.trim();
+        if (!text) return;
+
+        input.value = '';
+        input.disabled = true;
+        send.disabled = true;
+        
+        appendMessage(text, true);
+        appendMessage('Sedang mencari...', false);
+        
+        try {
+            const response = await fetch('/api/chatbot/tanya', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                },
+                body: JSON.stringify({ message: text })
+            });
+            
+            const data = await response.json();
+            history.lastChild.remove(); // Hapus teks loading
+            appendMessage(data.reply || 'Maaf, terjadi kesalahan.', false);
+        } catch (error) {
+            history.lastChild.remove();
+            appendMessage('Gagal terhubung ke server.', false);
+        } finally {
+            input.disabled = false;
+            send.disabled = false;
+            input.focus();
+        }
+    }
+
+    send.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+</script>
 </body>
 </html>

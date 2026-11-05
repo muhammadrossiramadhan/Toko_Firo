@@ -46,7 +46,18 @@ class ChatbotTest extends TestCase
         $response->assertStatus(200)
             ->assertJson([
                 'sukses' => true,
-                'jawaban' => 'Buku tulis Sinar Dunia 38 lembar tersedia di Toko Firo dengan harga Rp 3.500.'
+                'jawaban' => 'Buku tulis Sinar Dunia 38 lembar tersedia di Toko Firo dengan harga Rp 3.500.',
+                'reply' => 'Buku tulis Sinar Dunia 38 lembar tersedia di Toko Firo dengan harga Rp 3.500.'
+            ]);
+
+        // Verifikasi juga jika input menggunakan key 'message'
+        $responseMessageKey = $this->postJson('/api/chatbot/tanya', [
+            'message' => 'Apakah ada buku tulis Sinar Dunia?'
+        ]);
+        $responseMessageKey->assertStatus(200)
+            ->assertJson([
+                'sukses' => true,
+                'reply' => 'Buku tulis Sinar Dunia 38 lembar tersedia di Toko Firo dengan harga Rp 3.500.'
             ]);
     }
 

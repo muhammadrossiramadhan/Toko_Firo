@@ -1,10 +1,8 @@
 {{-- Sidebar Navigasi Admin Terpusat (Kepatuhan K12 & K18) --}}
 <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
     <div class="space-y-6">
-        {{-- Brand Header Toko Firo --}}
-        <div class="flex items-center gap-3 px-4 py-6 border-b border-emerald-800">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-10 w-auto rounded-none">
-            <span class="text-xl font-bold text-white tracking-wider">Toko Firo</span>
+        <div class="flex items-center justify-center py-6 border-b border-emerald-800">
+            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-12 w-auto rounded-none">
         </div>
 
         {{-- Menu Admin --}}

@@ -17,6 +17,10 @@ class ChatbotController extends Controller
      */
     public function tanya(Request $request): JsonResponse
     {
+        if ($request->has('message') && !$request->has('pesan')) {
+            $request->merge(['pesan' => $request->input('message')]);
+        }
+
         $validated = $request->validate([
             'pesan' => ['required', 'string', 'max:500'],
         ]);
@@ -102,9 +106,11 @@ INSTRUCTION;
                     $json = $response->json();
                     $reply = $json['candidates'][0]['content']['parts'][0]['text'] ?? null;
                     if (!empty($reply)) {
+                        $replyTrimmed = trim($reply);
                         return response()->json([
                             'sukses' => true,
-                            'jawaban' => trim($reply),
+                            'jawaban' => $replyTrimmed,
+                            'reply' => $replyTrimmed,
                         ]);
                     }
                 }
@@ -119,6 +125,7 @@ INSTRUCTION;
         return response()->json([
             'sukses' => true,
             'jawaban' => $jawabanFallback,
+            'reply' => $jawabanFallback,
         ]);
     }
 
