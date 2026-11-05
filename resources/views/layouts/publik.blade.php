@@ -22,28 +22,30 @@
 
     @stack('scripts')
 
-<!-- Chatbot UI -->
-<div style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50; display: flex; flex-direction: column; align-items: flex-end;">
+<!-- Chatbot UI (Floating Kanan Bawah) -->
+<div style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end;">
+    
     <!-- Modal Chat -->
-    <div id="ai-modal" class="bg-white border border-gray-300 shadow-2xl hidden flex-col rounded-none mb-4" style="display: none; height: 400px; width: 320px; max-width: 90vw;">
-        <div class="bg-emerald-800 text-white p-3 font-bold text-center rounded-none tracking-wide flex justify-between items-center">
+    <div id="ai-modal" style="display: none; height: 400px; width: 320px; max-width: 90vw; background-color: white; border: 1px solid #d1d5db; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); flex-direction: column; margin-bottom: 1rem; z-index: 10000; border-radius: 0;">
+        <div style="background-color: #065f46; color: white; padding: 12px; font-weight: bold; text-align: center; display: flex; justify-content: space-between; align-items: center; border-radius: 0;">
             <span>Asisten Toko Firo</span>
-            <button id="ai-close" class="text-white hover:text-gray-200 font-bold px-2 py-1">X</button>
+            <button id="ai-close" style="background: none; border: none; color: white; font-weight: bold; cursor: pointer; padding: 4px 8px;">X</button>
         </div>
-        <div id="ai-history" class="p-3 overflow-y-auto flex flex-col gap-3 bg-gray-50 text-sm" style="flex: 1;">
-            <div class="bg-gray-200 text-gray-800 p-3 self-start rounded-none border border-gray-300 max-w-[85%]">
+        <div id="ai-history" style="padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background-color: #f9fafb; flex: 1; font-size: 14px;">
+            <div style="background-color: #e5e7eb; color: #1f2937; padding: 12px; align-self: flex-start; border: 1px solid #d1d5db; max-width: 85%; border-radius: 0;">
                 Halo! Ada yang bisa saya bantu terkait stok atau katalog Toko Firo?
             </div>
         </div>
-        <div class="border-t border-gray-300 p-2 flex bg-white">
-            <input type="text" id="ai-input" class="flex-1 border border-gray-400 p-2 rounded-none focus:outline-none text-gray-800" placeholder="Ketik pesan...">
-            <button id="ai-send" class="bg-emerald-700 text-white px-4 py-2 ml-2 rounded-none font-bold min-h-[2.75rem]">
+        <div style="border-top: 1px solid #d1d5db; padding: 8px; display: flex; background-color: white;">
+            <input type="text" id="ai-input" style="flex: 1; border: 1px solid #9ca3af; padding: 8px; outline: none; color: #1f2937; border-radius: 0;" placeholder="Ketik pesan...">
+            <button id="ai-send" style="background-color: #047857; color: white; padding: 8px 16px; margin-left: 8px; font-weight: bold; border: none; cursor: pointer; min-height: 44px; border-radius: 0;">
                 Kirim
             </button>
         </div>
     </div>
 
-    <button id="ai-trigger" class="bg-emerald-700 text-white font-bold px-5 py-3 shadow-lg min-h-[2.75rem] min-w-[2.75rem] rounded-none hover:bg-emerald-800 transition-colors">
+    <!-- Tombol Trigger (Kotak Hijau Tegas) -->
+    <button id="ai-trigger" style="background-color: #047857; color: white; font-weight: bold; padding: 12px 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: none; cursor: pointer; min-height: 44px; min-width: 44px; z-index: 10000; border-radius: 0; letter-spacing: 0.05em;">
         Tanya AI
     </button>
 </div>
@@ -83,10 +85,10 @@
     // Tambah Balon Chat
     function appendMessage(text, isUser) {
         const div = document.createElement('div');
-        div.className = isUser 
-            ? 'bg-emerald-100 text-emerald-900 p-3 self-end rounded-none border border-emerald-300 max-w-[85%]'
-            : 'bg-gray-200 text-gray-800 p-3 self-start rounded-none border border-gray-300 max-w-[85%]';
-        div.textContent = text; // Mencegah XSS
+        div.style.cssText = isUser 
+            ? 'background-color: #d1fae5; color: #064e3b; padding: 12px; align-self: flex-end; border: 1px solid #6ee7b7; max-width: 85%; border-radius: 0;'
+            : 'background-color: #e5e7eb; color: #1f2937; padding: 12px; align-self: flex-start; border: 1px solid #d1d5db; max-width: 85%; border-radius: 0;';
+        div.textContent = text;
         history.appendChild(div);
         history.scrollTop = history.scrollHeight;
     }
