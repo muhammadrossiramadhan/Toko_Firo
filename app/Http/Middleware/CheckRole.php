@@ -69,20 +69,23 @@ class CheckRole
         $isKasirFeature = in_array('kasir', $allowedRoles, true);
         $isAdminOrPemilik = in_array($userRole, ['admin', 'pemilik'], true);
 
+        $response = null;
         if ($isAdminOrPemilik && $isKasirFeature) {
-            return $next($request);
+            $response = $next($request);
+        } elseif (in_array($userRole, $allowedRoles, true)) {
+            $response = $next($request);
+        } elseif ($userRole === 'pemilik' && in_array('admin', $allowedRoles, true)) {
+            $response = $next($request);
+        } else {
+            abort(403, 'Akses tidak diizinkan untuk peran akun ini.');
         }
 
-        // Izin langsung jika role pengguna ada di dalam daftar yang diizinkan
-        if (in_array($userRole, $allowedRoles, true)) {
-            return $next($request);
+        if ($response instanceof Response) {
+            $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+            $response->headers->set('Pragma', 'no-cache');
+            $response->headers->set('Expires', 'Sun, 02 Jan 1990 00:00:00 GMT');
         }
 
-        // Jika peran 'pemilik' mengakses rute khusus 'admin'
-        if ($userRole === 'pemilik' && in_array('admin', $allowedRoles, true)) {
-            return $next($request);
-        }
-
-        abort(403, 'Akses tidak diizinkan untuk peran akun ini.');
+        return $response;
     }
 }

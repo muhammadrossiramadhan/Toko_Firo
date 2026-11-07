@@ -22,14 +22,10 @@
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
     {{-- Sidebar Navigasi (Sesuai Desain UI Prototype Toko Firo) --}}
-    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
         <div class="space-y-6">
-            {{-- Brand Card Toko Firo (Tanpa Ikon) --}}
-            <div class="bg-white rounded-none p-3 flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Toko Firo Logo" class="h-10 w-auto">
-                <div class="font-bold text-gray-900 text-lg">
-                    Toko Firo
-                </div>
+            <div class="flex items-center justify-center py-6 border-b border-emerald-800">
+                <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-12 w-auto rounded-none">
             </div>
 
             {{-- Menu Admin --}}
