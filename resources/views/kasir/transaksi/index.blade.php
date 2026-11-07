@@ -26,7 +26,7 @@
     <div id="toast-notif" class="fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700"></div>
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
-    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -164,7 +164,7 @@
         </header>
 
         {{-- Stepper Bar Navigasi 4 Langkah --}}
-        <div class="bg-white border border-slate-200 rounded-none p-3 mb-6 shadow-sm">
+        <div class="bg-white rounded-none p-3 mb-6 shadow-sm">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-base font-semibold" id="stepper-bar">
                 <div id="step-tab-1" class="step-tab py-2.5 px-4 rounded-none bg-emerald-600 text-white shadow-sm transition-colors cursor-pointer" onclick="setStep(1)">
                     1. Pilih Barang
@@ -189,7 +189,7 @@
                 {{-- Sisi Kiri: Katalog Produk (2 Kolom Layout) --}}
                 <div class="lg:col-span-2 space-y-4">
                     {{-- Input Pencarian Barcode / Barang --}}
-                    <div class="bg-white border border-slate-200 rounded-none p-4 shadow-sm">
+                    <div class="bg-white rounded-none p-4 shadow-sm">
                         <label for="input-cari-barang" class="block text-slate-700 font-medium text-base mb-1.5">
                             Cari Barang / Barcode
                         </label>
@@ -199,7 +199,7 @@
                                 id="input-cari-barang"
                                 placeholder="Cari nama barang atau scan barcode..."
                                 autocomplete="off"
-                                class="touch-target w-full bg-white border border-slate-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
+                                class="touch-target w-full bg-slate-50 border-0 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
                             >
                             <span id="indikator-cari" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-medium">
                                 Mencari...
@@ -213,7 +213,7 @@
 
                     {{-- Container Hasil Pencarian Dinamis --}}
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="kontainer-hasil-cari">
-                        <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-400 text-base">
+                        <div class="col-span-full bg-white rounded-none p-8 text-center text-slate-400 text-base shadow-sm">
                             Memuat katalog barang...
                         </div>
                     </div>
@@ -221,7 +221,7 @@
 
                 {{-- Sisi Kanan: Keranjang Belanja Reaktif --}}
                 <div class="lg:col-span-1">
-                    <div class="bg-white border border-slate-200 rounded-none p-5 shadow-sm flex flex-col justify-between min-h-[500px]">
+                    <div class="bg-white rounded-none p-5 shadow-sm flex flex-col justify-between min-h-[500px]">
                         <div>
                             <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
                                 <h2 class="text-xl font-bold text-slate-800">
@@ -261,14 +261,14 @@
         {{-- STEP 2: Review Pesanan                                                    --}}
         {{-- ========================================================================= --}}
         <section id="step-container-2" class="step-container hidden">
-            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm max-w-4xl mx-auto space-y-6">
+            <div class="bg-white rounded-none p-6 shadow-sm max-w-4xl mx-auto space-y-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900">Review Ringkasan Pesanan</h2>
                     <p class="text-slate-500 text-base mt-1">Periksa kembali daftar barang belanjaan pelanggan sebelum proses pembayaran.</p>
                 </div>
 
                 {{-- Tabel Rincian --}}
-                <div class="overflow-x-auto border border-slate-200 rounded-none">
+                <div class="overflow-x-auto rounded-none shadow-sm">
                     <table class="w-full text-left text-base divide-y divide-slate-200">
                         <thead class="bg-slate-50 text-slate-700 font-semibold">
                             <tr>
@@ -314,9 +314,9 @@
         {{-- STEP 3: Pembayaran & Kembalian                                            --}}
         {{-- ========================================================================= --}}
         <section id="step-container-3" class="step-container hidden">
-            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm max-w-2xl mx-auto space-y-6">
+            <div class="bg-white rounded-none p-6 shadow-sm max-w-2xl mx-auto space-y-6">
                 {{-- Total Tagihan --}}
-                <div class="text-center p-6 bg-slate-50 border border-slate-200 rounded-none">
+                <div class="text-center p-6 bg-slate-50 rounded-none">
                     <span class="text-slate-500 text-base font-medium block">Total yang harus dibayar</span>
                     <div id="total-tagihan-step3" class="text-3xl md:text-4xl font-bold text-slate-900 my-1">
                         Rp 0
@@ -1180,7 +1180,7 @@
                 const kontainer = document.getElementById('kontainer-hasil-cari');
                 if (kontainer) {
                     kontainer.innerHTML = `
-                        <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500">
+                        <div class="col-span-full bg-white rounded-none p-8 text-center text-slate-500 shadow-sm">
                             Silakan ketik nama barang atau scan barcode untuk memilih produk.
                         </div>
                     `;
@@ -1244,7 +1244,7 @@
 
             if (!items || items.length === 0) {
                 kontainer.innerHTML = `
-                    <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500 text-base">
+                    <div class="col-span-full bg-white rounded-none p-8 text-center text-slate-500 text-base shadow-sm">
                         Tidak ada barang aktif yang cocok dengan pencarian.
                     </div>
                 `;
@@ -1266,7 +1266,7 @@
 
                 html += `
                     <div
-                        class="kartu-produk bg-white border border-slate-200 rounded-none p-4 shadow-sm flex flex-col justify-between hover:border-emerald-500 transition-colors"
+                        class="kartu-produk bg-white rounded-none p-4 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer"
                         data-kode="${kode.toLowerCase()}"
                         data-nama="${nama.toLowerCase()}"
                     >
@@ -1283,7 +1283,7 @@
                                 ${nama}
                             </h3>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <div class="mt-4 pt-3 flex items-center justify-between">
                             <div class="font-bold text-emerald-700 text-lg">
                                 Rp ${formatRupiah(harga)}
                             </div>

@@ -22,7 +22,7 @@
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
     {{-- Sidebar Navigasi Kasir Mandiri --}}
-    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -170,14 +170,14 @@
         {{-- ============================================================ --}}
         <div id="step-1">
             {{-- Pencarian Transaksi --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm p-6 mb-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">Cari Transaksi</h2>
                 <div class="flex gap-3">
                     <input
                         type="text"
                         id="input-cari"
                         placeholder="Cari kode transaksi (contoh: PJ-20261101-0001)"
-                        class="touch-target flex-1 border border-slate-300 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"
+                        class="touch-target flex-1 bg-slate-50 border-0 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"
                     >
                     <button
                         type="button"
@@ -190,7 +190,7 @@
             </div>
 
             {{-- Tabel Transaksi Terbaru --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden">
+            <div class="bg-white rounded-none shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200">
                     <h2 class="text-lg font-semibold text-gray-800" id="label-tabel-transaksi">Transaksi Terbaru</h2>
                 </div>
@@ -246,7 +246,7 @@
         {{-- ============================================================ --}}
         <div id="step-2" class="hidden">
             {{-- Header Transaksi --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm p-6 mb-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">Detail Transaksi</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                     <div>
@@ -277,7 +277,7 @@
             </div>
 
             {{-- Tabel Item Returnable --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden mb-6">
+            <div class="bg-white rounded-none shadow-sm overflow-hidden mb-6">
                 <div class="px-6 py-4 border-b border-slate-200">
                     <h2 class="text-lg font-semibold text-gray-800">Pilih Barang yang Dikembalikan</h2>
                 </div>
@@ -302,14 +302,14 @@
             </div>
 
             {{-- Alasan & Total Refund --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm p-6 mb-6">
                 <div class="mb-4">
                     <label for="input-alasan" class="block text-sm font-semibold text-slate-700 mb-2">Alasan Pengembalian (opsional)</label>
                     <textarea
                         id="input-alasan"
                         rows="3"
                         placeholder="Contoh: Barang rusak, salah kirim, dll."
-                        class="touch-target w-full border border-slate-300 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none resize-none min-h-[2.75rem]"
+                        class="touch-target w-full bg-slate-50 border-0 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none resize-none min-h-[2.75rem]"
                     ></textarea>
                 </div>
                 <div class="flex items-center justify-between border-t border-slate-200 pt-4">
@@ -341,12 +341,12 @@
         {{-- STEP 3: Konfirmasi & Hasil --}}
         {{-- ============================================================ --}}
         <div id="step-3" class="hidden">
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-8 text-center">
+            <div class="bg-white rounded-none shadow-sm p-8 text-center">
                 <div class="inline-flex items-center justify-center px-4 py-2 rounded-none bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wider uppercase mb-4">BERHASIL</div>
                 <h2 class="text-xl font-bold text-gray-800 mb-2">Pengembalian Berhasil</h2>
                 <p class="text-slate-500 mb-6" id="hasil-pesan">Pengembalian barang berhasil diproses.</p>
 
-                <div class="bg-slate-50 rounded-none border border-slate-200 p-6 text-left max-w-lg mx-auto mb-6">
+                <div class="bg-slate-50 rounded-none p-6 text-left max-w-lg mx-auto mb-6">
                     <div class="mb-3">
                         <span class="text-sm text-slate-500">Nota:</span>
                         <span class="font-semibold text-slate-800 font-mono ml-2" id="hasil-nota">-</span>
@@ -374,7 +374,7 @@
         {{-- ============================================================ --}}
         {{-- Riwayat Retur (selalu tampil) --}}
         {{-- ============================================================ --}}
-        <div class="mt-8 bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden">
+        <div class="mt-8 bg-white rounded-none shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200">
                 <h2 class="text-lg font-semibold text-gray-800">Riwayat Pengembalian</h2>
             </div>

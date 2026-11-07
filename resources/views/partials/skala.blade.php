@@ -3,5 +3,19 @@
    dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */
 :root { --skala: 80%; }
 html { font-size: var(--skala); }
+
+/* Hilangkan kotak putih focus outline browser di sidebar, menu navigasi, dan seluruh elemen */
+*:focus, *:focus-visible,
+aside, aside:focus, aside:focus-visible, aside *, aside *:focus, aside *:focus-visible,
+nav a, nav a:focus, nav a:focus-visible,
+button:focus, button:focus-visible,
+a:focus, a:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+aside {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
 </style>
 

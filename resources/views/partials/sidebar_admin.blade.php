@@ -1,5 +1,5 @@
 {{-- Sidebar Navigasi Admin Terpusat (Kepatuhan K12 & K18) --}}
-<aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
+<aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
     <div class="space-y-6">
         <div class="flex items-center justify-center py-6 border-b border-emerald-800">
             <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-12 w-auto rounded-none">

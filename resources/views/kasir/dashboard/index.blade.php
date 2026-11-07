@@ -22,7 +22,7 @@
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
-    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -183,7 +183,7 @@
             {{-- Kartu 1: Transaksi Penjualan --}}
             <a
                 href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : '#' }}"
-                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white rounded-none p-5 hover:shadow-md transition-shadow shadow-sm block group"
             >
                 <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
                     PENJUALAN
@@ -199,7 +199,7 @@
             {{-- Kartu 2: Lihat Stok Barang --}}
             <a
                 href="{{ Route::has('kasir.stok') ? route('kasir.stok') : '#' }}"
-                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white rounded-none p-5 hover:shadow-md transition-shadow shadow-sm block group"
             >
                 <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-blue-100 text-blue-800 mb-2">
                     INVENTORI
@@ -215,7 +215,7 @@
             {{-- Kartu 3: Saldo --}}
             <a
                 href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : '#' }}"
-                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white rounded-none p-5 hover:shadow-md transition-shadow shadow-sm block group"
             >
                 <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-amber-100 text-amber-800 mb-2">
                     KEUANGAN
@@ -231,7 +231,7 @@
             {{-- Kartu 4: Info Barang Baru --}}
             <a
                 href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                class="bg-white border border-slate-200 rounded-none p-5 hover:border-emerald-500 transition-colors shadow-sm block group"
+                class="bg-white rounded-none p-5 hover:shadow-md transition-shadow shadow-sm block group"
             >
                 <span class="inline-block px-2.5 py-0.5 rounded-none text-xs font-semibold bg-purple-100 text-purple-800 mb-2">
                     KATALOG
@@ -248,7 +248,7 @@
         {{-- Baris Widget Bawah (Grid 3 Kolom Desktop, 1 Kolom Tablet) --}}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Widget 1: Saldo Hari Ini --}}
-            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-base font-medium block">
                         Saldo Hari Ini
@@ -257,7 +257,7 @@
                         {{ $saldoHariIni ?? 'Rp 3.180.000' }}
                     </div>
                 </div>
-                <div class="pt-2 border-t border-slate-100">
+                <div class="pt-2">
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : '#' }}"
                         class="text-emerald-700 font-medium hover:underline inline-flex items-center min-h-[44px] text-base"
@@ -268,7 +268,7 @@
             </div>
 
             {{-- Widget 2: Stok Menipis --}}
-            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800 mb-3">
                         Stok Menipis
@@ -291,7 +291,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="pt-2 border-t border-slate-100 mt-2">
+                <div class="pt-2 mt-2">
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : '#' }}"
                         class="text-emerald-700 font-medium hover:underline inline-flex items-center min-h-[44px] text-base"
@@ -302,7 +302,7 @@
             </div>
 
             {{-- Widget 3: Info Barang Baru --}}
-            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div>
                     <h3 class="text-lg font-bold text-slate-800 mb-3">
                         Info Barang Baru
@@ -324,7 +324,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="pt-2 border-t border-slate-100 mt-2">
+                <div class="pt-2 mt-2">
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
                         class="text-emerald-700 font-medium hover:underline inline-flex items-center min-h-[44px] text-base"

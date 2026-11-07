@@ -77,7 +77,7 @@
         {{-- Baris 4 Kartu Metrik Ringkasan --}}
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {{-- Kartu 1: Penjualan Hari Ini --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['penjualan_hari_ini']['label'] }}
@@ -92,7 +92,7 @@
             </div>
 
             {{-- Kartu 2: Jumlah Transaksi --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['jumlah_transaksi']['label'] }}
@@ -107,7 +107,7 @@
             </div>
 
             {{-- Kartu 3: Stok Menipis --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['stok_menipis']['label'] }}
@@ -122,7 +122,7 @@
             </div>
 
             {{-- Kartu 4: Laba Hari Ini --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['laba_hari_ini']['label'] }}
@@ -140,7 +140,7 @@
         {{-- Area Utama Grid (2 Kolom) --}}
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Kolom Kiri (Lebar): Diagram Batang "Penjualan 7 Hari Terakhir" --}}
-            <div class="lg:col-span-2 bg-white rounded-none border border-gray-200 p-6 shadow-sm flex flex-col justify-between">
+            <div class="lg:col-span-2 bg-white rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
                     <div>
                         <h3 class="text-lg font-bold text-gray-900">
@@ -206,7 +206,7 @@
             {{-- Kolom Kanan (Lebih Ramping): Top Barang & Aktivitas Terbaru --}}
             <div class="lg:col-span-1 space-y-6">
                 {{-- Kartu 1: Top Barang Hari Ini --}}
-                <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+                <div class="bg-white rounded-none p-5 shadow-sm">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">
                         Top Barang Hari Ini
                     </h3>
@@ -235,7 +235,7 @@
                 </div>
 
                 {{-- Kartu 2: Aktivitas Terbaru --}}
-                <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+                <div class="bg-white rounded-none p-5 shadow-sm">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">
                         Aktivitas Terbaru
                     </h3>

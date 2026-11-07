@@ -35,3 +35,16 @@ html, body {
 *, *::before, *::after {
     border-radius: 0 !important;
 }
+
+*:focus, *:focus-visible,
+aside, aside:focus, aside:focus-visible, aside *, aside *:focus, aside *:focus-visible,
+nav a, nav a:focus, nav a:focus-visible,
+button:focus, button:focus-visible,
+a:focus, a:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+aside {
+    outline: none !important;
+}

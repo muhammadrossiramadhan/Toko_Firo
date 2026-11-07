@@ -22,7 +22,7 @@
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
-    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -171,7 +171,7 @@
         {{-- Grid Kartu Informasi Saldo --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {{-- Kartu 1: Saldo Hari Ini (Saldo Akhir) --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Saldo Hari Ini
@@ -187,7 +187,7 @@
             </div>
 
             {{-- Kartu 2: Modal Awal (Saldo Awal) --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Modal Awal
@@ -202,7 +202,7 @@
             </div>
 
             {{-- Kartu 3: Total Penjualan Tunai --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Penjualan Tunai
@@ -217,7 +217,7 @@
             </div>
 
             {{-- Kartu 4: Kas Keluar / Retur --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Kas Keluar / Retur
@@ -233,7 +233,7 @@
         </div>
 
         {{-- Tabel Riwayat Saldo Transaksi --}}
-        <div class="bg-white border border-slate-200 rounded-none overflow-hidden shadow-sm">
+        <div class="bg-white rounded-none overflow-hidden shadow-sm">
             <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-slate-800">
                     Riwayat Transaksi Hari Ini

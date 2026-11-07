@@ -22,7 +22,7 @@
 <body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
-    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -177,7 +177,7 @@
                     class="touch-target font-medium px-5 py-2.5 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors
                         {{ $tipeAktif === $key
                             ? 'bg-emerald-700 text-white shadow-sm'
-                            : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' }}"
+                            : 'bg-white text-slate-700 hover:bg-slate-50 shadow-sm' }}"
                 >
                     {{ $label }}
                 </a>
@@ -187,11 +187,11 @@
         {{-- Daftar Kartu Riwayat Pembaruan --}}
         <div class="space-y-4">
             @forelse ($daftarPembaruan as $item)
-                <div class="bg-white border border-slate-200 rounded-none p-5 flex items-center justify-between shadow-sm hover:border-emerald-300 transition-colors">
+                <div class="bg-white rounded-none p-5 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
                     {{-- Sisi Kiri: Badge Inisial Teks Murni & Informasi Produk --}}
                     <div class="flex items-center min-w-0">
                         {{-- Kotak lencana visual teks murni (Kepatuhan K12) --}}
-                        <div class="w-12 h-12 rounded-none bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 mr-4 flex-shrink-0 text-base">
+                        <div class="w-12 h-12 rounded-none bg-slate-100 flex items-center justify-center font-bold text-slate-700 mr-4 flex-shrink-0 text-base">
                             {{ $item['inisial'] }}
                         </div>
 
@@ -231,7 +231,7 @@
                     </div>
                 </div>
             @empty
-                <div class="bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500 text-base">
+                <div class="bg-white rounded-none p-8 text-center text-slate-500 text-base shadow-sm">
                     Belum ada pembaruan untuk kategori ini.
                 </div>
             @endforelse
