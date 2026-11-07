@@ -39,10 +39,15 @@ html, body {
 *:focus, *:focus-visible,
 aside, aside:focus, aside:focus-visible, aside *, aside *:focus, aside *:focus-visible,
 nav a, nav a:focus, nav a:focus-visible,
-button:focus, button:focus-visible,
-a:focus, a:focus-visible {
+button, button:focus, button:focus-visible,
+a, a:focus, a:focus-visible {
     outline: none !important;
+    outline-color: transparent !important;
+    outline-style: none !important;
+    outline-width: 0 !important;
     box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-focus-ring-color: transparent !important;
 }
 
 aside {

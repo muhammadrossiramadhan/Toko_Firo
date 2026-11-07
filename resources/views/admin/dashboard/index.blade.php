@@ -48,17 +48,13 @@
                 </a>
 
                 {{-- Profil Topbar (Inisial & Nama Dinamis, Tanpa Ikon) --}}
-                <div class="flex items-center gap-3 pl-2 border-l border-gray-300">
-                    <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
-                        {{ $inisialUser ?? (auth()->user() ? strtoupper(substr((string) (auth()->user()->nama ?? auth()->user()->username ?? 'A'), 0, 1)) : 'A') }}
+                <div class="flex items-center gap-3 bg-white px-4 py-2 border border-gray-200 rounded-none shadow-sm h-[3.5rem]">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
+                        {{ strtoupper(substr(Auth::user()->nama ?? 'U', 0, 1)) }}
                     </div>
-                    <div class="hidden md:block text-left">
-                        <div class="font-semibold text-gray-900 text-base leading-tight">
-                            {{ $namaUser ?? auth()->user()->nama ?? auth()->user()->username ?? 'Admin' }}
-                        </div>
-                        <div class="text-xs text-gray-500 font-medium">
-                            {{ $roleUser ?? (auth()->user() && strtoupper((string) (auth()->user()->role ?? '')) === 'ADMIN' ? 'Pemilik Toko' : 'Staf Kasir') }}
-                        </div>
+                    <div class="flex flex-col text-left justify-center">
+                        <span class="text-sm font-bold text-gray-800 leading-tight">{{ Auth::user()->nama ?? 'Pengguna' }}</span>
+                        <span class="text-xs text-gray-500">{{ (Auth::user()->role ?? '') === 'ADMIN' ? 'Admin / Pemilik' : 'Kasir' }}</span>
                     </div>
                 </div>
             </div>

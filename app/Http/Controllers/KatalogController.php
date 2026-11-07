@@ -44,6 +44,7 @@ class KatalogController extends Controller
             $lastUpdate = \App\Models\DaftarTransaksi::orderByDesc('tanggal_log')->value('tanggal_log');
         }
 
-        return view('katalog', compact('items', 'kategori', 'lastUpdate'));
+        $viewName = view()->exists('publik.katalog') ? 'publik.katalog' : 'katalog';
+        return view($viewName, compact('items', 'kategori', 'lastUpdate'));
     }
 }

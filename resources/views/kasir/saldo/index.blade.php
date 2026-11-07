@@ -31,7 +31,7 @@
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="text-white hover:text-gray-300 font-bold transition-colors flex items-center gap-2 min-h-[2.75rem] rounded-none p-2 outline-none focus:outline-none focus:ring-0" style="outline: none !important; box-shadow: none !important;">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -165,6 +165,15 @@
                 >
                     Kirim ke Telegram
                 </button>
+                <div class="flex items-center gap-3 bg-white px-4 py-2 border border-gray-200 rounded-none shadow-sm h-[3.5rem]">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
+                        {{ strtoupper(substr(Auth::user()->nama ?? 'U', 0, 1)) }}
+                    </div>
+                    <div class="flex flex-col text-left justify-center">
+                        <span class="text-sm font-bold text-gray-800 leading-tight">{{ Auth::user()->nama ?? 'Pengguna' }}</span>
+                        <span class="text-xs text-gray-500">{{ (Auth::user()->role ?? '') === 'ADMIN' ? 'Admin / Pemilik' : 'Kasir' }}</span>
+                    </div>
+                </div>
             </div>
         </header>
 
