@@ -27,13 +27,8 @@
     --color-danger-50: #FDECEA;
 }
 
-
 html, body {
     font-family: 'Montserrat', sans-serif;
-}
-
-*, *::before, *::after {
-    border-radius: 0 !important;
 }
 
 *:focus, *:focus-visible,
@@ -52,4 +47,8 @@ a, a:focus, a:focus-visible {
 
 aside {
     outline: none !important;
+}
+
+*, *::before, *::after {
+    border-radius: 0 !important;
 }

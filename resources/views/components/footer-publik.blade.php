@@ -14,19 +14,18 @@
             <div class="relative z-50">
                 <h3 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">NAVIGASI</h3>
                 <div class="flex flex-col gap-4">
-                    <a href="{{ url('/') }}#beranda" class="text-emerald-100 hover:text-white transition-colors duration-200 block cursor-pointer">Beranda</a>
-                    <a href="{{ route('katalog') }}" class="text-emerald-100 hover:text-white transition-colors duration-200 block cursor-pointer">Katalog</a>
-                    <a href="{{ route('masuk') }}" class="text-emerald-100 hover:text-white transition-colors duration-200 block cursor-pointer">Masuk Staf</a>
+                    <a href="{{ url('/') }}#beranda" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Beranda</a>
+                    <a href="{{ route('katalog') }}" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Katalog</a>
+                    <a href="{{ route('masuk') }}" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Masuk Staf</a>
                 </div>
             </div>
-
             <div class="relative z-50">
                 <h3 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">KONTAK</h3>
                 <div class="flex flex-col gap-4">
-                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block cursor-pointer">WhatsApp Toko</a>
-                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block cursor-pointer">Instagram Toko</a>
-                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block cursor-pointer">Facebook Toko</a>
-                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block cursor-pointer">TikTok Toko</a>
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">WhatsApp Toko</a>
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Instagram Toko</a>
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Facebook Toko</a>
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">TikTok Toko</a>
                 </div>
             </div>
 
