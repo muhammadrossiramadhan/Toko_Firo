@@ -11,41 +11,25 @@
                 </p>
             </div>
 
-            <!-- Col 2: Navigasi -->
-            <div>
-                <h3 class="text-sm font-semibold uppercase tracking-wider mb-3 text-white/80">Navigasi</h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="/" class="text-white/60 hover:text-white transition">Beranda</a></li>
-                    <li><a href="/katalog" class="text-white/60 hover:text-white transition">Katalog</a></li>
-                    <li><a href="{{ route('login') }}" class="text-white/60 hover:text-white transition">Masuk Staf</a></li>
-                </ul>
+            <!-- KOLOM NAVIGASI -->
+            <div class="relative z-50">
+                <h3 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">NAVIGASI</h3>
+                <div class="flex flex-col gap-4">
+                    <a href="{{ url('/') }}#beranda" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Beranda</a>
+                    <a href="{{ route('katalog') }}" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Katalog</a>
+                    <a href="{{ route('masuk') }}" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Masuk Staf</a>
+                </div>
             </div>
 
-            <!-- Col 3: Kontak & Sosial -->
-            <div>
-                <h3 class="text-sm font-semibold uppercase tracking-wider mb-3 text-white/80">Kontak</h3>
-                <ul class="space-y-1 text-sm">
-                    <li>
-                        <a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" data-turbo="false" class="touch-target min-h-[2.75rem] text-white/70 hover:text-white transition inline-flex items-center">
-                            WhatsApp Toko
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.instagram.com/firotoko?stkn=bHpxMDF2d3ZodDFt" target="_blank" rel="noopener noreferrer" data-turbo="false" class="touch-target min-h-[2.75rem] text-white/70 hover:text-white transition inline-flex items-center">
-                            Instagram Toko
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.facebook.com/people/Toko-Firo/100063668996154/" target="_blank" rel="noopener noreferrer" data-turbo="false" class="touch-target min-h-[2.75rem] text-white/70 hover:text-white transition inline-flex items-center">
-                            Facebook Toko
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.tiktok.com/@tokofiro0?_r=1&_t=ZS-99pMK6mNYGb" target="_blank" rel="noopener noreferrer" data-turbo="false" class="touch-target min-h-[2.75rem] text-white/70 hover:text-white transition inline-flex items-center">
-                            TikTok Toko
-                        </a>
-                    </li>
-                </ul>
+            <!-- KOLOM KONTAK -->
+            <div class="relative z-50">
+                <h3 class="font-bold text-white mb-6 uppercase tracking-wider text-sm">KONTAK</h3>
+                <div class="flex flex-col gap-4">
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">WhatsApp Toko</a>
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Instagram Toko</a>
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">Facebook Toko</a>
+                    <a href="#" class="text-emerald-100 hover:text-white transition-colors duration-200 block py-1 cursor-pointer">TikTok Toko</a>
+                </div>
             </div>
 
             <!-- Col 4: Alamat -->

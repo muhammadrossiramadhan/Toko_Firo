@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog');
 
-// Redirect alias /login ke /masuk
+// Redirect alias /login ke /masuk, dan route alias 'masuk' ke /masuk
 Route::redirect('/login', '/masuk');
+Route::redirect('/masuk-staf', '/masuk')->name('masuk');
 
 // Sesi Kedaluwarsa (Expired)
 Route::get('/sesi-berakhir', function () {
@@ -45,5 +46,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::post('/api/chatbot/tanya', [ChatbotController::class, 'tanya'])
     ->middleware('throttle:10,1')
     ->name('chatbot.tanya');
+
 
 
