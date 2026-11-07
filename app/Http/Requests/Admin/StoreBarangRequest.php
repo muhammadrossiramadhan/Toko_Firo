@@ -50,6 +50,7 @@ class StoreBarangRequest extends FormRequest
             'link_shopee' => ['nullable', 'string', 'max:255'],
             'deskripsi_produk' => ['nullable', 'string'],
             'gambar_url' => ['nullable', 'string', 'max:255'],
+            'gambar' => ['nullable', 'file', 'mimes:webp,jpg,jpeg,png', 'max:2048'],
         ];
     }
 

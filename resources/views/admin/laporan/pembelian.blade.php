@@ -44,23 +44,25 @@
                 Laporan Pembelian
             </h1>
             <div class="flex items-center gap-3">
-                <button
-                    type="button"
-                    data-turbo="false"
-                    onclick="window.print()"
-                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer"
+                <a
+                    href="{{ route('admin.laporan.pembelian.pdf', ['mulai' => $filter['mulai'] ?? '', 'sampai' => $filter['sampai'] ?? '', 'rentang' => $filter['rentang'] ?? '']) }}"
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer inline-flex items-center"
                 >
                     Simpan sebagai PDF
-                </button>
+                </a>
                 <button
                     type="button"
-                    disabled
-                    class="touch-target px-5 py-2.5 bg-gray-200 text-gray-400 font-medium rounded-none text-base cursor-not-allowed"
+                    id="btn-kirim-telegram"
+                    onclick="kirimPembelianTelegram(this)"
+                    class="touch-target px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer"
                 >
                     Kirim ke Telegram
                 </button>
             </div>
         </header>
+
+        {{-- Alert Notifikasi Dinamis Telegram --}}
+        <div id="telegram-alert" class="hidden mb-6 p-4 rounded-none text-base font-medium"></div>
 
         {{-- Pesan Notifikasi jika ada --}}
         @if ($pesan)
@@ -269,5 +271,67 @@
         </div>
     </main>
 
+    {{-- Script Interaksi Kirim Laporan Pembelian ke Telegram --}}
+    <script>
+        function kirimPembelianTelegram(btn) {
+            if (!btn || btn.disabled) return;
+
+            const teksAsli = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Mengirim...';
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            const alertBox = document.getElementById('telegram-alert');
+            if (alertBox) {
+                alertBox.classList.add('hidden');
+            }
+
+            const payload = {
+                mulai: '{{ $filter['mulai'] ?? '' }}',
+                sampai: '{{ $filter['sampai'] ?? '' }}',
+                rentang: '{{ $filter['rentang'] ?? '' }}'
+            };
+
+            fetch('{{ route('admin.laporan.pembelian.kirim-telegram') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(async (response) => {
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(data.message || 'Terjadi kesalahan pada server saat mengirim laporan.');
+                }
+                return data;
+            })
+            .then((data) => {
+                if (alertBox) {
+                    alertBox.className = 'mb-6 p-4 rounded-none bg-emerald-50 border border-emerald-300 text-emerald-900 text-base font-medium';
+                    alertBox.innerText = data.message || 'Laporan pembelian berhasil dikirim ke Telegram!';
+                    alertBox.classList.remove('hidden');
+                } else {
+                    alert(data.message || 'Laporan pembelian berhasil dikirim ke Telegram!');
+                }
+            })
+            .catch((error) => {
+                if (alertBox) {
+                    alertBox.className = 'mb-6 p-4 rounded-none bg-rose-50 border border-rose-300 text-rose-900 text-base font-medium';
+                    alertBox.innerText = error.message || 'Gagal mengirim laporan ke Telegram.';
+                    alertBox.classList.remove('hidden');
+                } else {
+                    alert(error.message || 'Gagal mengirim laporan ke Telegram.');
+                }
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = teksAsli;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            });
+        }
+    </script>
 </body>
 </html>

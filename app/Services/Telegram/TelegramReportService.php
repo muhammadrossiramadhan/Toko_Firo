@@ -112,6 +112,38 @@ class TelegramReportService
     }
 
     /**
+     * Menghasilkan binary PDF laporan pembelian menggunakan DomPDF.
+     */
+    public function generatePembelianPdfBinary(array $data): string
+    {
+        $view = view()->exists('admin.laporan.pdf_pembelian')
+            ? 'admin.laporan.pdf_pembelian'
+            : 'admin.laporan.pdf';
+
+        $pdf = Pdf::loadView($view, [
+            'data' => $data,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->output();
+    }
+
+    /**
+     * Membangun teks caption ringkasan pembelian dengan format HTML Telegram (0 emoji).
+     */
+    public function buildPembelianCaption(array $data): string
+    {
+        $totalPembelian = number_format($data['total_pembelian'] ?? 0, 0, ',', '.');
+        $transaksi = $data['jumlah_transaksi'] ?? 0;
+        $tanggal = $data['tanggal'] ?? date('d/m/Y');
+
+        return "<b>LAPORAN PEMBELIAN / RESTOCK TOKO FIRO</b>\n" .
+               "<b>Tanggal:</b> {$tanggal}\n\n" .
+               "<b>Total Pembelian:</b> Rp {$totalPembelian}\n" .
+               "<b>Jumlah Nota:</b> {$transaksi} nota\n\n" .
+               "<i>Dokumen rekap resmi cetak terlampir dalam berkas PDF di atas.</i>";
+    }
+
+    /**
      * Membangun teks caption ringkasan penjualan dengan format HTML Telegram.
      */
     public function buildSalesCaption(array $data): string

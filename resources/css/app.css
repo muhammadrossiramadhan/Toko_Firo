@@ -31,3 +31,7 @@
 html, body {
     font-family: 'Montserrat', sans-serif;
 }
+
+*, *::before, *::after {
+    border-radius: 0 !important;
+}

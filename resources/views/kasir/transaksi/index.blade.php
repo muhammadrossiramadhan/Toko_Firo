@@ -565,6 +565,7 @@
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
         let currentStep = 1;
         let cart = @json($keranjang);
+        const initialKatalog = @json($katalog);
         let metodeBayar = 'TUNAI';
         let uangDiterima = 0;
         let lastTransaksi = null;
@@ -988,8 +989,9 @@
                 cart = [];
                 renderCart();
 
-                // Tampilkan Modal Berhasil (Step 4)
+                // Tampilkan Modal Berhasil (Step 4) & Buka Struk Thermal
                 setStep(4);
+                bukaModalStruk();
             })
             .catch(err => {
                 if (btnSelesai) {
@@ -1060,29 +1062,36 @@
             const searchInput = document.getElementById('input-cari-barang');
             if (!searchInput) return;
 
-            // Muat katalog awal on-demand saat pertama kali halaman terbuka
-            muatKatalogAwal();
+            // Langsung tampilkan seluruh daftar item katalog saat pertama kali halaman terbuka
+            if (Array.isArray(initialKatalog) && initialKatalog.length > 0) {
+                cacheKatalog.set('__awal__', initialKatalog);
+                cacheKatalog.set('', initialKatalog);
+                renderKartuBarang(initialKatalog);
+            } else {
+                muatKatalogAwal();
+            }
 
-            // Kasir mengetik: jika >= 2 karakter -> debounce 250ms -> fetch dari API -> render kartu
+            // Kasir mengetik: filter instan DOM klien (0ms) + sinkronisasi AJAX server (debounce)
             searchInput.addEventListener('input', function () {
                 const keyword = this.value.trim();
                 clearTimeout(debounceTimerCari);
 
                 if (keyword.length === 0) {
-                    muatKatalogAwal();
+                    renderKartuBarang(initialKatalog);
                     return;
                 }
 
-                if (keyword.length < 2) {
-                    const kontainer = document.getElementById('kontainer-hasil-cari');
-                    if (kontainer) {
-                        kontainer.innerHTML = `
-                            <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-400 text-base">
-                                Ketik minimal 2 karakter untuk mencari nama barang atau kode item...
-                            </div>
-                        `;
-                    }
-                    return;
+                // Filter instan di DOM klien
+                if (Array.isArray(initialKatalog) && initialKatalog.length > 0) {
+                    const low = keyword.toLowerCase();
+                    const hasilFilter = initialKatalog.filter(it => {
+                        const nama = (it.nama_item || it.nama || '').toLowerCase();
+                        const kode = (it.kode_item || it.kode || '').toLowerCase();
+                        const merek = (it.merek || '').toLowerCase();
+                        const kategori = (it.kategori || '').toLowerCase();
+                        return nama.includes(low) || kode.includes(low) || merek.includes(low) || kategori.includes(low);
+                    });
+                    renderKartuBarang(hasilFilter);
                 }
 
                 debounceTimerCari = setTimeout(() => {
@@ -1226,15 +1235,15 @@
 
             let html = '';
             items.forEach(item => {
-                const kode = escapeHtml(item.kode_item || '');
-                const nama = escapeHtml(item.nama_item || '');
+                const kode = escapeHtml(item.kode_item || item.kode || '');
+                const nama = escapeHtml(item.nama_item || item.nama || '');
                 const satuan = escapeHtml(item.satuan || 'pcs');
-                const harga = Number(item.harga_jual) || 0;
+                const harga = Number(item.harga_jual !== undefined ? item.harga_jual : item.harga) || 0;
                 const stok = Number(item.stok) || 0;
                 const stokClass = stok <= 5 ? 'text-amber-700 font-semibold' : 'text-slate-500';
 
-                const namaParam = escapeHtmlAttr(item.nama_item || '');
-                const kodeParam = escapeHtmlAttr(item.kode_item || '');
+                const namaParam = escapeHtmlAttr(item.nama_item || item.nama || '');
+                const kodeParam = escapeHtmlAttr(item.kode_item || item.kode || '');
                 const satuanParam = escapeHtmlAttr(item.satuan || 'pcs');
 
                 html += `

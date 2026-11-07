@@ -86,13 +86,31 @@
                                     </div>
                                 </div>
                             </div>
-                            @if($item->link_shopee)
-                                <div class="p-2.5 lg:p-3.5 pt-0">
+                            <div class="p-2.5 lg:p-3.5 pt-0 space-y-2">
+                                <button
+                                    type="button"
+                                    data-kode="{{ $item->kode_item }}"
+                                    data-nama="{{ $item->nama_item }}"
+                                    data-jenis="{{ $item->jenis }}"
+                                    data-merek="{{ $item->merek }}"
+                                    data-satuan="{{ $item->satuan ?: 'pcs' }}"
+                                    data-harga="{{ $harga }}"
+                                    data-stok="{{ $stok }}"
+                                    data-status="{{ $isHabis ? 'Habis' : ($isMenipis ? 'Menipis' : 'Aman') }}"
+                                    data-gambar="{{ $gambarUrl }}"
+                                    data-deskripsi="{{ $item->deskripsi_produk ?: $item->keterangan }}"
+                                    data-shopee="{{ $item->link_shopee }}"
+                                    onclick="bukaDetailKatalog(this)"
+                                    class="touch-target w-full min-h-[44px] inline-flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-3 py-2 rounded-none transition-colors"
+                                >
+                                    Detail Produk
+                                </button>
+                                @if($item->link_shopee)
                                     <a href="{{ $item->link_shopee }}" target="_blank" rel="noopener noreferrer" class="touch-target w-full min-h-[44px] inline-flex items-center justify-center bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold px-3 py-2 rounded-none transition-colors">
                                         Beli di Shopee
                                     </a>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -159,4 +177,107 @@
             </div>
         </section>
     @endif
+
+    {{-- MODAL DETAIL BARANG (K12 Standard: 0 SVG, 0 Emoji, rounded-none) --}}
+    <div id="modal-detail-barang" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-none shadow-2xl w-full max-w-lg overflow-hidden border border-gray-300">
+            <div class="p-4 bg-emerald-800 text-white font-bold flex justify-between items-center rounded-none">
+                <span class="text-lg">Detail Produk</span>
+                <button type="button" onclick="tutupDetailKatalog()" class="touch-target min-h-[2.75rem] min-w-[2.75rem] text-white hover:text-gray-200 font-bold px-3 text-lg flex items-center justify-center">X</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div id="detail-katalog-gambar-box" class="aspect-video bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden rounded-none">
+                    <img id="detail-katalog-img" src="" alt="Foto Produk" class="w-full h-full object-contain rounded-none">
+                </div>
+                <div>
+                    <span id="detail-katalog-kode" class="text-xs font-mono bg-gray-100 text-gray-700 px-2 py-0.5 rounded-none font-bold"></span>
+                    <h3 id="detail-katalog-nama" class="text-xl font-bold text-gray-900 mt-1"></h3>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-sm border-t border-b border-gray-200 py-3">
+                    <div>
+                        <span class="text-gray-500 block">Kategori / Jenis:</span>
+                        <span id="detail-katalog-jenis" class="font-semibold text-gray-800"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 block">Merek:</span>
+                        <span id="detail-katalog-merek" class="font-semibold text-gray-800"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 block">Harga:</span>
+                        <span id="detail-katalog-harga" class="font-bold text-emerald-700 text-base"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 block">Ketersediaan:</span>
+                        <span id="detail-katalog-stok" class="font-semibold"></span>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-gray-500 text-sm block">Deskripsi:</span>
+                    <p id="detail-katalog-deskripsi" class="text-sm text-gray-700 mt-1 whitespace-pre-line"></p>
+                </div>
+                <div id="detail-katalog-shopee-container" class="pt-2 hidden">
+                    <a id="detail-katalog-shopee-btn" href="#" target="_blank" rel="noopener noreferrer" class="touch-target w-full min-h-[2.75rem] inline-flex items-center justify-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold px-4 py-2 rounded-none transition-colors">
+                        Beli di Shopee
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50 border-t border-gray-200 flex justify-end">
+                <button type="button" onclick="tutupDetailKatalog()" class="touch-target min-h-[2.75rem] px-6 py-2.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-none text-sm transition-colors">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function bukaDetailKatalog(el) {
+            const item = el.dataset || el;
+            document.getElementById('detail-katalog-kode').textContent = item.kode || '-';
+            document.getElementById('detail-katalog-nama').textContent = item.nama || '-';
+            document.getElementById('detail-katalog-jenis').textContent = item.jenis || '-';
+            document.getElementById('detail-katalog-merek').textContent = item.merek || '-';
+            document.getElementById('detail-katalog-harga').textContent = 'Rp ' + (item.harga || '0');
+
+            const stok = Number(item.stok) || 0;
+            const satuan = item.satuan || 'pcs';
+            const stokEl = document.getElementById('detail-katalog-stok');
+            if (stok <= 0) {
+                stokEl.textContent = 'Stok Habis';
+                stokEl.className = 'font-semibold text-red-600';
+            } else if (stok < 10) {
+                stokEl.textContent = 'Menipis (Sisa ' + stok + ' ' + satuan + ')';
+                stokEl.className = 'font-semibold text-amber-600';
+            } else {
+                stokEl.textContent = 'Tersedia (' + stok + ' ' + satuan + ')';
+                stokEl.className = 'font-semibold text-emerald-600';
+            }
+
+            document.getElementById('detail-katalog-deskripsi').textContent = item.deskripsi || 'Tidak ada deskripsi.';
+
+            const imgEl = document.getElementById('detail-katalog-img');
+            imgEl.src = item.gambar || '/images/logo.png';
+
+            const shopeeBox = document.getElementById('detail-katalog-shopee-container');
+            const shopeeBtn = document.getElementById('detail-katalog-shopee-btn');
+            const linkShopee = item.shopee || item.link_shopee;
+            if (linkShopee) {
+                shopeeBtn.href = linkShopee;
+                shopeeBox.classList.remove('hidden');
+            } else {
+                shopeeBox.classList.add('hidden');
+            }
+
+            const modal = document.getElementById('modal-detail-barang');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function tutupDetailKatalog() {
+            const modal = document.getElementById('modal-detail-barang');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+    </script>
 @endsection

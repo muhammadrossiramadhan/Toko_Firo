@@ -40,8 +40,9 @@ class ChatbotController extends Controller
         }
 
         try {
-            $kata = collect(preg_split('/\s+/', mb_strtolower($cleanMessage)))
-                ->filter(fn ($k) => mb_strlen($k) >= 3)
+            $cleanText = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', mb_strtolower($cleanMessage));
+            $kata = collect(preg_split('/\s+/', $cleanText))
+                ->filter(fn ($k) => mb_strlen($k) >= 2)
                 ->take(6);
 
             // Karena sistem terkunci pada 27 tabel, kita pakai views/tabel yang ada.
@@ -112,6 +113,7 @@ class ChatbotController extends Controller
             $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelId}:generateContent?key=" . ($apiKey ?: 'mock_api_key');
 
             $response = Http::timeout(15)
+                ->withoutVerifying()
                 ->withHeaders([
                     'Content-Type' => 'application/json',
                     'x-goog-api-key' => $apiKey ?: 'mock_api_key',
@@ -165,7 +167,7 @@ class ChatbotController extends Controller
         }
         $settings = app(PengaturanTokoService::class)->getSettings();
         $namaToko = $tokoInfo->nama_toko ?? $settings['nama_toko'] ?? 'Toko Firo';
-        $alamatToko = $tokoInfo->alamat ?? 'Jl. Yos Sudarso No.BA-9, Krajan, Sidopekso, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282';
+        $alamatToko = $tokoInfo->alamat ?? 'Jl. Yos Sudarso No. BA-9, Sidopekso, Krajan, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282';
         $teleponToko = $tokoInfo->no_telepon ?? $tokoInfo->telepon ?? $settings['telepon'] ?? '081234567890';
 
         // Pertanyaan alamat / lokasi
@@ -185,9 +187,18 @@ class ChatbotController extends Controller
 
         // Jika ada items yang cocok
         if ($items->isNotEmpty()) {
-            $lines = $items->take(3)->map(function ($item) {
+            $lines = $items->take(5)->map(function ($item) {
                 $harga = number_format((float) $item->harga_jual, 0, ',', '.');
-                $status = $item->stok_sekarang > 0 ? "stok {$item->stok_sekarang} {$item->satuan}" : "stok habis";
+                $isJasa = $item->tipe_jasa == 1 || strtoupper((string) $item->tipe_jasa) === 'JASA';
+                if ($isJasa || $item->stok_sekarang >= 999999) {
+                    $status = 'layanan tersedia';
+                } elseif ($item->stok_sekarang <= 0) {
+                    $status = 'stok habis';
+                } elseif ($item->stok_sekarang <= ($item->batas_minimum ?? 5)) {
+                    $status = "stok menipis (sisa {$item->stok_sekarang} {$item->satuan})";
+                } else {
+                    $status = "stok tersedia ({$item->stok_sekarang} {$item->satuan})";
+                }
                 return "- {$item->nama_item}: Rp {$harga} ({$status})";
             })->implode("\n");
 

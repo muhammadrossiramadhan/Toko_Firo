@@ -201,6 +201,13 @@
                                     <div class="flex items-center gap-2">
                                         <button
                                             type="button"
+                                            onclick="bukaModalDetail(this)"
+                                            class="touch-target px-2 text-emerald-700 hover:underline cursor-pointer text-base font-medium btn-detail-data"
+                                        >
+                                            Detail
+                                        </button>
+                                        <button
+                                            type="button"
                                             disabled
                                             onclick="bukaModalUbah(this)"
                                             class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-ubah-data"
@@ -332,11 +339,14 @@
             const tipe = document.getElementById('tambah-tipe').value;
             const stok = document.getElementById('tambah-stok');
             if (tipe.toUpperCase() === 'JASA') {
-                stok.disabled = true;
-                stok.value = 0;
+                stok.readOnly = true;
+                stok.value = 999999;
                 stok.classList.add('bg-gray-100', 'cursor-not-allowed');
             } else {
-                stok.disabled = false;
+                stok.readOnly = false;
+                if (stok.value == 999999) {
+                    stok.value = 0;
+                }
                 stok.classList.remove('bg-gray-100', 'cursor-not-allowed');
             }
         }
@@ -398,6 +408,60 @@
             document.getElementById('hapus-info-barang').textContent = (tr.dataset.kode || '') + ' - ' + (tr.dataset.nama || '');
 
             bukaModal('modal-hapus');
+        }
+
+        function bukaModalDetail(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            document.getElementById('detail-kode-item').textContent = tr.dataset.kode || '-';
+            document.getElementById('detail-nama-item').textContent = tr.dataset.nama || '-';
+            document.getElementById('detail-jenis').textContent = tr.dataset.jenis || '-';
+            document.getElementById('detail-merek').textContent = tr.dataset.merek || '-';
+            document.getElementById('detail-rak').textContent = tr.dataset.rak || '-';
+            document.getElementById('detail-satuan').textContent = tr.dataset.satuan || 'pcs';
+            document.getElementById('detail-tipe').textContent = tr.dataset.tipe || 'BARANG';
+
+            const hargaPokok = Number(tr.dataset.hargaPokok) || 0;
+            const hargaJual = Number(tr.dataset.hargaJual) || 0;
+            document.getElementById('detail-harga-pokok').textContent = 'Rp ' + hargaPokok.toLocaleString('id-ID');
+            document.getElementById('detail-harga-jual').textContent = 'Rp ' + hargaJual.toLocaleString('id-ID');
+
+            const stok = Number(tr.dataset.stok) || 0;
+            const batas = Number(tr.dataset.batasMinimum) || 5;
+            document.getElementById('detail-stok').textContent = stok + ' ' + (tr.dataset.satuan || 'pcs');
+            document.getElementById('detail-batas-minimum').textContent = batas;
+
+            const badgeStok = document.getElementById('detail-status-stok');
+            if (badgeStok) {
+                if (stok <= 0) {
+                    badgeStok.textContent = 'Habis';
+                    badgeStok.className = 'px-2.5 py-0.5 text-xs font-bold rounded-none bg-red-100 text-red-800';
+                } else if (stok <= batas) {
+                    badgeStok.textContent = 'Menipis';
+                    badgeStok.className = 'px-2.5 py-0.5 text-xs font-bold rounded-none bg-amber-100 text-amber-800';
+                } else {
+                    badgeStok.textContent = 'Aman';
+                    badgeStok.className = 'px-2.5 py-0.5 text-xs font-bold rounded-none bg-emerald-100 text-emerald-800';
+                }
+            }
+
+            document.getElementById('detail-deskripsi').textContent = tr.dataset.deskripsiProduk || tr.dataset.keterangan || 'Tidak ada deskripsi.';
+
+            const imgEl = document.getElementById('detail-foto-barang');
+            const imgBox = document.getElementById('detail-foto-box');
+            const gambarUrl = tr.dataset.gambarUrl;
+            if (gambarUrl) {
+                imgEl.src = gambarUrl;
+                imgBox.classList.remove('hidden');
+                imgBox.classList.add('flex');
+            } else {
+                imgEl.src = '';
+                imgBox.classList.add('hidden');
+                imgBox.classList.remove('flex');
+            }
+
+            bukaModal('modal-detail-barang');
         }
     </script>
 </body>

@@ -84,13 +84,26 @@ class BarangController extends Controller
     public function store(StoreBarangRequest $request): RedirectResponse
     {
         $tipe = strtoupper($request->validated('tipe_item')) === 'JASA' ? 'JASA' : 'BARANG';
-        $stok = $tipe === 'JASA' ? 0 : (int) ($request->validated('stok_awal') ?? 0);
+        $stok = $tipe === 'JASA' ? 999999 : (int) ($request->validated('stok_awal') ?? 0);
         $batas = $request->validated('batas_minimum') !== null && $request->validated('batas_minimum') !== ''
             ? (int) $request->validated('batas_minimum')
             : 5;
         $idPengguna = Auth::id() ?? Auth::user()?->id_pengguna ?? 1;
         $kode = $request->validated('kode_item');
         $nama = $request->validated('nama_item');
+
+        $gambarUrl = $request->validated('gambar_url');
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $dir = public_path('images/barang');
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            $ext = $file->getClientOriginalExtension() ?: 'webp';
+            $filename = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $kode) . '.' . $ext;
+            $file->move($dir, $filename);
+            $gambarUrl = '/images/barang/' . $filename;
+        }
 
         try {
             DB::statement('CALL sp_create_item(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
@@ -133,7 +146,8 @@ class BarangController extends Controller
                     'batas_minimum' => $batas,
                     'link_shopee' => $request->validated('link_shopee'),
                     'deskripsi_produk' => $request->validated('deskripsi_produk'),
-                    'gambar_url' => $request->validated('gambar_url'),
+                    'gambar_url' => $gambarUrl,
+                    'foto' => $gambarUrl,
                     'dibuat_pada' => now(),
                     'diubah_pada' => now(),
                 ]);
@@ -157,7 +171,9 @@ class BarangController extends Controller
         ItemBarang::where('kode_item', $kode)->update([
             'link_shopee' => $request->validated('link_shopee'),
             'deskripsi_produk' => $request->validated('deskripsi_produk'),
-            'gambar_url' => $request->validated('gambar_url'),
+            'gambar_url' => $gambarUrl,
+            'foto' => $gambarUrl,
+            'stok' => $stok,
         ]);
 
         return redirect()->route('admin.barang')->with('sukses', 'Barang berhasil ditambahkan.');
@@ -223,11 +239,34 @@ class BarangController extends Controller
             }
         }
 
-        ItemBarang::where('kode_item', $kode)->update([
-            'link_shopee' => $request->validated('link_shopee'),
+        $gambarUrl = $request->validated('gambar_url');
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $dir = public_path('images/barang');
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            $ext = $file->getClientOriginalExtension() ?: 'webp';
+            $filename = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $kode) . '.' . $ext;
+            $file->move($dir, $filename);
+            $gambarUrl = '/images/barang/' . $filename;
+        }
+
+        $updatePayload = [
             'deskripsi_produk' => $request->validated('deskripsi_produk'),
-            'gambar_url' => $request->validated('gambar_url'),
-        ]);
+        ];
+        if ($request->has('link_shopee')) {
+            $updatePayload['link_shopee'] = $request->validated('link_shopee');
+        }
+        if ($gambarUrl !== null) {
+            $updatePayload['gambar_url'] = $gambarUrl;
+            $updatePayload['foto'] = $gambarUrl;
+        }
+        if ($tipe === 'JASA') {
+            $updatePayload['stok'] = 999999;
+        }
+
+        ItemBarang::where('kode_item', $kode)->update($updatePayload);
 
         return redirect()->route('admin.barang')->with('sukses', 'Data barang berhasil diubah.');
     }

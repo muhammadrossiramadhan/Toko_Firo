@@ -30,24 +30,24 @@ class TransaksiKasirController extends Controller
             return redirect()->guest(route('login'));
         }
 
-        // Ambil katalog barang aktif dengan stok > 0
+        // Ambil seluruh katalog barang terdaftar
         $items = ItemBarang::query()
-            ->where('stok', '>', 0)
             ->orderBy('nama_item', 'asc')
-            ->limit(50)
             ->get();
-
-        if ($items->isEmpty()) {
-            $items = ItemBarang::query()->orderBy('nama_item', 'asc')->limit(50)->get();
-        }
 
         $katalog = $items->map(function ($it) {
             return [
                 'kode' => $it->kode_item,
+                'kode_item' => $it->kode_item,
                 'nama' => $it->nama_item,
+                'nama_item' => $it->nama_item,
+                'merek' => $it->merek ?? '',
+                'kategori' => $it->kategori ?? '',
                 'harga' => (float) $it->harga_jual,
+                'harga_jual' => (float) $it->harga_jual,
                 'stok' => (int) $it->stok,
                 'satuan' => $it->satuan ?: 'pcs',
+                'gambar_url' => $it->gambar_url ?: ($it->foto ?: null),
             ];
         })->toArray();
 
@@ -71,6 +71,48 @@ class TransaksiKasirController extends Controller
         $toko = $tokoService->getSettings();
 
         return view('kasir.transaksi.index', compact('katalog', 'keranjang', 'totalBelanja', 'kasir', 'toko'));
+    }
+
+    /**
+     * Pencarian item katalog barang untuk transaksi kasir (mendukung query ?q=).
+     */
+    public function cariItem(Request $request): JsonResponse
+    {
+        $q = trim((string) $request->input('q', ''));
+
+        $query = ItemBarang::query();
+
+        if ($q !== '') {
+            $query->where(function ($sub) use ($q) {
+                $sub->where('nama_item', 'like', "%{$q}%")
+                    ->orWhere('kode_item', 'like', "%{$q}%")
+                    ->orWhere('merek', 'like', "%{$q}%")
+                    ->orWhere('kategori', 'like', "%{$q}%");
+            });
+        }
+
+        $items = $query->orderBy('nama_item', 'asc')->limit(100)->get();
+
+        $data = $items->map(function ($it) {
+            return [
+                'kode_item' => $it->kode_item,
+                'kode' => $it->kode_item,
+                'nama_item' => $it->nama_item,
+                'nama' => $it->nama_item,
+                'merek' => $it->merek ?? '',
+                'kategori' => $it->kategori ?? '',
+                'harga_jual' => (float) $it->harga_jual,
+                'harga' => (float) $it->harga_jual,
+                'stok' => (int) $it->stok,
+                'satuan' => $it->satuan ?: 'pcs',
+                'gambar_url' => $it->gambar_url ?: ($it->foto ?: null),
+            ];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -343,7 +385,7 @@ class TransaksiKasirController extends Controller
             background: #fff;
             padding: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            border-radius: 0;
         }
         .header { text-align: center; margin-bottom: 16px; }
         .header h1 { margin: 0; font-size: 22px; font-weight: bold; }
@@ -359,7 +401,7 @@ class TransaksiKasirController extends Controller
             background: #059669;
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 0;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;

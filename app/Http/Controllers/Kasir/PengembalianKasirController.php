@@ -38,7 +38,7 @@ class PengembalianKasirController extends Controller
             "SELECT la.waktu, la.keterangan, la.tipe_aksi, p.nama as pelaku
              FROM log_aktivitas la
              LEFT JOIN pengguna p ON la.id_pengguna = p.id_pengguna
-             WHERE la.tipe_aksi = 'RETUR'
+             WHERE la.tipe_aksi IN ('RETUR', 'RETUR_PENJUALAN')
              ORDER BY la.waktu DESC
              LIMIT 10"
         );
@@ -198,7 +198,7 @@ class PengembalianKasirController extends Controller
 
             DB::insert(
                 "INSERT INTO log_aktivitas (waktu, keterangan, tipe_aksi, id_pengguna, data_sebelum, data_sesudah)
-                 VALUES (NOW(), ?, 'RETUR', ?, ?, ?)",
+                 VALUES (NOW(), ?, 'RETUR_PENJUALAN', ?, ?, ?)",
                 [
                     "Retur penjualan nota {$nota}: {$itemSummary}. Alasan: {$alasan}",
                     $userId,
@@ -227,6 +227,14 @@ class PengembalianKasirController extends Controller
 
             return response()->json(['error' => $msg], 422);
         }
+    }
+
+    /**
+     * Alias method untuk menyimpan pengembalian barang.
+     */
+    public function simpan(Request $request): JsonResponse
+    {
+        return $this->proses($request);
     }
 }
 

@@ -24,7 +24,7 @@ Route::get('/sesi-berakhir', function () {
 // Autentikasi 2FA (Step 1: Masuk)
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/masuk', [LoginController::class, 'authenticate']);
+    Route::post('/masuk', [LoginController::class, 'authenticate'])->name('masuk.proses');
 });
 
 // Pending 2FA (Step 2: Verifikasi OTP)

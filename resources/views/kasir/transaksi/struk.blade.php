@@ -19,7 +19,7 @@
             background: #fff;
             padding: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            border-radius: 0;
         }
         .header { text-align: center; margin-bottom: 16px; }
         .header h1 { margin: 0; font-size: 22px; font-weight: bold; }
@@ -35,7 +35,7 @@
             background: #059669;
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 0;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;

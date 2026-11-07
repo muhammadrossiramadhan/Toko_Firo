@@ -133,14 +133,16 @@
             </div>
             <div class="flex items-center gap-3">
                 {{-- Tombol Aksi Teks Murni (Bebas Emoji) --}}
-                <button
-                    type="button"
+                <a
+                    href="{{ route('kasir.saldo.pdf') }}"
                     class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Simpan sebagai PDF
-                </button>
+                </a>
                 <button
                     type="button"
+                    id="btn-kirim-telegram"
+                    onclick="kirimSaldoTelegram(this)"
                     class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Kirim ke Telegram
@@ -282,6 +284,40 @@
         </div>
     </main>
 
+    <script>
+        function kirimSaldoTelegram(btn) {
+            if (!btn || btn.disabled) return;
+            const teksAsli = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Mengirim...';
+
+            fetch('{{ route("kasir.saldo.telegram") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(async res => {
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.message || 'Gagal mengirim rekap saldo ke Telegram.');
+                }
+                return data;
+            })
+            .then(data => {
+                alert(data.message || 'Rekap saldo kasir berhasil dikirim ke Telegram!');
+            })
+            .catch(err => {
+                alert(err.message || 'Gagal mengirim rekap saldo ke Telegram.');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = teksAsli;
+            });
+        }
+    </script>
 </body>
 </html>
 
