@@ -208,25 +208,22 @@
                                         </button>
                                         <button
                                             type="button"
-                                            disabled
                                             onclick="bukaModalUbah(this)"
-                                            class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-ubah-data"
+                                            class="touch-target px-2 text-emerald-700 hover:underline cursor-pointer text-base font-medium btn-aksi-baris btn-ubah-data"
                                         >
                                             Ubah Data
                                         </button>
                                         <button
                                             type="button"
-                                            disabled
                                             onclick="bukaModalHarga(this)"
-                                            class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-ubah-harga"
+                                            class="touch-target px-2 text-amber-700 hover:underline cursor-pointer text-base font-medium btn-aksi-baris btn-ubah-harga"
                                         >
                                             Ubah Harga
                                         </button>
                                         <button
                                             type="button"
-                                            disabled
                                             onclick="bukaModalHapus(this)"
-                                            class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-hapus-data"
+                                            class="touch-target px-2 text-red-700 hover:underline cursor-pointer text-base font-medium btn-aksi-baris btn-hapus-data"
                                         >
                                             Hapus Data
                                         </button>
@@ -264,49 +261,33 @@
     <script>
         let barisAktif = null;
 
+        function setVal(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+        }
+
+        function setText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const barisList = document.querySelectorAll('tr.baris-barang');
 
             barisList.forEach(function (baris) {
                 baris.addEventListener('click', function (e) {
-                    if (e.target.tagName.toLowerCase() === 'button' && !e.target.disabled) {
+                    if (e.target.tagName.toLowerCase() === 'button') {
                         return;
                     }
 
                     // Reset baris lain
                     barisList.forEach(function (b) {
                         b.classList.remove('bg-emerald-50', 'ring-1', 'ring-emerald-500');
-                        b.querySelectorAll('.btn-aksi-baris').forEach(function (btn) {
-                            btn.disabled = true;
-                            btn.classList.add('text-gray-400', 'cursor-not-allowed');
-                            btn.classList.remove('text-emerald-700', 'text-amber-700', 'text-red-700', 'cursor-pointer', 'hover:underline');
-                        });
                     });
 
                     // Sorot baris terpilih
                     baris.classList.add('bg-emerald-50', 'ring-1', 'ring-emerald-500');
                     barisAktif = baris;
-
-                    // Aktifkan tombol pada baris terpilih
-                    const btnUbah = baris.querySelector('.btn-ubah-data');
-                    const btnHarga = baris.querySelector('.btn-ubah-harga');
-                    const btnHapus = baris.querySelector('.btn-hapus-data');
-
-                    if (btnUbah) {
-                        btnUbah.disabled = false;
-                        btnUbah.classList.remove('text-gray-400', 'cursor-not-allowed');
-                        btnUbah.classList.add('text-emerald-700', 'cursor-pointer', 'hover:underline');
-                    }
-                    if (btnHarga) {
-                        btnHarga.disabled = false;
-                        btnHarga.classList.remove('text-gray-400', 'cursor-not-allowed');
-                        btnHarga.classList.add('text-amber-700', 'cursor-pointer', 'hover:underline');
-                    }
-                    if (btnHapus) {
-                        btnHapus.disabled = false;
-                        btnHapus.classList.remove('text-gray-400', 'cursor-not-allowed');
-                        btnHapus.classList.add('text-red-700', 'cursor-pointer', 'hover:underline');
-                    }
                 });
             });
 
@@ -355,22 +336,22 @@
             const tr = btn.closest('tr');
             if (!tr) return;
 
-            document.getElementById('ubah-kode-hidden').value = tr.dataset.kode || '';
-            document.getElementById('ubah-kode-display').textContent = tr.dataset.kode || '';
-            document.getElementById('ubah-nama').value = tr.dataset.nama || '';
-            document.getElementById('ubah-jenis').value = tr.dataset.jenis || '';
-            document.getElementById('ubah-merek').value = tr.dataset.merek || '';
-            document.getElementById('ubah-rak').value = tr.dataset.rak || '';
-            document.getElementById('ubah-satuan').value = tr.dataset.satuan || '';
+            setVal('ubah-kode-hidden', tr.dataset.kode || '');
+            setText('ubah-kode-display', tr.dataset.kode || '');
+            setVal('ubah-nama', tr.dataset.nama || '');
+            setVal('ubah-jenis', tr.dataset.jenis || '');
+            setVal('ubah-merek', tr.dataset.merek || '');
+            setVal('ubah-rak', tr.dataset.rak || '');
+            setVal('ubah-satuan', tr.dataset.satuan || '');
 
             const tipeVal = (tr.dataset.tipe || 'BARANG').toUpperCase() === 'JASA' ? 'Jasa' : 'Barang';
-            document.getElementById('ubah-tipe').value = tipeVal;
+            setVal('ubah-tipe', tipeVal);
 
-            document.getElementById('ubah-batas').value = tr.dataset.batasMinimum || 5;
-            document.getElementById('ubah-keterangan').value = tr.dataset.keterangan || '';
-            document.getElementById('ubah-link-shopee').value = tr.dataset.linkShopee || '';
-            document.getElementById('ubah-gambar-url').value = tr.dataset.gambarUrl || '';
-            document.getElementById('ubah-deskripsi-produk').value = tr.dataset.deskripsiProduk || '';
+            setVal('ubah-batas', tr.dataset.batasMinimum || 5);
+            setVal('ubah-keterangan', tr.dataset.keterangan || '');
+            setVal('ubah-link-shopee', tr.dataset.linkShopee || '');
+            setVal('ubah-gambar-url', tr.dataset.gambarUrl || '');
+            setVal('ubah-deskripsi-produk', tr.dataset.deskripsiProduk || '');
 
             bukaModal('modal-ubah');
         }

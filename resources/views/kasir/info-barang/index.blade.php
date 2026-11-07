@@ -31,7 +31,7 @@
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 font-medium">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -46,7 +46,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Dashboard
                     </a>
@@ -54,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Transaksi Penjualan
                     </a>
@@ -62,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Lihat Stok Barang
                     </a>
@@ -70,7 +70,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : url('/kasir/saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Saldo
                     </a>
@@ -78,7 +78,7 @@
                     {{-- 5. Info Barang Baru (Aktif) --}}
                     <a
                         href="{{ route('kasir.info-barang') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"
                     >
                         Info Barang Baru
                     </a>
@@ -86,7 +86,7 @@
                     {{-- 6. Pengembalian Barang --}}
                     <a
                         href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Pengembalian Barang
                     </a>
@@ -96,7 +96,7 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
+            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
                 <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>

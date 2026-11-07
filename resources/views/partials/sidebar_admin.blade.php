@@ -135,7 +135,7 @@
 
     {{-- Profil Pengguna di Bawah Sidebar (Dapat diklik menuju profil) --}}
     <div class="pt-4 border-t border-emerald-900/60">
-        <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer border border-emerald-600/40 shadow-sm">
+        <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
             <div class="font-medium text-white text-base truncate">
                 {{ Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
             </div>
