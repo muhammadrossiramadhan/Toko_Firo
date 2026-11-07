@@ -21,7 +21,7 @@
 
     @include('partials.skala')
 </head>
-<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased m-0 p-0">
 
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
@@ -49,7 +49,7 @@
 
                 {{-- Profil Topbar (Inisial & Nama Dinamis, Tanpa Ikon) --}}
                 <div class="flex items-center gap-3 pl-2 border-l border-gray-300">
-                    <div class="w-10 h-10 rounded-none bg-emerald-700 text-white font-bold flex items-center justify-center text-base">
+                    <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
                         {{ $inisialUser ?? (auth()->user() ? strtoupper(substr((string) (auth()->user()->nama ?? auth()->user()->username ?? 'A'), 0, 1)) : 'A') }}
                     </div>
                     <div class="hidden md:block text-left">

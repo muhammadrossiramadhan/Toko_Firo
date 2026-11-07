@@ -21,7 +21,7 @@
 
     @include('partials.skala')
 </head>
-<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased m-0 p-0">
 
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
@@ -53,8 +53,8 @@
 
         <div class="space-y-6 max-w-4xl">
             {{-- Kartu 1: Ringkasan Akun (Header Profil) --}}
-            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm flex items-center space-x-5">
-                <div class="w-16 h-16 rounded-none bg-emerald-700 text-white font-bold text-2xl flex items-center justify-center shrink-0">
+            <section class="bg-white rounded-none p-6 shadow-sm flex items-center space-x-5">
+                <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-2xl">
                     {{ $profil['inisial'] ?? 'AF' }}
                 </div>
                 <div>
@@ -68,7 +68,7 @@
             </section>
 
             {{-- Kartu 2: Form Edit Profil --}}
-            <section class="bg-white border border-slate-200 rounded-none p-6 shadow-sm">
+            <section class="bg-white rounded-none p-6 shadow-sm">
                 <h2 class="text-lg font-bold text-gray-900 mb-4">
                     Edit Profil
                 </h2>

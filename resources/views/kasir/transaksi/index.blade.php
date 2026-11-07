@@ -20,7 +20,7 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex m-0 p-0">
 
     {{-- Notifikasi Toast Mengambang K12 --}}
     <div id="toast-notif" class="fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700"></div>
@@ -103,7 +103,7 @@
             @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
                 <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+                        <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
                             {{ $kasir['inisial'] ?? strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
                         </div>
                         <div class="min-w-0 flex-1">
@@ -118,7 +118,7 @@
                 </a>
             @else
                 <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
                         {{ $kasir['inisial'] ?? 'K' }}
                     </div>
                     <div class="min-w-0 flex-1">
@@ -154,7 +154,7 @@
                 <p class="text-slate-500 text-base mt-0.5">Catat pesanan barang dan proses pembayaran belanja kasir.</p>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
+                <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-base">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">

@@ -19,7 +19,7 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex m-0 p-0">
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
     <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
@@ -99,7 +99,7 @@
             @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
                 <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+                        <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
                             {{ $kasir['inisial'] ?? strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
                         </div>
                         <div class="min-w-0 flex-1">
@@ -114,7 +114,7 @@
                 </a>
             @else
                 <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
                         {{ $kasir['inisial'] ?? 'K' }}
                     </div>
                     <div class="min-w-0 flex-1">
@@ -149,7 +149,7 @@
                 </h1>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
+                <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-base">
                     {{ $kasir['inisial'] ?? 'K' }}
                 </div>
                 <span class="font-medium text-gray-800 text-base">

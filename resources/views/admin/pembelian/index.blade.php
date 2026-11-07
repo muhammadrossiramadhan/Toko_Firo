@@ -21,7 +21,7 @@
 
     @include('partials.skala')
 </head>
-<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased m-0 p-0">
 
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')

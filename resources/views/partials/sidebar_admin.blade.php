@@ -136,11 +136,18 @@
     {{-- Profil Pengguna di Bawah Sidebar (Dapat diklik menuju profil) --}}
     <div class="pt-4 border-t border-emerald-900/60">
         <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
-            <div class="font-medium text-white text-base truncate">
-                {{ Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
-            </div>
-            <div class="text-sm text-emerald-300">
-                {{ in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']) ? 'Admin / Pemilik' : (Auth::user()?->role ?? 'Admin / Pemilik') }}
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
+                    {{ strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="font-medium text-white text-base truncate">
+                        {{ Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
+                    </div>
+                    <div class="text-sm text-emerald-300">
+                        {{ in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']) ? 'Admin / Pemilik' : (Auth::user()?->role ?? 'Admin / Pemilik') }}
+                    </div>
+                </div>
             </div>
         </a>
         <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}">
