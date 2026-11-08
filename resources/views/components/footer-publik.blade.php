@@ -14,9 +14,9 @@
             <!-- KOLOM NAVIGASI -->
             <div class="flex flex-col gap-1.5 items-start justify-start h-fit">
                 <h3 class="font-bold text-white mb-3 uppercase tracking-wider text-sm">NAVIGASI</h3>
-                <a href="{{ url('/') }}#beranda" class="text-emerald-100 hover:text-white block relative z-50">Beranda</a>
-                <a href="{{ route('katalog') }}" class="text-emerald-100 hover:text-white block relative z-50">Katalog</a>
-                <a href="{{ route('masuk') }}" class="text-emerald-100 hover:text-white block relative z-50">Masuk Staf</a>
+                <a href="{{ url('/') }}#beranda" onclick="event.preventDefault(); window.location.href=this.href;" class="text-emerald-100 hover:text-white block py-1 cursor-pointer relative z-50">Beranda</a>
+                <a href="{{ url('/katalog') }}" onclick="event.preventDefault(); window.location.href=this.href;" class="text-emerald-100 hover:text-white block py-1 cursor-pointer relative z-50">Katalog</a>
+                <a href="{{ url('/masuk') }}" onclick="event.preventDefault(); window.location.href=this.href;" class="text-emerald-100 hover:text-white block py-1 cursor-pointer relative z-50">Masuk Staf</a>
             </div>
 
             <!-- KOLOM KONTAK -->

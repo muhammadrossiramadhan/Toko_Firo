@@ -8,7 +8,7 @@
         <!-- Center: Nav links -->
         <div class="hidden md:flex items-center gap-4 lg:gap-6">
             <!-- Menu Utama (Kembali ke halaman utama/beranda) -->
-            <a href="{{ url('/') }}#beranda" class="text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Beranda</a>
+            <a href="{{ url('/') }}#beranda" onclick="event.preventDefault(); window.location.href=this.href;" class="text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Beranda</a>
             <a href="{{ url('/') }}#tentang" class="text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Tentang</a>
             <a href="{{ url('/') }}#layanan" class="text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Layanan</a>
             <a href="{{ url('/') }}#info-toko" class="text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Info Toko</a>
@@ -17,7 +17,7 @@
         <!-- Right: Actions -->
         <div class="hidden md:flex items-center">
             <!-- Tombol Lihat Katalog (Mengarah ke route /katalog) -->
-            <a href="{{ route('katalog') }}" class="bg-yellow-400 text-black font-bold px-6 py-2 min-h-[2.75rem] flex items-center justify-center rounded-none hover:bg-yellow-500 transition-colors shadow-sm outline-none focus:outline-none focus:ring-0" style="outline:none!important; box-shadow:none!important;">
+            <a href="{{ url('/katalog') }}" onclick="event.preventDefault(); window.location.href=this.href;" class="bg-yellow-400 text-black font-bold px-6 py-2 min-h-[2.75rem] flex items-center justify-center rounded-none hover:bg-yellow-500 transition-colors shadow-sm outline-none focus:outline-none focus:ring-0" style="outline:none!important; box-shadow:none!important;">
                 Lihat Katalog
             </a>
         </div>
@@ -32,11 +32,11 @@
 
     <!-- Mobile menu dropdown -->
     <div id="mobile-menu" class="hidden md:hidden bg-green-900 border-b border-white/10 px-5 py-4 space-y-3">
-        <a href="{{ url('/') }}#beranda" class="block text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Beranda</a>
+        <a href="{{ url('/') }}#beranda" onclick="event.preventDefault(); window.location.href=this.href;" class="block text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Beranda</a>
         <a href="{{ url('/') }}#tentang" class="block text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Tentang</a>
         <a href="{{ url('/') }}#layanan" class="block text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Layanan</a>
         <a href="{{ url('/') }}#info-toko" class="block text-white hover:text-emerald-300 px-3 py-2 font-semibold outline-none focus:outline-none focus:ring-0" style="outline:none!important;">Info Toko</a>
-        <a href="{{ route('katalog') }}" class="bg-yellow-400 text-black font-bold px-6 py-2 min-h-[2.75rem] flex items-center justify-center rounded-none hover:bg-yellow-500 transition-colors shadow-sm text-center outline-none focus:outline-none focus:ring-0" style="outline:none!important; box-shadow:none!important;">
+        <a href="{{ url('/katalog') }}" onclick="event.preventDefault(); window.location.href=this.href;" class="bg-yellow-400 text-black font-bold px-6 py-2 min-h-[2.75rem] flex items-center justify-center rounded-none hover:bg-yellow-500 transition-colors shadow-sm text-center outline-none focus:outline-none focus:ring-0" style="outline:none!important; box-shadow:none!important;">
             Lihat Katalog
         </a>
     </div>
