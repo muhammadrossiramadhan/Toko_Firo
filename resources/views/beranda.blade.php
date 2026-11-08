@@ -16,7 +16,7 @@
                         Langsung cek stok dan harga dari sini. Diperbarui tiap hari, jadi nggak perlu nanya dulu ke toko.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-3 mt-8">
-                        <a href="/katalog" class="bg-green-700 text-white font-medium px-7 py-3 hover:bg-green-800 transition inline-block text-center">
+                        <a href="{{ url('/katalog') }}" onclick="event.preventDefault(); window.location.href=this.href;" class="bg-green-700 text-white font-medium px-7 py-3 hover:bg-green-800 transition inline-block text-center min-h-[2.75rem] rounded-none outline-none focus:outline-none focus:ring-0" style="outline:none!important;">
                             Lihat Katalog
                         </a>
                         <a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" data-turbo="false" class="border border-green-700 text-green-700 font-medium px-7 py-3.5 hover:bg-green-50 transition inline-block text-center">
@@ -349,7 +349,7 @@
     </section>
 
     {{-- BANNER CTA SECTION --}}
-    <section class="bg-green-900 py-12">
+    <section id="katalog" class="bg-green-900 py-12">
         <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
                 <div>
@@ -361,7 +361,7 @@
                     </p>
                 </div>
                 <div>
-                    <a href="/katalog" class="bg-green-700 text-white font-medium px-7 py-3 hover:bg-green-800 transition shrink-0 inline-block text-center">
+                    <a href="{{ url('/katalog') }}" onclick="event.preventDefault(); window.location.href=this.href;" class="bg-green-700 text-white font-medium px-7 py-3 hover:bg-green-800 transition shrink-0 inline-block text-center min-h-[2.75rem] rounded-none outline-none focus:outline-none focus:ring-0" style="outline:none!important;">
                         Lihat Katalog
                     </a>
                 </div>

@@ -21,7 +21,7 @@
 
     @include('partials.skala')
 </head>
-<body class="min-h-screen flex bg-slate-50 text-slate-800 text-base antialiased">
+<body class="min-h-screen flex bg-slate-50 text-slate-800 text-base antialiased m-0 p-0">
 
     {{-- Notifikasi Feedback Prototype --}}
     <div id="notif-feedback" class="hidden fixed top-6 right-8 bg-emerald-600 text-white px-6 py-3 rounded-none shadow-lg text-base font-medium z-50 transition-opacity">

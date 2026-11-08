@@ -21,7 +21,7 @@
 
     @include('partials.skala')
 </head>
-<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased m-0 p-0">
 
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
@@ -48,17 +48,13 @@
                 </a>
 
                 {{-- Profil Topbar (Inisial & Nama Dinamis, Tanpa Ikon) --}}
-                <div class="flex items-center gap-3 pl-2 border-l border-gray-300">
-                    <div class="w-10 h-10 rounded-none bg-emerald-700 text-white font-bold flex items-center justify-center text-base">
-                        {{ $inisialUser ?? (auth()->user() ? strtoupper(substr((string) (auth()->user()->nama ?? auth()->user()->username ?? 'A'), 0, 1)) : 'A') }}
+                <div class="flex items-center gap-3 bg-white px-4 py-2 border border-gray-200 rounded-none shadow-sm h-[3.5rem]">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
+                        {{ strtoupper(substr(Auth::user()->nama ?? 'U', 0, 1)) }}
                     </div>
-                    <div class="hidden md:block text-left">
-                        <div class="font-semibold text-gray-900 text-base leading-tight">
-                            {{ $namaUser ?? auth()->user()->nama ?? auth()->user()->username ?? 'Admin' }}
-                        </div>
-                        <div class="text-xs text-gray-500 font-medium">
-                            {{ $roleUser ?? (auth()->user() && strtoupper((string) (auth()->user()->role ?? '')) === 'ADMIN' ? 'Pemilik Toko' : 'Staf Kasir') }}
-                        </div>
+                    <div class="flex flex-col text-left justify-center">
+                        <span class="text-sm font-bold text-gray-800 leading-tight">{{ Auth::user()->nama ?? 'Pengguna' }}</span>
+                        <span class="text-xs text-gray-500">{{ (Auth::user()->role ?? '') === 'ADMIN' ? 'Admin / Pemilik' : 'Kasir' }}</span>
                     </div>
                 </div>
             </div>
@@ -77,7 +73,7 @@
         {{-- Baris 4 Kartu Metrik Ringkasan --}}
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {{-- Kartu 1: Penjualan Hari Ini --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['penjualan_hari_ini']['label'] }}
@@ -92,7 +88,7 @@
             </div>
 
             {{-- Kartu 2: Jumlah Transaksi --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['jumlah_transaksi']['label'] }}
@@ -107,7 +103,7 @@
             </div>
 
             {{-- Kartu 3: Stok Menipis --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['stok_menipis']['label'] }}
@@ -122,7 +118,7 @@
             </div>
 
             {{-- Kartu 4: Laba Hari Ini --}}
-            <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+            <div class="bg-white rounded-none p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                         {{ $ringkasan['laba_hari_ini']['label'] }}
@@ -140,7 +136,7 @@
         {{-- Area Utama Grid (2 Kolom) --}}
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Kolom Kiri (Lebar): Diagram Batang "Penjualan 7 Hari Terakhir" --}}
-            <div class="lg:col-span-2 bg-white rounded-none border border-gray-200 p-6 shadow-sm flex flex-col justify-between">
+            <div class="lg:col-span-2 bg-white rounded-none p-6 shadow-sm flex flex-col justify-between">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
                     <div>
                         <h3 class="text-lg font-bold text-gray-900">
@@ -206,7 +202,7 @@
             {{-- Kolom Kanan (Lebih Ramping): Top Barang & Aktivitas Terbaru --}}
             <div class="lg:col-span-1 space-y-6">
                 {{-- Kartu 1: Top Barang Hari Ini --}}
-                <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+                <div class="bg-white rounded-none p-5 shadow-sm">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">
                         Top Barang Hari Ini
                     </h3>
@@ -235,7 +231,7 @@
                 </div>
 
                 {{-- Kartu 2: Aktivitas Terbaru --}}
-                <div class="bg-white rounded-none border border-gray-200 p-5 shadow-sm">
+                <div class="bg-white rounded-none p-5 shadow-sm">
                     <h3 class="text-lg font-bold text-gray-900 mb-4">
                         Aktivitas Terbaru
                     </h3>

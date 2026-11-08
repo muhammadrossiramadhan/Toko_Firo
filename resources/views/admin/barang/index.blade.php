@@ -21,7 +21,7 @@
 
     @include('partials.skala')
 </head>
-<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased m-0 p-0">
 
     {{-- Sidebar Navigasi Admin Terpusat (Kepatuhan K12 & K18) --}}
     @include('partials.sidebar_admin')
@@ -201,25 +201,29 @@
                                     <div class="flex items-center gap-2">
                                         <button
                                             type="button"
-                                            disabled
+                                            onclick="bukaModalDetail(this)"
+                                            class="touch-target px-2 text-emerald-700 hover:underline cursor-pointer text-base font-medium btn-detail-data"
+                                        >
+                                            Detail
+                                        </button>
+                                        <button
+                                            type="button"
                                             onclick="bukaModalUbah(this)"
-                                            class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-ubah-data"
+                                            class="touch-target px-2 text-emerald-700 hover:underline cursor-pointer text-base font-medium btn-aksi-baris btn-ubah-data"
                                         >
                                             Ubah Data
                                         </button>
                                         <button
                                             type="button"
-                                            disabled
                                             onclick="bukaModalHarga(this)"
-                                            class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-ubah-harga"
+                                            class="touch-target px-2 text-amber-700 hover:underline cursor-pointer text-base font-medium btn-aksi-baris btn-ubah-harga"
                                         >
                                             Ubah Harga
                                         </button>
                                         <button
                                             type="button"
-                                            disabled
                                             onclick="bukaModalHapus(this)"
-                                            class="touch-target px-2 text-gray-400 cursor-not-allowed text-base font-medium btn-aksi-baris btn-hapus-data"
+                                            class="touch-target px-2 text-red-700 hover:underline cursor-pointer text-base font-medium btn-aksi-baris btn-hapus-data"
                                         >
                                             Hapus Data
                                         </button>
@@ -257,49 +261,33 @@
     <script>
         let barisAktif = null;
 
+        function setVal(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+        }
+
+        function setText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const barisList = document.querySelectorAll('tr.baris-barang');
 
             barisList.forEach(function (baris) {
                 baris.addEventListener('click', function (e) {
-                    if (e.target.tagName.toLowerCase() === 'button' && !e.target.disabled) {
+                    if (e.target.tagName.toLowerCase() === 'button') {
                         return;
                     }
 
                     // Reset baris lain
                     barisList.forEach(function (b) {
                         b.classList.remove('bg-emerald-50', 'ring-1', 'ring-emerald-500');
-                        b.querySelectorAll('.btn-aksi-baris').forEach(function (btn) {
-                            btn.disabled = true;
-                            btn.classList.add('text-gray-400', 'cursor-not-allowed');
-                            btn.classList.remove('text-emerald-700', 'text-amber-700', 'text-red-700', 'cursor-pointer', 'hover:underline');
-                        });
                     });
 
                     // Sorot baris terpilih
                     baris.classList.add('bg-emerald-50', 'ring-1', 'ring-emerald-500');
                     barisAktif = baris;
-
-                    // Aktifkan tombol pada baris terpilih
-                    const btnUbah = baris.querySelector('.btn-ubah-data');
-                    const btnHarga = baris.querySelector('.btn-ubah-harga');
-                    const btnHapus = baris.querySelector('.btn-hapus-data');
-
-                    if (btnUbah) {
-                        btnUbah.disabled = false;
-                        btnUbah.classList.remove('text-gray-400', 'cursor-not-allowed');
-                        btnUbah.classList.add('text-emerald-700', 'cursor-pointer', 'hover:underline');
-                    }
-                    if (btnHarga) {
-                        btnHarga.disabled = false;
-                        btnHarga.classList.remove('text-gray-400', 'cursor-not-allowed');
-                        btnHarga.classList.add('text-amber-700', 'cursor-pointer', 'hover:underline');
-                    }
-                    if (btnHapus) {
-                        btnHapus.disabled = false;
-                        btnHapus.classList.remove('text-gray-400', 'cursor-not-allowed');
-                        btnHapus.classList.add('text-red-700', 'cursor-pointer', 'hover:underline');
-                    }
                 });
             });
 
@@ -332,11 +320,14 @@
             const tipe = document.getElementById('tambah-tipe').value;
             const stok = document.getElementById('tambah-stok');
             if (tipe.toUpperCase() === 'JASA') {
-                stok.disabled = true;
-                stok.value = 0;
+                stok.readOnly = true;
+                stok.value = 999999;
                 stok.classList.add('bg-gray-100', 'cursor-not-allowed');
             } else {
-                stok.disabled = false;
+                stok.readOnly = false;
+                if (stok.value == 999999) {
+                    stok.value = 0;
+                }
                 stok.classList.remove('bg-gray-100', 'cursor-not-allowed');
             }
         }
@@ -345,22 +336,23 @@
             const tr = btn.closest('tr');
             if (!tr) return;
 
-            document.getElementById('ubah-kode-hidden').value = tr.dataset.kode || '';
-            document.getElementById('ubah-kode-display').textContent = tr.dataset.kode || '';
-            document.getElementById('ubah-nama').value = tr.dataset.nama || '';
-            document.getElementById('ubah-jenis').value = tr.dataset.jenis || '';
-            document.getElementById('ubah-merek').value = tr.dataset.merek || '';
-            document.getElementById('ubah-rak').value = tr.dataset.rak || '';
-            document.getElementById('ubah-satuan').value = tr.dataset.satuan || '';
+            setVal('ubah-kode-hidden', tr.dataset.kode || '');
+            setText('ubah-kode-display', tr.dataset.kode || '');
+            setVal('ubah-nama', tr.dataset.nama || '');
+            setVal('ubah-jenis', tr.dataset.jenis || '');
+            setVal('ubah-merek', tr.dataset.merek || '');
+            setVal('ubah-rak', tr.dataset.rak || '');
+            setVal('ubah-satuan', tr.dataset.satuan || '');
 
             const tipeVal = (tr.dataset.tipe || 'BARANG').toUpperCase() === 'JASA' ? 'Jasa' : 'Barang';
-            document.getElementById('ubah-tipe').value = tipeVal;
+            setVal('ubah-tipe', tipeVal);
 
-            document.getElementById('ubah-batas').value = tr.dataset.batasMinimum || 5;
-            document.getElementById('ubah-keterangan').value = tr.dataset.keterangan || '';
-            document.getElementById('ubah-link-shopee').value = tr.dataset.linkShopee || '';
-            document.getElementById('ubah-gambar-url').value = tr.dataset.gambarUrl || '';
-            document.getElementById('ubah-deskripsi-produk').value = tr.dataset.deskripsiProduk || '';
+            setVal('ubah-batas', tr.dataset.batasMinimum || 5);
+            setVal('ubah-stok', tr.dataset.stok || 0);
+            setVal('ubah-keterangan', tr.dataset.keterangan || '');
+            setVal('ubah-link-shopee', tr.dataset.linkShopee || '');
+            setVal('ubah-gambar-url', tr.dataset.gambarUrl || '');
+            setVal('ubah-deskripsi-produk', tr.dataset.deskripsiProduk || '');
 
             bukaModal('modal-ubah');
         }
@@ -398,6 +390,60 @@
             document.getElementById('hapus-info-barang').textContent = (tr.dataset.kode || '') + ' - ' + (tr.dataset.nama || '');
 
             bukaModal('modal-hapus');
+        }
+
+        function bukaModalDetail(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            document.getElementById('detail-kode-item').textContent = tr.dataset.kode || '-';
+            document.getElementById('detail-nama-item').textContent = tr.dataset.nama || '-';
+            document.getElementById('detail-jenis').textContent = tr.dataset.jenis || '-';
+            document.getElementById('detail-merek').textContent = tr.dataset.merek || '-';
+            document.getElementById('detail-rak').textContent = tr.dataset.rak || '-';
+            document.getElementById('detail-satuan').textContent = tr.dataset.satuan || 'pcs';
+            document.getElementById('detail-tipe').textContent = tr.dataset.tipe || 'BARANG';
+
+            const hargaPokok = Number(tr.dataset.hargaPokok) || 0;
+            const hargaJual = Number(tr.dataset.hargaJual) || 0;
+            document.getElementById('detail-harga-pokok').textContent = 'Rp ' + hargaPokok.toLocaleString('id-ID');
+            document.getElementById('detail-harga-jual').textContent = 'Rp ' + hargaJual.toLocaleString('id-ID');
+
+            const stok = Number(tr.dataset.stok) || 0;
+            const batas = Number(tr.dataset.batasMinimum) || 5;
+            document.getElementById('detail-stok').textContent = stok + ' ' + (tr.dataset.satuan || 'pcs');
+            document.getElementById('detail-batas-minimum').textContent = batas;
+
+            const badgeStok = document.getElementById('detail-status-stok');
+            if (badgeStok) {
+                if (stok <= 0) {
+                    badgeStok.textContent = 'Habis';
+                    badgeStok.className = 'px-2.5 py-0.5 text-xs font-bold rounded-none bg-red-100 text-red-800';
+                } else if (stok <= batas) {
+                    badgeStok.textContent = 'Menipis';
+                    badgeStok.className = 'px-2.5 py-0.5 text-xs font-bold rounded-none bg-amber-100 text-amber-800';
+                } else {
+                    badgeStok.textContent = 'Aman';
+                    badgeStok.className = 'px-2.5 py-0.5 text-xs font-bold rounded-none bg-emerald-100 text-emerald-800';
+                }
+            }
+
+            document.getElementById('detail-deskripsi').textContent = tr.dataset.deskripsiProduk || tr.dataset.keterangan || 'Tidak ada deskripsi.';
+
+            const imgEl = document.getElementById('detail-foto-barang');
+            const imgBox = document.getElementById('detail-foto-box');
+            const gambarUrl = tr.dataset.gambarUrl;
+            if (gambarUrl) {
+                imgEl.src = gambarUrl;
+                imgBox.classList.remove('hidden');
+                imgBox.classList.add('flex');
+            } else {
+                imgEl.src = '';
+                imgBox.classList.add('hidden');
+                imgBox.classList.remove('flex');
+            }
+
+            bukaModal('modal-detail-barang');
         }
     </script>
 </body>

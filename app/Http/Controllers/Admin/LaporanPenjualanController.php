@@ -91,6 +91,72 @@ class LaporanPenjualanController extends Controller
     }
 
     /**
+     * Ekspor berkas laporan penjualan dalam format PDF.
+     */
+    public function exportPdf(Request $request): \Illuminate\Http\Response
+    {
+        $hariIni = date('Y-m-d');
+        $mulai = (string) ($request->query('mulai') ?: $hariIni);
+        $sampai = (string) ($request->query('sampai') ?: $hariIni);
+
+        if ($request->filled('rentang') && !$request->filled('mulai')) {
+            $rentang = (string) $request->query('rentang');
+            if ($rentang === '7-hari' || $rentang === 'tujuh_hari' || $rentang === '7_hari') {
+                $mulai = date('Y-m-d', strtotime('-6 days'));
+                $sampai = $hariIni;
+            } elseif ($rentang === 'bulan-ini' || $rentang === 'bulan_ini') {
+                $mulai = date('Y-m-01');
+                $sampai = $hariIni;
+            }
+        }
+
+        if (! $this->validasiTanggal($mulai) || ! $this->validasiTanggal($sampai) || $sampai < $mulai) {
+            $mulai = $hariIni;
+            $sampai = $hariIni;
+        }
+
+        $ringkasan = $this->laporanService->ringkasan($mulai, $sampai);
+        $transaksiList = $this->laporanService->transaksi($mulai, $sampai, 100);
+
+        $transaksiItems = collect($transaksiList->items())->map(function ($t) {
+            return (object) [
+                'kode'     => $t->kode_transaksi,
+                'kasir'    => $t->nama_kasir,
+                'item'     => ($t->jumlah_item ?? 1) . ' jenis item (' . ($t->total_qty ?? 1) . ' pcs)',
+                'qty'      => (int) ($t->total_qty ?? 1),
+                'subtotal' => (float) ($t->subtotal ?? 0),
+                'metode'   => !empty($t->metode) ? strtoupper($t->metode) : 'TUNAI',
+                'waktu'    => date('H:i', strtotime($t->tanggal)),
+            ];
+        })->all();
+
+        $tanggalLabel = ($mulai === $sampai)
+            ? Carbon::parse($mulai)->locale('id')->isoFormat('D MMMM Y')
+            : Carbon::parse($mulai)->format('d/m/Y') . ' s/d ' . Carbon::parse($sampai)->format('d/m/Y');
+
+        $reportData = [
+            'tanggal'          => $tanggalLabel,
+            'total_penjualan'  => (float) $ringkasan['total_penjualan'],
+            'jumlah_transaksi' => (int) $ringkasan['jumlah_nota'],
+            'barang_terjual'   => (int) $ringkasan['barang_terjual'],
+            'produk_terlaris'  => $ringkasan['barang_terlaris'] ?: '-',
+            'saldo_kasir'      => (float) $ringkasan['total_penjualan'],
+            'modal_awal'       => 0,
+            'transaksi'        => $transaksiItems,
+        ];
+
+        /** @var TelegramReportService $reportService */
+        $reportService = app(TelegramReportService::class);
+        $pdfBinary = $reportService->generateSalesPdfBinary($reportData);
+        $filename = 'Laporan_Penjualan_' . $mulai . '_sd_' . $sampai . '.pdf';
+
+        return response($pdfBinary, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+
+    /**
      * Mengirimkan berkas laporan rekap PDF atau ringkasan penjualan ke Telegram Admin.
      */
     public function kirimTelegram(Request $request): JsonResponse|RedirectResponse

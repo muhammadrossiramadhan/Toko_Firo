@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/kasir/transaksi', [TransaksiKasirController::class, 'index'])->name('kasir.transaksi');
+Route::get('/kasir/transaksi/cari-item', [TransaksiKasirController::class, 'cariItem'])->name('kasir.transaksi.cari-item');
 Route::post('/kasir/transaksi/keranjang', [TransaksiKasirController::class, 'updateKeranjang'])->name('kasir.transaksi.keranjang');
 Route::post('/kasir/transaksi/simpan', [TransaksiKasirController::class, 'simpan'])->name('kasir.transaksi.simpan');
 Route::post('/kasir/transaksi/bayar', [TransaksiKasirController::class, 'simpan'])->name('kasir.transaksi.bayar');

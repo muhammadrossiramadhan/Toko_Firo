@@ -33,7 +33,7 @@
 
     @include('partials.skala')
 </head>
-<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased">
+<body class="min-h-screen flex bg-slate-50 text-gray-800 text-base antialiased m-0 p-0">
 
     {{-- Sidebar Navigasi Admin Terpusat --}}
     @include('partials.sidebar_admin')
@@ -46,13 +46,12 @@
                 Laporan Penjualan
             </h1>
             <div class="flex items-center gap-3">
-                <button
-                    type="button"
-                    onclick="window.print()"
-                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer"
+                <a
+                    href="{{ route('admin.laporan.penjualan.pdf', ['mulai' => $filter['mulai'] ?? '', 'sampai' => $filter['sampai'] ?? '', 'rentang' => $filter['rentang'] ?? '']) }}"
+                    class="touch-target px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-none text-base shadow-sm transition-colors cursor-pointer inline-flex items-center"
                 >
                     Simpan sebagai PDF
-                </button>
+                </a>
                 <button
                     type="button"
                     id="btn-kirim-telegram"

@@ -19,10 +19,10 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex m-0 p-0">
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
-    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -31,7 +31,7 @@
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="text-white hover:text-gray-300 font-bold transition-colors flex items-center gap-2 min-h-[2.75rem] rounded-none p-2 outline-none focus:outline-none focus:ring-0" style="outline: none !important; box-shadow: none !important;">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -46,7 +46,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Dashboard
                     </a>
@@ -54,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Transaksi Penjualan
                     </a>
@@ -62,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Lihat Stok Barang
                     </a>
@@ -70,7 +70,7 @@
                     {{-- 4. Saldo (Aktif) --}}
                     <a
                         href="{{ route('kasir.saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"
                     >
                         Saldo
                     </a>
@@ -78,7 +78,7 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Info Barang Baru
                     </a>
@@ -86,7 +86,7 @@
                     {{-- 6. Pengembalian Barang --}}
                     <a
                         href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Pengembalian Barang
                     </a>
@@ -96,24 +96,42 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? 'K' }}
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? 'Kasir' }}
+            @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
+                <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
+                            {{ $kasir['inisial'] ?? strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="font-medium text-white text-base truncate">
+                                {{ $kasir['nama'] ?? Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
+                            </div>
+                            <div class="text-sm text-emerald-300">
+                                Admin / Pemilik
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-sm text-emerald-300">
-                        {{ $kasir['role'] ?? 'Kasir' }}
+                </a>
+            @else
+                <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
+                        {{ $kasir['inisial'] ?? 'K' }}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-medium text-white text-base truncate">
+                            {{ $kasir['nama'] ?? 'Kasir' }}
+                        </div>
+                        <div class="text-sm text-emerald-300">
+                            {{ $kasir['role'] ?? 'Kasir' }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" data-turbo="false">
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem] cursor-pointer"
                 >
                     Keluar
                 </button>
@@ -133,25 +151,36 @@
             </div>
             <div class="flex items-center gap-3">
                 {{-- Tombol Aksi Teks Murni (Bebas Emoji) --}}
-                <button
-                    type="button"
+                <a
+                    href="{{ route('kasir.saldo.pdf') }}"
                     class="touch-target border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Simpan sebagai PDF
-                </button>
+                </a>
                 <button
                     type="button"
+                    id="btn-kirim-telegram"
+                    onclick="kirimSaldoTelegram(this)"
                     class="touch-target bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-none min-h-[2.75rem] inline-flex items-center text-base transition-colors shadow-sm cursor-pointer"
                 >
                     Kirim ke Telegram
                 </button>
+                <div class="flex items-center gap-3 bg-white px-4 py-2 border border-gray-200 rounded-none shadow-sm h-[3.5rem]">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
+                        {{ strtoupper(substr(Auth::user()->nama ?? 'U', 0, 1)) }}
+                    </div>
+                    <div class="flex flex-col text-left justify-center">
+                        <span class="text-sm font-bold text-gray-800 leading-tight">{{ Auth::user()->nama ?? 'Pengguna' }}</span>
+                        <span class="text-xs text-gray-500">{{ (Auth::user()->role ?? '') === 'ADMIN' ? 'Admin / Pemilik' : 'Kasir' }}</span>
+                    </div>
+                </div>
             </div>
         </header>
 
         {{-- Grid Kartu Informasi Saldo --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {{-- Kartu 1: Saldo Hari Ini (Saldo Akhir) --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Saldo Hari Ini
@@ -167,7 +196,7 @@
             </div>
 
             {{-- Kartu 2: Modal Awal (Saldo Awal) --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Modal Awal
@@ -182,7 +211,7 @@
             </div>
 
             {{-- Kartu 3: Total Penjualan Tunai --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Penjualan Tunai
@@ -197,7 +226,7 @@
             </div>
 
             {{-- Kartu 4: Kas Keluar / Retur --}}
-            <div class="p-6 bg-white border border-slate-200 rounded-none shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-white rounded-none shadow-sm flex flex-col justify-between">
                 <div>
                     <span class="text-slate-500 text-sm font-medium block">
                         Kas Keluar / Retur
@@ -213,7 +242,7 @@
         </div>
 
         {{-- Tabel Riwayat Saldo Transaksi --}}
-        <div class="bg-white border border-slate-200 rounded-none overflow-hidden shadow-sm">
+        <div class="bg-white rounded-none overflow-hidden shadow-sm">
             <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-slate-800">
                     Riwayat Transaksi Hari Ini
@@ -282,6 +311,40 @@
         </div>
     </main>
 
+    <script>
+        function kirimSaldoTelegram(btn) {
+            if (!btn || btn.disabled) return;
+            const teksAsli = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Mengirim...';
+
+            fetch('{{ route("kasir.saldo.telegram") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(async res => {
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.message || 'Gagal mengirim rekap saldo ke Telegram.');
+                }
+                return data;
+            })
+            .then(data => {
+                alert(data.message || 'Rekap saldo kasir berhasil dikirim ke Telegram!');
+            })
+            .catch(err => {
+                alert(err.message || 'Gagal mengirim rekap saldo ke Telegram.');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = teksAsli;
+            });
+        }
+    </script>
 </body>
 </html>
 

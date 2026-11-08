@@ -14,7 +14,7 @@
 {{-- MODAL 1: Tambah Barang Baru --}}
 <div id="modal-tambah" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-none shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto">
-        <form method="POST" action="{{ route('admin.barang.store') }}" class="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <form method="POST" action="{{ route('admin.barang.store') }}" enctype="multipart/form-data" class="flex flex-col flex-1 min-h-0 overflow-hidden">
             @csrf
 
             {{-- Header modal sticky --}}
@@ -122,24 +122,14 @@
                     <textarea name="keterangan" id="tambah-keterangan" rows="2" maxlength="1000" class="w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">{{ old('keterangan') }}</textarea>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {{-- 13. Link Shopee / Marketplace --}}
-                    <div>
-                        <label for="tambah-link-shopee" class="block text-base font-medium text-gray-700 mb-1">Link Shopee / Marketplace</label>
-                        <input type="url" name="link_shopee" id="tambah-link-shopee" value="{{ old('link_shopee') }}" maxlength="255" placeholder="https://shopee.co.id/..." class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-                        @error('link_shopee')
-                            <span class="text-sm text-red-600 mt-1 block">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    {{-- 14. URL Gambar Produk --}}
-                    <div>
-                        <label for="tambah-gambar-url" class="block text-base font-medium text-gray-700 mb-1">URL Gambar Produk</label>
-                        <input type="url" name="gambar_url" id="tambah-gambar-url" value="{{ old('gambar_url') }}" maxlength="255" placeholder="https://.../gambar.jpg" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-                        @error('gambar_url')
-                            <span class="text-sm text-red-600 mt-1 block">{{ $message }}</span>
-                        @enderror
-                    </div>
+                {{-- 13. Unggah Gambar Produk (WebP / JPG / PNG) --}}
+                <div>
+                    <label for="tambah-gambar" class="block text-base font-medium text-gray-700 mb-1">Unggah Foto Produk (.webp, .jpg, .png)</label>
+                    <input type="file" name="gambar" id="tambah-gambar" accept=".webp,image/webp,image/jpeg,image/png" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]">
+                    <span class="text-xs text-gray-500 mt-1 block">Format: .webp, .jpg, .png (Maks. 2MB). Disimpan otomatis ke direktori produk.</span>
+                    @error('gambar')
+                        <span class="text-sm text-red-600 mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 {{-- 15. Deskripsi Produk --}}
@@ -164,7 +154,7 @@
 {{-- MODAL 2: Ubah Data Barang --}}
 <div id="modal-ubah" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-none shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto">
-        <form method="POST" action="{{ route('admin.barang.update') }}" class="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <form method="POST" action="{{ route('admin.barang.update') }}" enctype="multipart/form-data" class="flex flex-col flex-1 min-h-0 overflow-hidden">
             @csrf
             @method('PUT')
             <input type="hidden" name="kode_item" id="ubah-kode-hidden">
@@ -227,6 +217,12 @@
                         <label for="ubah-batas" class="block text-base font-medium text-gray-700 mb-1">Batas Minimum</label>
                         <input type="number" name="batas_minimum" id="ubah-batas" min="0" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
                     </div>
+
+                    {{-- Stok Barang (Manual Edit) --}}
+                    <div>
+                        <label for="ubah-stok" class="block text-base font-medium text-gray-700 mb-1">Stok Barang</label>
+                        <input type="number" name="stok" id="ubah-stok" min="0" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                    </div>
                 </div>
 
                 {{-- Keterangan --}}
@@ -235,18 +231,14 @@
                     <textarea name="keterangan" id="ubah-keterangan" rows="2" maxlength="1000" class="w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none"></textarea>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {{-- Link Shopee / Marketplace --}}
-                    <div>
-                        <label for="ubah-link-shopee" class="block text-base font-medium text-gray-700 mb-1">Link Shopee / Marketplace</label>
-                        <input type="url" name="link_shopee" id="ubah-link-shopee" maxlength="255" placeholder="https://shopee.co.id/..." class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-                    </div>
-
-                    {{-- URL Gambar Produk --}}
-                    <div>
-                        <label for="ubah-gambar-url" class="block text-base font-medium text-gray-700 mb-1">URL Gambar Produk</label>
-                        <input type="url" name="gambar_url" id="ubah-gambar-url" maxlength="255" placeholder="https://.../gambar.jpg" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
-                    </div>
+                {{-- Unggah Gambar Produk (WebP / JPG / PNG) --}}
+                <div>
+                    <label for="ubah-gambar" class="block text-base font-medium text-gray-700 mb-1">Ganti Foto Produk (.webp, .jpg, .png)</label>
+                    <input type="file" name="gambar" id="ubah-gambar" accept=".webp,image/webp,image/jpeg,image/png" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]">
+                    <span class="text-xs text-gray-500 mt-1 block">Format: .webp, .jpg, .png (Maks. 2MB). Kosongkan bila tidak ingin mengubah foto.</span>
+                    @error('gambar')
+                        <span class="text-sm text-red-600 mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 {{-- Deskripsi Produk --}}
@@ -343,5 +335,72 @@
                 <button type="submit" class="touch-target px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-none text-base shadow-sm transition-colors">Hapus Data</button>
             </div>
         </form>
+    </div>
+</div>
+
+{{-- MODAL 5: Detail Data Barang (K12 Standard: 0 SVG, 0 Emoji, rounded-none) --}}
+<div id="modal-detail-barang" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-none shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden my-auto border border-gray-300">
+        <div class="flex-shrink-0 p-4 px-6 border-b border-gray-200 flex items-center justify-between bg-emerald-800 text-white">
+            <h2 class="text-xl font-bold">Detail Barang</h2>
+            <button type="button" onclick="tutupModal('modal-detail-barang')" class="touch-target px-3 py-1 text-white hover:text-gray-200 text-base font-semibold min-h-[2.75rem] min-w-[2.75rem] flex items-center justify-center">Tutup</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6 space-y-4">
+            <div id="detail-foto-box" class="aspect-video bg-gray-100 border border-gray-200 hidden items-center justify-center overflow-hidden rounded-none">
+                <img id="detail-foto-barang" src="" alt="Foto Barang" class="w-full h-full object-contain rounded-none">
+            </div>
+            <div class="flex items-center justify-between border-b pb-3">
+                <div>
+                    <span id="detail-kode-item" class="text-xs font-mono font-bold px-2 py-0.5 bg-gray-100 text-gray-800 rounded-none"></span>
+                    <h3 id="detail-nama-item" class="text-xl font-bold text-gray-900 mt-1"></h3>
+                </div>
+                <span id="detail-status-stok" class="px-2.5 py-0.5 text-xs font-bold rounded-none"></span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span class="text-gray-500 block">Jenis / Kategori:</span>
+                    <span id="detail-jenis" class="font-semibold text-gray-800"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Merek:</span>
+                    <span id="detail-merek" class="font-semibold text-gray-800"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Rak:</span>
+                    <span id="detail-rak" class="font-semibold text-gray-800"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Satuan:</span>
+                    <span id="detail-satuan" class="font-semibold text-gray-800"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Tipe Item:</span>
+                    <span id="detail-tipe" class="font-semibold text-gray-800"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Stok Saat Ini:</span>
+                    <span id="detail-stok" class="font-bold text-gray-900"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Harga Pokok:</span>
+                    <span id="detail-harga-pokok" class="font-semibold text-gray-700"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Harga Jual:</span>
+                    <span id="detail-harga-jual" class="font-bold text-emerald-700 text-base"></span>
+                </div>
+                <div>
+                    <span class="text-gray-500 block">Batas Minimum:</span>
+                    <span id="detail-batas-minimum" class="font-semibold text-gray-800"></span>
+                </div>
+            </div>
+            <div class="border-t pt-3">
+                <span class="text-gray-500 text-sm block">Deskripsi / Keterangan:</span>
+                <p id="detail-deskripsi" class="text-sm text-gray-800 mt-1 whitespace-pre-line"></p>
+            </div>
+        </div>
+        <div class="flex-shrink-0 p-4 px-6 border-t border-gray-200 bg-gray-50 flex items-center justify-end">
+            <button type="button" onclick="tutupModal('modal-detail-barang')" class="touch-target px-6 py-2.5 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-none text-base min-h-[2.75rem] transition-colors">Tutup</button>
+        </div>
     </div>
 </div>

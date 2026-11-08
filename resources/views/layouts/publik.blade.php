@@ -14,7 +14,7 @@
 <body class="font-sans bg-bg text-ink antialiased min-h-screen flex flex-col">
     @include('components.navbar-publik')
 
-    <main class="flex-1">
+    <main>
         @yield('content')
     </main>
 

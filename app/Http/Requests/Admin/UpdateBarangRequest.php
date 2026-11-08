@@ -29,11 +29,13 @@ class UpdateBarangRequest extends FormRequest
             'rak' => ['nullable', 'string', 'max:20'],
             'satuan' => ['nullable', 'string', 'max:20'],
             'tipe_item' => ['required', 'string', 'in:Barang,Jasa,BARANG,JASA'],
+            'stok' => ['nullable', 'integer', 'min:0'],
             'keterangan' => ['nullable', 'string', 'max:1000'],
             'batas_minimum' => ['nullable', 'integer', 'min:0'],
             'link_shopee' => ['nullable', 'string', 'max:255'],
             'deskripsi_produk' => ['nullable', 'string'],
             'gambar_url' => ['nullable', 'string', 'max:255'],
+            'gambar' => ['nullable', 'file', 'mimes:webp,jpg,jpeg,png', 'max:2048'],
         ];
     }
 
@@ -49,6 +51,8 @@ class UpdateBarangRequest extends FormRequest
             'nama_item.required' => 'Nama barang wajib diisi.',
             'nama_item.max' => 'Nama barang maksimal 100 karakter.',
             'tipe_item.required' => 'Tipe item wajib dipilih.',
+            'stok.integer' => 'Stok harus berupa bilangan bulat.',
+            'stok.min' => 'Stok tidak boleh negatif.',
             'batas_minimum.min' => 'Batas minimum tidak boleh negatif.',
         ];
     }

@@ -20,10 +20,15 @@ class LoginController extends Controller
             } elseif ($role === 'KASIR') {
                 return redirect()->route('kasir.dashboard');
             }
-            return redirect('/');
+            // Role tidak dikenal — tetap arahkan ke kasir sebagai fallback aman
+            return redirect()->route('kasir.dashboard');
         }
 
-        return view('masuk');
+        return response()
+            ->view('masuk')
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function authenticate(Request $request, OtpService $otp, TelegramService $telegram)

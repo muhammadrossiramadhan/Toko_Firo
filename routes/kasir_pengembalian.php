@@ -14,4 +14,6 @@ Route::get('/kasir/pengembalian', [PengembalianKasirController::class, 'index'])
 Route::get('/kasir/pengembalian/cari', [PengembalianKasirController::class, 'cariTransaksi'])->name('kasir.pengembalian.cari');
 Route::get('/kasir/pengembalian/{nota}/detail', [PengembalianKasirController::class, 'detailTransaksi'])->name('kasir.pengembalian.detail');
 Route::post('/kasir/pengembalian/proses', [PengembalianKasirController::class, 'proses'])->name('kasir.pengembalian.proses');
+Route::post('/kasir/pengembalian/simpan', [PengembalianKasirController::class, 'simpan'])->name('kasir.pengembalian.simpan');
+Route::post('/kasir/pengembalian', [PengembalianKasirController::class, 'simpan']);
 

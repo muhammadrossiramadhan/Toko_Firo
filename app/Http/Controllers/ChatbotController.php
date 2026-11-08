@@ -44,8 +44,36 @@ class ChatbotController extends Controller
         }
 
         try {
-            // 2. Data Isolation: Ambil HANYA 9 atribut publik terenkapsulasi
-            $konteksStok = $this->katalog->getPublicContext($cleanMessage);
+            $cleanText = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', mb_strtolower($cleanMessage));
+            $kata = collect(preg_split('/\s+/', $cleanText))
+                ->filter(fn ($k) => mb_strlen($k) >= 2)
+                ->take(6);
+
+            // Karena sistem terkunci pada 27 tabel, kita pakai views/tabel yang ada.
+            // Gunakan daftar_item jika tersedia, atau sesuaikan dengan skema toko.
+            $dasar = ItemBarang::query()->select(
+                'kode_item',
+                'nama_item',
+                'jenis',
+                'merek',
+                'satuan',
+                'harga_jual',
+                DB::raw('stok as stok_sekarang'),
+                'batas_minimum',
+                DB::raw('tipe_item as tipe_jasa')
+            );
+
+            $items = (clone $dasar)->where(function ($w) use ($kata) {
+                foreach ($kata as $k) {
+                    $w->orWhere('nama_item', 'like', "%{$k}%")
+                      ->orWhere('merek', 'like', "%{$k}%")
+                      ->orWhere('jenis', 'like', "%{$k}%");
+                }
+            })->limit(40)->get();
+
+            if ($items->isEmpty()) {
+                $items = (clone $dasar)->orderBy('nama_item')->limit(30)->get();
+            }
 
             // 3. System Prompt terintegrasi dengan soul.md
             $systemPrompt = config('chatbot.system_prompt') . "\n\nDATA BARANG RESMI TOKO FIRO:\n" . $konteksStok;
@@ -60,16 +88,18 @@ class ChatbotController extends Controller
                 $apiKey = 'mock_api_key';
             }
 
-            $response = Http::timeout(35)
-                ->withToken($apiKey)
-                ->post("{$baseUrl}/chat/completions", [
-                    'model' => $model,
-                    'messages' => [
-                        ['role' => 'system', 'content' => $systemPrompt],
-                        ['role' => 'user', 'content' => $cleanMessage],
-                    ],
-                    'temperature' => 0.2,
-                    'max_tokens'  => 600,
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelId}:generateContent?key=" . ($apiKey ?: 'mock_api_key');
+
+            $response = Http::timeout(15)
+                ->withoutVerifying()
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'x-goog-api-key' => $apiKey ?: 'mock_api_key',
+                ])
+                ->post($url, [
+                    'system_instruction' => ['parts' => [['text' => $systemPrompt]]],
+                    'contents' => [['role' => 'user', 'parts' => [['text' => $cleanMessage]]]],
+                    'generationConfig' => ['temperature' => 0.3, 'maxOutputTokens' => 300],
                 ]);
 
             if ($response->successful()) {
@@ -121,7 +151,7 @@ class ChatbotController extends Controller
         }
         $settings = app(PengaturanTokoService::class)->getSettings();
         $namaToko = $tokoInfo->nama_toko ?? $settings['nama_toko'] ?? 'Toko Firo';
-        $alamatToko = $tokoInfo->alamat ?? 'Jl. Yos Sudarso No.BA-9, Krajan, Sidopekso, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282';
+        $alamatToko = $tokoInfo->alamat ?? 'Jl. Yos Sudarso No. BA-9, Sidopekso, Krajan, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282';
         $teleponToko = $tokoInfo->no_telepon ?? $tokoInfo->telepon ?? $settings['telepon'] ?? '081234567890';
 
         if (str_contains($lower, 'alamat') || str_contains($lower, 'lokasi') || str_contains($lower, 'dimana') || str_contains($lower, 'tempat')) {
@@ -149,9 +179,18 @@ class ChatbotController extends Controller
             ->get();
 
         if ($items->isNotEmpty()) {
-            $lines = $items->map(function ($item) {
+            $lines = $items->take(5)->map(function ($item) {
                 $harga = number_format((float) $item->harga_jual, 0, ',', '.');
-                $status = $item->stok > 0 ? "tersedia ({$item->stok} {$item->satuan})" : "stok habis";
+                $isJasa = $item->tipe_jasa == 1 || strtoupper((string) $item->tipe_jasa) === 'JASA';
+                if ($isJasa || $item->stok_sekarang >= 999999) {
+                    $status = 'layanan tersedia';
+                } elseif ($item->stok_sekarang <= 0) {
+                    $status = 'stok habis';
+                } elseif ($item->stok_sekarang <= ($item->batas_minimum ?? 5)) {
+                    $status = "stok menipis (sisa {$item->stok_sekarang} {$item->satuan})";
+                } else {
+                    $status = "stok tersedia ({$item->stok_sekarang} {$item->satuan})";
+                }
                 return "- {$item->nama_item}: Rp {$harga} ({$status})";
             })->implode("\n");
 

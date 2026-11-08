@@ -19,10 +19,10 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex m-0 p-0">
 
     {{-- Sidebar Navigasi Kasir Mandiri --}}
-    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -31,8 +31,8 @@
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
-                    Kembali ke Menu Admin
+                <a href="{{ route('admin.dashboard') }}" class="text-white hover:text-gray-300 font-bold transition-colors flex items-center gap-2 min-h-[2.75rem] rounded-none p-2 outline-none focus:outline-none focus:ring-0" style="outline: none !important; box-shadow: none !important;">
+                    &larr; Kembali ke Menu Admin
                 </a>
             </div>
             @endif
@@ -46,7 +46,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Dashboard
                     </a>
@@ -54,7 +54,7 @@
                     {{-- 2. Transaksi Penjualan --}}
                     <a
                         href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : url('/kasir/transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Transaksi Penjualan
                     </a>
@@ -62,7 +62,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Lihat Stok Barang
                     </a>
@@ -70,7 +70,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Saldo
                     </a>
@@ -78,7 +78,7 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Info Barang Baru
                     </a>
@@ -86,7 +86,7 @@
                     {{-- 6. Pengembalian Barang (Aktif) --}}
                     <a
                         href="{{ route('kasir.pengembalian') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"
                     >
                         Pengembalian Barang
                     </a>
@@ -96,24 +96,42 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? 'K' }}
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? 'Kasir' }}
+            @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
+                <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
+                            {{ $kasir['inisial'] ?? strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="font-medium text-white text-base truncate">
+                                {{ $kasir['nama'] ?? Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
+                            </div>
+                            <div class="text-sm text-emerald-300">
+                                Admin / Pemilik
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-sm text-emerald-300">
-                        {{ $kasir['role'] ?? 'Kasir' }}
+                </a>
+            @else
+                <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
+                        {{ $kasir['inisial'] ?? 'K' }}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-medium text-white text-base truncate">
+                            {{ $kasir['nama'] ?? 'Kasir' }}
+                        </div>
+                        <div class="text-sm text-emerald-300">
+                            {{ $kasir['role'] ?? 'Kasir' }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" data-turbo="false">
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem] cursor-pointer"
                 >
                     Keluar
                 </button>
@@ -128,6 +146,15 @@
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Pengembalian Barang</h1>
                 <p class="text-gray-500 text-base mt-1">Proses pengembalian barang berdasarkan transaksi yang sudah tercatat.</p>
+            </div>
+            <div class="flex items-center gap-3 bg-white px-4 py-2 border border-gray-200 rounded-none shadow-sm h-[3.5rem]">
+                <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
+                    {{ strtoupper(substr(Auth::user()->nama ?? 'U', 0, 1)) }}
+                </div>
+                <div class="flex flex-col text-left justify-center">
+                    <span class="text-sm font-bold text-gray-800 leading-tight">{{ Auth::user()->nama ?? 'Pengguna' }}</span>
+                    <span class="text-xs text-gray-500">{{ (Auth::user()->role ?? '') === 'ADMIN' ? 'Admin / Pemilik' : 'Kasir' }}</span>
+                </div>
             </div>
         </header>
 
@@ -152,14 +179,14 @@
         {{-- ============================================================ --}}
         <div id="step-1">
             {{-- Pencarian Transaksi --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm p-6 mb-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">Cari Transaksi</h2>
                 <div class="flex gap-3">
                     <input
                         type="text"
                         id="input-cari"
                         placeholder="Cari kode transaksi (contoh: PJ-20261101-0001)"
-                        class="touch-target flex-1 border border-slate-300 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"
+                        class="touch-target flex-1 bg-slate-50 border-0 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none min-h-[2.75rem]"
                     >
                     <button
                         type="button"
@@ -172,7 +199,7 @@
             </div>
 
             {{-- Tabel Transaksi Terbaru --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden">
+            <div class="bg-white rounded-none shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200">
                     <h2 class="text-lg font-semibold text-gray-800" id="label-tabel-transaksi">Transaksi Terbaru</h2>
                 </div>
@@ -228,7 +255,7 @@
         {{-- ============================================================ --}}
         <div id="step-2" class="hidden">
             {{-- Header Transaksi --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm p-6 mb-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">Detail Transaksi</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                     <div>
@@ -259,7 +286,7 @@
             </div>
 
             {{-- Tabel Item Returnable --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden mb-6">
+            <div class="bg-white rounded-none shadow-sm overflow-hidden mb-6">
                 <div class="px-6 py-4 border-b border-slate-200">
                     <h2 class="text-lg font-semibold text-gray-800">Pilih Barang yang Dikembalikan</h2>
                 </div>
@@ -284,14 +311,14 @@
             </div>
 
             {{-- Alasan & Total Refund --}}
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="bg-white rounded-none shadow-sm p-6 mb-6">
                 <div class="mb-4">
                     <label for="input-alasan" class="block text-sm font-semibold text-slate-700 mb-2">Alasan Pengembalian (opsional)</label>
                     <textarea
                         id="input-alasan"
                         rows="3"
                         placeholder="Contoh: Barang rusak, salah kirim, dll."
-                        class="touch-target w-full border border-slate-300 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none resize-none min-h-[2.75rem]"
+                        class="touch-target w-full bg-slate-50 border-0 rounded-none px-4 py-2.5 text-base focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none resize-none min-h-[2.75rem]"
                     ></textarea>
                 </div>
                 <div class="flex items-center justify-between border-t border-slate-200 pt-4">
@@ -323,12 +350,12 @@
         {{-- STEP 3: Konfirmasi & Hasil --}}
         {{-- ============================================================ --}}
         <div id="step-3" class="hidden">
-            <div class="bg-white rounded-none shadow-sm border border-slate-200 p-8 text-center">
+            <div class="bg-white rounded-none shadow-sm p-8 text-center">
                 <div class="inline-flex items-center justify-center px-4 py-2 rounded-none bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wider uppercase mb-4">BERHASIL</div>
                 <h2 class="text-xl font-bold text-gray-800 mb-2">Pengembalian Berhasil</h2>
                 <p class="text-slate-500 mb-6" id="hasil-pesan">Pengembalian barang berhasil diproses.</p>
 
-                <div class="bg-slate-50 rounded-none border border-slate-200 p-6 text-left max-w-lg mx-auto mb-6">
+                <div class="bg-slate-50 rounded-none p-6 text-left max-w-lg mx-auto mb-6">
                     <div class="mb-3">
                         <span class="text-sm text-slate-500">Nota:</span>
                         <span class="font-semibold text-slate-800 font-mono ml-2" id="hasil-nota">-</span>
@@ -356,7 +383,7 @@
         {{-- ============================================================ --}}
         {{-- Riwayat Retur (selalu tampil) --}}
         {{-- ============================================================ --}}
-        <div class="mt-8 bg-white rounded-none shadow-sm border border-slate-200 overflow-hidden">
+        <div class="mt-8 bg-white rounded-none shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200">
                 <h2 class="text-lg font-semibold text-gray-800">Riwayat Pengembalian</h2>
             </div>

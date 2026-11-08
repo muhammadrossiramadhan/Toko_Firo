@@ -43,7 +43,7 @@ class DaftarTransaksi extends Model
 
     public function item(): BelongsTo
     {
-        return $this->belongsTo(DaftarItem::class, 'kode_item', 'kode_item');
+        return $this->belongsTo(DaftarItem::class, 'kode_item', 'kode_item')->withTrashed();
     }
 
     public function pembelian(): BelongsTo

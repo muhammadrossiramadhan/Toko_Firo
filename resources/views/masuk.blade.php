@@ -13,7 +13,7 @@
         </div>
     @endif
 
-    <form method="POST" action="/masuk" class="mt-8 space-y-6">
+    <form method="POST" action="{{ route('masuk.proses') }}" class="mt-8 space-y-6">
         @csrf
 
         <div>
@@ -59,7 +59,7 @@
 
         <button
             type="submit"
-            class="w-full h-[47px] bg-green-700 text-white font-medium rounded-none hover:bg-green-800 transition cursor-pointer"
+            class="touch-target w-full min-h-[2.75rem] h-[47px] bg-green-700 text-white font-medium rounded-none hover:bg-green-800 transition cursor-pointer"
         >
             Masuk
         </button>

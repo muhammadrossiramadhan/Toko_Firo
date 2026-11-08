@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog');
 
-// Redirect alias /login ke /masuk
-Route::redirect('/login', '/masuk');
+// Redirect alias /masuk-staf ke /masuk
+Route::redirect('/masuk-staf', '/masuk')->name('masuk');
 
 // Sesi Kedaluwarsa (Expired)
 Route::get('/sesi-berakhir', function () {
@@ -22,10 +22,11 @@ Route::get('/sesi-berakhir', function () {
 })->name('auth.expired');
 
 // Autentikasi 2FA (Step 1: Masuk)
-Route::middleware('guest')->group(function () {
-    Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/masuk', [LoginController::class, 'authenticate']);
-});
+// TIDAK menggunakan middleware 'guest' — LoginController::showLoginForm() sudah menangani
+// redirect ke dashboard ADMIN/KASIR jika user sudah terautentikasi,
+// sehingga tidak terjadi redirect loop ke '/' (Beranda).
+Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/masuk', [LoginController::class, 'authenticate'])->name('masuk.proses');
 
 // Pending 2FA (Step 2: Verifikasi OTP)
 Route::middleware('pending2fa')->group(function () {
@@ -45,5 +46,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::post('/api/chatbot/tanya', [ChatbotController::class, 'tanya'])
     ->middleware('throttle:10,1')
     ->name('chatbot.tanya');
+
 
 

@@ -249,6 +249,39 @@ class BarangCrudTest extends TestCase
     }
 
     /**
+     * Test ubah data barang dapat mengedit stok secara manual.
+     */
+    public function test_ubah_data_barang_dapat_mengubah_stok_secara_manual(): void
+    {
+        $admin = $this->adminAktif();
+        $kode = 'TST_' . substr(uniqid(), -8);
+
+        ItemBarang::create([
+            'kode_item' => $kode,
+            'nama_item' => 'Barang Stok Manual',
+            'tipe_item' => 'BARANG',
+            'stok' => 10,
+            'harga_pokok' => 1000,
+            'harga_jual' => 2000,
+            'batas_minimum' => 5,
+        ]);
+
+        $response = $this->actingAs($admin)->put('/admin/barang', [
+            'kode_item' => $kode,
+            'nama_item' => 'Barang Stok Manual',
+            'tipe_item' => 'Barang',
+            'stok' => 77,
+        ]);
+
+        $response->assertSessionHas('sukses', 'Data barang berhasil diubah.');
+
+        $this->assertDatabaseHas('daftar_item', [
+            'kode_item' => $kode,
+            'stok' => 77,
+        ]);
+    }
+
+    /**
      * Test ubah harga barang: harga berubah, tercatat log HARGA_DIUBAH, harga jual di bawah harga pokok tetap tersimpan.
      */
     public function test_ubah_harga_barang_dan_harga_jual_lebih_rendah_tetap_tersimpan(): void
@@ -313,9 +346,10 @@ class BarangCrudTest extends TestCase
         $response->assertRedirect(route('admin.barang'));
         $response->assertSessionHas('sukses', 'Barang berhasil dihapus.');
 
-        $this->assertDatabaseMissing('daftar_item', [
+        $this->assertSoftDeleted('daftar_item', [
             'kode_item' => $kode,
         ]);
+        $this->assertNull(ItemBarang::find($kode));
 
         $this->assertDatabaseHas('log_aktivitas', [
             'tipe_aksi' => 'ITEM_DIHAPUS',
@@ -324,7 +358,7 @@ class BarangCrudTest extends TestCase
     }
 
     /**
-     * Test hapus barang yang memiliki riwayat transaksi ditolak dengan pesan yang sesuai.
+     * Test hapus barang yang memiliki riwayat transaksi tetap aman menggunakan soft deletes (standar POS).
      */
     public function test_hapus_barang_dengan_riwayat_transaksi_ditolak(): void
     {
@@ -363,11 +397,18 @@ class BarangCrudTest extends TestCase
             'kode_item' => $kode,
         ]);
 
-        $response->assertSessionHas('error', 'Barang tidak bisa dihapus karena sudah pernah dijual.');
+        $response->assertSessionHas('sukses', 'Barang berhasil dihapus.');
 
-        // Pastikan baris barang masih ada di daftar_item
-        $this->assertDatabaseHas('daftar_item', [
+        // Pastikan barang terhapus secara aman (soft deleted)
+        $this->assertSoftDeleted('daftar_item', [
             'kode_item' => $kode,
+        ]);
+        $this->assertNull(ItemBarang::find($kode));
+
+        // Pastikan riwayat transaksi tetap terjaga
+        $this->assertDatabaseHas('daftar_transaksi', [
+            'kode_item' => $kode,
+            'kode_penjualan' => $kodePenjualan,
         ]);
     }
 

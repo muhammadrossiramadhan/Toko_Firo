@@ -20,13 +20,13 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex">
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex m-0 p-0">
 
     {{-- Notifikasi Toast Mengambang K12 --}}
     <div id="toast-notif" class="fixed top-6 right-6 z-50 bg-slate-800 text-white font-medium px-5 py-3 rounded-none shadow-xl transition-all duration-300 opacity-0 pointer-events-none text-base border border-slate-700"></div>
 
     {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
-    <aside class="w-64 bg-[#08331e] text-white flex flex-col shrink-0 min-h-screen p-4 justify-between">
+    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
         <div class="space-y-6">
             {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
             <div class="rounded-none p-2 flex items-center justify-center">
@@ -35,7 +35,7 @@
 
             @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
             <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-amber-300 hover:text-white hover:bg-emerald-900/60 border border-amber-400/30 hover:border-amber-400/60 font-medium">
+                <a href="{{ route('admin.dashboard') }}" class="text-white hover:text-gray-300 font-bold transition-colors flex items-center gap-2 min-h-[2.75rem] rounded-none p-2 outline-none focus:outline-none focus:ring-0" style="outline: none !important; box-shadow: none !important;">
                     &larr; Kembali ke Menu Admin
                 </a>
             </div>
@@ -50,7 +50,7 @@
                     {{-- 1. Dashboard Kasir --}}
                     <a
                         href="{{ Route::has('kasir.dashboard') ? route('kasir.dashboard') : url('/kasir/dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Dashboard
                     </a>
@@ -58,7 +58,7 @@
                     {{-- 2. Transaksi Penjualan (Aktif) --}}
                     <a
                         href="{{ route('kasir.transaksi') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm border border-emerald-400/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"
                     >
                         Transaksi Penjualan
                     </a>
@@ -66,7 +66,7 @@
                     {{-- 3. Lihat Stok Barang --}}
                     <a
                         href="{{ Route::has('kasir.stok') ? route('kasir.stok') : url('/kasir/stok') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Lihat Stok Barang
                     </a>
@@ -74,7 +74,7 @@
                     {{-- 4. Saldo --}}
                     <a
                         href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : url('/kasir/saldo') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Saldo
                     </a>
@@ -82,7 +82,7 @@
                     {{-- 5. Info Barang Baru --}}
                     <a
                         href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : url('/kasir/info-barang') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Info Barang Baru
                     </a>
@@ -90,7 +90,7 @@
                     {{-- 6. Pengembalian Barang --}}
                     <a
                         href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60 border border-transparent hover:border-emerald-700/50"
+                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
                     >
                         Pengembalian Barang
                     </a>
@@ -100,24 +100,42 @@
 
         {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
         <div class="pt-4 border-t border-emerald-900/60">
-            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3 border border-emerald-900/40">
-                <div class="w-10 h-10 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-lg shrink-0">
-                    {{ $kasir['inisial'] ?? 'K' }}
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="font-medium text-white text-base truncate">
-                        {{ $kasir['nama'] ?? 'Kasir' }}
+            @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
+                <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
+                            {{ $kasir['inisial'] ?? strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="font-medium text-white text-base truncate">
+                                {{ $kasir['nama'] ?? Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
+                            </div>
+                            <div class="text-sm text-emerald-300">
+                                Admin / Pemilik
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-sm text-emerald-300">
-                        {{ $kasir['role'] ?? 'Kasir' }}
+                </a>
+            @else
+                <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
+                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
+                        {{ $kasir['inisial'] ?? 'K' }}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-medium text-white text-base truncate">
+                            {{ $kasir['nama'] ?? 'Kasir' }}
+                        </div>
+                        <div class="text-sm text-emerald-300">
+                            {{ $kasir['role'] ?? 'Kasir' }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" data-turbo="false">
                 @csrf
                 <button
                     type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem]"
+                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem] cursor-pointer"
                 >
                     Keluar
                 </button>
@@ -135,18 +153,19 @@
                 </h1>
                 <p class="text-slate-500 text-base mt-0.5">Catat pesanan barang dan proses pembayaran belanja kasir.</p>
             </div>
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-none bg-emerald-600 text-white font-bold flex items-center justify-center text-base shrink-0">
-                    {{ $kasir['inisial'] ?? 'K' }}
+            <div class="flex items-center gap-3 bg-white px-4 py-2 border border-gray-200 rounded-none shadow-sm h-[3.5rem]">
+                <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none">
+                    {{ strtoupper(substr(Auth::user()->nama ?? 'U', 0, 1)) }}
                 </div>
-                <span class="font-medium text-gray-800 text-base">
-                    {{ $kasir['nama'] ?? 'Kasir' }}
-                </span>
+                <div class="flex flex-col text-left justify-center">
+                    <span class="text-sm font-bold text-gray-800 leading-tight">{{ Auth::user()->nama ?? 'Pengguna' }}</span>
+                    <span class="text-xs text-gray-500">{{ (Auth::user()->role ?? '') === 'ADMIN' ? 'Admin / Pemilik' : 'Kasir' }}</span>
+                </div>
             </div>
         </header>
 
         {{-- Stepper Bar Navigasi 4 Langkah --}}
-        <div class="bg-white border border-slate-200 rounded-none p-3 mb-6 shadow-sm">
+        <div class="bg-white rounded-none p-3 mb-6 shadow-sm">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-base font-semibold" id="stepper-bar">
                 <div id="step-tab-1" class="step-tab py-2.5 px-4 rounded-none bg-emerald-600 text-white shadow-sm transition-colors cursor-pointer" onclick="setStep(1)">
                     1. Pilih Barang
@@ -171,7 +190,7 @@
                 {{-- Sisi Kiri: Katalog Produk (2 Kolom Layout) --}}
                 <div class="lg:col-span-2 space-y-4">
                     {{-- Input Pencarian Barcode / Barang --}}
-                    <div class="bg-white border border-slate-200 rounded-none p-4 shadow-sm">
+                    <div class="bg-white rounded-none p-4 shadow-sm">
                         <label for="input-cari-barang" class="block text-slate-700 font-medium text-base mb-1.5">
                             Cari Barang / Barcode
                         </label>
@@ -181,7 +200,7 @@
                                 id="input-cari-barang"
                                 placeholder="Cari nama barang atau scan barcode..."
                                 autocomplete="off"
-                                class="touch-target w-full bg-white border border-slate-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
+                                class="touch-target w-full bg-slate-50 border-0 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none min-h-[2.75rem]"
                             >
                             <span id="indikator-cari" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-medium">
                                 Mencari...
@@ -195,7 +214,7 @@
 
                     {{-- Container Hasil Pencarian Dinamis --}}
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="kontainer-hasil-cari">
-                        <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-400 text-base">
+                        <div class="col-span-full bg-white rounded-none p-8 text-center text-slate-400 text-base shadow-sm">
                             Memuat katalog barang...
                         </div>
                     </div>
@@ -203,7 +222,7 @@
 
                 {{-- Sisi Kanan: Keranjang Belanja Reaktif --}}
                 <div class="lg:col-span-1">
-                    <div class="bg-white border border-slate-200 rounded-none p-5 shadow-sm flex flex-col justify-between min-h-[500px]">
+                    <div class="bg-white rounded-none p-5 shadow-sm flex flex-col justify-between min-h-[500px]">
                         <div>
                             <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
                                 <h2 class="text-xl font-bold text-slate-800">
@@ -243,14 +262,14 @@
         {{-- STEP 2: Review Pesanan                                                    --}}
         {{-- ========================================================================= --}}
         <section id="step-container-2" class="step-container hidden">
-            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm max-w-4xl mx-auto space-y-6">
+            <div class="bg-white rounded-none p-6 shadow-sm max-w-4xl mx-auto space-y-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900">Review Ringkasan Pesanan</h2>
                     <p class="text-slate-500 text-base mt-1">Periksa kembali daftar barang belanjaan pelanggan sebelum proses pembayaran.</p>
                 </div>
 
                 {{-- Tabel Rincian --}}
-                <div class="overflow-x-auto border border-slate-200 rounded-none">
+                <div class="overflow-x-auto rounded-none shadow-sm">
                     <table class="w-full text-left text-base divide-y divide-slate-200">
                         <thead class="bg-slate-50 text-slate-700 font-semibold">
                             <tr>
@@ -296,9 +315,9 @@
         {{-- STEP 3: Pembayaran & Kembalian                                            --}}
         {{-- ========================================================================= --}}
         <section id="step-container-3" class="step-container hidden">
-            <div class="bg-white border border-slate-200 rounded-none p-6 shadow-sm max-w-2xl mx-auto space-y-6">
+            <div class="bg-white rounded-none p-6 shadow-sm max-w-2xl mx-auto space-y-6">
                 {{-- Total Tagihan --}}
-                <div class="text-center p-6 bg-slate-50 border border-slate-200 rounded-none">
+                <div class="text-center p-6 bg-slate-50 rounded-none">
                     <span class="text-slate-500 text-base font-medium block">Total yang harus dibayar</span>
                     <div id="total-tagihan-step3" class="text-3xl md:text-4xl font-bold text-slate-900 my-1">
                         Rp 0
@@ -565,6 +584,7 @@
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
         let currentStep = 1;
         let cart = @json($keranjang);
+        const initialKatalog = @json($katalog);
         let metodeBayar = 'TUNAI';
         let uangDiterima = 0;
         let lastTransaksi = null;
@@ -988,8 +1008,9 @@
                 cart = [];
                 renderCart();
 
-                // Tampilkan Modal Berhasil (Step 4)
+                // Tampilkan Modal Berhasil (Step 4) & Buka Struk Thermal
                 setStep(4);
+                bukaModalStruk();
             })
             .catch(err => {
                 if (btnSelesai) {
@@ -1060,29 +1081,36 @@
             const searchInput = document.getElementById('input-cari-barang');
             if (!searchInput) return;
 
-            // Muat katalog awal on-demand saat pertama kali halaman terbuka
-            muatKatalogAwal();
+            // Langsung tampilkan seluruh daftar item katalog saat pertama kali halaman terbuka
+            if (Array.isArray(initialKatalog) && initialKatalog.length > 0) {
+                cacheKatalog.set('__awal__', initialKatalog);
+                cacheKatalog.set('', initialKatalog);
+                renderKartuBarang(initialKatalog);
+            } else {
+                muatKatalogAwal();
+            }
 
-            // Kasir mengetik: jika >= 2 karakter -> debounce 250ms -> fetch dari API -> render kartu
+            // Kasir mengetik: filter instan DOM klien (0ms) + sinkronisasi AJAX server (debounce)
             searchInput.addEventListener('input', function () {
                 const keyword = this.value.trim();
                 clearTimeout(debounceTimerCari);
 
                 if (keyword.length === 0) {
-                    muatKatalogAwal();
+                    renderKartuBarang(initialKatalog);
                     return;
                 }
 
-                if (keyword.length < 2) {
-                    const kontainer = document.getElementById('kontainer-hasil-cari');
-                    if (kontainer) {
-                        kontainer.innerHTML = `
-                            <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-400 text-base">
-                                Ketik minimal 2 karakter untuk mencari nama barang atau kode item...
-                            </div>
-                        `;
-                    }
-                    return;
+                // Filter instan di DOM klien
+                if (Array.isArray(initialKatalog) && initialKatalog.length > 0) {
+                    const low = keyword.toLowerCase();
+                    const hasilFilter = initialKatalog.filter(it => {
+                        const nama = (it.nama_item || it.nama || '').toLowerCase();
+                        const kode = (it.kode_item || it.kode || '').toLowerCase();
+                        const merek = (it.merek || '').toLowerCase();
+                        const kategori = (it.kategori || '').toLowerCase();
+                        return nama.includes(low) || kode.includes(low) || merek.includes(low) || kategori.includes(low);
+                    });
+                    renderKartuBarang(hasilFilter);
                 }
 
                 debounceTimerCari = setTimeout(() => {
@@ -1153,7 +1181,7 @@
                 const kontainer = document.getElementById('kontainer-hasil-cari');
                 if (kontainer) {
                     kontainer.innerHTML = `
-                        <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500">
+                        <div class="col-span-full bg-white rounded-none p-8 text-center text-slate-500 shadow-sm">
                             Silakan ketik nama barang atau scan barcode untuk memilih produk.
                         </div>
                     `;
@@ -1217,7 +1245,7 @@
 
             if (!items || items.length === 0) {
                 kontainer.innerHTML = `
-                    <div class="col-span-full bg-white border border-slate-200 rounded-none p-8 text-center text-slate-500 text-base">
+                    <div class="col-span-full bg-white rounded-none p-8 text-center text-slate-500 text-base shadow-sm">
                         Tidak ada barang aktif yang cocok dengan pencarian.
                     </div>
                 `;
@@ -1226,20 +1254,20 @@
 
             let html = '';
             items.forEach(item => {
-                const kode = escapeHtml(item.kode_item || '');
-                const nama = escapeHtml(item.nama_item || '');
+                const kode = escapeHtml(item.kode_item || item.kode || '');
+                const nama = escapeHtml(item.nama_item || item.nama || '');
                 const satuan = escapeHtml(item.satuan || 'pcs');
-                const harga = Number(item.harga_jual) || 0;
+                const harga = Number(item.harga_jual !== undefined ? item.harga_jual : item.harga) || 0;
                 const stok = Number(item.stok) || 0;
                 const stokClass = stok <= 5 ? 'text-amber-700 font-semibold' : 'text-slate-500';
 
-                const namaParam = escapeHtmlAttr(item.nama_item || '');
-                const kodeParam = escapeHtmlAttr(item.kode_item || '');
+                const namaParam = escapeHtmlAttr(item.nama_item || item.nama || '');
+                const kodeParam = escapeHtmlAttr(item.kode_item || item.kode || '');
                 const satuanParam = escapeHtmlAttr(item.satuan || 'pcs');
 
                 html += `
                     <div
-                        class="kartu-produk bg-white border border-slate-200 rounded-none p-4 shadow-sm flex flex-col justify-between hover:border-emerald-500 transition-colors"
+                        class="kartu-produk bg-white rounded-none p-4 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer"
                         data-kode="${kode.toLowerCase()}"
                         data-nama="${nama.toLowerCase()}"
                     >
@@ -1256,7 +1284,7 @@
                                 ${nama}
                             </h3>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <div class="mt-4 pt-3 flex items-center justify-between">
                             <div class="font-bold text-emerald-700 text-lg">
                                 Rp ${formatRupiah(harga)}
                             </div>
