@@ -1,4 +1,4 @@
-<footer class="bg-green-900 text-white">
+<footer class="bg-green-900 text-white relative z-40">
     <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px] py-10 lg:py-12">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-6">
             <!-- Col 1: Brand & Desc (takes more space via col-span on lg) -->
