@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ItemBarang;
+use App\Services\Chatbot\ChatbotKatalogService;
+use App\Services\Chatbot\ChatbotSanitizerService;
 use App\Services\PengaturanTokoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,149 +14,104 @@ use Illuminate\Support\Facades\Schema;
 
 class ChatbotController extends Controller
 {
+    protected ChatbotSanitizerService $sanitizer;
+    protected ChatbotKatalogService $katalog;
+
+    public function __construct(
+        ChatbotSanitizerService $sanitizer,
+        ChatbotKatalogService $katalog
+    ) {
+        $this->sanitizer = $sanitizer;
+        $this->katalog = $katalog;
+    }
+
     /**
-     * Menangani pertanyaan pelanggan ke AI Chatbot Toko Firo.
+     * Menangani pertanyaan pelanggan ke AI Chatbot Layanan Publik Toko Firo.
      */
     public function tanya(Request $request): JsonResponse
     {
-        $isPesanKey = $request->has('pesan') && !$request->has('message');
-        if ($isPesanKey) {
-            $request->validate(['pesan' => 'required|string|max:300']);
-        } else {
-            $request->validate(['message' => 'required|string|max:300']);
-        }
-
         $rawMessage = $request->input('message') ?? $request->input('pesan');
 
-        // Sanitasi: bersihkan tag script beserta isinya, lalu strip seluruh tag HTML
-        $cleanMessage = preg_replace('/<\s*script\b[^>]*>(.*?)<\s*\/\s*script\s*>/is', '', (string) $rawMessage);
-        $cleanMessage = trim(strip_tags((string) $cleanMessage));
+        // 1. Sanitasi, Normalisasi Unicode NFKC, Zero-width Strip & Multilingual Regex Scan
+        [$isSafe, $cleanMessage, $rejectionReason] = $this->sanitizer->sanitize($rawMessage);
 
-        if ($cleanMessage === '') {
+        if (!$isSafe) {
             return response()->json([
-                'sukses' => false,
-                'message' => 'Pesan tidak boleh kosong setelah sanitasi.',
-                'reply' => 'Pesan tidak boleh kosong.',
-            ], 422);
+                'sukses' => true,
+                'reply' => $rejectionReason,
+                'jawaban' => $rejectionReason,
+            ]);
         }
 
         try {
-            $kata = collect(preg_split('/\s+/', mb_strtolower($cleanMessage)))
-                ->filter(fn ($k) => mb_strlen($k) >= 3)
-                ->take(6);
+            // 2. Data Isolation: Ambil HANYA 9 atribut publik terenkapsulasi
+            $konteksStok = $this->katalog->getPublicContext($cleanMessage);
 
-            // Karena sistem terkunci pada 27 tabel, kita pakai views/tabel yang ada.
-            // Gunakan daftar_item jika tersedia, atau sesuaikan dengan skema toko.
-            $dasar = ItemBarang::query()->select(
-                'kode_item',
-                'nama_item',
-                'jenis',
-                'merek',
-                'satuan',
-                'harga_jual',
-                DB::raw('stok as stok_sekarang'),
-                'batas_minimum',
-                DB::raw('tipe_item as tipe_jasa')
-            );
+            // 3. System Prompt terintegrasi dengan soul.md
+            $systemPrompt = config('chatbot.system_prompt') . "\n\nDATA BARANG RESMI TOKO FIRO:\n" . $konteksStok;
 
-            $items = (clone $dasar)->where(function ($w) use ($kata) {
-                foreach ($kata as $k) {
-                    $w->orWhere('nama_item', 'like', "%{$k}%")
-                      ->orWhere('merek', 'like', "%{$k}%")
-                      ->orWhere('jenis', 'like', "%{$k}%");
-                }
-            })->limit(40)->get();
+            // 4. Request ke Provider OpenAI-Compatible (TrustIsGold)
+            $baseUrl = rtrim((string) (config('services.ai.base_url') ?: 'https://api.trustisgold.web.id/v1'), '/');
+            $apiKey  = (string) (config('services.ai.key') ?: env('AI_API_KEY'));
+            $model   = (string) (config('services.ai.model') ?: 'tig/auto');
 
-            if ($items->isEmpty()) {
-                $items = (clone $dasar)->orderBy('nama_item')->limit(30)->get();
+            // Fallback key jika belum diset di env
+            if (empty($apiKey)) {
+                $apiKey = 'mock_api_key';
             }
 
-            $konteksStok = $items->map(function ($i) {
-                // Konversi tipe_jasa boolean/string ke status
-                $isJasa = $i->tipe_jasa == 1 || strtoupper((string) $i->tipe_jasa) === 'JASA';
-
-                if ($isJasa) {
-                    $status = 'Layanan tersedia';
-                } elseif ($i->stok_sekarang <= 0) {
-                    $status = 'Habis';
-                } elseif ($i->stok_sekarang <= ($i->batas_minimum ?? 5)) {
-                    $status = "Menipis (sisa {$i->stok_sekarang})";
-                } else {
-                    $status = 'Tersedia';
-                }
-
-                $harga = 'Rp ' . number_format((float) $i->harga_jual, 0, ',', '.');
-                return "{$i->kode_item} | {$i->nama_item} | {$i->jenis} | {$i->merek} | {$i->satuan} | {$harga} | {$status}";
-            })->implode("\n");
-
-            $systemPrompt = config('chatbot.system_prompt') . "\n" . $konteksStok;
-            $modelId = config('services.gemini.model', 'gemini-1.5-flash');
-            $apiKey = config('services.gemini.key');
-
-            // Deteksi upaya jailbreak / prompt injection
-            $lower = strtolower($cleanMessage);
-            if (
-                str_contains($lower, 'ignore previous instructions') ||
-                str_contains($lower, 'abaikan instruksi') ||
-                str_contains($lower, 'system prompt') ||
-                str_contains($lower, 'jailbreak') ||
-                str_contains($lower, 'bypass')
-            ) {
-                $guardrailReply = 'Maaf, saya hanya dapat membantu menjawab pertanyaan seputar produk dan informasi Toko Firo.';
-                return response()->json([
-                    'sukses' => true,
-                    'reply' => $guardrailReply,
-                    'jawaban' => $guardrailReply,
-                ]);
-            }
-
-            $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelId}:generateContent?key=" . ($apiKey ?: 'mock_api_key');
-
-            $response = Http::timeout(15)
-                ->withHeaders([
-                    'Content-Type' => 'application/json',
-                    'x-goog-api-key' => $apiKey ?: 'mock_api_key',
-                ])
-                ->post($url, [
-                    'system_instruction' => ['parts' => [['text' => $systemPrompt]]],
-                    'contents' => [['role' => 'user', 'parts' => [['text' => $cleanMessage]]]],
-                    'generationConfig' => ['temperature' => 0.3, 'maxOutputTokens' => 300],
+            $response = Http::timeout(35)
+                ->withToken($apiKey)
+                ->post("{$baseUrl}/chat/completions", [
+                    'model' => $model,
+                    'messages' => [
+                        ['role' => 'system', 'content' => $systemPrompt],
+                        ['role' => 'user', 'content' => $cleanMessage],
+                    ],
+                    'temperature' => 0.2,
+                    'max_tokens'  => 600,
                 ]);
 
             if ($response->successful()) {
-                $reply = $response->json('candidates.0.content.parts.0.text')
-                    ?? 'Maaf, saya tidak bisa merespons saat ini.';
-                $cleanReply = trim($reply);
-                return response()->json([
-                    'sukses' => true,
-                    'reply' => $cleanReply,
-                    'jawaban' => $cleanReply,
-                ]);
+                $rawContent = $response->json('choices.0.message.content');
+                if (!empty($rawContent)) {
+                    $cleanReply = trim((string) $rawContent);
+                    return response()->json([
+                        'sukses'  => true,
+                        'reply'   => $cleanReply,
+                        'jawaban' => $cleanReply,
+                    ]);
+                }
             }
 
-            Log::warning('Gemini API gagal', ['status' => $response->status(), 'body' => $response->body()]);
+            Log::warning('AI Chatbot API gagal, beralih ke fallback lokal', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
 
-            // Fallback jika API eksternal gagal atau mock dalam test
-            $fallback = $this->fallbackResponse($cleanMessage, $items);
+            // Fallback programatik lokal jika API eksternal offline
+            $fallback = $this->fallbackResponse($cleanMessage);
             return response()->json([
                 'sukses' => true,
                 'reply' => $fallback,
                 'jawaban' => $fallback,
             ]);
+
         } catch (\Throwable $e) {
             Log::error('Chatbot error: ' . $e->getMessage());
+            $fallback = $this->fallbackResponse($cleanMessage);
             return response()->json([
-                'sukses' => false,
-                'reply' => 'Maaf, asisten belum bisa dihubungi. Silakan tanya kasir.',
-                'jawaban' => 'Maaf, asisten belum bisa dihubungi. Silakan tanya kasir.',
+                'sukses' => true,
+                'reply' => $fallback,
+                'jawaban' => $fallback,
             ]);
         }
     }
 
     /**
-     * Memberikan respon fallback programatik jika koneksi AI eksternal gagal.
+     * Respon fallback programatik berbasis database lokal jika API offline.
      */
-    protected function fallbackResponse(string $pesan, $items): string
+    protected function fallbackResponse(string $pesan): string
     {
         $lower = strtolower($pesan);
 
@@ -168,32 +124,40 @@ class ChatbotController extends Controller
         $alamatToko = $tokoInfo->alamat ?? 'Jl. Yos Sudarso No.BA-9, Krajan, Sidopekso, Kec. Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282';
         $teleponToko = $tokoInfo->no_telepon ?? $tokoInfo->telepon ?? $settings['telepon'] ?? '081234567890';
 
-        // Pertanyaan alamat / lokasi
         if (str_contains($lower, 'alamat') || str_contains($lower, 'lokasi') || str_contains($lower, 'dimana') || str_contains($lower, 'tempat')) {
             return "{$namaToko} beralamat di {$alamatToko}. Silakan kunjungi toko kami!";
         }
 
-        // Pertanyaan jam operasional
         if (str_contains($lower, 'jam') || str_contains($lower, 'buka') || str_contains($lower, 'tutup') || str_contains($lower, 'operasional')) {
             return "{$namaToko} buka setiap hari mulai pukul 08:00 hingga 21:00 WIB.";
         }
 
-        // Pertanyaan kontak / WhatsApp
         if (str_contains($lower, 'telepon') || str_contains($lower, 'wa') || str_contains($lower, 'whatsapp') || str_contains($lower, 'kontak') || str_contains($lower, 'hubungi')) {
             return "Anda dapat menghubungi {$namaToko} via Telepon/WhatsApp di nomor {$teleponToko}.";
         }
 
-        // Jika ada items yang cocok
+        // Ambil 3 produk relevan dari tabel publik
+        $kata = collect(preg_split('/\s+/', $lower))->filter(fn ($k) => mb_strlen($k) >= 3)->take(4);
+        $items = DB::table('daftar_item')
+            ->select('nama_item', 'harga_jual', 'stok', 'satuan')
+            ->where(function ($w) use ($kata) {
+                foreach ($kata as $k) {
+                    $w->orWhere('nama_item', 'like', "%{$k}%");
+                }
+            })
+            ->limit(3)
+            ->get();
+
         if ($items->isNotEmpty()) {
-            $lines = $items->take(3)->map(function ($item) {
+            $lines = $items->map(function ($item) {
                 $harga = number_format((float) $item->harga_jual, 0, ',', '.');
-                $status = $item->stok_sekarang > 0 ? "stok {$item->stok_sekarang} {$item->satuan}" : "stok habis";
+                $status = $item->stok > 0 ? "tersedia ({$item->stok} {$item->satuan})" : "stok habis";
                 return "- {$item->nama_item}: Rp {$harga} ({$status})";
             })->implode("\n");
 
             return "Berikut informasi produk di {$namaToko}:\n{$lines}\nAda hal lain yang dapat kami bantu?";
         }
 
-        return "Halo! Saya Asisten Virtual {$namaToko}. Saat ini saya dapat membantu Anda memeriksa ketersediaan stok, harga barang, alamat, serta jam operasional toko kami. Silakan sebutkan nama barang yang Anda cari.";
+        return "Halo! Saya Asisten Virtual {$namaToko}. Saya dapat membantu mengecek ketersediaan stok barang ATK, harga produk, fotokopi, atau lokasi toko kami di Kraksaan, Probolinggo. Silakan ketik nama barang yang dicari.";
     }
 }

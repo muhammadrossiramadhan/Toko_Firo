@@ -68,7 +68,7 @@
     <div class="mt-6 space-y-3">
         <p class="text-sm text-text-muted">Lupa password? Hubungi pemilik toko.</p>
         <div>
-            <a href="/" class="touch-target text-sm text-green-700 hover:text-green-800 transition inline-flex items-center min-h-[2.75rem]">Kembali ke beranda</a>
+            <a href="/" data-turbo="false" class="touch-target text-sm text-green-700 hover:text-green-800 transition inline-flex items-center min-h-[2.75rem]">Kembali ke beranda</a>
         </div>
     </div>
 </div>
