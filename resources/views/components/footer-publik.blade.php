@@ -12,24 +12,20 @@
             </div>
 
             <!-- KOLOM NAVIGASI -->
-            <div class="h-fit">
-                <h3 class="font-bold text-white mb-4 uppercase tracking-wider text-sm">NAVIGASI</h3>
-                <ul class="flex flex-col space-y-2 m-0 p-0 list-none">
-                    <li class="block"><a href="{{ url('/') }}#beranda" class="text-emerald-100 hover:text-white block relative z-50">Beranda</a></li>
-                    <li class="block"><a href="{{ route('katalog') }}" class="text-emerald-100 hover:text-white block relative z-50">Katalog</a></li>
-                    <li class="block"><a href="{{ route('masuk') }}" class="text-emerald-100 hover:text-white block relative z-50">Masuk Staf</a></li>
-                </ul>
+            <div class="flex flex-col gap-1.5 items-start justify-start h-fit">
+                <h3 class="font-bold text-white mb-3 uppercase tracking-wider text-sm">NAVIGASI</h3>
+                <a href="{{ url('/') }}#beranda" class="text-emerald-100 hover:text-white block relative z-50">Beranda</a>
+                <a href="{{ route('katalog') }}" class="text-emerald-100 hover:text-white block relative z-50">Katalog</a>
+                <a href="{{ route('masuk') }}" class="text-emerald-100 hover:text-white block relative z-50">Masuk Staf</a>
             </div>
 
             <!-- KOLOM KONTAK -->
-            <div class="h-fit">
-                <h3 class="font-bold text-white mb-4 uppercase tracking-wider text-sm">KONTAK</h3>
-                <ul class="flex flex-col space-y-2 m-0 p-0 list-none">
-                    <li class="block"><a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">WhatsApp Toko</a></li>
-                    <li class="block"><a href="https://www.instagram.com/firotoko?stkn=bHpxMDF2d3ZodDFt" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">Instagram Toko</a></li>
-                    <li class="block"><a href="https://www.facebook.com/people/Toko-Firo/100063668996154/" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">Facebook Toko</a></li>
-                    <li class="block"><a href="https://www.tiktok.com/@tokofiro0?_r=1&_t=ZS-99pMK6mNYGb" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">TikTok Toko</a></li>
-                </ul>
+            <div class="flex flex-col gap-1.5 items-start justify-start h-fit">
+                <h3 class="font-bold text-white mb-3 uppercase tracking-wider text-sm">KONTAK</h3>
+                <a href="https://wa.me/6285234789169" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">WhatsApp Toko</a>
+                <a href="https://www.instagram.com/firotoko?stkn=bHpxMDF2d3ZodDFt" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">Instagram Toko</a>
+                <a href="https://www.facebook.com/people/Toko-Firo/100063668996154/" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">Facebook Toko</a>
+                <a href="https://www.tiktok.com/@tokofiro0?_r=1&_t=ZS-99pMK6mNYGb" target="_blank" rel="noopener noreferrer" class="text-emerald-100 hover:text-white block relative z-50">TikTok Toko</a>
             </div>
 
             <!-- Col 4: Alamat -->

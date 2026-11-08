@@ -20,7 +20,8 @@ class LoginController extends Controller
             } elseif ($role === 'KASIR') {
                 return redirect()->route('kasir.dashboard');
             }
-            return redirect('/');
+            // Role tidak dikenal — tetap arahkan ke kasir sebagai fallback aman
+            return redirect()->route('kasir.dashboard');
         }
 
         return response()

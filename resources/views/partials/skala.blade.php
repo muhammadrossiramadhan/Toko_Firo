@@ -23,4 +23,14 @@ aside {
     outline: none !important;
     -webkit-tap-highlight-color: transparent !important;
 }
+
+/* Override: Hapus min-height 44px pada link di dalam footer agar tidak renggang */
+footer a,
+footer ul li a {
+    min-height: 0 !important;
+    height: auto !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    line-height: 1.5 !important;
+}
 </style>
