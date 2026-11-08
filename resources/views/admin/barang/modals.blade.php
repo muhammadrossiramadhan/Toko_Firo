@@ -217,6 +217,12 @@
                         <label for="ubah-batas" class="block text-base font-medium text-gray-700 mb-1">Batas Minimum</label>
                         <input type="number" name="batas_minimum" id="ubah-batas" min="0" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
                     </div>
+
+                    {{-- Stok Barang (Manual Edit) --}}
+                    <div>
+                        <label for="ubah-stok" class="block text-base font-medium text-gray-700 mb-1">Stok Barang</label>
+                        <input type="number" name="stok" id="ubah-stok" min="0" class="touch-target w-full bg-white border border-gray-300 rounded-none px-4 py-2.5 text-base text-gray-800 shadow-sm focus:ring-2 focus:ring-emerald-600 focus:outline-none">
+                    </div>
                 </div>
 
                 {{-- Keterangan --}}

@@ -264,6 +264,8 @@ class BarangController extends Controller
         }
         if ($tipe === 'JASA') {
             $updatePayload['stok'] = 999999;
+        } elseif ($request->has('stok') && $request->validated('stok') !== null) {
+            $updatePayload['stok'] = (int) $request->validated('stok');
         }
 
         ItemBarang::where('kode_item', $kode)->update($updatePayload);
@@ -327,47 +329,23 @@ class BarangController extends Controller
         $idPengguna = Auth::id() ?? Auth::user()?->id_pengguna ?? 1;
         $kode = $request->validated('kode_item');
 
-        // Pemeriksaan awal riwayat transaksi sesuai K13
-        if (DB::table('daftar_transaksi')->where('kode_item', $kode)->exists()) {
-            return redirect()->route('admin.barang')
-                ->with('error', 'Barang tidak bisa dihapus karena sudah pernah dijual.');
+        $item = ItemBarang::where('kode_item', $kode)->first();
+        if (! $item) {
+            return redirect()->route('admin.barang')->with('error', 'Barang tidak ditemukan.');
         }
 
-        try {
-            DB::statement('CALL sp_delete_item_v2(?, ?)', [
-                $kode,
-                $idPengguna,
-            ]);
-        } catch (Throwable $e) {
-            $pesan = $e->getMessage();
+        $nama = $item->nama_item;
+        // Soft delete standar industri POS: menandai deleted_at tanpa memutus foreign key riwayat transaksi
+        $item->delete();
 
-            if (str_contains($pesan, 'riwayat transaksi') || str_contains($pesan, 'sudah memiliki riwayat transaksi')) {
-                return redirect()->route('admin.barang')
-                    ->with('error', 'Barang tidak bisa dihapus karena sudah pernah dijual.');
-            }
-
-            if (str_contains($pesan, '1267') || str_contains($pesan, 'Illegal mix of collations')) {
-                $item = ItemBarang::where('kode_item', $kode)->first();
-                if (! $item) {
-                    return redirect()->route('admin.barang')->with('error', 'Barang tidak ditemukan.');
-                }
-
-                $nama = $item->nama_item;
-                $item->delete();
-
-                DB::table('log_aktivitas')->insert([
-                    'waktu' => now(),
-                    'keterangan' => 'Hapus item: ' . $kode . ' - ' . $nama,
-                    'tipe_aksi' => 'ITEM_DIHAPUS',
-                    'id_pengguna' => $idPengguna,
-                    'data_sebelum' => null,
-                    'data_sesudah' => null,
-                ]);
-            } else {
-                return redirect()->route('admin.barang')
-                    ->with('error', $this->terjemahkanError($e));
-            }
-        }
+        DB::table('log_aktivitas')->insert([
+            'waktu' => now(),
+            'keterangan' => 'Hapus item: ' . $kode . ' - ' . $nama,
+            'tipe_aksi' => 'ITEM_DIHAPUS',
+            'id_pengguna' => $idPengguna,
+            'data_sebelum' => null,
+            'data_sesudah' => null,
+        ]);
 
         return redirect()->route('admin.barang')->with('sukses', 'Barang berhasil dihapus.');
     }

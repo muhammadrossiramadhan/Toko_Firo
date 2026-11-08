@@ -348,6 +348,7 @@
             setVal('ubah-tipe', tipeVal);
 
             setVal('ubah-batas', tr.dataset.batasMinimum || 5);
+            setVal('ubah-stok', tr.dataset.stok || 0);
             setVal('ubah-keterangan', tr.dataset.keterangan || '');
             setVal('ubah-link-shopee', tr.dataset.linkShopee || '');
             setVal('ubah-gambar-url', tr.dataset.gambarUrl || '');
