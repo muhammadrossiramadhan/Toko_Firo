@@ -47,4 +47,11 @@ return [
         'key' => env('GEMINI_API_KEY'),
         'model' => env('GEMINI_MODEL', 'gemini-1.5-flash'),
     ],
+
+    'ai' => [
+        'provider' => env('AI_PROVIDER', 'trustisgold'),
+        'base_url' => env('AI_BASE_URL', 'https://api.trustisgold.web.id/v1'),
+        'key'      => env('AI_API_KEY'),
+        'model'    => env('AI_MODEL', 'tig/auto'),
+    ],
 ];
