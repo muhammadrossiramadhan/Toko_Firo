@@ -4,7 +4,7 @@
             <!-- Col 1: Brand & Desc (takes more space via col-span on lg) -->
             <div class="sm:col-span-2 md:col-span-1">
                 <div class="flex items-center mb-4">
-                    <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-[52px] md:h-[60px] w-auto object-contain">
+                    <img src="{{ asset('images/logo-footer.png') }}" alt="Toko Firo" class="h-[52px] md:h-[60px] w-auto object-contain">
                 </div>
                 <p class="text-white/60 text-sm leading-relaxed max-w-[280px]">
                     Toko ATK dan fotocopy di Kraksaan, Probolinggo. Buka setiap hari.
