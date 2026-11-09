@@ -10,6 +10,8 @@ services:
     env_file:
       - .env
     environment:
+      - PUID=1000
+      - PGID=1000
       - DB_HOST=db
       - DB_PORT=3306
     volumes:
