@@ -394,5 +394,43 @@ class ChatbotTest extends TestCase
         // Pastikan tidak ada injeksi pencarian stok produk paksa
         $this->assertStringNotContainsString('DATA BARANG RESMI TOKO FIRO:', $systemMsg);
     }
+
+    /**
+     * 11. Memastikan pertanyaan info umum (alamat toko di mana) dijawab sukses tanpa crash 500.
+     */
+    public function test_pertanyaan_alamat_toko_dijawab_sukses_tanpa_crash(): void
+    {
+        $capturedRequest = null;
+        Http::fake([
+            '*/chat/completions' => function ($request) use (&$capturedRequest) {
+                $capturedRequest = $request;
+                return Http::response([
+                    'choices' => [
+                        [
+                            'message' => [
+                                'role' => 'assistant',
+                                'content' => 'Toko Firo berlokasi di Jl. Yos Sudarso No. BA-9, Sidopekso, Krajan, Kec. Kraksaan, Probolinggo.'
+                            ]
+                        ]
+                    ]
+                ], 200);
+            }
+        ]);
+
+        $response = $this->postJson('/api/chatbot/tanya', [
+            'pesan' => 'Alamat toko di mana?'
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'sukses' => true,
+                'jawaban' => 'Toko Firo berlokasi di Jl. Yos Sudarso No. BA-9, Sidopekso, Krajan, Kec. Kraksaan, Probolinggo.'
+            ]);
+
+        $this->assertNotNull($capturedRequest);
+        $body = json_decode((string) $capturedRequest->body(), true);
+        $this->assertNotEmpty($body['messages'][0]['content']);
+        $this->assertEquals('Alamat toko di mana?', $body['messages'][1]['content']);
+    }
 }
 
