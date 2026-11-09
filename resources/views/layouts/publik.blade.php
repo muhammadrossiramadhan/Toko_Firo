@@ -154,13 +154,14 @@
     const history = document.getElementById('ai-history');
 
     let welcomeSent = false;
+    let loading = false;
 
     function toggleChat() {
         const isHidden = modal.style.display === 'none' || !modal.style.display;
         if (isHidden) {
             modal.style.display = 'flex';
             if (!welcomeSent && history.children.length === 0) {
-                appendMsg("Halo! Selamat datang di Toko Firo 👋\nAda yang bisa kami bantu seputar stok ATK, harga produk, fotokopi, atau alamat toko?", false);
+                appendMsg("Halo! Selamat datang di Toko Firo.\nAda yang bisa kami bantu seputar stok ATK, harga produk, fotokopi, atau alamat toko?", false);
                 welcomeSent = true;
             }
             setTimeout(() => input.focus(), 150);
@@ -182,18 +183,30 @@
         div.textContent = text;
         history.appendChild(div);
         history.scrollTop = history.scrollHeight;
+        return div;
     }
 
     async function submitMessage(pesanTeks) {
+        if (loading) return;
+
         const text = (pesanTeks || input.value).trim();
         if (!text) return;
 
+        // Set state loading = true
+        loading = true;
         input.value = '';
         input.disabled = true;
         sendBtn.disabled = true;
 
         appendMsg(text, true);
-        appendMsg('Sedang memeriksa stok...', false);
+
+        // Buat elemen indikator loading langsung dan simpan referensinya
+        const loadingDiv = appendMsg('Sedang memeriksa stok...', false);
+        loadingDiv.style.opacity = '0.75';
+        loadingDiv.style.fontStyle = 'italic';
+
+        const controller = new AbortController();
+        const timeoutTimer = setTimeout(() => controller.abort(), 15000);
 
         try {
             const tokenMeta = document.querySelector('meta[name="csrf-token"]');
@@ -201,18 +214,56 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': tokenMeta ? tokenMeta.content : ''
                 },
-                body: JSON.stringify({ message: text })
+                body: JSON.stringify({ message: text }),
+                signal: controller.signal
             });
 
-            const data = await res.json();
-            history.lastChild.remove();
-            appendMsg(data.reply || data.jawaban || 'Maaf, tidak ada balasan.', false);
+            clearTimeout(timeoutTimer);
+
+            let data = null;
+            try {
+                data = await res.json();
+            } catch (jsonErr) {
+                data = null;
+            }
+
+            // Ubah loading = false segera setelah data respons diterima
+            loading = false;
+
+            const replyText = (data && (data.reply || data.jawaban || data.message))
+                ? (data.reply || data.jawaban || data.message)
+                : 'Maaf, belum ada jawaban yang tersedia.';
+
+            // Gantikan indikator "Sedang memeriksa stok..." secara bersih pada node elemen yang sama
+            if (loadingDiv && loadingDiv.parentNode) {
+                loadingDiv.style.opacity = '1';
+                loadingDiv.style.fontStyle = 'normal';
+                loadingDiv.textContent = replyText;
+                history.scrollTop = history.scrollHeight;
+            } else {
+                appendMsg(replyText, false);
+            }
         } catch (e) {
-            history.lastChild.remove();
-            appendMsg('Koneksi terputus. Silakan coba lagi.', false);
+            clearTimeout(timeoutTimer);
+            loading = false;
+
+            const errorText = e.name === 'AbortError'
+                ? 'Permintaan membutuhkan waktu terlalu lama. Silakan coba lagi.'
+                : 'Koneksi terputus. Silakan coba lagi.';
+
+            if (loadingDiv && loadingDiv.parentNode) {
+                loadingDiv.style.opacity = '1';
+                loadingDiv.style.fontStyle = 'normal';
+                loadingDiv.textContent = errorText;
+                history.scrollTop = history.scrollHeight;
+            } else {
+                appendMsg(errorText, false);
+            }
         } finally {
+            loading = false;
             input.disabled = false;
             sendBtn.disabled = false;
             input.focus();
@@ -227,7 +278,9 @@
     }
 
     window.kirimCepat = function(pertanyaan) {
-        submitMessage(pertanyaan);
+        if (!loading) {
+            submitMessage(pertanyaan);
+        }
     };
 })();
 </script>
