@@ -21,11 +21,21 @@ class ChatbotTest extends TestCase
     }
 
     /**
-     * 1. Chatbot mengembalikan respon sukses dengan mock Http::fake.
+     * 1. Chatbot mengembalikan respon sukses dengan mock Http::fake (OpenAI Compatible & Gemini fallback).
      */
     public function test_chatbot_dapat_menjawab_pertanyaan_dengan_sukses(): void
     {
         Http::fake([
+            '*/chat/completions' => Http::response([
+                'choices' => [
+                    [
+                        'message' => [
+                            'role' => 'assistant',
+                            'content' => 'Buku tulis Sinar Dunia 38 lembar tersedia di Toko Firo dengan harga Rp 3.500.'
+                        ]
+                    ]
+                ]
+            ], 200),
             'https://generativelanguage.googleapis.com/*' => Http::response([
                 'candidates' => [
                     [
@@ -87,6 +97,30 @@ class ChatbotTest extends TestCase
     public function test_sanitasi_input_menghapus_tag_script(): void
     {
         Http::fake([
+            '*/chat/completions' => function ($request) {
+                $body = json_decode((string) $request->body(), true);
+                $cleanText = '';
+                foreach ($body['messages'] ?? [] as $msg) {
+                    if (($msg['role'] ?? '') === 'user') {
+                        $cleanText = $msg['content'] ?? '';
+                    }
+                }
+
+                $this->assertStringNotContainsString('<script>', $cleanText);
+                $this->assertStringNotContainsString('</script>', $cleanText);
+                $this->assertStringContainsString('Ada pensil 2B?', $cleanText);
+
+                return Http::response([
+                    'choices' => [
+                        [
+                            'message' => [
+                                'role' => 'assistant',
+                                'content' => 'Pensil 2B tersedia.'
+                            ]
+                        ]
+                    ]
+                ], 200);
+            },
             'https://generativelanguage.googleapis.com/*' => function ($request) {
                 $body = json_decode((string) $request->body(), true);
                 $cleanText = $body['contents'][0]['parts'][0]['text'] ?? '';
@@ -133,6 +167,16 @@ class ChatbotTest extends TestCase
     public function test_rate_limiter_memblokir_permintaan_ke_11(): void
     {
         Http::fake([
+            '*/chat/completions' => Http::response([
+                'choices' => [
+                    [
+                        'message' => [
+                            'role' => 'assistant',
+                            'content' => 'Jawaban standar.'
+                        ]
+                    ]
+                ]
+            ], 200),
             'https://generativelanguage.googleapis.com/*' => Http::response([
                 'candidates' => [
                     [
@@ -163,11 +207,12 @@ class ChatbotTest extends TestCase
     }
 
     /**
-     * 5. Fallback cerdas bekerja jika Gemini API gagal atau offline.
+     * 5. Fallback cerdas bekerja jika Gemini / OpenAI API gagal atau offline.
      */
     public function test_fallback_cerdas_bekerja_saat_api_eksternal_gagal(): void
     {
         Http::fake([
+            '*/chat/completions' => Http::response(null, 500),
             'https://generativelanguage.googleapis.com/*' => Http::response(null, 500)
         ]);
 
@@ -194,6 +239,7 @@ class ChatbotTest extends TestCase
     public function test_guardrail_menolak_upaya_prompt_injection(): void
     {
         Http::fake([
+            '*/chat/completions' => Http::response(null, 500),
             'https://generativelanguage.googleapis.com/*' => Http::response(null, 500)
         ]);
 
@@ -206,6 +252,53 @@ class ChatbotTest extends TestCase
                 'sukses' => true,
                 'jawaban' => 'Maaf, saya hanya dapat membantu menjawab pertanyaan seputar produk dan informasi Toko Firo.'
             ]);
+    }
+
+    /**
+     * 7. Memastikan format payload dan header sesuai standar OpenAI compatible.
+     */
+    public function test_chatbot_mengirim_payload_format_openai_compatible(): void
+    {
+        $capturedRequest = null;
+        Http::fake([
+            '*/chat/completions' => function ($request) use (&$capturedRequest) {
+                $capturedRequest = $request;
+                return Http::response([
+                    'choices' => [
+                        [
+                            'message' => [
+                                'role' => 'assistant',
+                                'content' => 'Stok kertas A4 tersedia.'
+                            ]
+                        ]
+                    ]
+                ], 200);
+            }
+        ]);
+
+        $response = $this->postJson('/api/chatbot/tanya', [
+            'pesan' => 'Ada kertas A4?'
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'sukses' => true,
+                'jawaban' => 'Stok kertas A4 tersedia.'
+            ]);
+
+        $this->assertNotNull($capturedRequest);
+        $this->assertTrue($capturedRequest->hasHeader('Authorization'));
+        $this->assertStringStartsWith('Bearer ', $capturedRequest->header('Authorization')[0]);
+
+        $body = json_decode((string) $capturedRequest->body(), true);
+        $this->assertArrayHasKey('model', $body);
+        $this->assertArrayHasKey('messages', $body);
+        $this->assertArrayHasKey('temperature', $body);
+        $this->assertArrayHasKey('max_tokens', $body);
+
+        $roles = array_column($body['messages'], 'role');
+        $this->assertContains('system', $roles);
+        $this->assertContains('user', $roles);
     }
 }
 

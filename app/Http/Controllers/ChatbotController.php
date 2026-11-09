@@ -69,30 +69,90 @@ class ChatbotController extends Controller
             // 3. System Prompt terintegrasi
             $systemPrompt = (string) (config('chatbot.system_prompt') ?: 'Kamu adalah asisten resmi Toko Firo.') . "\n\nDATA BARANG RESMI TOKO FIRO:\n" . $konteksStok;
 
-            // 4. Request ke AI Provider (Gemini / OpenAI compatible)
-            $apiKey  = (string) (config('services.gemini.key') ?: config('services.ai.key') ?: env('AI_API_KEY'));
-            $modelId = (string) (config('services.gemini.model') ?: config('services.ai.model') ?: 'gemini-1.5-flash');
+            // 4. Request ke AI Provider (Format OpenAI Compatible Secara Penuh)
+            $apiKey = (string) (
+                config('services.openai.key')
+                ?: config('services.ai.key')
+                ?: env('OPENAI_API_KEY')
+                ?: env('AI_API_KEY')
+                ?: 'mock_api_key'
+            );
 
-            $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelId}:generateContent?key=" . ($apiKey ?: 'mock_api_key');
+            $baseUrl = (string) (
+                config('services.openai.base_url')
+                ?: config('services.ai.base_url')
+                ?: env('OPENAI_BASE_URL')
+                ?: env('AI_BASE_URL')
+                ?: 'https://api.openai.com/v1'
+            );
 
-            $response = Http::timeout(15)
-                ->withoutVerifying()
-                ->withHeaders([
-                    'Content-Type' => 'application/json',
-                    'x-goog-api-key' => $apiKey ?: 'mock_api_key',
-                ])
-                ->post($url, [
-                    'system_instruction' => ['parts' => [['text' => $systemPrompt]]],
-                    'contents' => [['role' => 'user', 'parts' => [['text' => $cleanMessage]]]],
-                    'generationConfig' => ['temperature' => 0.3, 'maxOutputTokens' => 300],
-                ]);
+            $modelId = (string) (
+                config('services.openai.model')
+                ?: config('services.ai.model')
+                ?: env('OPENAI_MODEL')
+                ?: env('AI_MODEL')
+                ?: 'gpt-4o-mini'
+            );
+
+            $baseUrl = rtrim(trim($baseUrl), '/');
+            if (str_ends_with($baseUrl, '/chat/completions')) {
+                $url = $baseUrl;
+            } else {
+                $url = "{$baseUrl}/chat/completions";
+            }
+
+            $isGoogleGemini = str_contains($url, 'generativelanguage.googleapis.com');
+
+            if ($isGoogleGemini) {
+                $response = Http::connectTimeout(5)
+                    ->timeout(12)
+                    ->withoutVerifying()
+                    ->withHeaders([
+                        'Content-Type' => 'application/json',
+                        'x-goog-api-key' => $apiKey,
+                    ])
+                    ->post($url, [
+                        'system_instruction' => ['parts' => [['text' => $systemPrompt]]],
+                        'contents' => [['role' => 'user', 'parts' => [['text' => $cleanMessage]]]],
+                        'generationConfig' => ['temperature' => 0.3, 'maxOutputTokens' => 300],
+                    ]);
+            } else {
+                $payload = [
+                    'model' => $modelId,
+                    'messages' => [
+                        [
+                            'role' => 'system',
+                            'content' => $systemPrompt,
+                        ],
+                        [
+                            'role' => 'user',
+                            'content' => $cleanMessage,
+                        ],
+                    ],
+                    'temperature' => 0.3,
+                    'max_tokens' => 300,
+                ];
+
+                $response = Http::connectTimeout(5)
+                    ->timeout(12)
+                    ->withoutVerifying()
+                    ->withHeaders([
+                        'Authorization' => 'Bearer ' . $apiKey,
+                        'Content-Type'  => 'application/json',
+                    ])
+                    ->post($url, $payload);
+            }
 
             if ($response->successful()) {
-                $rawContent = $response->json('candidates.0.content.parts.0.text')
-                    ?? $response->json('choices.0.message.content');
+                $rawContent = $response->json('choices.0.message.content')
+                    ?? $response->json('choices.0.text')
+                    ?? $response->json('candidates.0.content.parts.0.text');
 
                 if (!empty($rawContent)) {
                     $cleanReply = trim((string) $rawContent);
+                    // Sanitasi emoji agar sesuai K12 zero-emoji standard
+                    $cleanReply = preg_replace('/[\x{1F600}-\x{1F64F}\x{1F300}-\x{1F5FF}\x{1F680}-\x{1F6FF}\x{1F1E0}-\x{1F1FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}\x{FE00}-\x{FE0F}\x{1F900}-\x{1F9FF}]/u', '', $cleanReply);
+
                     return response()->json([
                         'sukses'  => true,
                         'reply'   => $cleanReply,
@@ -103,7 +163,9 @@ class ChatbotController extends Controller
 
             Log::warning('AI Chatbot API gagal, beralih ke fallback lokal', [
                 'status' => $response->status(),
-                'body' => $response->body()
+                'body'   => substr($response->body(), 0, 500),
+                'url'    => $url,
+                'model'  => $modelId,
             ]);
 
             // Fallback programatik lokal jika API eksternal offline
@@ -115,7 +177,10 @@ class ChatbotController extends Controller
             ]);
 
         } catch (\Throwable $e) {
-            Log::error('Chatbot error: ' . $e->getMessage());
+            Log::error('Chatbot error / timeout: ' . $e->getMessage(), [
+                'clean_message' => $cleanMessage,
+                'exception' => get_class($e),
+            ]);
             $fallback = $this->fallbackResponse($cleanMessage);
             return response()->json([
                 'sukses' => true,

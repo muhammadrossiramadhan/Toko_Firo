@@ -48,10 +48,16 @@ return [
         'model' => env('GEMINI_MODEL', 'gemini-1.5-flash'),
     ],
 
+    'openai' => [
+        'key'      => env('OPENAI_API_KEY', env('AI_API_KEY')),
+        'base_url' => env('OPENAI_BASE_URL', env('AI_BASE_URL', 'https://api.openai.com/v1')),
+        'model'    => env('OPENAI_MODEL', env('AI_MODEL', 'gpt-4o-mini')),
+    ],
+
     'ai' => [
-        'provider' => env('AI_PROVIDER', 'trustisgold'),
-        'base_url' => env('AI_BASE_URL', 'https://api.trustisgold.web.id/v1'),
-        'key'      => env('AI_API_KEY'),
-        'model'    => env('AI_MODEL', 'tig/auto'),
+        'provider' => env('AI_PROVIDER', 'openai'),
+        'base_url' => env('OPENAI_BASE_URL', env('AI_BASE_URL', 'https://api.openai.com/v1')),
+        'key'      => env('OPENAI_API_KEY', env('AI_API_KEY')),
+        'model'    => env('OPENAI_MODEL', env('AI_MODEL', 'gpt-4o-mini')),
     ],
 ];
