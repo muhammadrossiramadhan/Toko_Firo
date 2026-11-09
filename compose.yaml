@@ -33,7 +33,7 @@ services:
     container_name: toko_firo_db
     restart: unless-stopped
     ports:
-      - "${FORWARD_DB_PORT:-3306}:3306"
+      - "${FORWARD_DB_PORT:-3307}:3306"
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD:-root}
       MARIADB_DATABASE: ${DB_DATABASE:-toko_firo}
