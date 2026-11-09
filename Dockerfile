@@ -3,6 +3,9 @@ FROM serversideup/php:8.4-fpm-nginx
 # Switch to root to configure PHP and install packages
 USER root
 
+# Install PHP extensions required by Laravel
+RUN install-php-extensions intl bcmath gd zip pdo_mysql
+
 # Copy custom PHP configuration (upload limits, memory, timezone)
 COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 

@@ -37,8 +37,6 @@ services:
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD:-root}
       MARIADB_DATABASE: ${DB_DATABASE:-toko_firo}
-      MARIADB_USER: ${DB_USERNAME:-toko_firo}
-      MARIADB_PASSWORD: ${DB_PASSWORD:-root}
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mariadb:/docker-entrypoint-initdb.d:ro
