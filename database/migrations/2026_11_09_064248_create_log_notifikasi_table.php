@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('log_notifikasi', function (Blueprint $table) {
-            $table->id('id_log');
-            $table->string('tipe_notifikasi', 50)->nullable();
-            $table->text('pesan');
-            $table->string('status', 20)->default('MENUNGGU');
-            $table->timestamp('waktu')->useCurrent();
-        });
+        if (!Schema::hasTable('log_notifikasi')) {
+            Schema::create('log_notifikasi', function (Blueprint $table) {
+                $table->id('id_log');
+                $table->string('tipe_notifikasi', 50)->nullable();
+                $table->text('pesan');
+                $table->string('status', 20)->default('MENUNGGU');
+                $table->timestamp('waktu')->useCurrent();
+            });
+        }
     }
 
     /**

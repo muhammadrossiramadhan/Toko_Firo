@@ -8,12 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('saldo_harian', function (Blueprint $table) {
-            $table->id();
-            $table->date('tanggal');
-            $table->decimal('saldo_awal', 15, 2)->default(0);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('saldo_harian')) {
+            Schema::create('saldo_harian', function (Blueprint $table) {
+                $table->id();
+                $table->date('tanggal');
+                $table->decimal('saldo_awal', 15, 2)->default(0);
+                $table->timestamps();
+            });
+        }
     }
 
     public function down()
