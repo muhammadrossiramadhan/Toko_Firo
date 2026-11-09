@@ -28,8 +28,12 @@
         </button>
     </div>
     <div class="space-y-6">
-        <div class="flex items-center justify-center py-6 border-b border-emerald-800">
-            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-12 w-auto rounded-none">
+        <!-- Logo Area di Sidebar -->
+        <div class="flex items-center justify-center py-6 border-b border-white/10">
+            <img src="{{ asset('images/logo-footer.png') }}" 
+                 alt="Toko Firo" 
+                 class="object-contain h-12 w-auto" 
+                 style="height: 48px; max-height: 48px; width: auto;">
         </div>
 
         {{-- Menu Admin --}}

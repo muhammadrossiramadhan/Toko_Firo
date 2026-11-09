@@ -29,9 +29,12 @@
             </button>
         </div>
 
-        {{-- Brand Logo Toko Firo --}}
-        <div class="rounded-none p-2 flex items-center justify-center">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
+        <!-- Logo Area di Sidebar -->
+        <div class="flex items-center justify-center py-6 border-b border-white/10">
+            <img src="{{ asset('images/logo-footer.png') }}" 
+                 alt="Toko Firo" 
+                 class="object-contain h-12 w-auto" 
+                 style="height: 48px; max-height: 48px; width: auto;">
         </div>
 
         @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
