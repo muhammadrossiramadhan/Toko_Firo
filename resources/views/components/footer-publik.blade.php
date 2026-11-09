@@ -15,8 +15,8 @@
     }
 </style>
 
-<footer class="bg-green-900 text-white relative z-40">
-    <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px] pt-4 pb-10 md:pt-6 md:pb-12">
+<footer class="bg-green-900 text-white relative z-40 pt-12 md:pt-16 pb-8">
+    <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-6">
             <!-- Col 1: Brand & Desc (takes more space via col-span on lg) -->
             <div class="sm:col-span-2 md:col-span-1">
