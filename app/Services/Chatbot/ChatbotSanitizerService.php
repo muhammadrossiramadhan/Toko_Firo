@@ -27,11 +27,11 @@ class ChatbotSanitizerService
     ];
 
     /**
-     * Heuristik Awal: Deteksi Topik Jelas di Luar Konteks Toko.
+     * Heuristik Awal: Deteksi Topik Jelas di Luar Konteks Toko (Domain Restriction Guardrail).
      */
     protected array $outOfContextRegexes = [
-        '/\b(def\s+[a-z_][a-z0-9_]*\s*\(|function\s+[a-z_][a-z0-9_]*\s*\(|<\?php|import\s+react|npm\s+install|pip\s+install|sql\s+injection|select\s+\*\s+from)\b/ui',
-        '/\b(hitung\s+integral|rumus\s+fisika|resep\s+masakan|ramalan\s+zodiak|berita\s+politik)\b/ui',
+        '/\b(def\s+[a-z_][a-z0-9_]*\s*\(|function\s+[a-z_][a-z0-9_]*\s*\(|<\?php|import\s+react|npm\s+install|pip\s+install|sql\s+injection|select\s+\*\s+from|console\.log|print\(|public\s+class|echo\s+["\']|buatkan\s+(saya\s+)?(kode|koding|coding|program|script|fungsi|function|source\s*code)|bikin(kan)?\s+(kode|program|koding)|tulis(kan)?\s+(kode|program|script)|contoh\s+kode|pemrograman|javascript|python|php|html|css|c\+\+|java)\b/ui',
+        '/\b(hitung\s+integral|rumus\s+fisika|resep\s+masakan|ramalan\s+zodiak|berita\s+politik|pemilu|pilpres|pilkada|partai\s+politik|presiden|menteri|dpr|debat\s+politik|calon\s+presiden|opini\s+politik)\b/ui',
     ];
 
     /**

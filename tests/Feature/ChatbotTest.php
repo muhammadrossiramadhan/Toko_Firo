@@ -15,6 +15,7 @@ class ChatbotTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        RateLimiter::clear('chatbot_spam:127.0.0.1');
         RateLimiter::clear('chatbot.tanya');
         RateLimiter::clear('127.0.0.1');
         Cache::flush();
@@ -190,20 +191,58 @@ class ChatbotTest extends TestCase
             ], 200)
         ]);
 
-        // Lakukan 10 permintaan pertama
-        for ($i = 1; $i <= 10; $i++) {
+        // 3 permintaan berturut-turut pertama diizinkan
+        for ($i = 1; $i <= 3; $i++) {
             $res = $this->postJson('/api/chatbot/tanya', [
                 'pesan' => 'Pertanyaan ke-' . $i
             ]);
             $res->assertStatus(200);
         }
 
-        // Permintaan ke-11 wajib diblokir oleh rate limiter (HTTP 429)
+        // Permintaan ke-4 dalam jendela waktu singkat diblokir oleh rate limiter (HTTP 429)
         $responseEleventh = $this->postJson('/api/chatbot/tanya', [
-            'pesan' => 'Pertanyaan ke-11 yang melebihi batas'
+            'pesan' => 'Pertanyaan ke-4 yang melebihi batas'
         ]);
 
-        $responseEleventh->assertStatus(429);
+        $responseEleventh->assertStatus(429)
+            ->assertJson([
+                'sukses' => false,
+                'message' => 'Terlalu banyak pesan dalam waktu singkat. Harap tunggu beberapa detik sebelum mengirim pesan lagi.',
+                'reply' => 'Terlalu banyak pesan dalam waktu singkat. Harap tunggu beberapa detik sebelum mengirim pesan lagi.',
+            ]);
+    }
+
+    /**
+     * Rate limiter menolak spam pesan berturut-turut dengan pesan peringatan spesifik.
+     */
+    public function test_rate_limiter_menolak_spam_pesan_berturut_turut(): void
+    {
+        $this->test_rate_limiter_memblokir_permintaan_ke_11();
+    }
+
+    /**
+     * Guardrail domain restriction menolak pertanyaan di luar topik toko (coding, politik).
+     */
+    public function test_guardrail_menolak_pertanyaan_di_luar_topik_toko(): void
+    {
+        // 1. Pertanyaan Coding
+        $resCoding = $this->postJson('/api/chatbot/tanya', [
+            'pesan' => 'Buatkan kode javascript untuk fungsi kalkulator'
+        ]);
+        $resCoding->assertStatus(200)
+            ->assertJson(['sukses' => true]);
+        $this->assertStringContainsString('alat tulis', $resCoding->json('reply'));
+
+        // Reset rate limiter untuk pesan berikutnya
+        RateLimiter::clear('chatbot_spam:127.0.0.1');
+
+        // 2. Pertanyaan Politik
+        $resPolitik = $this->postJson('/api/chatbot/tanya', [
+            'pesan' => 'Siapa calon presiden favorit dan bagaimana berita politik pemilu?'
+        ]);
+        $resPolitik->assertStatus(200)
+            ->assertJson(['sukses' => true]);
+        $this->assertStringContainsString('alat tulis', $resPolitik->json('reply'));
     }
 
     /**

@@ -44,7 +44,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Chatbot AI Pelanggan
 Route::post('/api/chatbot/tanya', [ChatbotController::class, 'tanya'])
-    ->middleware('throttle:10,1')
     ->name('chatbot.tanya');
 
 
