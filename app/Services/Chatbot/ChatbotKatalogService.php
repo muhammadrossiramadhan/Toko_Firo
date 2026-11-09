@@ -75,7 +75,17 @@ class ChatbotKatalogService
         $items = $items->limit(25)->get();
 
         if ($items->isEmpty()) {
-            $items = (clone $query)->orderBy('nama_item')->limit(20)->get();
+            if ($tokens->isNotEmpty()) {
+                $firstToken = $tokens->first();
+                $items = (clone $query)->where('nama_item', 'like', "%{$firstToken}%")
+                    ->orWhere('jenis', 'like', "%{$firstToken}%")
+                    ->limit(5)
+                    ->get();
+            }
+        }
+
+        if ($items->isEmpty()) {
+            return "(Tidak ada barang yang cocok dengan kata kunci pencarian di katalog)";
         }
 
         return $items->map(function ($item) {

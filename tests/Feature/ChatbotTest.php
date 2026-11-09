@@ -270,6 +270,17 @@ class ChatbotTest extends TestCase
         $resJam->assertStatus(200)
             ->assertJson(['sukses' => true]);
         $this->assertStringContainsString('08:00', $resJam->json('jawaban'));
+
+        RateLimiter::clear('chatbot_spam:127.0.0.1');
+
+        // Pertanyaan fotokopi (Layanan)
+        $resFoto = $this->postJson('/api/chatbot/tanya', [
+            'pesan' => 'Berapa harga fotokopi?'
+        ]);
+        $resFoto->assertStatus(200)
+            ->assertJson(['sukses' => true]);
+        $this->assertStringContainsString('fotokopi', strtolower($resFoto->json('jawaban')));
+        $this->assertStringContainsString('250', $resFoto->json('jawaban'));
     }
 
     /**
@@ -338,6 +349,50 @@ class ChatbotTest extends TestCase
         $roles = array_column($body['messages'], 'role');
         $this->assertContains('system', $roles);
         $this->assertContains('user', $roles);
+    }
+
+    /**
+     * 10. Memastikan pertanyaan layanan (fotokopi) dijawab tanpa memaksakan pencarian stok produk.
+     */
+    public function test_pertanyaan_layanan_fotokopi_tidak_memaksa_pencarian_stok(): void
+    {
+        $capturedRequest = null;
+        Http::fake([
+            '*/chat/completions' => function ($request) use (&$capturedRequest) {
+                $capturedRequest = $request;
+                return Http::response([
+                    'choices' => [
+                        [
+                            'message' => [
+                                'role' => 'assistant',
+                                'content' => 'Harga fotokopi hitam putih mulai Rp 250 - Rp 350 per lembar.'
+                            ]
+                        ]
+                    ]
+                ], 200);
+            }
+        ]);
+
+        $response = $this->postJson('/api/chatbot/tanya', [
+            'pesan' => 'Berapa harga fotokopi?'
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'sukses' => true,
+                'jawaban' => 'Harga fotokopi hitam putih mulai Rp 250 - Rp 350 per lembar.'
+            ]);
+
+        $this->assertNotNull($capturedRequest);
+        $body = json_decode((string) $capturedRequest->body(), true);
+        $systemMsg = '';
+        foreach ($body['messages'] as $msg) {
+            if ($msg['role'] === 'system') {
+                $systemMsg = $msg['content'];
+            }
+        }
+        // Pastikan tidak ada injeksi pencarian stok produk paksa
+        $this->assertStringNotContainsString('DATA BARANG RESMI TOKO FIRO:', $systemMsg);
     }
 }
 
