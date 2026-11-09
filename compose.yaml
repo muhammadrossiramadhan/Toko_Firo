@@ -15,14 +15,16 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini:ro
+    depends_on:
+      db:
+        condition: service_healthy
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 512M
-    depends_on:
-      db:
-        condition: service_healthy
+        reservations:
+          memory: 128M
     networks:
       - toko_firo_network
 
@@ -40,17 +42,19 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mariadb:/docker-entrypoint-initdb.d:ro
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 768M
     healthcheck:
       test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -u root -p$${MARIADB_ROOT_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          memory: 256M
     networks:
       - toko_firo_network
 
