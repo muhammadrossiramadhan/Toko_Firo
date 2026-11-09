@@ -1,6 +1,7 @@
-<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-<link rel="shortcut icon" type="image/png" href="{{ asset('images/logo.png') }}">
-<link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+<link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
 <style id="skala-tampilan">
 /* K12 dikecualikan untuk halaman ini atas permintaan pemilik agar sama
    dengan Figma. Ubah --skala ke 100% untuk kembali ke 16px/44px. */
