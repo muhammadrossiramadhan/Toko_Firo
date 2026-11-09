@@ -3,8 +3,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-6">
             <!-- Col 1: Brand & Desc (takes more space via col-span on lg) -->
             <div class="sm:col-span-2 md:col-span-1">
-                <div class="flex items-center mb-4">
-                    <img src="{{ asset('images/logo-footer.png') }}" alt="Toko Firo" class="h-[28px] sm:h-[36px] md:h-[48px] w-auto object-contain">
+                <div class="flex items-center mb-3 md:mb-4 md:-mt-2">
+                    <img src="{{ asset('images/logo-footer.png') }}" alt="Toko Firo" class="h-[22px] sm:h-[28px] md:h-[40px] w-auto object-contain">
                 </div>
                 <p class="text-white/60 text-sm leading-relaxed max-w-[280px]">
                     Toko ATK dan fotocopy di Kraksaan, Probolinggo. Buka setiap hari.
