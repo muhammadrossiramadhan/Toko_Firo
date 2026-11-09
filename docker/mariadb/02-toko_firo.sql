@@ -1336,14 +1336,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_pengguna`(
     IN p_pelaku INT
 )
 BEGIN
-    IF EXISTS (SELECT 1 FROM toko_firo.pengguna WHERE username = p_username) THEN
+    IF EXISTS (SELECT 1 FROM pengguna WHERE username = p_username) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Username sudah dipakai!';
     END IF;
 
-    INSERT INTO toko_firo.pengguna (nama, username, password_hash, role, status, dibuat_pada, diubah_pada)
+    INSERT INTO pengguna (nama, username, password_hash, role, status, dibuat_pada, diubah_pada)
     VALUES (p_nama, p_username, p_password_hash, p_role, 'AKTIF', NOW(), NOW());
 
-    INSERT INTO toko_firo.log_aktivitas (waktu, keterangan, tipe_aksi, id_pengguna)
+    INSERT INTO log_aktivitas (waktu, keterangan, tipe_aksi, id_pengguna)
     VALUES (NOW(), CONCAT('Pengguna baru: ', p_username), 'PENGGUNA_BARU', p_pelaku);
 END
 ;;

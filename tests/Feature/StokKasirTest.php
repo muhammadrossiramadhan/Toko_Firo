@@ -23,7 +23,7 @@ class StokKasirTest extends TestCase
      */
     public function test_halaman_stok_kasir_dapat_diakses_dan_memuat_konten(): void
     {
-        \Illuminate\Support\Facades\DB::table('daftar_item')->insert([
+        \Illuminate\Support\Facades\DB::table('daftar_item')->upsert([
             [
                 'kode_item' => 'BRG-007',
                 'nama_item' => 'Pensil 2B Faber',
@@ -46,7 +46,7 @@ class StokKasirTest extends TestCase
                 'harga_jual' => 52000,
                 'batas_minimum' => 5,
             ],
-        ]);
+        ], ['kode_item'], ['nama_item', 'jenis', 'merek', 'stok', 'satuan', 'harga_pokok', 'harga_jual', 'batas_minimum']);
 
         $response = $this->get(route('kasir.stok'));
 

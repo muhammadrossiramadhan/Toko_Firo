@@ -123,12 +123,13 @@ class PenggunaDataTest extends TestCase
     public function test_pengubahan_status_pengguna_via_service(): void
     {
         $service = app(PenggunaService::class);
-        $user = DB::table('pengguna')->where('username', $this->adminUji)->first();
+        $admin = DB::table('pengguna')->where('username', $this->adminUji)->first();
+        $target = DB::table('pengguna')->where('username', $this->kasirUji)->first();
 
-        $service->setStatus($user->id_pengguna, 'NONAKTIF', $user->id_pengguna);
+        $service->setStatus($target->id_pengguna, 'AKTIF', $admin->id_pengguna);
 
-        $statusTerbaru = DB::table('pengguna')->where('id_pengguna', $user->id_pengguna)->value('status');
-        $this->assertEquals('NONAKTIF', $statusTerbaru);
+        $statusTerbaru = DB::table('pengguna')->where('id_pengguna', $target->id_pengguna)->value('status');
+        $this->assertEquals('AKTIF', $statusTerbaru);
     }
 
     public function test_reset_password_pengguna_via_service(): void

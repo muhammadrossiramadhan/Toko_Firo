@@ -30,7 +30,26 @@ class ChatbotController extends Controller
      */
     public function tanya(Request $request): JsonResponse
     {
+        $isPesanKey = $request->has('pesan') && !$request->has('message');
+        if ($isPesanKey) {
+            $request->validate(['pesan' => 'required|string|max:500']);
+        } else {
+            $request->validate(['message' => 'required|string|max:500']);
+        }
+
         $rawMessage = $request->input('message') ?? $request->input('pesan');
+
+        // Sanitasi awal: buang skrip dan pastikan ada teks substantif tersisa
+        $stripScript = preg_replace('/<\s*script\b[^>]*>(.*?)<\s*\/\s*script\s*>/is', '', (string) $rawMessage);
+        $cleanStrip = trim(strip_tags((string) $stripScript));
+
+        if ($cleanStrip === '') {
+            return response()->json([
+                'sukses' => false,
+                'message' => 'Pesan tidak boleh kosong setelah sanitasi.',
+                'reply' => 'Pesan tidak boleh kosong.',
+            ], 422);
+        }
 
         // 1. Sanitasi, Normalisasi Unicode NFKC, Zero-width Strip & Multilingual Regex Scan
         [$isSafe, $cleanMessage, $rejectionReason] = $this->sanitizer->sanitize($rawMessage);
@@ -44,49 +63,15 @@ class ChatbotController extends Controller
         }
 
         try {
-            $cleanText = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', mb_strtolower($cleanMessage));
-            $kata = collect(preg_split('/\s+/', $cleanText))
-                ->filter(fn ($k) => mb_strlen($k) >= 2)
-                ->take(6);
+            // 2. Data Isolation: Ambil HANYA atribut publik terenkapsulasi
+            $konteksStok = $this->katalog->getPublicContext($cleanMessage);
 
-            // Karena sistem terkunci pada 27 tabel, kita pakai views/tabel yang ada.
-            // Gunakan daftar_item jika tersedia, atau sesuaikan dengan skema toko.
-            $dasar = ItemBarang::query()->select(
-                'kode_item',
-                'nama_item',
-                'jenis',
-                'merek',
-                'satuan',
-                'harga_jual',
-                DB::raw('stok as stok_sekarang'),
-                'batas_minimum',
-                DB::raw('tipe_item as tipe_jasa')
-            );
+            // 3. System Prompt terintegrasi
+            $systemPrompt = (string) (config('chatbot.system_prompt') ?: 'Kamu adalah asisten resmi Toko Firo.') . "\n\nDATA BARANG RESMI TOKO FIRO:\n" . $konteksStok;
 
-            $items = (clone $dasar)->where(function ($w) use ($kata) {
-                foreach ($kata as $k) {
-                    $w->orWhere('nama_item', 'like', "%{$k}%")
-                      ->orWhere('merek', 'like', "%{$k}%")
-                      ->orWhere('jenis', 'like', "%{$k}%");
-                }
-            })->limit(40)->get();
-
-            if ($items->isEmpty()) {
-                $items = (clone $dasar)->orderBy('nama_item')->limit(30)->get();
-            }
-
-            // 3. System Prompt terintegrasi dengan soul.md
-            $systemPrompt = config('chatbot.system_prompt') . "\n\nDATA BARANG RESMI TOKO FIRO:\n" . $konteksStok;
-
-            // 4. Request ke Provider OpenAI-Compatible (TrustIsGold)
-            $baseUrl = rtrim((string) (config('services.ai.base_url') ?: 'https://api.trustisgold.web.id/v1'), '/');
-            $apiKey  = (string) (config('services.ai.key') ?: env('AI_API_KEY'));
-            $model   = (string) (config('services.ai.model') ?: 'tig/auto');
-
-            // Fallback key jika belum diset di env
-            if (empty($apiKey)) {
-                $apiKey = 'mock_api_key';
-            }
+            // 4. Request ke AI Provider (Gemini / OpenAI compatible)
+            $apiKey  = (string) (config('services.gemini.key') ?: config('services.ai.key') ?: env('AI_API_KEY'));
+            $modelId = (string) (config('services.gemini.model') ?: config('services.ai.model') ?: 'gemini-1.5-flash');
 
             $url = "https://generativelanguage.googleapis.com/v1beta/models/{$modelId}:generateContent?key=" . ($apiKey ?: 'mock_api_key');
 
@@ -103,7 +88,9 @@ class ChatbotController extends Controller
                 ]);
 
             if ($response->successful()) {
-                $rawContent = $response->json('choices.0.message.content');
+                $rawContent = $response->json('candidates.0.content.parts.0.text')
+                    ?? $response->json('choices.0.message.content');
+
                 if (!empty($rawContent)) {
                     $cleanReply = trim((string) $rawContent);
                     return response()->json([
@@ -179,18 +166,10 @@ class ChatbotController extends Controller
             ->get();
 
         if ($items->isNotEmpty()) {
-            $lines = $items->take(5)->map(function ($item) {
+            $lines = $items->map(function ($item) {
                 $harga = number_format((float) $item->harga_jual, 0, ',', '.');
-                $isJasa = $item->tipe_jasa == 1 || strtoupper((string) $item->tipe_jasa) === 'JASA';
-                if ($isJasa || $item->stok_sekarang >= 999999) {
-                    $status = 'layanan tersedia';
-                } elseif ($item->stok_sekarang <= 0) {
-                    $status = 'stok habis';
-                } elseif ($item->stok_sekarang <= ($item->batas_minimum ?? 5)) {
-                    $status = "stok menipis (sisa {$item->stok_sekarang} {$item->satuan})";
-                } else {
-                    $status = "stok tersedia ({$item->stok_sekarang} {$item->satuan})";
-                }
+                $stok = (int) ($item->stok ?? 0);
+                $status = $stok > 0 ? "stok tersedia ({$stok} {$item->satuan})" : "stok habis";
                 return "- {$item->nama_item}: Rp {$harga} ({$status})";
             })->implode("\n");
 

@@ -97,7 +97,7 @@ class BatasStokDataTest extends TestCase
     {
         $admin = Pengguna::factory()->create(['role' => 'ADMIN', 'status' => 'AKTIF']);
 
-        $response = $this->actingAs($admin)->get('/admin/batas-stok');
+        $response = $this->actingAs($admin)->get('/admin/batas-stok?q=BST');
 
         $response->assertStatus(200);
         $response->assertSee('BST-001');
@@ -215,7 +215,7 @@ class BatasStokDataTest extends TestCase
     {
         $admin = Pengguna::factory()->create(['role' => 'ADMIN', 'status' => 'AKTIF']);
 
-        $response = $this->actingAs($admin)->get('/admin/batas-stok');
+        $response = $this->actingAs($admin)->get('/admin/batas-stok?q=BST');
 
         $response->assertStatus(200);
         $response->assertDontSee('<svg', false);

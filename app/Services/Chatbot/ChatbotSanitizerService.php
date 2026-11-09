@@ -74,7 +74,7 @@ class ChatbotSanitizerService
                 return [
                     false,
                     $text,
-                    'Maaf, saya adalah asisten virtual resmi Toko Firo yang khusus membantu informasi ketersediaan stok ATK, harga barang, fotokopi, dan jam buka toko.'
+                    'Maaf, saya hanya dapat membantu menjawab pertanyaan seputar produk dan informasi Toko Firo.'
                 ];
             }
         }
