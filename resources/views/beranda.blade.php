@@ -349,7 +349,7 @@
     </section>
 
     {{-- BANNER CTA SECTION --}}
-    <section id="katalog" class="bg-green-900 py-12">
+    <section id="katalog" class="bg-green-900 pt-10 pb-4 md:pt-12 md:pb-6">
         <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px]">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
                 <div>
