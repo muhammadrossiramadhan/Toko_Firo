@@ -1,10 +1,38 @@
+<style>
+    .footer-logo-wrapper {
+        margin-top: 0;
+    }
+    @media (min-width: 768px) {
+        .footer-logo-wrapper {
+            margin-top: -10px !important;
+        }
+    }
+    .footer-logo {
+        height: 24px !important;
+        max-height: 24px !important;
+        width: auto !important;
+    }
+    @media (min-width: 640px) {
+        .footer-logo {
+            height: 32px !important;
+            max-height: 32px !important;
+        }
+    }
+    @media (min-width: 768px) {
+        .footer-logo {
+            height: 44px !important;
+            max-height: 44px !important;
+        }
+    }
+</style>
+
 <footer class="bg-green-900 text-white relative z-40">
     <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px] py-10 lg:py-12">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-6">
             <!-- Col 1: Brand & Desc (takes more space via col-span on lg) -->
             <div class="sm:col-span-2 md:col-span-1">
-                <div class="flex items-center mb-3 md:mb-4 md:-mt-2">
-                    <img src="{{ asset('images/logo-footer.png') }}" alt="Toko Firo" class="h-[22px] sm:h-[28px] md:h-[40px] w-auto object-contain">
+                <div class="flex items-center mb-3 md:mb-4 footer-logo-wrapper">
+                    <img src="{{ asset('images/logo-footer.png') }}" alt="Toko Firo" class="footer-logo object-contain" style="height: 24px; max-height: 24px; width: auto;">
                 </div>
                 <p class="text-white/60 text-sm leading-relaxed max-w-[280px]">
                     Toko ATK dan fotocopy di Kraksaan, Probolinggo. Buka setiap hari.
