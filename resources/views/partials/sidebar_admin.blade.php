@@ -1,6 +1,26 @@
-{{-- Sidebar Navigasi Admin Terpusat (z-[60] di Mobile, fixed inset-y-0 left-0, Responsif Drawer di HP) --}}
+{{-- 1. Satu Tombol Hamburger Eksklusif di Topbar / Header Utama Mobile (z-50) --}}
+<header class="md:hidden w-full sticky top-0 z-50 flex items-center justify-between bg-[#08331e] text-white px-4 py-3 border-b border-emerald-900 shadow-md">
+    <div class="flex items-center gap-3">
+        {{-- Tombol Hamburger Menu di Pojok Kiri Atas sebelum teks TOKO FIRO --}}
+        <button type="button" onclick="toggleSidebar()" class="touch-target px-3.5 py-2 bg-emerald-800 hover:bg-emerald-700 active:bg-emerald-900 text-white font-bold rounded-none flex items-center gap-2 cursor-pointer shadow-sm text-base" aria-label="Buka Menu Navigasi">
+            <span style="font-size: 1.25rem; line-height: 1;">&#9776;</span>
+            <span class="text-sm font-semibold">Menu</span>
+        </button>
+        {{-- Teks TOKO FIRO --}}
+        <span class="font-bold text-lg tracking-wider text-white">TOKO FIRO</span>
+    </div>
+    {{-- User Avatar Initial --}}
+    <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-sm shadow-sm">
+        {{ strtoupper(substr(Auth::user()->nama ?? Auth::user()->username ?? 'A', 0, 1)) }}
+    </div>
+</header>
+
+{{-- 2. Implementasi Overlay/Backdrop Gelap Menutupi Konten (z-[55]) --}}
+<div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-[55] hidden transition-opacity backdrop-blur-sm cursor-pointer" aria-hidden="true"></div>
+
+{{-- 3. Sidebar Navigasi Admin Terpusat (z-[60] di Mobile, fixed inset-y-0 left-0, Responsif Drawer di HP) --}}
 <aside id="sidebarMenu" class="fixed inset-y-0 left-0 z-[60] w-72 max-w-[85vw] -translate-x-full md:translate-x-0 md:static md:w-64 md:min-h-screen md:sticky md:top-0 md:flex-shrink-0 flex flex-col justify-between bg-[#08331e] text-white overflow-y-auto p-4 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none outline-none focus:outline-none" tabindex="-1" style="outline: none;">
-    {{-- Header Drawer Khusus Mobile untuk Menutup Sidebar --}}
+    {{-- Header Drawer Khusus Mobile untuk Menutup Sidebar (Hanya tombol tutup ✕, tidak ada hamburger lagi) --}}
     <div class="flex items-center justify-between pb-3 md:hidden border-b border-emerald-800/80 mb-3">
         <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold">Navigasi Admin</span>
         <button type="button" onclick="toggleSidebar()" class="touch-target px-3 py-1.5 bg-emerald-900/80 hover:bg-emerald-800 text-white rounded-none text-sm font-semibold cursor-pointer border border-emerald-700/50" aria-label="Tutup Menu">

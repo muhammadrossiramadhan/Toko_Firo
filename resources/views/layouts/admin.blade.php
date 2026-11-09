@@ -24,27 +24,10 @@
 </head>
 <body class="min-h-screen flex flex-col md:flex-row bg-slate-50 text-gray-800 text-base antialiased m-0 p-0">
 
-    {{-- 1. Satu Tombol Hamburger Eksklusif di Topbar / Header Utama Mobile (z-50) --}}
-    <header class="md:hidden sticky top-0 z-50 flex items-center justify-between bg-[#08331e] text-white px-4 py-3 border-b border-emerald-900 shadow-md">
-        <button type="button" onclick="toggleSidebar()" class="touch-target px-3.5 py-2 bg-emerald-800 hover:bg-emerald-700 active:bg-emerald-900 text-white font-bold rounded-none flex items-center gap-2 cursor-pointer shadow-sm text-base" aria-label="Buka Menu Navigasi">
-            <span style="font-size: 1.25rem; line-height: 1;">&#9776;</span>
-            <span class="text-sm font-semibold">Menu</span>
-        </button>
-        <div class="flex items-center gap-2">
-            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-8 w-auto">
-        </div>
-        <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-sm shadow-sm">
-            {{ strtoupper(substr(Auth::user()->nama ?? Auth::user()->username ?? 'A', 0, 1)) }}
-        </div>
-    </header>
-
-    {{-- 2. Implementasi Overlay/Backdrop Gelap Menutupi Konten (z-[55]) --}}
-    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-[55] hidden transition-opacity backdrop-blur-sm cursor-pointer" aria-hidden="true"></div>
-
-    {{-- 3. Sidebar Navigasi Admin Terpusat (z-[60] di Mobile) --}}
+    {{-- Sidebar Navigasi Admin Terpusat (Termasuk Topbar Mobile Eksklusif & Backdrop) --}}
     @include('partials.sidebar_admin')
 
-    {{-- 4. Area Konten Utama --}}
+    {{-- Area Konten Utama --}}
     <main class="flex-1 min-w-0 p-4 sm:p-6 md:p-8 overflow-y-auto">
         <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-gray-200 mb-6">
             <div>
