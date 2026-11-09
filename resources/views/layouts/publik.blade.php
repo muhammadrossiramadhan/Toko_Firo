@@ -174,8 +174,12 @@
     if (closeBtn) closeBtn.addEventListener('click', () => modal.style.display = 'none');
 
     // Rendering Teks Aman Anti-XSS (Menggunakan textContent murni)
-    function appendMsg(text, isUser) {
+    function appendMsg(text, isUser, uniqueId = null) {
         const div = document.createElement('div');
+        if (uniqueId) {
+            div.id = uniqueId;
+            div.setAttribute('data-msg-id', uniqueId);
+        }
         div.style.cssText = isUser 
             ? 'background-color: #d1fae5; color: #064e3b; padding: 9px 13px; align-self: flex-end; border: 1px solid #a7f3d0; max-width: 85%; border-radius: 8px; word-break: break-word;'
             : 'background-color: #f3f4f6; color: #1f2937; padding: 9px 13px; align-self: flex-start; border: 1px solid #e5e7eb; max-width: 85%; border-radius: 8px; white-space: pre-line; word-break: break-word;';
@@ -200,13 +204,29 @@
 
         appendMsg(text, true);
 
-        // Buat elemen indikator loading langsung dan simpan referensinya
-        const loadingDiv = appendMsg('Sedang memeriksa stok...', false);
+        // Generate ID unik untuk elemen loading (Date.now + random) mencegah konflik node duplikat
+        const loadingId = 'ai-loading-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
+        const loadingDiv = appendMsg('Sedang memeriksa stok...', false, loadingId);
         loadingDiv.style.opacity = '0.75';
         loadingDiv.style.fontStyle = 'italic';
 
         const controller = new AbortController();
         const timeoutTimer = setTimeout(() => controller.abort(), 15000);
+
+        // Watchdog pencegah UI stuck permanen dalam kondisi apa pun
+        const watchdogTimer = setTimeout(() => {
+            if (loading) {
+                loading = false;
+                input.disabled = false;
+                sendBtn.disabled = false;
+                const stuckEl = document.getElementById(loadingId) || loadingDiv;
+                if (stuckEl && stuckEl.textContent === 'Sedang memeriksa stok...') {
+                    stuckEl.style.opacity = '1';
+                    stuckEl.style.fontStyle = 'normal';
+                    stuckEl.textContent = 'Gagal memuat balasan. Silakan coba lagi.';
+                }
+            }
+        }, 16000);
 
         try {
             const tokenMeta = document.querySelector('meta[name="csrf-token"]');
@@ -222,6 +242,7 @@
             });
 
             clearTimeout(timeoutTimer);
+            clearTimeout(watchdogTimer);
 
             let data = null;
             try {
@@ -230,34 +251,47 @@
                 data = null;
             }
 
-            // Ubah loading = false segera setelah data respons diterima
+            // Ubah status loading = false segera setelah respons diterima
             loading = false;
 
-            const replyText = (data && (data.reply || data.jawaban || data.message))
-                ? (data.reply || data.jawaban || data.message)
-                : 'Maaf, belum ada jawaban yang tersedia.';
+            // Parsing variasi key balasan secara aman (reply, jawaban, message, atau error)
+            let replyText = '';
+            if (data && typeof data === 'object') {
+                replyText = data.reply || data.jawaban || data.message || data.error || '';
+            } else if (typeof data === 'string') {
+                replyText = data;
+            }
 
-            // Gantikan indikator "Sedang memeriksa stok..." secara bersih pada node elemen yang sama
-            if (loadingDiv && loadingDiv.parentNode) {
-                loadingDiv.style.opacity = '1';
-                loadingDiv.style.fontStyle = 'normal';
-                loadingDiv.textContent = replyText;
+            if (!replyText || typeof replyText !== 'string' || replyText.trim() === '') {
+                replyText = 'Gagal memuat balasan. Silakan coba lagi.';
+            }
+
+            // Targetkan node spesifik berdasarkan ID unik agar tidak salah elemen
+            const targetEl = document.getElementById(loadingId) || loadingDiv;
+            if (targetEl && targetEl.parentNode) {
+                targetEl.style.opacity = '1';
+                targetEl.style.fontStyle = 'normal';
+                targetEl.style.color = '#1f2937';
+                targetEl.textContent = replyText;
                 history.scrollTop = history.scrollHeight;
             } else {
                 appendMsg(replyText, false);
             }
         } catch (e) {
             clearTimeout(timeoutTimer);
+            clearTimeout(watchdogTimer);
             loading = false;
 
-            const errorText = e.name === 'AbortError'
-                ? 'Permintaan membutuhkan waktu terlalu lama. Silakan coba lagi.'
-                : 'Koneksi terputus. Silakan coba lagi.';
+            const targetEl = document.getElementById(loadingId) || loadingDiv;
+            const errorText = (e && e.name === 'AbortError')
+                ? 'Permintaan membutuhkan waktu terlalu lama. Harap coba lagi.'
+                : 'Gagal memuat balasan. Silakan coba lagi.';
 
-            if (loadingDiv && loadingDiv.parentNode) {
-                loadingDiv.style.opacity = '1';
-                loadingDiv.style.fontStyle = 'normal';
-                loadingDiv.textContent = errorText;
+            if (targetEl && targetEl.parentNode) {
+                targetEl.style.opacity = '1';
+                targetEl.style.fontStyle = 'normal';
+                targetEl.style.color = '#b91c1c';
+                targetEl.textContent = errorText;
                 history.scrollTop = history.scrollHeight;
             } else {
                 appendMsg(errorText, false);
@@ -266,7 +300,9 @@
             loading = false;
             input.disabled = false;
             sendBtn.disabled = false;
-            input.focus();
+            setTimeout(() => {
+                try { input.focus(); } catch (_) {}
+            }, 50);
         }
     }
 
