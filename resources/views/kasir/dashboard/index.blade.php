@@ -19,128 +19,13 @@
 
     @include('partials.skala')
 </head>
-<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex m-0 p-0">
+<body class="bg-gray-100 text-gray-800 text-base antialiased min-h-screen flex flex-col md:flex-row m-0 p-0">
 
-    {{-- Sidebar Navigasi Kasir Mandiri (Kepatuhan K12 & K18) --}}
-    <aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
-        <div class="space-y-6">
-            {{-- Brand Logo Toko Firo (Bebas Ikon Grafis / SVG) --}}
-            <div class="rounded-none p-2 flex items-center justify-center">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Firo" class="w-full max-w-[180px] h-auto object-contain">
-            </div>
-
-            @if (strtoupper(Auth::user()->role ?? '') === 'ADMIN')
-            <div class="mb-2">
-                <a href="{{ route('admin.dashboard') }}" class="text-white hover:text-gray-300 font-bold transition-colors flex items-center gap-2 min-h-[2.75rem] rounded-none p-2 outline-none focus:outline-none focus:ring-0" style="outline: none !important; box-shadow: none !important;">
-                    &larr; Kembali ke Menu Admin
-                </a>
-            </div>
-            @endif
-
-            {{-- Menu Navigasi Kasir --}}
-            <div>
-                <div class="text-xs uppercase tracking-wider text-emerald-300 font-semibold px-3 mb-2">
-                    Menu Kasir
-                </div>
-                <nav class="space-y-1">
-                    {{-- 1. Dashboard Kasir (Aktif) --}}
-                    <a
-                        href="{{ route('kasir.dashboard') }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors bg-emerald-600 text-white font-semibold shadow-sm"
-                    >
-                        Dashboard
-                    </a>
-
-                    {{-- 2. Transaksi Penjualan --}}
-                    <a
-                        href="{{ Route::has('kasir.transaksi') ? route('kasir.transaksi') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
-                    >
-                        Transaksi Penjualan
-                    </a>
-
-                    {{-- 3. Lihat Stok Barang --}}
-                    <a
-                        href="{{ Route::has('kasir.stok') ? route('kasir.stok') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
-                    >
-                        Lihat Stok Barang
-                    </a>
-
-                    {{-- 4. Saldo --}}
-                    <a
-                        href="{{ Route::has('kasir.saldo') ? route('kasir.saldo') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
-                    >
-                        Saldo
-                    </a>
-
-                    {{-- 5. Info Barang Baru --}}
-                    <a
-                        href="{{ Route::has('kasir.info-barang') ? route('kasir.info-barang') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
-                    >
-                        Info Barang Baru
-                    </a>
-
-                    {{-- 6. Pengembalian Barang --}}
-                    <a
-                        href="{{ Route::has('kasir.pengembalian') ? route('kasir.pengembalian') : '#' }}"
-                        class="touch-target flex items-center min-h-[2.75rem] px-3 py-2.5 rounded-none text-base transition-colors text-emerald-100 hover:text-white hover:bg-emerald-900/60"
-                    >
-                        Pengembalian Barang
-                    </a>
-                </nav>
-            </div>
-        </div>
-
-        {{-- Profil Pengguna di Bagian Bawah Sidebar --}}
-        <div class="pt-4 border-t border-emerald-900/60">
-            @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
-                <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
-                            {{ $kasir['inisial'] ?? strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <div class="font-medium text-white text-base truncate">
-                                {{ $kasir['nama'] ?? Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
-                            </div>
-                            <div class="text-sm text-emerald-300">
-                                Admin / Pemilik
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            @else
-                <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
-                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
-                        {{ $kasir['inisial'] ?? 'K' }}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <div class="font-medium text-white text-base truncate">
-                            {{ $kasir['nama'] ?? 'Kasir' }}
-                        </div>
-                        <div class="text-sm text-emerald-300">
-                            {{ $kasir['role'] ?? 'Kasir' }}
-                        </div>
-                    </div>
-                </div>
-            @endif
-            <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}" data-turbo="false">
-                @csrf
-                <button
-                    type="submit"
-                    class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem] cursor-pointer"
-                >
-                    Keluar
-                </button>
-            </form>
-        </div>
-    </aside>
+    {{-- Sidebar Navigasi Kasir --}}
+    @include('partials.sidebar_kasir')
 
     {{-- Area Konten Utama Kasir --}}
-    <main class="flex-1 flex flex-col p-8 overflow-y-auto min-w-0">
+    <main class="flex-1 flex flex-col p-4 sm:p-6 md:p-8 overflow-y-auto min-w-0">
         {{-- Header Halaman Kasir (Bebas Ikon Lonceng / Grafis) --}}
         <header class="flex items-center justify-between pb-6 border-b border-gray-200 mb-6">
             <div>

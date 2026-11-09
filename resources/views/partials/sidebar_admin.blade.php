@@ -1,5 +1,28 @@
-{{-- Sidebar Navigasi Admin Terpusat (Kepatuhan K12 & K18) --}}
-<aside class="w-64 bg-[#08331e] text-white h-screen sticky top-0 flex-shrink-0 flex flex-col justify-between overflow-y-auto p-4 outline-none focus:outline-none" tabindex="-1" style="outline: none;">
+{{-- Backdrop Gelap saat Sidebar Terbuka di HP --}}
+<div id="adminSidebarBackdrop" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden transition-opacity backdrop-blur-sm" onclick="toggleAdminSidebar()"></div>
+
+{{-- Topbar Mobile Khusus Layar HP (< 768px) dengan Tombol Hamburger --}}
+<div class="md:hidden w-full bg-[#08331e] text-white px-4 py-3 flex items-center justify-between border-b border-emerald-900 sticky top-0 z-30 shadow-md">
+    <button type="button" onclick="toggleAdminSidebar()" class="touch-target px-3.5 py-2 bg-emerald-800 hover:bg-emerald-700 active:bg-emerald-900 text-white font-bold rounded-none flex items-center gap-2 cursor-pointer shadow-sm text-base" aria-label="Buka Menu Navigasi">
+        <span style="font-size: 1.25rem; line-height: 1;">&#9776;</span>
+        <span class="text-sm font-semibold">Menu</span>
+    </button>
+    <div class="flex items-center gap-2">
+        <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-8 w-auto">
+    </div>
+    <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-sm shadow-sm">
+        {{ strtoupper(substr(Auth::user()->nama ?? Auth::user()->username ?? 'A', 0, 1)) }}
+    </div>
+</div>
+
+{{-- Sidebar Navigasi Admin Terpusat (Kepatuhan K12 & K18, Responsif Drawer di HP) --}}
+<aside id="adminSidebar" class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] -translate-x-full md:translate-x-0 md:static md:w-64 md:h-screen md:sticky md:top-0 md:flex-shrink-0 flex flex-col justify-between bg-[#08331e] text-white overflow-y-auto p-4 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none outline-none focus:outline-none" tabindex="-1" style="outline: none;">
+    <div class="flex items-center justify-between pb-3 md:hidden border-b border-emerald-800/80 mb-2">
+        <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold">Navigasi Admin</span>
+        <button type="button" onclick="toggleAdminSidebar()" class="touch-target px-3 py-1.5 bg-emerald-900/80 hover:bg-emerald-800 text-white rounded-none text-sm font-semibold cursor-pointer border border-emerald-700/50" aria-label="Tutup Menu">
+            &#10005; Tutup
+        </button>
+    </div>
     <div class="space-y-6">
         <div class="flex items-center justify-center py-6 border-b border-emerald-800">
             <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-12 w-auto rounded-none">
@@ -158,4 +181,22 @@
         </form>
     </div>
 </aside>
+
+<script>
+    function toggleAdminSidebar() {
+        var sidebar = document.getElementById('adminSidebar');
+        var backdrop = document.getElementById('adminSidebarBackdrop');
+        if (!sidebar || !backdrop) return;
+        var isClosed = sidebar.classList.contains('-translate-x-full');
+        if (isClosed) {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden', 'md:overflow-auto');
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
+        }
+    }
+</script>
 
