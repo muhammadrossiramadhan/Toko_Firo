@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('daftar_item', function (Blueprint $table) {
             if (!Schema::hasColumn('daftar_item', 'link_shopee')) {
-                $table->string('link_shopee', 255)->nullable()->after('batas_minimum');
+                $table->string('link_shopee', 255)->nullable();
             }
             if (!Schema::hasColumn('daftar_item', 'deskripsi_produk')) {
                 $table->text('deskripsi_produk')->nullable()->after('link_shopee');
