@@ -330,12 +330,12 @@
                     </div>
                 </div>
 
-                {{-- Right Column (Foto Lokasi Toko & Tautan Peta) --}}
+                {{-- Right Column (Peta Lokasi Toko & Tautan Google Maps) --}}
                 <div class="flex justify-center md:justify-end w-full">
                     <a href="https://maps.app.goo.gl/XH8QjJezgEqBwtkm9" target="_blank" rel="noopener noreferrer" data-turbo="false" class="group relative block w-full max-w-[520px] h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden border border-border bg-gray-100 shadow-sm" aria-label="Buka Lokasi Toko Firo di Google Maps">
                         <img
-                            src="{{ asset('foto1.jpeg') }}"
-                            alt="Foto Lokasi Toko Firo Kraksaan"
+                            src="{{ asset('peta-lokasi.jpg') }}"
+                            alt="Peta Lokasi Toko Firo Kraksaan"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
                         >
@@ -343,7 +343,7 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity flex items-end p-5">
                             <div class="flex items-center justify-between w-full text-white">
                                 <div>
-                                    <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold block">Lokasi Toko</span>
+                                    <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold block">Peta Lokasi</span>
                                     <span class="text-sm font-semibold">Toko Firo - Kraksaan</span>
                                 </div>
                                 <span class="bg-emerald-600 group-hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-none shadow transition-colors flex items-center gap-1.5">
