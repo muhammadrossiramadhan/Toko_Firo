@@ -24,6 +24,7 @@
                     <img src="{{ asset('images/logo-footer.png') }}" 
                          alt="Toko Firo" 
                          class="footer-logo object-contain h-14 md:h-16 w-auto" 
+                         loading="lazy"
                          style="height: auto; max-height: 64px; width: auto;">
                 </div>
                 <p class="text-white/60 text-sm leading-relaxed max-w-[280px] mt-3 md:mt-4">

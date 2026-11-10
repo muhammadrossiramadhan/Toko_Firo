@@ -42,7 +42,7 @@
                 {{-- Left Column (Image Placeholder) --}}
                 <div class="flex justify-center md:justify-start">
                     <div class="w-full max-w-[400px] h-[260px] md:h-[280px] lg:h-[320px] overflow-hidden">
-                        <img src="/foto-nulis.webp" alt="Foto Toko Firo" class="w-full h-full object-cover">
+                        <img src="/foto-nulis.webp" alt="Foto Toko Firo" class="w-full h-full object-cover" loading="lazy">
                     </div>
                 </div>
 
@@ -330,19 +330,28 @@
                     </div>
                 </div>
 
-                {{-- Right Column (Map Placeholder) --}}
-                <div class="flex justify-center md:justify-end">
-                    <div class="w-full max-w-[520px] h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden border border-border">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.37389456605!2d113.42310361182076!3d-7.7501081768125655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd700fee90c7771%3A0x4b6bdcea4e8fe1f5!2sTOKO%20FIRO!5e0!3m2!1sen!2sus!4v1791613296253!5m2!1sen!2sus"
-                            width="100%"
-                            height="100%"
-                            style="border:0;"
-                            allowfullscreen=""
+                {{-- Right Column (Foto Lokasi Toko & Tautan Peta) --}}
+                <div class="flex justify-center md:justify-end w-full">
+                    <a href="https://maps.app.goo.gl/XH8QjJezgEqBwtkm9" target="_blank" rel="noopener noreferrer" data-turbo="false" class="group relative block w-full max-w-[520px] h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden border border-border bg-gray-100 shadow-sm" aria-label="Buka Lokasi Toko Firo di Google Maps">
+                        <img
+                            src="{{ asset('foto1.jpeg') }}"
+                            alt="Foto Lokasi Toko Firo Kraksaan"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                        ></iframe>
-                    </div>
+                        >
+                        {{-- Overlay Petunjuk Arah Google Maps --}}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                            <div class="flex items-center justify-between w-full text-white">
+                                <div>
+                                    <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold block">Lokasi Toko</span>
+                                    <span class="text-sm font-semibold">Toko Firo - Kraksaan</span>
+                                </div>
+                                <span class="bg-emerald-600 group-hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-none shadow transition-colors flex items-center gap-1.5">
+                                    Buka di Maps &rarr;
+                                </span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

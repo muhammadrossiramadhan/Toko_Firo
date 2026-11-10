@@ -58,7 +58,7 @@
                         <div class="bg-surface border border-border overflow-hidden rounded-none flex flex-col justify-between {{ $isHabis ? 'opacity-50' : '' }}">
                             <div>
                                 <div class="aspect-square bg-bg flex items-center justify-center relative overflow-hidden rounded-none">
-                                    <img src="{{ $gambarUrl }}" alt="{{ $item->nama_item }}" class="w-full h-full object-cover rounded-none" onerror="this.onerror=null; this.src='/items/default.svg';">
+                                    <img src="{{ $gambarUrl }}" alt="{{ $item->nama_item }}" class="w-full h-full object-cover rounded-none" loading="lazy" onerror="this.onerror=null; this.src='/items/default.svg';">
                                     @if($isHabis)
                                         <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-0.5 bg-danger-50 text-[11px] font-semibold text-danger rounded-none">Stok Habis</span>
                                     @elseif($isMenipis)
@@ -187,7 +187,7 @@
             </div>
             <div class="p-6 space-y-4">
                 <div id="detail-katalog-gambar-box" class="aspect-video bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden rounded-none">
-                    <img id="detail-katalog-img" src="" alt="Foto Produk" class="w-full h-full object-contain rounded-none">
+                    <img id="detail-katalog-img" src="" alt="Foto Produk" class="w-full h-full object-contain rounded-none" loading="lazy">
                 </div>
                 <div>
                     <span id="detail-katalog-kode" class="text-xs font-mono bg-gray-100 text-gray-700 px-2 py-0.5 rounded-none font-bold"></span>
