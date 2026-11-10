@@ -19,19 +19,19 @@
 <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-[55] hidden transition-opacity backdrop-blur-sm cursor-pointer" aria-hidden="true"></div>
 
 {{-- 3. Sidebar Navigasi Kasir (z-[60] di Mobile, fixed inset-y-0 left-0, Responsif Drawer di HP) --}}
-<aside id="sidebarMenu" class="fixed inset-y-0 left-0 z-[60] w-72 max-w-[85vw] -translate-x-full md:translate-x-0 md:static md:w-64 md:min-h-screen md:sticky md:top-0 md:flex-shrink-0 flex flex-col justify-between bg-[#08331e] text-white overflow-y-auto p-4 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none outline-none focus:outline-none" tabindex="-1" style="outline: none;">
-    <div class="space-y-6">
-        {{-- Header Khusus Mobile untuk Menutup Drawer (Hanya tombol tutup ✕, tidak ada hamburger lagi) --}}
-        <div class="flex items-center justify-between pb-3 md:hidden border-b border-emerald-800/80">
-            <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold">Navigasi Kasir</span>
-            <button type="button" onclick="toggleSidebar()" class="touch-target px-3 py-1.5 bg-emerald-900/80 hover:bg-emerald-800 text-white rounded-none text-sm font-semibold cursor-pointer border border-emerald-700/50" aria-label="Tutup Menu">
-                &#10005; Tutup
-            </button>
-        </div>
+<aside id="sidebarMenu" class="fixed inset-y-0 left-0 z-[60] w-72 max-w-[85vw] -translate-x-full md:translate-x-0 md:static md:w-64 md:h-screen md:sticky md:top-0 md:flex-shrink-0 flex flex-col justify-between bg-[#08331e] text-white p-4 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none outline-none focus:outline-none" tabindex="-1" style="outline: none;">
+    {{-- Header Khusus Mobile untuk Menutup Drawer (Hanya tombol tutup ✕, tidak ada hamburger lagi) --}}
+    <div class="flex items-center justify-between pb-3 md:hidden border-b border-emerald-800/80 mb-3 shrink-0">
+        <span class="text-xs uppercase tracking-wider text-emerald-300 font-bold">Navigasi Kasir</span>
+        <button type="button" onclick="toggleSidebar()" class="touch-target px-3 py-1.5 bg-emerald-900/80 hover:bg-emerald-800 text-white rounded-none text-sm font-semibold cursor-pointer border border-emerald-700/50" aria-label="Tutup Menu">
+            &#10005; Tutup
+        </button>
+    </div>
 
+    <div class="flex-1 overflow-y-auto space-y-6 min-h-0 pr-1">
         <!-- Logo Area di Sidebar -->
-        <div class="flex items-center justify-center py-6 border-b border-white/10">
-            <img src="{{ asset('images/logo-footer.png') }}" 
+        <div class="flex items-center justify-center py-6 border-b border-white/10 shrink-0">
+            <img src="{{ asset('images/logo.png') }}" 
                  alt="Toko Firo" 
                  class="object-contain h-12 w-auto" 
                  style="height: 48px; max-height: 48px; width: auto;">
@@ -73,47 +73,8 @@
         </div>
     </div>
 
-    {{-- Profil Pengguna & Logout --}}
-    <div class="pt-4 border-t border-emerald-900/60">
-        @if (in_array(strtoupper((string) (Auth::user()?->role ?? '')), ['ADMIN', 'PEMILIK']))
-            <a href="{{ Route::has('admin.profil') ? route('admin.profil') : url('/admin/profil') }}" class="block bg-[#052314] hover:bg-emerald-800/60 rounded-none p-3 mb-2 transition-colors cursor-pointer shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
-                        {{ strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'A'), 0, 1)) }}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <div class="font-medium text-white text-base truncate">
-                            {{ Auth::user()?->nama ?? Auth::user()?->username ?? 'Admin / Pemilik' }}
-                        </div>
-                        <div class="text-sm text-emerald-300">
-                            Admin / Pemilik
-                        </div>
-                    </div>
-                </div>
-            </a>
-        @else
-            <div class="bg-[#052314] rounded-none p-3 mb-2 flex items-center gap-3">
-                <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center font-bold text-center bg-emerald-700 text-white rounded-none text-lg">
-                    {{ strtoupper(substr((string) (Auth::user()?->nama ?? Auth::user()?->username ?? 'K'), 0, 1)) }}
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="font-medium text-white text-base truncate">
-                        {{ Auth::user()?->nama ?? Auth::user()?->username ?? 'Kasir' }}
-                    </div>
-                    <div class="text-sm text-emerald-300">
-                        {{ Auth::user()?->role ?? 'Kasir' }}
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('logout') }}" data-turbo="false">
-            @csrf
-            <button type="submit" class="touch-target w-full text-left flex items-center px-3 py-2 rounded-none text-red-300 hover:text-white hover:bg-red-900/40 text-base transition-colors min-h-[2.75rem] cursor-pointer">
-                Keluar
-            </button>
-        </form>
-    </div>
+    {{-- Reusable Profil Pengguna di Bawah Sidebar (Terpinning Ajeg/Solid di Bawah) --}}
+    <x-sidebar-profile />
 </aside>
 
 <script>

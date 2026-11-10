@@ -26,7 +26,7 @@
     <main class="w-full max-w-md bg-white rounded-none shadow-sm border border-gray-200 p-8">
         {{-- Header Identitas (Tanpa Ikon atau Emoji) --}}
         <div class="text-center mb-8 flex flex-col items-center">
-            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo Logo" class="h-10 w-auto mb-3">
+            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo Logo" class="h-10 w-auto object-contain mb-3">
             <h1 class="text-2xl font-bold text-gray-900">
                 Toko Firo
             </h1>
