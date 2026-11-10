@@ -2,7 +2,7 @@
     <div class="max-w-[1280px] mx-auto px-5 md:px-10 lg:px-[80px] h-full flex items-center justify-between">
         <!-- Left: Logo -->
         <a href="{{ url('/') }}" class="flex items-center outline-none focus:outline-none focus:ring-0" style="outline:none!important;">
-            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-[40px] w-auto object-contain">
+            <img src="{{ asset('images/logo.png') }}" alt="Toko Firo" class="h-10 w-auto object-contain bg-white p-1 rounded-md">
         </a>
 
         <!-- Center: Nav links -->
