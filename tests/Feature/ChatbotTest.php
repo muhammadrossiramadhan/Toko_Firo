@@ -432,5 +432,33 @@ class ChatbotTest extends TestCase
         $this->assertNotEmpty($body['messages'][0]['content']);
         $this->assertEquals('Alamat toko di mana?', $body['messages'][1]['content']);
     }
+
+    /**
+     * 12. Memastikan saat AI timeout atau ConnectionException, chatbot langsung fallback ke data lokal status 200 OK.
+     */
+    public function test_timeout_koneksi_ai_menghasilkan_fallback_status_200(): void
+    {
+        Http::fake([
+            '*/chat/completions' => function () {
+                throw new \Illuminate\Http\Client\ConnectionException('cURL error 28: Connection timed out after 5000 milliseconds');
+            },
+            'https://generativelanguage.googleapis.com/*' => function () {
+                throw new \Illuminate\Http\Client\ConnectionException('cURL error 28: Connection timed out after 5000 milliseconds');
+            },
+        ]);
+
+        $response = $this->postJson('/api/chatbot/tanya', [
+            'pesan' => 'Alamat toko di mana?'
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'sukses' => true,
+            ]);
+
+        $this->assertNotEmpty($response->json('reply'));
+        $this->assertStringContainsString('Toko Firo', $response->json('reply'));
+        $this->assertStringContainsString('Kraksaan', $response->json('reply'));
+    }
 }
 

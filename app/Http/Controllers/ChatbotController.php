@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\Chatbot\ChatbotKatalogService;
 use App\Services\Chatbot\ChatbotSanitizerService;
 use App\Services\PengaturanTokoService;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -213,8 +214,8 @@ PROMPT;
             $safeUserMessage = !empty(trim((string) $cleanMessage)) ? (string) $cleanMessage : 'Halo';
 
             if ($isGoogleGemini) {
-                $response = Http::connectTimeout(5)
-                    ->timeout(12)
+                $response = Http::timeout(5)
+                    ->connectTimeout(3)
                     ->withoutVerifying()
                     ->withHeaders([
                         'Content-Type' => 'application/json',
@@ -242,8 +243,8 @@ PROMPT;
                     'max_tokens' => 300,
                 ];
 
-                $response = Http::connectTimeout(5)
-                    ->timeout(12)
+                $response = Http::timeout(5)
+                    ->connectTimeout(3)
                     ->withoutVerifying()
                     ->withHeaders([
                         'Authorization' => 'Bearer ' . $apiKey,
@@ -282,6 +283,24 @@ PROMPT;
             return response()->json([
                 'sukses' => true,
                 'reply' => $fallback,
+                'jawaban' => $fallback,
+            ]);
+
+        } catch (ConnectionException $e) {
+            Log::warning('AI Chatbot Timeout / ConnectionException (limit 5s): ' . $e->getMessage(), [
+                'clean_message' => $cleanMessage,
+            ]);
+
+            try {
+                $fallback = $this->fallbackResponse($cleanMessage);
+            } catch (\Throwable $fallbackErr) {
+                Log::error('Fallback response error: ' . $fallbackErr->getMessage());
+                $fallback = "Halo! Toko Firo berlokasi di Jl. Yos Sudarso No. BA-9, Sidopekso, Kraksaan, Probolinggo. Buka setiap hari pukul 08:00 - 21:00 WIB. Ada yang bisa kami bantu?";
+            }
+
+            return response()->json([
+                'sukses'  => true,
+                'reply'   => $fallback,
                 'jawaban' => $fallback,
             ]);
 
