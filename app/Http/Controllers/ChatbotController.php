@@ -177,28 +177,39 @@ PROMPT;
 
             // 4. Request ke AI Provider (Format OpenAI Compatible Secara Penuh)
             $apiKey = (string) (
-                config('services.openai.key')
-                ?: config('services.ai.key')
-                ?: env('OPENAI_API_KEY')
+                config('services.ai.key')
+                ?: config('services.openai.key')
                 ?: env('AI_API_KEY')
+                ?: env('OPENAI_API_KEY')
                 ?: 'mock_api_key'
             );
 
             $baseUrl = (string) (
-                config('services.openai.base_url')
-                ?: config('services.ai.base_url')
-                ?: env('OPENAI_BASE_URL')
+                config('services.ai.base_url')
+                ?: config('services.openai.base_url')
                 ?: env('AI_BASE_URL')
-                ?: 'https://api.openai.com/v1'
+                ?: env('OPENAI_BASE_URL')
+                ?: 'https://api.clevecode.com/v1'
             );
 
             $modelId = (string) (
-                config('services.openai.model')
-                ?: config('services.ai.model')
-                ?: env('OPENAI_MODEL')
+                config('services.ai.model')
+                ?: config('services.openai.model')
                 ?: env('AI_MODEL')
-                ?: 'gpt-4o-mini'
+                ?: env('OPENAI_MODEL')
+                ?: 'gpt-5.6-luna'
             );
+
+            // Jika API key belum diset dan bukan mode testing, jangan panggil eksternal (menghindari error 401 dan lag)
+            if ((empty($apiKey) || $apiKey === 'mock_api_key') && !app()->environment('testing')) {
+                Log::warning('AI Chatbot: Kunci API (AI_API_KEY / OPENAI_API_KEY) belum dikonfigurasi di file .env. Beralih ke fallback lokal.');
+                $fallback = $this->fallbackResponse($cleanMessage);
+                return response()->json([
+                    'sukses'  => true,
+                    'reply'   => $fallback,
+                    'jawaban' => $fallback,
+                ]);
+            }
 
             $baseUrl = rtrim(trim($baseUrl), '/');
             if (str_ends_with($baseUrl, '/chat/completions')) {
@@ -208,14 +219,16 @@ PROMPT;
             }
 
             $isGoogleGemini = str_contains($url, 'generativelanguage.googleapis.com');
+            $timeoutSeconds = (int) env('CHATBOT_TIMEOUT_SECONDS', 15);
+            $connectTimeoutSeconds = (int) env('CHATBOT_CONNECT_TIMEOUT_SECONDS', 5);
 
             // Validasi string content pada payload agar tidak pernah null atau kosong
             $safeSystemPrompt = !empty(trim((string) $systemPrompt)) ? (string) $systemPrompt : 'Kamu adalah asisten resmi Toko Firo.';
             $safeUserMessage = !empty(trim((string) $cleanMessage)) ? (string) $cleanMessage : 'Halo';
 
             if ($isGoogleGemini) {
-                $response = Http::timeout(5)
-                    ->connectTimeout(3)
+                $response = Http::timeout($timeoutSeconds)
+                    ->connectTimeout($connectTimeoutSeconds)
                     ->withoutVerifying()
                     ->withHeaders([
                         'Content-Type' => 'application/json',
@@ -243,8 +256,8 @@ PROMPT;
                     'max_tokens' => 300,
                 ];
 
-                $response = Http::timeout(5)
-                    ->connectTimeout(3)
+                $response = Http::timeout($timeoutSeconds)
+                    ->connectTimeout($connectTimeoutSeconds)
                     ->withoutVerifying()
                     ->withHeaders([
                         'Authorization' => 'Bearer ' . $apiKey,

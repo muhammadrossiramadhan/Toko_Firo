@@ -49,15 +49,15 @@ return [
     ],
 
     'openai' => [
-        'key'      => env('OPENAI_API_KEY', env('AI_API_KEY')),
-        'base_url' => env('OPENAI_BASE_URL', env('AI_BASE_URL', 'https://api.openai.com/v1')),
-        'model'    => env('OPENAI_MODEL', env('AI_MODEL', 'gpt-4o-mini')),
+        'key'      => env('AI_API_KEY') ?: env('OPENAI_API_KEY'),
+        'base_url' => env('AI_BASE_URL') ?: env('OPENAI_BASE_URL') ?: 'https://api.clevecode.com/v1',
+        'model'    => env('AI_MODEL') ?: env('OPENAI_MODEL') ?: 'gpt-5.6-luna',
     ],
 
     'ai' => [
-        'provider' => env('AI_PROVIDER', 'openai'),
-        'base_url' => env('OPENAI_BASE_URL', env('AI_BASE_URL', 'https://api.openai.com/v1')),
-        'key'      => env('OPENAI_API_KEY', env('AI_API_KEY')),
-        'model'    => env('OPENAI_MODEL', env('AI_MODEL', 'gpt-4o-mini')),
+        'provider' => env('AI_PROVIDER', 'clevecode'),
+        'base_url' => env('AI_BASE_URL') ?: env('OPENAI_BASE_URL') ?: 'https://api.clevecode.com/v1',
+        'key'      => env('AI_API_KEY') ?: env('OPENAI_API_KEY'),
+        'model'    => env('AI_MODEL') ?: env('OPENAI_MODEL') ?: 'gpt-5.6-luna',
     ],
 ];
