@@ -7,6 +7,10 @@ CREATE USER IF NOT EXISTS 'toko_firo'@'%' IDENTIFIED BY 'root';
 GRANT ALL PRIVILEGES ON `toko_firo`.* TO 'toko_firo'@'%';
 GRANT ALL PRIVILEGES ON `toko_firo_test`.* TO 'toko_firo'@'%';
 
+CREATE USER IF NOT EXISTS 'laravel'@'%' IDENTIFIED BY 'laravel';
+GRANT ALL PRIVILEGES ON `toko_firo`.* TO 'laravel'@'%';
+GRANT ALL PRIVILEGES ON `toko_firo_test`.* TO 'laravel'@'%';
+
 GRANT ALL PRIVILEGES ON `toko_firo`.* TO 'root'@'%';
 GRANT ALL PRIVILEGES ON `toko_firo_test`.* TO 'root'@'%';
 

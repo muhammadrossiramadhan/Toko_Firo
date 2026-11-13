@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Services\Chatbot\ChatbotSanitizerService;
 use Tests\TestCase;
 
 class ChatbotTest extends TestCase
@@ -19,6 +20,17 @@ class ChatbotTest extends TestCase
         RateLimiter::clear('chatbot.tanya');
         RateLimiter::clear('127.0.0.1');
         Cache::flush();
+    }
+
+    public function test_normalize_reply_menghapus_markdown_dan_html_tanpa_menghasilkan_html(): void
+    {
+        $sanitizer = app(ChatbotSanitizerService::class);
+
+        $reply = $sanitizer->normalizeReply("**Harga**:\n- Rp 3.500\n<script>alert('xss')</script>\n__tersedia__");
+
+        $this->assertSame("Harga:\nRp 3.500\ntersedia", $reply);
+        $this->assertStringNotContainsString('*', $reply);
+        $this->assertStringNotContainsString('<', $reply);
     }
 
     /**
@@ -349,6 +361,8 @@ class ChatbotTest extends TestCase
         $roles = array_column($body['messages'], 'role');
         $this->assertContains('system', $roles);
         $this->assertContains('user', $roles);
+        $this->assertStringContainsString('teks polos tanpa Markdown', $body['messages'][0]['content']);
+        $this->assertStringContainsString('Jawab hanya', $body['messages'][0]['content']);
     }
 
     /**
@@ -461,4 +475,3 @@ class ChatbotTest extends TestCase
         $this->assertStringContainsString('Kraksaan', $response->json('reply'));
     }
 }
-
