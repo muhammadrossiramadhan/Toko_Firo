@@ -31,3 +31,4 @@ composer.phar
 .idea
 .vscode
 opencode.json
+/database/seeders/KatalogLengkapSeeder.php

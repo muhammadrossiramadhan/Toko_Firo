@@ -92,4 +92,25 @@ class ChatbotSanitizerService
 
         return [true, $text, null];
     }
+
+    /**
+     * Mengubah balasan provider/fallback menjadi teks polos yang aman ditampilkan.
+     */
+    public function normalizeReply($reply): string
+    {
+        $text = (string) $reply;
+        $text = preg_replace('/<\s*script\b[^>]*>(.*?)<\s*\/\s*script\s*>/is', '', $text);
+        $text = strip_tags($text);
+        $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
+
+        // Balasan selalu ditampilkan sebagai teks polos, bukan Markdown/HTML.
+        $text = preg_replace('/[*_`~]+/', '', $text);
+        $text = preg_replace('/^[ \t]*#{1,6}[ \t]+/m', '', $text);
+        $text = preg_replace('/^[ \t]*(?:-|\+)[ \t]+/m', '', $text);
+        $text = preg_replace('/^[ \t]*\d+[.)][ \t]+/m', '', $text);
+        $text = preg_replace('/[ \t]+/', ' ', $text);
+        $text = preg_replace('/\n{2,}/', "\n", $text);
+
+        return trim((string) $text);
+    }
 }
